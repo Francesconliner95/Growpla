@@ -1,0 +1,33 @@
+#account-edit{
+    .form-sub-group{
+        display: inline-block;
+    }
+    .role{
+        a{
+            display: block;
+            width: 100%;
+            height: 100%;
+            padding: 5px;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            &:hover{
+                background-color: $hover_gray;
+                cursor: pointer;
+                text-decoration: none;
+            }
+        }
+    }
+    .services{
+        select{
+            display: inline-block;
+            margin: 10px 0;
+            margin-right: 10px;
+        }
+        i{
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+}

@@ -1,0 +1,47 @@
+#chat-index{
+    height: calc(100vh - 215px);
+    .chat-cont{
+        //min-height: 93%;
+        height: calc(100% - 50px);
+        background-color: $hover_gray;
+        border-radius: 20px;
+        margin-top: 10px;
+        padding: 15px;
+        overflow-y: auto;
+        .chat-item{
+            display: block;
+            display: flex;
+            justify-content: space-between;
+            background-color: white;
+            border-radius: 10px;
+            padding: 8px 20px;
+            margin-bottom: 7px;
+            color: black;
+            font-size: 17px;
+            position: relative;
+            .mini-txt{
+                padding-right: 20px;
+            }
+            &:hover{
+                text-decoration: none;
+                transition: .2s;
+                transform: scale(1.01);
+                background-color: $default_green;
+                .mini-txt{
+                    color: white;
+                }
+            }
+            .not{
+                min-width: 30px;
+                position: absolute;
+                display: inline-block;
+                border-radius: 10px;
+                background-color: orange;
+                text-align: center;
+                color: white;
+                top: -5px;
+                right: -5px;
+            }
+        }
+    }
+}

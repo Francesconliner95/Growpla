@@ -1,0 +1,35 @@
+#notification-index{
+    height: calc(100vh - 215px);
+    .not-cont{
+        // height: 93%;
+        height: calc(100% - 50px);
+        padding: 10px;
+        border-radius: 10px;
+        background-color: $light_black;
+        overflow-y: scroll;
+        .not-item{
+            display: inline-block;
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: gray;
+            color: black;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            &:hover{
+                text-decoration: none;
+                background-color: $hover_gray;
+            }
+            .mini-txt{
+                color: black;
+            }
+        }
+        .active{
+            background-color: $default_green-deactivate;
+            &:hover{
+                background-color: $default_green;
+            }
+        }
+    }
+}

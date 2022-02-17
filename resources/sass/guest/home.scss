@@ -1,0 +1,182 @@
+#guest-home{
+    // background-image: url('../../../public/storage/images/preview-background.jpg');
+    // background-size: cover;
+    //background-color: #f3f5f9;
+    // rgb(175,217,170)
+    // rgb(122,175,223);
+    position: relative;
+    // min-height: calc(100vh - 113px);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+    .logo-cont{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .logo{
+            width: 100%;
+            height: auto;
+            object-fit: fill;
+        }
+        .beta{
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            font-weight: bold;
+        }
+    }
+    .preview{
+        .intro{
+            text-align: center;
+            color: white;
+            padding-top: 75px;
+            padding-bottom: 50px;
+            color: $light_black;
+            h3{
+                padding: 15px 0;
+            }
+            .home-img{
+                width: 100%;
+                height: auto;
+            }
+        }
+        .code-ver{
+            padding: 75px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            .form-group{
+                display: flex;
+                justify-content: space-around;
+                margin-top: 20px;
+                div{
+                    margin-right: 5px;
+                }
+            }
+        }
+        .login-register-cont{
+            padding: 75px 0px;
+            .switch{
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                button{
+                    width: 50%;
+                    height: 35px;
+                    border: none;
+                    border-radius: 10px 10px 0px 0px;
+                    font-size: 20px;
+                    background-color: $default_green;
+                    color: white;
+                    font-weight: bold;
+                }
+                .selected{
+                    height: 50px;
+                    background-color: white;
+                    color: black;
+                    border-bottom: none;
+                }
+            }
+
+            .log-reg{
+                background-color: white;
+                min-height: 400px;
+                padding: 5px 20px;
+                box-shadow: 0px 0px 10px 1px #ccc;
+                border-radius: 0px 0px 10px 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                form{
+                    width: 100%;
+                }
+            }
+
+            .password{
+                position: relative;
+                button{
+                    position: absolute;
+                    top: 50%;
+                    right: 0px;
+                    transform: translate(-150%,-50%);
+                    color: gray;
+                }
+            }
+        }
+    }
+
+    .landing{
+        width: 100%;
+        h2{
+            margin-bottom: 30px;
+        }
+        .item-style{
+            // height: 450px;
+            min-height: 250px;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            //border: 2px solid $default_green;
+            transition: .2s;
+            //border-radius: 5px;
+            &:hover{
+                transform: scale(1.01);
+            }
+            img{
+                height: 50%;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+            }
+            .card-info{
+                // height: 50%;
+                height: 100%;
+                padding: 10px;
+                // border-bottom-left-radius: 10px;
+                // border-bottom-right-radius: 10px;
+                // border-top-left-radius: 10px;
+                // border-top-right-radius: 10px;
+                color: #555;
+                h2{
+                    margin-bottom: 15px;
+                }
+                p{
+                    margin: 0px;
+                }
+            }
+        }
+        .gray-blue-bg{
+            background-color: $gray-blue;
+        }
+        img{
+            height: 333px;
+            object-fit: cover;
+        }
+        .text-cont{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            p{
+                font-size: 20px;
+            }
+        }
+
+    }
+
+    .stats{
+        width: 100%;
+        // padding: 20px 0;
+        // background-color: $teal;
+        // color: white;
+    }
+
+    @media (min-width: 992px){
+        .preview{
+            .intro{
+                padding-right:50px;
+            }
+        }
+    }
+}

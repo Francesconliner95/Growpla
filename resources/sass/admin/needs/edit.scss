@@ -1,0 +1,59 @@
+#need-edit{
+    .header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .form-sub-group{
+        display: inline-block;
+    }
+    .main-section{
+        // min-height: 700px;
+        .startup_states{
+            .advice{
+                padding-top: 50px;
+            }
+        }
+        .needs{
+            padding: 10px;
+            background-color: $hover_gray;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            label{
+                color: rgba(1, 1, 1, .5);
+            }
+            .active{
+                color: rgba(1, 1, 1, 1);
+            }
+            ul{
+                margin: 0;
+                padding: 0;
+                .cofounder{
+                    display: inline-block;
+                    margin: 3px;
+                    padding: 2px 4px;
+                    background-color: white;
+                    //border: 2px solid $default_green;
+                    border-radius: 5px;
+                    i{
+                        &:hover{
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+        }
+        .startup-services{
+            // height: 300px;
+            >i{
+                color: $default_green;
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+            .startup-services-item{
+                padding-left: 10px;
+            }
+        }
+    }
+}
