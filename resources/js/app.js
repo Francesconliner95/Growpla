@@ -15,6 +15,11 @@ if (document.getElementById('register')) {
 }
 
 ///////ADMIN///////
+//USERS
+if (document.getElementById('user-create')) {
+    require('./admin/users/create.js');
+}
+
 //ACCOUNT
 if (document.getElementById('nav-bar')) {
     require('./admin/nav-bar.js');

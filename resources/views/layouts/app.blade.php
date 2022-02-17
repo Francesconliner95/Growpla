@@ -131,7 +131,7 @@
                             </a>
                             <a id="navbarDropdown" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div v-if="!account_selected" class="drop-menu mobile-hide"  v-cloak>
-                                    @{{user.email}}
+                                    @{{user.name}} @{{user.surname}}
                                 </div>
                                 <div v-else class="drop-menu mobile-hide" v-cloak>
                                 <span v-if="account_selected.name && account_selected.name.length<50" class="text-capitalize">

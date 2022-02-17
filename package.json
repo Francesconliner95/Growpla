@@ -26,6 +26,7 @@
         "@fortawesome/fontawesome-free": "^5.15.4",
         "croppr": "^2.3.1",
         "microtip": "^0.2.2",
+        "moment": "^2.29.1",
         "vue": "^2.6.14"
     }
 }

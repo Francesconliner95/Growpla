@@ -28,16 +28,6 @@ Route::get('/cookiePolicy', 'HomeController@cookiePolicy')->name('cookiePolicy')
 Route::get('/acceptCookie', 'HomeController@acceptCookie')->name('acceptCookie');
 Route::get('/rejectCookie', 'HomeController@rejectCookie')->name('rejectCookie');
 
-// Route::get('/{locale}', function ($locale){
-//     App::setLocale($locale);
-//     return view('guest.home');
-// });
-// Route::get('/{locale}', function ($locale){
-//     App::setLocale($locale);
-//     dd($locale);
-// });
-
-
 Auth::routes(['verify' => true]);
 
 //Per eseguire il logout nel guest
@@ -47,6 +37,7 @@ Route::get('/', 'HomeController@index')->name('index');
 
 Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->group(function(){
 
+    Route::resource('/users', 'UserController');
     Route::get('/getUser', 'UserController@getUser')->name('getUser');
 
     Route::get('/advancedSearch', 'SearchController@advancedSearch')->name('advancedSearch');
