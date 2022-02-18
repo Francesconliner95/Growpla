@@ -32,8 +32,8 @@ var create = new Vue({
 
     },
     created(){
-      this.userTypes = JSON.parse(this.userTypes.replace(/&quot;/g,'"'))
-      this.pageTypes = JSON.parse(this.pageTypes.replace(/&quot;/g,'"'));;
+      this.userTypes = JSON.parse(this.userTypes.replace(/&quot;/g,'"'));
+      this.pageTypes = JSON.parse(this.pageTypes.replace(/&quot;/g,'"'));
     },
     mounted() {
 

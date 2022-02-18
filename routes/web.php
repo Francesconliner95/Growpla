@@ -37,9 +37,11 @@ Route::get('/', 'HomeController@index')->name('index');
 
 Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->group(function(){
 
+    Route::get('/', 'MainController@index')->name('index');
+
     Route::resource('/users', 'UserController');
     Route::get('/getUser', 'UserController@getUser')->name('getUser');
-    Route::put('/user_usertype_update', 'UserController@user_usertype_update')->name('user_usertype_update');
+    Route::get('/editImage/{user_id}', 'UserController@editImage')->name('users.editImage');
 
 
     Route::get('/advancedSearch', 'SearchController@advancedSearch')->name('advancedSearch');

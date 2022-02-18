@@ -20,6 +20,18 @@ if (document.getElementById('user-create')) {
     require('./admin/users/create.js');
 }
 
+if (document.getElementById('user-edit')) {
+    require('./admin/users/edit.js');
+}
+
+if (document.getElementById('user-show')) {
+    require('./admin/users/show.js');
+}
+
+if (document.getElementById('edit-image')) {
+    require('./admin/users/edit-image.js');
+}
+
 //ACCOUNT
 if (document.getElementById('nav-bar')) {
     require('./admin/nav-bar.js');

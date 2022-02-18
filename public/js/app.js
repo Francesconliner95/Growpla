@@ -76582,8 +76582,176 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   created: function created() {
     this.userTypes = JSON.parse(this.userTypes.replace(/&quot;/g, '"'));
     this.pageTypes = JSON.parse(this.pageTypes.replace(/&quot;/g, '"'));
-    ;
   },
+  mounted: function mounted() {}
+});
+
+/***/ }),
+
+/***/ "./resources/js/admin/users/edit.js":
+/*!******************************************!*\
+  !*** ./resources/js/admin/users/edit.js ***!
+  \******************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#user-edit',
+  data: {
+    user: user
+  },
+  methods: {// remove_file(value){
+    //     axios({
+    //         method: 'put',
+    //         url: '/admin/removeFile',
+    //         data: {
+    //             account_id: this.account.id,
+    //             file_type: value,
+    //         }
+    //     }).then(response => {
+    //
+    //     });
+    //
+    //     switch (value) {
+    //         case 'img':
+    //             this.account.image = 'accounts_images/default_account_image.png';
+    //         break;
+    //         case 'cover_img':
+    //             this.account.cover_image = 'accounts_cover_images/default_account_cover_image.jpg';
+    //         break;
+    //         case 'pitch':
+    //             this.account.pitch = '';
+    //         break;
+    //         case 'roadmap':
+    //             this.account.roadmap = '';
+    //         break;
+    //         case 'cv':
+    //             this.account.curriculum_vitae = '';
+    //         break;
+    //         default:
+    //     }
+    // },
+  },
+  created: function created() {
+    this.user = JSON.parse(this.user.replace(/&quot;/g, '"'));
+  },
+  mounted: function mounted() {
+    //DRAG & DROP
+    document.querySelectorAll(".drop-zone__input").forEach(function (inputElement) {
+      var dropZoneElement = inputElement.closest(".drop-zone");
+      dropZoneElement.addEventListener("click", function (e) {
+        inputElement.click();
+      });
+      dropZoneElement.addEventListener("change", function (e) {
+        if (inputElement.files.length) {
+          updateThumbnail(dropZoneElement, inputElement.files[0]);
+        }
+      });
+      dropZoneElement.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        dropZoneElement.classList.add("drop-zone--over");
+      });
+      ["dragleave", "dragend"].forEach(function (type) {
+        dropZoneElement.addEventListener(type, function (e) {
+          dropZoneElement.classList.remove('drop-zone--over');
+        });
+      });
+      dropZoneElement.addEventListener("drop", function (e) {
+        e.preventDefault();
+
+        if (e.dataTransfer.files.length) {
+          inputElement.files = e.dataTransfer.files; //console.log(inputElement.files);
+
+          updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+        }
+
+        dropZoneElement.classList.remove("drop-zone--over");
+      });
+    });
+
+    function updateThumbnail(dropZoneElement, file) {
+      //console.log(dropZoneElement);
+      //console.log(file);
+      var thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+
+      if (dropZoneElement.querySelector(".drop-zone__prompt")) {
+        dropZoneElement.querySelector(".drop-zone__prompt").remove();
+      } //add file in drop-area
+
+
+      if (!thumbnailElement) {
+        thumbnailElement = document.createElement("div");
+        thumbnailElement.classList.add("drop-zone__thumb");
+        dropZoneElement.appendChild(thumbnailElement);
+        var imgTag = document.createElement("img");
+        thumbnailElement.appendChild(imgTag);
+      } else {
+        dropZoneElement.removeChild(thumbnailElement);
+        thumbnailElement = document.createElement("div");
+        thumbnailElement.classList.add("drop-zone__thumb");
+        dropZoneElement.appendChild(thumbnailElement);
+        var imgTag = document.createElement("img");
+        thumbnailElement.appendChild(imgTag);
+      } //show file name
+
+
+      thumbnailElement.dataset.label = file.name; //show image
+
+      if (file.type.startsWith("image/")) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = function () {
+          imgTag.src = reader.result;
+        };
+      } else {
+        imgTag.src = null;
+      }
+    } //END DRAG & DROP
+
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/admin/users/show.js":
+/*!******************************************!*\
+  !*** ./resources/js/admin/users/show.js ***!
+  \******************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#user-show',
+  data: {
+    lang: lang,
+    is_my_user: is_my_user
+  },
+  methods: {},
   mounted: function mounted() {}
 });
 
@@ -76616,6 +76784,14 @@ if (document.getElementById('register')) {
 
 if (document.getElementById('user-create')) {
   __webpack_require__(/*! ./admin/users/create.js */ "./resources/js/admin/users/create.js");
+}
+
+if (document.getElementById('user-edit')) {
+  __webpack_require__(/*! ./admin/users/edit.js */ "./resources/js/admin/users/edit.js");
+}
+
+if (document.getElementById('user-show')) {
+  __webpack_require__(/*! ./admin/users/show.js */ "./resources/js/admin/users/show.js");
 } //ACCOUNT
 
 
