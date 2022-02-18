@@ -76561,7 +76561,24 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     userTypes: userTypes,
     pageTypes: pageTypes
   },
-  methods: {},
+  methods: {
+    isChecked: function isChecked(id) {
+      if (document.getElementById(id).checked) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    checkboxToggle: function checkboxToggle(id) {
+      if (document.getElementById(id).checked) {
+        document.getElementById(id).checked = false;
+        document.getElementById(id + '-b').classList.remove("button-active");
+      } else {
+        document.getElementById(id).checked = true;
+        document.getElementById(id + '-b').classList.add("button-active");
+      }
+    }
+  },
   created: function created() {
     this.userTypes = JSON.parse(this.userTypes.replace(/&quot;/g, '"'));
     this.pageTypes = JSON.parse(this.pageTypes.replace(/&quot;/g, '"'));

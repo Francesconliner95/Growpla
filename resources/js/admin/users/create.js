@@ -13,6 +13,22 @@ var create = new Vue({
       pageTypes,
     },
     methods: {
+      isChecked(id){
+        if (document.getElementById(id).checked) {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      checkboxToggle(id){
+        if(document.getElementById(id).checked){
+          document.getElementById(id).checked = false;
+          document.getElementById(id+'-b').classList.remove("button-active");
+        }else{
+          document.getElementById(id).checked = true;
+          document.getElementById(id+'-b').classList.add("button-active");
+        }
+      }
 
     },
     created(){

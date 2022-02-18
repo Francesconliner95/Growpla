@@ -39,6 +39,8 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
 
     Route::resource('/users', 'UserController');
     Route::get('/getUser', 'UserController@getUser')->name('getUser');
+    Route::put('/user_usertype_update', 'UserController@user_usertype_update')->name('user_usertype_update');
+
 
     Route::get('/advancedSearch', 'SearchController@advancedSearch')->name('advancedSearch');
 
@@ -195,8 +197,5 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     ->name('filternotification.setFilterNotf');
     Route::get('/getFilterNotf', 'FilterNotificationController@getFilterNotf')
     ->name('filternotification.getFilterNotf');
-
-    //TOPIC
-    Route::resource('/topics', 'TopicController');
 
 });

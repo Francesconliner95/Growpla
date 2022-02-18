@@ -21,6 +21,14 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new \App\Notifications\VerifyEmailQueued);
     }
 
+    public function usertypes(){
+        return $this->belongsToMany('App\Usertype');
+    }
+
+    public function pagetypes(){
+        return $this->belongsToMany('App\Pagetype');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
