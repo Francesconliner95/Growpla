@@ -16,14 +16,14 @@ class UsertypeTableSeeder extends Seeder
           [
               'name'=>'aspiring co-founder',
               'name_it'=>'aspirante co-founder',
-              'description'=>'/',
-              'description_it'=>'/',
+              'description'=>'The Co-founder is the person who has resources and / or skills (work or other) that can help the founder in the realization / execution of his business idea.',
+              'description_it'=>'Il co-founder è quel soggetto che possiede risorse e/o competenze (lavorative o di altro tipo) che possono aiutare il founder nella realizzazione/esecuzione della sua idea imprenditoriale.',
           ],
           [
               'name'=>'business angel',
               'name_it'=>'business angel',
-              'description'=>'/',
-              'description_it'=>'/',
+              'description'=>'The business angel is a private entity that grants funds to a startup (as well as know-how and its network of relationships) in order to obtain its capital risk in exchange for becoming a partner.',
+              'description_it'=>'Il business angel è un soggetto privato che conferisce fondi ad una startup (oltreché know-how e la sua rete di relazioni) al fine di ottenere in cambio capitale di rischio della stessa e diventarne socio.',
           ],
           [
               'name'=>'freelancer',
