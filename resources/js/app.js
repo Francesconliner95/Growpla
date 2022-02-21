@@ -28,8 +28,21 @@ if (document.getElementById('user-show')) {
     require('./admin/users/show.js');
 }
 
-if (document.getElementById('edit-image')) {
+if (document.getElementById('edit-user-image')) {
     require('./admin/users/edit-image.js');
+}
+
+//PAGES
+if (document.getElementById('page-edit')) {
+    require('./admin/pages/edit.js');
+}
+
+if (document.getElementById('page-show')) {
+    require('./admin/pages/show.js');
+}
+
+if (document.getElementById('edit-page-image')) {
+    require('./admin/pages/edit-image.js');
 }
 
 //ACCOUNT
@@ -42,9 +55,9 @@ if (document.getElementById('account-index')) {
     require('./admin/accounts/index.js');
 }
 
-if (document.getElementById('account-create')) {
-    require('./admin/accounts/create.js');
-}
+// if (document.getElementById('account-create')) {
+//     require('./admin/accounts/create.js');
+// }
 
 if (document.getElementById('account-show')) {
     require('./admin/accounts/show.js');

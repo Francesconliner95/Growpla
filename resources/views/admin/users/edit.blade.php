@@ -60,7 +60,6 @@
                       <div class="edit-image-drag-drop row">
                           <div v-if="user.cv" class="file-cont  col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-2">
                               <embed src="{{ asset("storage/" . $user->cv) }}" />
-                                {{"storage/" . $user->cv}}
                               <button type="button" @click="remove_file('cv')" class="button-style button-color-red edit-top-right">
                                   <i class="fas fa-times"></i>
                               </button>

@@ -29,6 +29,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany('App\Pagetype');
     }
 
+    public function pages(){
+        return $this->belongsToMany('App\Pages');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

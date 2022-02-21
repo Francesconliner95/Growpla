@@ -41,12 +41,20 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
 
     Route::resource('/users', 'UserController');
     Route::get('/getUser', 'UserController@getUser')->name('getUser');
-    Route::get('/editImage/{user_id}', 'UserController@editImage')->name('users.editImage');
 
+    Route::resource('/pages', 'PageController');
+    Route::get('/newPage/{pagetype_id}', 'PageController@newPage')->name('pages.newPage');
+
+
+    //IMAGE
+    Route::get('/editUserImage', 'ImageController@editUserImage')->name('images.editUserImage');
+    Route::put('/updateUserImage', 'ImageController@updateUserImage')
+    ->name('images.updateUserImage');
+    Route::put('/removeUserImage', 'ImageController@removeUserImage')->name('removeUserImage');
 
     Route::get('/advancedSearch', 'SearchController@advancedSearch')->name('advancedSearch');
 
-    //Route::get('/', 'HomeController@index')->name('index');
+    Route::get('/', 'HomeController@index')->name('index');
     Route::resource('/accounts', 'AccountController');
     Route::get('/getMyAccounts', 'AccountController@getMyAccounts')->name('getMyAccounts');
     Route::put('/setAccount', 'AccountController@setAccount')->name('setAccount');

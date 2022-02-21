@@ -73000,52 +73000,6 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
-/***/ "./resources/js/admin/accounts/create.js":
-/*!***********************************************!*\
-  !*** ./resources/js/admin/accounts/create.js ***!
-  \***********************************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-
-
-axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
-  'X-Requested-With': 'XMLHttpRequest',
-  'X-CSRF-TOKEN': window.csrf_token
-};
-var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  el: '#account-create',
-  data: {
-    accountTypes: '',
-    account_selected: 2,
-    private_association: 1
-  },
-  methods: {
-    private_selected: function private_selected() {
-      this.account_selected = 2;
-    },
-    association_selected: function association_selected() {
-      this.account_selected = 1;
-    }
-  },
-  mounted: function mounted() {
-    var _this = this;
-
-    axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getAccountTypes', {}).then(function (response) {
-      _this.accountTypes = response.data.results.accountTypes;
-      console.log(_this.accountTypes);
-    });
-  }
-});
-
-/***/ }),
-
 /***/ "./resources/js/admin/accounts/edit.js":
 /*!*********************************************!*\
   !*** ./resources/js/admin/accounts/edit.js ***!
@@ -75692,6 +75646,377 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
+/***/ "./resources/js/admin/pages/edit-image.js":
+/*!************************************************!*\
+  !*** ./resources/js/admin/pages/edit-image.js ***!
+  \************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! croppr */ "./node_modules/croppr/dist/croppr.js");
+/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(croppr__WEBPACK_IMPORTED_MODULE_2__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#edit-user-image',
+  data: {
+    user_id: user_id,
+    image: image,
+    image_src: '/storage/' + image,
+    x: 0,
+    y: 0,
+    width: 300,
+    height: 300
+  },
+  methods: {
+    createCrop: function createCrop() {
+      var _this = this;
+
+      var croppr = new croppr__WEBPACK_IMPORTED_MODULE_2___default.a('#croppr', {
+        // options
+        aspectRatio: 1,
+        // maxSize: [300, 300, 'px'],
+        startSize: [100, 100, '%'],
+        onCropEnd: function onCropEnd(value) {
+          // console.log(value.x, value.y, value.width, value.height);
+          // console.log(croppr.getValue());
+          _this.x = value.x;
+          _this.y = value.y;
+          _this.width = value.width;
+          _this.height = value.height; //console.log(this.x,this.y,this.width,this.height);
+        }
+      });
+      this.x = croppr.getValue().x;
+      this.y = croppr.getValue().y;
+      this.width = croppr.getValue().width;
+      this.height = croppr.getValue().height;
+
+      if (!this.y) {
+        this.y = 0;
+      }
+
+      if (!this.height) {
+        this.height = 0;
+      }
+    },
+    remove_file: function remove_file(value) {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default()({
+        method: 'put',
+        url: '/admin/removeUserImage'
+      }).then(function (response) {
+        window.location.href = '/admin/users/' + _this2.user_id;
+      });
+    },
+    newFile: function newFile() {
+      var _this3 = this;
+
+      var _imgInp$files = _slicedToArray(imgInp.files, 1),
+          file = _imgInp$files[0];
+
+      if (file) {
+        //CREO IL NUOVO src
+        this.image_src = URL.createObjectURL(file); //DISTRUGGI VECCHIA IMMAGINE
+
+        var myNode = document.getElementById("copper-main");
+        myNode.innerHTML = ''; //CREA NUOVA IMMAGINE
+
+        var img = document.createElement("img");
+        img.src = this.image_src;
+        img.id = "croppr";
+        document.getElementById('copper-main').appendChild(img); //CREA IL NUOVO CROPPER
+
+        img.onload = function () {
+          _this3.createCrop();
+        };
+      }
+    },
+    updateThumbnail: function updateThumbnail(dropZoneElement, file) {
+      this.newFile();
+      var thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+
+      if (dropZoneElement.querySelector(".drop-zone__prompt")) {
+        dropZoneElement.querySelector(".drop-zone__prompt").remove();
+      } //add file in drop-area
+
+
+      if (!thumbnailElement) {
+        thumbnailElement = document.createElement("div");
+        thumbnailElement.classList.add("drop-zone__thumb");
+        dropZoneElement.appendChild(thumbnailElement);
+        var imgTag = document.createElement("img");
+        thumbnailElement.appendChild(imgTag);
+      } else {
+        dropZoneElement.removeChild(thumbnailElement);
+        thumbnailElement = document.createElement("div");
+        thumbnailElement.classList.add("drop-zone__thumb");
+        dropZoneElement.appendChild(thumbnailElement);
+        var imgTag = document.createElement("img");
+        thumbnailElement.appendChild(imgTag);
+      } //show file name
+
+
+      thumbnailElement.dataset.label = file.name; //show image
+
+      if (file.type.startsWith("image/")) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = function () {
+          imgTag.src = reader.result;
+        };
+      } else {
+        imgTag.src = null;
+      }
+    } //END DRAG & DROP
+
+  },
+  mounted: function mounted() {
+    var _this4 = this;
+
+    if (this.image) {
+      this.createCrop();
+    } //DRAG & DROP
+
+
+    document.querySelectorAll(".drop-zone__input").forEach(function (inputElement) {
+      var dropZoneElement = inputElement.closest(".drop-zone");
+      dropZoneElement.addEventListener("click", function (e) {
+        inputElement.click();
+      });
+      dropZoneElement.addEventListener("change", function (e) {
+        if (inputElement.files.length) {
+          _this4.updateThumbnail(dropZoneElement, inputElement.files[0]);
+        }
+      });
+      dropZoneElement.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        dropZoneElement.classList.add("drop-zone--over");
+      });
+      ["dragleave", "dragend"].forEach(function (type) {
+        dropZoneElement.addEventListener(type, function (e) {
+          dropZoneElement.classList.remove('drop-zone--over');
+        });
+      });
+      dropZoneElement.addEventListener("drop", function (e) {
+        e.preventDefault();
+
+        if (e.dataTransfer.files.length) {
+          inputElement.files = e.dataTransfer.files; //console.log(inputElement.files);
+
+          _this4.updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+        }
+
+        dropZoneElement.classList.remove("drop-zone--over");
+      });
+    });
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/admin/pages/edit.js":
+/*!******************************************!*\
+  !*** ./resources/js/admin/pages/edit.js ***!
+  \******************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#page-edit',
+  data: {
+    page: page
+  },
+  methods: {// remove_file(value){
+    //     axios({
+    //         method: 'put',
+    //         url: '/admin/removeFile',
+    //         data: {
+    //             account_id: this.account.id,
+    //             file_type: value,
+    //         }
+    //     }).then(response => {
+    //
+    //     });
+    //
+    //     switch (value) {
+    //         case 'img':
+    //             this.account.image = 'accounts_images/default_account_image.png';
+    //         break;
+    //         case 'cover_img':
+    //             this.account.cover_image = 'accounts_cover_images/default_account_cover_image.jpg';
+    //         break;
+    //         case 'pitch':
+    //             this.account.pitch = '';
+    //         break;
+    //         case 'roadmap':
+    //             this.account.roadmap = '';
+    //         break;
+    //         case 'cv':
+    //             this.account.curriculum_vitae = '';
+    //         break;
+    //         default:
+    //     }
+    // },
+  },
+  created: function created() {
+    this.page = JSON.parse(this.page.replace(/&quot;/g, '"'));
+  },
+  mounted: function mounted() {
+    //DRAG & DROP
+    document.querySelectorAll(".drop-zone__input").forEach(function (inputElement) {
+      var dropZoneElement = inputElement.closest(".drop-zone");
+      dropZoneElement.addEventListener("click", function (e) {
+        inputElement.click();
+      });
+      dropZoneElement.addEventListener("change", function (e) {
+        if (inputElement.files.length) {
+          updateThumbnail(dropZoneElement, inputElement.files[0]);
+        }
+      });
+      dropZoneElement.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        dropZoneElement.classList.add("drop-zone--over");
+      });
+      ["dragleave", "dragend"].forEach(function (type) {
+        dropZoneElement.addEventListener(type, function (e) {
+          dropZoneElement.classList.remove('drop-zone--over');
+        });
+      });
+      dropZoneElement.addEventListener("drop", function (e) {
+        e.preventDefault();
+
+        if (e.dataTransfer.files.length) {
+          inputElement.files = e.dataTransfer.files; //console.log(inputElement.files);
+
+          updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+        }
+
+        dropZoneElement.classList.remove("drop-zone--over");
+      });
+    });
+
+    function updateThumbnail(dropZoneElement, file) {
+      //console.log(dropZoneElement);
+      //console.log(file);
+      var thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+
+      if (dropZoneElement.querySelector(".drop-zone__prompt")) {
+        dropZoneElement.querySelector(".drop-zone__prompt").remove();
+      } //add file in drop-area
+
+
+      if (!thumbnailElement) {
+        thumbnailElement = document.createElement("div");
+        thumbnailElement.classList.add("drop-zone__thumb");
+        dropZoneElement.appendChild(thumbnailElement);
+        var imgTag = document.createElement("img");
+        thumbnailElement.appendChild(imgTag);
+      } else {
+        dropZoneElement.removeChild(thumbnailElement);
+        thumbnailElement = document.createElement("div");
+        thumbnailElement.classList.add("drop-zone__thumb");
+        dropZoneElement.appendChild(thumbnailElement);
+        var imgTag = document.createElement("img");
+        thumbnailElement.appendChild(imgTag);
+      } //show file name
+
+
+      thumbnailElement.dataset.label = file.name; //show image
+
+      if (file.type.startsWith("image/")) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = function () {
+          imgTag.src = reader.result;
+        };
+      } else {
+        imgTag.src = null;
+      }
+    } //END DRAG & DROP
+
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/admin/pages/show.js":
+/*!******************************************!*\
+  !*** ./resources/js/admin/pages/show.js ***!
+  \******************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#page-show',
+  data: {
+    lang: lang,
+    is_my_page: is_my_page,
+    page: page
+  },
+  methods: {
+    open: function open(filename) {
+      var newWindow = window.open();
+      newWindow.document.write('<iframe src="/storage/' + filename + '" style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;">');
+    }
+  },
+  created: function created() {
+    this.page = JSON.parse(this.page.replace(/&quot;/g, '"'));
+  },
+  mounted: function mounted() {}
+});
+
+/***/ }),
+
 /***/ "./resources/js/admin/settings/index.js":
 /*!**********************************************!*\
   !*** ./resources/js/admin/settings/index.js ***!
@@ -76588,6 +76913,199 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
+/***/ "./resources/js/admin/users/edit-image.js":
+/*!************************************************!*\
+  !*** ./resources/js/admin/users/edit-image.js ***!
+  \************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! croppr */ "./node_modules/croppr/dist/croppr.js");
+/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(croppr__WEBPACK_IMPORTED_MODULE_2__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#edit-user-image',
+  data: {
+    user_id: user_id,
+    image: image,
+    image_src: '/storage/' + image,
+    x: 0,
+    y: 0,
+    width: 300,
+    height: 300
+  },
+  methods: {
+    createCrop: function createCrop() {
+      var _this = this;
+
+      var croppr = new croppr__WEBPACK_IMPORTED_MODULE_2___default.a('#croppr', {
+        // options
+        aspectRatio: 1,
+        // maxSize: [300, 300, 'px'],
+        startSize: [100, 100, '%'],
+        onCropEnd: function onCropEnd(value) {
+          // console.log(value.x, value.y, value.width, value.height);
+          // console.log(croppr.getValue());
+          _this.x = value.x;
+          _this.y = value.y;
+          _this.width = value.width;
+          _this.height = value.height; //console.log(this.x,this.y,this.width,this.height);
+        }
+      });
+      this.x = croppr.getValue().x;
+      this.y = croppr.getValue().y;
+      this.width = croppr.getValue().width;
+      this.height = croppr.getValue().height;
+
+      if (!this.y) {
+        this.y = 0;
+      }
+
+      if (!this.height) {
+        this.height = 0;
+      }
+    },
+    remove_file: function remove_file(value) {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default()({
+        method: 'put',
+        url: '/admin/removeUserImage'
+      }).then(function (response) {
+        window.location.href = '/admin/users/' + _this2.user_id;
+      });
+    },
+    newFile: function newFile() {
+      var _this3 = this;
+
+      var _imgInp$files = _slicedToArray(imgInp.files, 1),
+          file = _imgInp$files[0];
+
+      if (file) {
+        //CREO IL NUOVO src
+        this.image_src = URL.createObjectURL(file); //DISTRUGGI VECCHIA IMMAGINE
+
+        var myNode = document.getElementById("copper-main");
+        myNode.innerHTML = ''; //CREA NUOVA IMMAGINE
+
+        var img = document.createElement("img");
+        img.src = this.image_src;
+        img.id = "croppr";
+        document.getElementById('copper-main').appendChild(img); //CREA IL NUOVO CROPPER
+
+        img.onload = function () {
+          _this3.createCrop();
+        };
+      }
+    },
+    updateThumbnail: function updateThumbnail(dropZoneElement, file) {
+      this.newFile();
+      var thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
+
+      if (dropZoneElement.querySelector(".drop-zone__prompt")) {
+        dropZoneElement.querySelector(".drop-zone__prompt").remove();
+      } //add file in drop-area
+
+
+      if (!thumbnailElement) {
+        thumbnailElement = document.createElement("div");
+        thumbnailElement.classList.add("drop-zone__thumb");
+        dropZoneElement.appendChild(thumbnailElement);
+        var imgTag = document.createElement("img");
+        thumbnailElement.appendChild(imgTag);
+      } else {
+        dropZoneElement.removeChild(thumbnailElement);
+        thumbnailElement = document.createElement("div");
+        thumbnailElement.classList.add("drop-zone__thumb");
+        dropZoneElement.appendChild(thumbnailElement);
+        var imgTag = document.createElement("img");
+        thumbnailElement.appendChild(imgTag);
+      } //show file name
+
+
+      thumbnailElement.dataset.label = file.name; //show image
+
+      if (file.type.startsWith("image/")) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = function () {
+          imgTag.src = reader.result;
+        };
+      } else {
+        imgTag.src = null;
+      }
+    } //END DRAG & DROP
+
+  },
+  mounted: function mounted() {
+    var _this4 = this;
+
+    if (this.image) {
+      this.createCrop();
+    } //DRAG & DROP
+
+
+    document.querySelectorAll(".drop-zone__input").forEach(function (inputElement) {
+      var dropZoneElement = inputElement.closest(".drop-zone");
+      dropZoneElement.addEventListener("click", function (e) {
+        inputElement.click();
+      });
+      dropZoneElement.addEventListener("change", function (e) {
+        if (inputElement.files.length) {
+          _this4.updateThumbnail(dropZoneElement, inputElement.files[0]);
+        }
+      });
+      dropZoneElement.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        dropZoneElement.classList.add("drop-zone--over");
+      });
+      ["dragleave", "dragend"].forEach(function (type) {
+        dropZoneElement.addEventListener(type, function (e) {
+          dropZoneElement.classList.remove('drop-zone--over');
+        });
+      });
+      dropZoneElement.addEventListener("drop", function (e) {
+        e.preventDefault();
+
+        if (e.dataTransfer.files.length) {
+          inputElement.files = e.dataTransfer.files; //console.log(inputElement.files);
+
+          _this4.updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+        }
+
+        dropZoneElement.classList.remove("drop-zone--over");
+      });
+    });
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/admin/users/edit.js":
 /*!******************************************!*\
   !*** ./resources/js/admin/users/edit.js ***!
@@ -76749,9 +77267,18 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#user-show',
   data: {
     lang: lang,
-    is_my_user: is_my_user
+    is_my_user: is_my_user,
+    user: user
   },
-  methods: {},
+  methods: {
+    open: function open(filename) {
+      var newWindow = window.open();
+      newWindow.document.write('<iframe src="/storage/' + filename + '" style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;">');
+    }
+  },
+  created: function created() {
+    this.user = JSON.parse(this.user.replace(/&quot;/g, '"'));
+  },
   mounted: function mounted() {}
 });
 
@@ -76792,6 +77319,23 @@ if (document.getElementById('user-edit')) {
 
 if (document.getElementById('user-show')) {
   __webpack_require__(/*! ./admin/users/show.js */ "./resources/js/admin/users/show.js");
+}
+
+if (document.getElementById('edit-user-image')) {
+  __webpack_require__(/*! ./admin/users/edit-image.js */ "./resources/js/admin/users/edit-image.js");
+} //PAGES
+
+
+if (document.getElementById('page-edit')) {
+  __webpack_require__(/*! ./admin/pages/edit.js */ "./resources/js/admin/pages/edit.js");
+}
+
+if (document.getElementById('page-show')) {
+  __webpack_require__(/*! ./admin/pages/show.js */ "./resources/js/admin/pages/show.js");
+}
+
+if (document.getElementById('edit-page-image')) {
+  __webpack_require__(/*! ./admin/pages/edit-image.js */ "./resources/js/admin/pages/edit-image.js");
 } //ACCOUNT
 
 
@@ -76802,11 +77346,10 @@ if (document.getElementById('nav-bar')) {
 
 if (document.getElementById('account-index')) {
   __webpack_require__(/*! ./admin/accounts/index.js */ "./resources/js/admin/accounts/index.js");
-}
+} // if (document.getElementById('account-create')) {
+//     require('./admin/accounts/create.js');
+// }
 
-if (document.getElementById('account-create')) {
-  __webpack_require__(/*! ./admin/accounts/create.js */ "./resources/js/admin/accounts/create.js");
-}
 
 if (document.getElementById('account-show')) {
   __webpack_require__(/*! ./admin/accounts/show.js */ "./resources/js/admin/accounts/show.js");

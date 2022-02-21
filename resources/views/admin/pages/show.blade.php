@@ -4,11 +4,11 @@
 <script type="text/javascript">
     window.csrf_token = "{{ csrf_token() }}";
     lang = "{{Auth::user()->language_id}}";
-    user = "{{$user}}";
-    is_my_user = "{{$is_my_user}}";
+    page = "{{$page}}";
+    is_my_page = "{{$is_my_page}}";
 </script>
 <div class="container">
-    <div id="user-show">
+    <div id="page-show">
         {{-- <div :class="delete_alert?'delete-alert active-alert':'delete-alert deactive-alert'" v-cloak>
             <div class="item-cont delete-alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="item-style">
@@ -28,7 +28,7 @@
         </div> --}}
         <div class="item-cont">
             <div class="item-style item-no-padding">
-                <a v-if="is_my_user" class="edit-bottom-right button-color-gray" href="{{route('admin.users.edit', $user->id)}}">
+                <a v-if="is_my_page" class="edit-bottom-right button-color-gray" href="{{route('admin.pages.edit', $page->id)}}">
                     <i class="fas fa-pencil-alt"></i>
                 </a>
                 <div class="profile">
@@ -37,10 +37,10 @@
                         {{-- Immagine --}}
                         <div class="profile-image">
                             <div class="position-relative w-100 h-100">
-                                @if($user->image)
-                                  <img src="{{ asset("storage/" . $user->image) }}" alt="" class="">
+                                @if($page->image)
+                                  <img src="{{ asset("storage/" . $page->image) }}" alt="" class="">
                                 @endif
-                                <a v-if="is_my_user" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.images.editUserImage')}}">
+                                <a v-if="is_my_page" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.images.editUserImage')}}">
                                   <i class="fas fa-pencil-alt"></i>
                                 </a>
                             </div>
@@ -52,12 +52,12 @@
                             {{-- Nome --}}
                             <div class="name col-sm-12 col-md-12 col-lg-6 col-xl-6">
                                 <h2 class="text-capitalize">
-                                    {{$user->name}} {{$user->surname}}
+                                    {{$page->name}} {{$page->surname}}
                                 </h2>
                             </div>
 
                             {{-- <div class="main-buttons col-sm-12 col-md-12 col-lg-6 col-xl-6 pt-3">
-                                <div v-if="!is_my_user" class="d-inline-block">
+                                <div v-if="!is_my_page" class="d-inline-block">
 
                                     <button  :class="already_follow?'button-style button-color-orange':'button-style button-color'" type="button" name="button" @click="setFollow()">
                                         <span v-if="already_follow">{{__('Following')}}</span>
@@ -70,11 +70,11 @@
                                     </div>
                                 </div>
 
-                                <div v-if="is_my_user" class="d-inline-block">
+                                <div v-if="is_my_page" class="d-inline-block">
                                     <a class="button-style button-color-blue" href="{{route('admin.follows.index')}}">
                                         {{__('Followed')}}
                                     </a>
-                                    @if ($user->user_type_id==2)
+                                    @if ($page->page_type_id==2)
                                         <a class="button-style button-color-blue" href="{{ route('admin.nominations.cofounder')}}">
                                             {{__('Nominations')}}
                                         </a>
@@ -85,22 +85,21 @@
                         </div>
 
                         {{-- Descrizione --}}
-                        @if($user->description)
+                        @if($page->description)
                         <div class="sub-section">
                           <h6>{{__('Presentation')}}</h6>
-                          <p class="description">{{$user->description}}</p>
+                          <p class="description">{{$page->description}}</p>
                         </div>
                         @endif
 
-                        @if($user->website
-                        || $user->linkedin
-                        || $user->pitch
-                        || $user->cv)
+                        @if($page->website
+                        || $page->linkedin
+                        || $page->pitch)
                         <div class="sub-section link-cont">
                             {{-- SitoWeb --}}
-                            @if($user->website)
+                            @if($page->website)
                             <div class="link-item">
-                                <a class="website" href="{{$user->website}}" target="_blank" rel="noopener noreferrer">
+                                <a class="website" href="{{$page->website}}" target="_blank" rel="noopener noreferrer">
                                     <i class="fas fa-globe-americas"></i>
                                     <span>{{__('Website')}}</span>
                                 </a>
@@ -108,21 +107,20 @@
                             @endif
 
                             {{-- Linkedin --}}
-                            @if($user->linkedin)
+                            @if($page->linkedin)
                             <div class="link-item">
-                                <a class="linkedin" href="{{$user->linkedin}}" target="_blank" rel="noopener noreferrer">
+                                <a class="linkedin" href="{{$page->linkedin}}" target="_blank" rel="noopener noreferrer">
                                     <i class="fab fa-linkedin"></i>
                                     <span>LinkedIn</span>
                                 </a>
                             </div>
                             @endif
 
-                            {{-- CO-FOUNDER-UTENTE --}}
-                            @if ($user->cv)
+                            @if ($page->pitch)
                             <div class="link-item">
-                                <a class="cv" href="#" @click="open(user.cv)">
+                                <a class="pitch" href="#" @click="open(page.pitch)">
                                     <i class="fas fa-address-card"></i>
-                                    <span>CV</span>
+                                    <span>Pitch</span>
                                 </a>
                             </div>
                             @endif
@@ -132,39 +130,6 @@
                 </div>
             </div>
         </div>
-          {{-- STARTUP --}}
-          @if($user->pageTypes->contains(1))
-            @if($is_my_user || $startups)
-              <div class="item-cont">
-                  <div class="item-style">
-                    <h3>{{__('Startups')}}</h3>
-                    <div class="">
-                      @foreach ($startups as $startup)
-                        <div class="">
-                          <span>{{$startup->name}}</span>
-                        </div>
-                      @endforeach
-                      <div class="">
-                        <a href="{{ route('admin.pages.newPage', ['pagetype_id'=> 1]) }}">Aggiungi</a>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-            @endif
-          @endif
-          {{-- AZIENDA --}}
-          @if($user->pageTypes->contains(2))
-            @if($is_my_user || $companies)
-              <div class="item-cont">
-                  <div class="item-style">
-                    <h3>{{__('Companies')}}</h3>
-                    <div class="">
-
-                    </div>
-                  </div>
-              </div>
-            @endif
-          @endif
     </div>
 </div>
 @endsection

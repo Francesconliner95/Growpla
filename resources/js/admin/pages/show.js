@@ -5,11 +5,11 @@ axios.defaults.headers.common = {
     'X-CSRF-TOKEN': window.csrf_token
 };
 var create = new Vue({
-    el: '#user-show',
+    el: '#page-show',
     data: {
         lang,
-        is_my_user,
-        user,
+        is_my_page,
+        page,
     },
     methods: {
 
@@ -20,7 +20,7 @@ var create = new Vue({
 
     },
     created(){
-      this.user = JSON.parse(this.user.replace(/&quot;/g,'"'));
+      this.page = JSON.parse(this.page.replace(/&quot;/g,'"'));
     },
     mounted() {
 
