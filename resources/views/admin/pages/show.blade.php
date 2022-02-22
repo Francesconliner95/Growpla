@@ -26,8 +26,12 @@
                 </div>
             </div>
         </div> --}}
+
         <div class="item-cont">
             <div class="item-style item-no-padding">
+                <a v-if="is_my_page" class="button-color-gray" href="{{route('admin.pages.settings', $page->id)}}">
+                    <i class="fas fa-cogs"></i>
+                </a>
                 <a v-if="is_my_page" class="edit-bottom-right button-color-gray" href="{{route('admin.pages.edit', $page->id)}}">
                     <i class="fas fa-pencil-alt"></i>
                 </a>
@@ -40,7 +44,7 @@
                                 @if($page->image)
                                   <img src="{{ asset("storage/" . $page->image) }}" alt="" class="">
                                 @endif
-                                <a v-if="is_my_page" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.images.editUserImage')}}">
+                                <a v-if="is_my_page" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.images.editPageImage', $page->id)}}">
                                   <i class="fas fa-pencil-alt"></i>
                                 </a>
                             </div>

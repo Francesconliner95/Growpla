@@ -41,7 +41,7 @@
                     <input type="hidden" name="y" v-model="y">
                     <div class="d-flex justify-content-between align-items-center mt-2">
                         <button type="submit" name="button" class="button-style button-color">{{__('Save Changes')}}</button>
-                        <button v-if="image!='users_images/default_user_image.png'" type="button" name="button" class="button-style button-color-red" @click="remove_file('img')">{{__('Delete')}}</button>
+                        <button v-if="image" type="button" name="button" class="button-style button-color-red" @click="removeUserImage()">{{__('Delete')}}</button>
                     </div>
                 </form>
             </div>

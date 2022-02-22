@@ -45,6 +45,10 @@ if (document.getElementById('edit-page-image')) {
     require('./admin/pages/edit-image.js');
 }
 
+if (document.getElementById('page-settings')) {
+    require('./admin/pages/settings.js');
+}
+
 //ACCOUNT
 if (document.getElementById('nav-bar')) {
     require('./admin/nav-bar.js');
@@ -54,10 +58,6 @@ if (document.getElementById('nav-bar')) {
 if (document.getElementById('account-index')) {
     require('./admin/accounts/index.js');
 }
-
-// if (document.getElementById('account-create')) {
-//     require('./admin/accounts/create.js');
-// }
 
 if (document.getElementById('account-show')) {
     require('./admin/accounts/show.js');

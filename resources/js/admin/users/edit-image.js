@@ -48,7 +48,7 @@ var create = new Vue({
             }
         },
 
-        remove_file(value){
+        removeUserImage(){
             axios({
                 method: 'put',
                 url: '/admin/removeUserImage',

@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use File;
 use App\User;
+use App\Page;
 use App\Usertype;
 use App\Pagetype;
 
@@ -149,4 +150,78 @@ class UserController extends Controller
       ]);
 
     }
+
+    public function addAdmin(Request $request){
+
+      $request->validate([
+          'user_id' => 'required|integer',
+          'page_id' => 'required|integer',
+      ]);
+
+      $user_id = $request->user_id;
+      $page_id = $request->page_id;
+
+      $page = Page::find($page_id);
+
+      //controllo se sono il propietario della pagina
+      if($page->users->contains(Auth::user())){
+
+        //aggiungo un nuovo amministratore
+        $user = User::find($user_id);
+        $page->users()->attach($user);
+
+      }abort(404);
+
+    }
+
+    public function getAdmin(Request $request){
+
+      $request->validate([
+          'page_id' => 'required|integer',
+      ]);
+
+      $page_id = $request->page_id;
+
+      $page = Page::find($page_id);
+
+      //controllo se sono il propietario della pagina
+      if($page->users->contains(Auth::user())){
+
+        return response()->json([
+            'success' => true,
+            'results' => [
+                'admins' => $page->users,
+            ]
+        ]);
+
+      }abort(404);
+
+    }
+
+    public function removeAdmin(Request $request){
+
+      $request->validate([
+          'user_id' => 'required|integer',
+          'page_id' => 'required|integer',
+      ]);
+
+      $user_id = $request->user_id;
+      $page_id = $request->page_id;
+
+      $page = Page::find($page_id);
+
+      //controllo se sono il propietario della pagina
+      if($page->users->contains(Auth::user())){
+
+        //controllo se esiste almeno un'altro admin
+        if(count($page->users) > 1){
+          //rimuovo l' amministratore
+          $user = User::find($user_id);
+          $page->users()->detach($user);
+        }
+
+      }abort(404);
+
+    }
+
 }

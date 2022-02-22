@@ -75681,9 +75681,9 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
   'X-CSRF-TOKEN': window.csrf_token
 };
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  el: '#edit-user-image',
+  el: '#edit-page-image',
   data: {
-    user_id: user_id,
+    page_id: page_id,
     image: image,
     image_src: '/storage/' + image,
     x: 0,
@@ -75722,14 +75722,17 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         this.height = 0;
       }
     },
-    remove_file: function remove_file(value) {
+    removePageImage: function removePageImage() {
       var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default()({
         method: 'put',
-        url: '/admin/removeUserImage'
+        url: '/admin/removePageImage',
+        data: {
+          page_id: this.page_id
+        }
       }).then(function (response) {
-        window.location.href = '/admin/users/' + _this2.user_id;
+        window.location.href = '/admin/pages/' + _this2.page_id;
       });
     },
     newFile: function newFile() {
@@ -75972,6 +75975,100 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       }
     } //END DRAG & DROP
 
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/admin/pages/settings.js":
+/*!**********************************************!*\
+  !*** ./resources/js/admin/pages/settings.js ***!
+  \**********************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#page-settings',
+  data: {
+    lang: lang,
+    page_id: page_id,
+    user_name: '',
+    users_found: '',
+    admins: ''
+  },
+  methods: {
+    searchUser: function searchUser() {
+      var _this = this;
+
+      if (this.user_name) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchUser', {
+          params: {
+            user_name: this.user_name
+          }
+        }).then(function (response) {
+          _this.users_found = response.data.results.users;
+
+          if (!_this.user_name) {
+            _this.users_found = '';
+          }
+
+          console.log(_this.users_found);
+        });
+      } else {
+        this.users_found = '';
+      }
+    },
+    addAdmin: function addAdmin(user_found_id) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default()({
+        method: 'post',
+        url: '/admin/addAdmin',
+        data: {
+          user_id: user_found_id,
+          page_id: this.page_id
+        }
+      }).then(function (response) {});
+    },
+    getAdmin: function getAdmin() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getAdmin', {
+        params: {
+          page_id: this.page_id
+        }
+      }).then(function (response) {
+        _this2.admins = response.data.results.admins;
+      });
+    },
+    removeAdmin: function removeAdmin(user_id) {
+      var _this3 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default()({
+        method: 'delete',
+        url: '/admin/removeAdmin',
+        data: {
+          user_id: user_id,
+          page_id: this.page_id
+        }
+      }).then(function (response) {
+        _this3.getAdmin();
+      });
+    }
+  },
+  created: function created() {},
+  mounted: function mounted() {
+    this.getAdmin();
   }
 });
 
@@ -76989,7 +77086,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         this.height = 0;
       }
     },
-    remove_file: function remove_file(value) {
+    removeUserImage: function removeUserImage() {
       var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default()({
@@ -77336,6 +77433,10 @@ if (document.getElementById('page-show')) {
 
 if (document.getElementById('edit-page-image')) {
   __webpack_require__(/*! ./admin/pages/edit-image.js */ "./resources/js/admin/pages/edit-image.js");
+}
+
+if (document.getElementById('page-settings')) {
+  __webpack_require__(/*! ./admin/pages/settings.js */ "./resources/js/admin/pages/settings.js");
 } //ACCOUNT
 
 
@@ -77346,10 +77447,7 @@ if (document.getElementById('nav-bar')) {
 
 if (document.getElementById('account-index')) {
   __webpack_require__(/*! ./admin/accounts/index.js */ "./resources/js/admin/accounts/index.js");
-} // if (document.getElementById('account-create')) {
-//     require('./admin/accounts/create.js');
-// }
-
+}
 
 if (document.getElementById('account-show')) {
   __webpack_require__(/*! ./admin/accounts/show.js */ "./resources/js/admin/accounts/show.js");

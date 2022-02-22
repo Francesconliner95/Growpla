@@ -65,6 +65,9 @@ class PageController extends Controller
       $new_page->slug = $slug;
       $new_page->save();
 
+      $user = Auth::user();
+      $new_page->users()->attach($user);
+
       return redirect()->route('admin.pages.edit', ['page'=> $new_page->id]);
 
     }
@@ -126,6 +129,21 @@ class PageController extends Controller
       ];
 
       return view('admin.pages.show', $data);
+
+    }
+
+    public function settings($id){
+
+      $page = Page::find($id);
+
+      if($page->users->contains(Auth::user())){
+
+        $data = [
+          'page_id' => $page->id,
+        ];
+
+        return view('admin.pages.settings', $data);
+      }abort(404);
 
     }
 

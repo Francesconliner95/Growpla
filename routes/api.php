@@ -18,6 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/searchUser', 'Api\UserController@searchUser');
 
 Route::post('/sendEmail', 'Api\HomeController@sendEmail');
 

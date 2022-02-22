@@ -41,16 +41,24 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
 
     Route::resource('/users', 'UserController');
     Route::get('/getUser', 'UserController@getUser')->name('getUser');
+    Route::post('/addAdmin', 'UserController@addAdmin')->name('users.addAdmin');
+    Route::get('/getAdmin', 'UserController@getAdmin')->name('users.getAdmin');
+    Route::delete('/removeAdmin', 'UserController@removeAdmin')->name('users.removeAdmin');
+
 
     Route::resource('/pages', 'PageController');
     Route::get('/newPage/{pagetype_id}', 'PageController@newPage')->name('pages.newPage');
-
+    Route::get('pages/{page_id}/settings', 'PageController@settings')->name('pages.settings');
 
     //IMAGE
     Route::get('/editUserImage', 'ImageController@editUserImage')->name('images.editUserImage');
     Route::put('/updateUserImage', 'ImageController@updateUserImage')
     ->name('images.updateUserImage');
     Route::put('/removeUserImage', 'ImageController@removeUserImage')->name('removeUserImage');
+    Route::get('/editPageImage/{page_id}', 'ImageController@editPageImage')->name('images.editPageImage');
+    Route::put('/updatePageImage', 'ImageController@updatePageImage')
+    ->name('images.updatePageImage');
+    Route::put('/removePageImage', 'ImageController@removePageImage')->name('removePageImage');
 
     Route::get('/advancedSearch', 'SearchController@advancedSearch')->name('advancedSearch');
 

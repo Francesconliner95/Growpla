@@ -8,9 +8,9 @@ axios.defaults.headers.common = {
 };
 
 var create = new Vue({
-    el: '#edit-user-image',
+    el: '#edit-page-image',
     data: {
-        user_id,
+        page_id,
         image,
         image_src: '/storage/' + image,
         x: 0,
@@ -48,12 +48,16 @@ var create = new Vue({
             }
         },
 
-        remove_file(value){
+        removePageImage(){
+
             axios({
                 method: 'put',
-                url: '/admin/removeUserImage',
+                url: '/admin/removePageImage',
+                data: {
+                  page_id: this.page_id,
+                }
             }).then(response => {
-                window.location.href = '/admin/users/'+ this.user_id;
+                window.location.href = '/admin/pages/'+ this.page_id;
             });
 
         },
@@ -126,7 +130,6 @@ var create = new Vue({
 
     },
     mounted() {
-
 
         if(this.image){
             this.createCrop();
