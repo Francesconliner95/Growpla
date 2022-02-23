@@ -3,17 +3,11 @@
 @section('content')
 <script type="text/javascript">
     window.csrf_token = "{{ csrf_token() }}";
-    account = {!! json_encode($account->toArray()) !!};
-    accountTypes = {!! json_encode($accountTypes->toArray()) !!};
-    startupStates = {!! json_encode($startupStates->toArray()) !!};
-    filter_messages = {!! json_encode($filter_messages->toArray()) !!};
-    filter_mails = {!! json_encode($filter_mails->toArray()) !!};
-    filter_notfs = {!! json_encode($filter_notfs->toArray()) !!};
     lang = "{{Auth::user()->language_id}}";
 </script>
 <div class="container">
-    <div id="settings-index">
-        <div :class="delete_alert?'delete-alert active-alert':'delete-alert deactive-alert'" v-cloak>
+    <div id="user-settings">
+        {{-- <div :class="delete_alert?'delete-alert active-alert':'delete-alert deactive-alert'" v-cloak>
             <div class="item-cont delete-alert-item  col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="item-style">
                     <button type="button" name="button" class="edit-top-right button-style button-color" @click="delete_alert=false">
@@ -36,11 +30,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--}}
         <div class="item-cont">
             <div class="item-style">
-                <div class="header">
-                    {{-- Nome --}}
+                 <div class="header">
                     <div class="">
                         <h2>{{__('Settings')}}</h2>
                     </div>
@@ -58,7 +51,7 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="sub-section">
+                {{--<div class="sub-section">
                     <h6 class="text-uppercase">{{__('messages')}}</h6>
                     <h6>{{__('I want to receive messages from')}}</h6>
                     <div v-for="accountType in accountTypes" class="form-check">
@@ -117,7 +110,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>--}}
             </div>
         </div>
     </div>

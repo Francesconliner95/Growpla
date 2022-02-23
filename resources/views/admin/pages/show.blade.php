@@ -6,6 +6,8 @@
     lang = "{{Auth::user()->language_id}}";
     page = "{{$page}}";
     is_my_page = "{{$is_my_page}}";
+    team_members = {!! json_encode($team_members->toArray()) !!};
+    team_num = "{{$team_num}}";
 </script>
 <div class="container">
     <div id="page-show">
@@ -50,13 +52,12 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="item-padding">
                         <div class="profile-header row">
                             {{-- Nome --}}
                             <div class="name col-sm-12 col-md-12 col-lg-6 col-xl-6">
                                 <h2 class="text-capitalize">
-                                    {{$page->name}} {{$page->surname}}
+                                    {{$page->page_name}}
                                 </h2>
                             </div>
 
@@ -130,6 +131,68 @@
                             @endif
                         </div>
                         @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="item-cont" v-if="is_my_page || team_members.length>0">
+            <div class="item-style">
+                <h3>Team
+                    <div v-if="is_my_page" class="info">
+                        <button aria-label="{{__('Add team member')}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    {{-- <div class="info">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="info-message">Aggiungi componente al team</span>
+                    </div> --}}
+                </h3>
+                
+                <div class="row justify-content-center">
+                    <div v-for="member in team_members" class="team-member-cont col-sm-12 col-md-6 col-lg-4 col-xl-4" >
+                        <div class="team-member sub-item-style">
+                            <img v-if="member.image" :src="'/storage/'+ member.image" alt="">
+                            <h6>@{{member.name}} @{{member.surname}}
+                                <a v-if="member.linkedin" class="linkedin" :href="member.linkedin" target="_blank" rel="noopener noreferrer">
+                                    <i class="fab fa-linkedin"></i>
+                                </a>
+                            </h6>
+                            <span v-if="member.role">
+                                <i class="fas fa-user-tie"></i>
+                                @{{member.role}}
+                            </span>
+
+                            <div class="description">
+                                <span>@{{member.description}}</span>
+                            </div>
+                            <div v-if="is_my_page" class="edit-top-left-small">
+                                <button v-if="member.position!=0" type="button" name="button" class="button-color-gray" @click="changeTeamPosition(member.id,-1)">
+                                    <i  class="fas fa-sort-up"></i>
+                                </button>
+                                <button v-if="member.position<team_members.length-1" type="button" name="button" class="button-color-gray" @click="changeTeamPosition(member.id,1)">
+                                    <i  class="fas fa-sort-down"></i>
+                                </button>
+                            </div>
+                            <div v-if="is_my_page" class="edit-top-right-vert">
+                                <a class="button-color-gray" @click="deleteController(1,member.id)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                                <a :href="'/admin/teams/' + member.id +'/edit'" class="button-color-gray">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="team_num>3" class="text-center d-block w-100 pb-2">
+                        <a href="javascript:void(0)" @click="teamToggle()" class="mini-txt">
+                            <span v-if="team_members.length<=3">{{__('Show all')}}</span>
+                            <span v-else>{{__('Show less')}}</span>
+                        </a>
+                    </div>
+                    <div v-if="is_my_page" class="d-flex justify-content-center w-100">
+                        <a href="{{route('admin.teams.addMember', $page->id)}}" class="button-color-gray">
+                            <i class="fas fa-plus-circle"></i>
+                        </a>
                     </div>
                 </div>
             </div>

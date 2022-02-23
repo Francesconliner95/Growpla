@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Team extends Model
 {
     protected $fillable = [
-        'account_id','image','name','role','description','linkedin'
+      'page_id',	'user_id',	'name',	'surname',	'image',	'role',	'linkedin',	'position',
     ];
 
-    public function account() {
-        return $this->belongsTo('App\Account');
+    public function page() {
+        return $this->belongsTo('App\Page');
     }
 }

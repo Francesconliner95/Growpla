@@ -104,19 +104,22 @@ class ImageController extends Controller
     public function editPageImage($id){
 
         $page = Page::find($id);
-        $user = Auth::user();
-        //dd($user->page);
 
-        $data = [
-            'page_id' => $page->id,
-            'image' => $page->image,
-        ];
+        if($page->users->contains(Auth::user())){
+          $user = Auth::user();
+          //dd($user->page);
 
-        //dd($user->image);
+          $data = [
+              'page_id' => $page->id,
+              'image' => $page->image,
+          ];
 
-        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+          //dd($user->image);
 
-        return view('admin.pages.editimage', $data);
+          app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+
+          return view('admin.pages.editimage', $data);
+        }abort(404);
 
     }
 
@@ -136,45 +139,49 @@ class ImageController extends Controller
         $height = $request->height;
         $page =  Page::find($request->page_id);
 
-        if(array_key_exists('image', $data)){
+        if($page->users->contains(Auth::user())){
 
-            //SE CARICO UNA NUOVA IMMAGINE
-            $old_image_name = $page->image;
+          if(array_key_exists('image', $data)){
 
-            //se la vecchia immagine è diversa da quella di default
-            if ($old_image_name) {
-                //elimino la vecchia immagine
-                Storage::delete($old_image_name);
-            }
-            //recupero la path e salvo la nuova l'immagine
-            $image_path = Storage::put('pages_images', $data['image']);
-            //resize
-            $img = Image::make($data['image'])
-                        ->crop($data['width'],$data['height'], $data['x'],$data['y'])
-                        ->resize(300,300)/*risoluzione*/
-                        ->save('./storage/'.$image_path, 100 /*Qualita*/);
+              //SE CARICO UNA NUOVA IMMAGINE
+              $old_image_name = $page->image;
 
-            $page->image = $image_path;
-        }elseif($width && $height){
-            //SE HO MODIFICATO L'IMMAGINE ESISTENTE
-            $image_path = $page->image;
+              //se la vecchia immagine è diversa da quella di default
+              if ($old_image_name) {
+                  //elimino la vecchia immagine
+                  Storage::delete($old_image_name);
+              }
+              //recupero la path e salvo la nuova l'immagine
+              $image_path = Storage::put('pages_images', $data['image']);
+              //resize
+              $img = Image::make($data['image'])
+                          ->crop($data['width'],$data['height'], $data['x'],$data['y'])
+                          ->resize(300,300)/*risoluzione*/
+                          ->save('./storage/'.$image_path, 100 /*Qualita*/);
 
-            $filename = rand().time();
-            $ext = pathinfo($image_path, PATHINFO_EXTENSION);
-            $new_path = 'pages_images/'.$filename.'.'.$ext;
-            Storage::move($image_path, $new_path);
+              $page->image = $image_path;
+          }elseif($width && $height){
+              //SE HO MODIFICATO L'IMMAGINE ESISTENTE
+              $image_path = $page->image;
 
-            $img = Image::make('storage/'.$new_path)
-                        ->crop($data['width'],$data['height'], $data['x'],$data['y'])
-                        ->resize(300,300)/*risoluzione*/
-                        ->save('./storage/'.$new_path, 100 /*Qualita*/);
-            $page->image = $new_path;
+              $filename = rand().time();
+              $ext = pathinfo($image_path, PATHINFO_EXTENSION);
+              $new_path = 'pages_images/'.$filename.'.'.$ext;
+              Storage::move($image_path, $new_path);
 
-        }
+              $img = Image::make('storage/'.$new_path)
+                          ->crop($data['width'],$data['height'], $data['x'],$data['y'])
+                          ->resize(300,300)/*risoluzione*/
+                          ->save('./storage/'.$new_path, 100 /*Qualita*/);
+              $page->image = $new_path;
 
-        $page->update();
+          }
 
-        return redirect()->route('admin.pages.show', ['page' => $page->id]);
+          $page->update();
+
+          return redirect()->route('admin.pages.show', ['page' => $page->id]);
+
+        }abort(404);
 
     }
 
@@ -184,16 +191,18 @@ class ImageController extends Controller
                 'page_id' => 'required|integer',
             ]);
 
-
             $page = Page::find($request->page_id);
 
-            $user = Auth::user();
+              if($page->users->contains(Auth::user())){
 
-            Storage::delete($page->image);
-            $page->image = null;
+              $user = Auth::user();
 
-            $page->update();
+              Storage::delete($page->image);
+              $page->image = null;
+
+              $page->update();
+
+            }abort(404);
 
     }
-
 }

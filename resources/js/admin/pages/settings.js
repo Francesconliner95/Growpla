@@ -7,11 +7,14 @@ axios.defaults.headers.common = {
 var create = new Vue({
     el: '#page-settings',
     data: {
+        user_id,
         lang,
         page_id,
         user_name: '',
         users_found: '',
         admins: '',
+        delete_alert: false,
+        message: '',
     },
     methods: {
 
@@ -26,7 +29,6 @@ var create = new Vue({
                 if(!this.user_name){
                     this.users_found = '';
                 }
-                console.log(this.users_found);
             });
         }else{
             this.users_found = '';
@@ -42,7 +44,10 @@ var create = new Vue({
                 page_id: this.page_id,
             }
         }).then(response => {
-
+          this.user_name = '';
+          this.users_found = '';
+          this.getAdmin();
+          this.message = '';
         });
       },
 
@@ -66,6 +71,10 @@ var create = new Vue({
             }
         }).then(response => {
             this.getAdmin();
+            this.message = response.data.results.message;
+            if(this.message=='auto-delete'){
+              window.location.href = '/admin/users/'+ this.user_id;
+            }
         });
       }
 

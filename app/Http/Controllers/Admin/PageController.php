@@ -12,6 +12,7 @@ use App\User;
 use App\Page;
 use App\Usertype;
 use App\Pagetype;
+use App\Team;
 
 class PageController extends Controller
 {
@@ -122,10 +123,28 @@ class PageController extends Controller
     public function show($id){
 
       $page = Page::find($id);
+      //TEAM
+      $team_members = Team::where('page_id', $id)
+                      ->orderBy('position', 'ASC')
+                      ->limit(3)
+                      ->get();
+      foreach ($team_members as $team_member) {
+        if($team_member->user_id){
+          $user = User::find($team_member->user_id);
+          $team_member['name'] = $user->name;
+          $team_member['surname'] = $user->surname;
+          $team_member['image'] = $user->image;
+          $team_member['linkedin'] = $user->linkedin;
+        }
+      }
+
+      $team_num = Team::where('page_id', $id)->count();
 
       $data = [
         'page' => $page,
         'is_my_page' => true,
+        'team_members' => $team_members,
+        'team_num' => $team_num,
       ];
 
       return view('admin.pages.show', $data);
@@ -147,21 +166,35 @@ class PageController extends Controller
 
     }
 
-    public function getUser(Request $request){
+    public function destroy($id){
 
-      if(Auth::check()){
-          $result = Auth::user()->id;
-      }else{
-          $result = false;
-      }
+      $page = Page::find($id);
 
-      return response()->json([
-          'success' => true,
+      if($page->users->contains(Auth::user())){
 
-          'results' => [
-              'user_id' => $result,
-          ]
-      ]);
+        $page->delete();
+
+        return redirect()->route('admin.users.show', ['user' => Auth::user()->id]);
+
+      }abort(404);
 
     }
+
+    // public function getUser(Request $request){
+    //
+    //   if(Auth::check()){
+    //       $result = Auth::user()->id;
+    //   }else{
+    //       $result = false;
+    //   }
+    //
+    //   return response()->json([
+    //       'success' => true,
+    //
+    //       'results' => [
+    //           'user_id' => $result,
+    //       ]
+    //   ]);
+    //
+    // }
 }

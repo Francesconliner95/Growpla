@@ -89,6 +89,8 @@ var create = new Vue({
             this.user = JSON.parse(this.user.replace(/&quot;/g,'"'));
         };
 
+        console.log(this.user);
+
         if(this.user.account_id){
             this.account_selected = this.user.account_id;
             this.getMyAccount();

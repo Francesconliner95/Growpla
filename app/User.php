@@ -30,7 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function pages(){
-        return $this->belongsToMany('App\Pages');
+        return $this->belongsToMany('App\Page');
     }
 
     /**

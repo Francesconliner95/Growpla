@@ -9,6 +9,7 @@ use Illuminate\Support\ViewErrorBag;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use File;
+use App\Language;
 use App\User;
 use App\Page;
 use App\Usertype;
@@ -32,8 +33,8 @@ class UserController extends Controller
         'userTypes' => $userTypes,
         'pageTypes' => $pageTypes,
       ];
-
-      return redirect()->route('admin.users.show', ['user' => $user->id]);
+      return view('admin.users.create', $data);
+      //return redirect()->route('admin.users.create');
 
     }
 
@@ -56,7 +57,7 @@ class UserController extends Controller
         $user->pagetypes()->sync($data['pagetypes']);
       }
 
-      return redirect()->route('admin.users.create');
+      return redirect()->route('admin.users.show',$user->id);
 
     }
 
@@ -119,14 +120,12 @@ class UserController extends Controller
 
       $user = User::find($id);
       $userTypes = Usertype::all();
-      // $is_my_user = ;
 
       $data = [
         'user' => $user,
         'userTypes' => $userTypes,
         'is_my_user' => Auth::user()->id==$user->id?true:false,
-        'startups' => $user->pageTypes->where('pagetype_id',1),
-        'companies' => $user->pageTypes->where('pagetype_id',2),
+        'pageTypes' => $user->pagetypes,
       ];
 
       return view('admin.users.show', $data);
@@ -151,6 +150,20 @@ class UserController extends Controller
 
     }
 
+    public function settings($id){
+
+      $user = User::find($id);
+      $languages = Language::all();
+
+      $data = [
+        'user' => $user,
+        'languages' => $languages,
+      ];
+
+      return view('admin.users.settings', $data);
+
+    }
+
     public function addAdmin(Request $request){
 
       $request->validate([
@@ -170,7 +183,7 @@ class UserController extends Controller
         $user = User::find($user_id);
         $page->users()->attach($user);
 
-      }abort(404);
+      }
 
     }
 
@@ -194,7 +207,7 @@ class UserController extends Controller
             ]
         ]);
 
-      }abort(404);
+      }
 
     }
 
@@ -213,14 +226,29 @@ class UserController extends Controller
       //controllo se sono il propietario della pagina
       if($page->users->contains(Auth::user())){
 
+        $message = '';
+
         //controllo se esiste almeno un'altro admin
         if(count($page->users) > 1){
+          //se sto elimnando me stesso
+          if(Auth::user()->id == $user_id){
+            $message = 'auto-delete';
+          }
           //rimuovo l' amministratore
           $user = User::find($user_id);
           $page->users()->detach($user);
+        }else{
+          $message = 'Sei l\'unico admin';
         }
 
-      }abort(404);
+      }
+
+      return response()->json([
+          'success' => true,
+          'results' => [
+              'message' => $message,
+          ]
+      ]);
 
     }
 

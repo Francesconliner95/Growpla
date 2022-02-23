@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use File;
-use App\Account;
+use App\Page;
 use App\Team;
+use App\User;
 use App\Language;
 use Image;
 
@@ -38,11 +39,11 @@ class TeamController extends Controller
 
     }
 
-    public function addMember($account_id)
+    public function addMember($page_id)
     {
 
         $data = [
-            'account_id' => $account_id,
+            'page_id' => $page_id,
         ];
 
         app()->setLocale(Language::find(Auth::user()->language_id)->lang);
@@ -50,22 +51,18 @@ class TeamController extends Controller
         return view('admin.teams.create', $data);
     }
 
-    public function storeMember(Request $request, $account_id)
+    public function storeMember(Request $request, $page_id)
     {
         $request->validate([
-            'image' => 'nullable|mimes:jpeg,png,jpg,gif,swg|max:6144',
-            'name'=> 'required|max:70',
-            'role'=> 'nullable|max:50',
-            'description' => 'nullable|max:255',
-            'linkedin' => 'nullable|max:255',
+            'role'=> 'required|max:255',
         ]);
 
         $data = $request->all();
 
-        $account = Account::find($account_id);
+        $page = Page::find($page_id);
 
-        $team_number = Team::where('account_id',$account_id)->count();
-        $last_item = Team::where('account_id',$account_id)
+        $team_number = Team::where('page_id',$page_id)->count();
+        $last_item = Team::where('page_id',$page_id)
                     ->orderBy('position', 'DESC')->first();
         if($last_item){
             $last_position = $last_item->position;
@@ -74,11 +71,11 @@ class TeamController extends Controller
             $new_last_position = 0;
         }
 
-        if($account->user_id==Auth::user()->id && $team_number<50){
+        if($page->users->contains(Auth::user()) && $team_number<50){
 
             $new_team_member = new Team();
             $new_team_member->fill($data);
-            $new_team_member->account_id = $account_id;
+            $new_team_member->page_id = $page_id;
             $new_team_member->position = $new_last_position;
 
             if(array_key_exists('image', $data)){
@@ -95,37 +92,22 @@ class TeamController extends Controller
             $new_team_member->save();
         }
 
-        return redirect()->route('admin.accounts.show', ['account' => $account_id]);
+        return redirect()->route('admin.pages.show', ['page' => $page_id]);
 
     }
 
-    public function store(Request $request, Account $account)
-    {
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $member = Team::find($id);
+
+        $user = '';
+        if($member->user_id){
+          $user = User::find($member->user_id);
+        }
+
         $data = [
             'member' => $member,
+            'user' => $user,
         ];
         app()->setLocale(Language::find(Auth::user()->language_id)->lang);
         return view('admin.teams.edit', $data);
@@ -134,30 +116,23 @@ class TeamController extends Controller
     public function update(Request $request, Team $team)
     {
         $request->validate([
-            'image' => 'nullable|mimes:jpeg,png,jpg,gif,swg|max:6144',
-            'name'=> 'required|max:70',
-            'role'=> 'nullable|max:50',
-            'description' => 'nullable|max:255',
-            'linkedin' => 'nullable|max:255',
+          'role'=> 'required|max:255',
         ]);
 
         $data = $request->all();
 
-        $account = Account::find($team->account_id);
+        $page = Page::find($team->page_id);
 
-        if($account->user_id==Auth::user()->id){
+        if($page->users->contains(Auth::user())){
 
             $width = $request->width;
             $height = $request->height;
-            //dd($width, $height);
 
-            //dd($data['image']);
             if(array_key_exists('image', $data)){
                 //SE CARICO UNA NUOVA IMMAGINE
                 $old_image_name = $team->image;
-
                 //se la vecchia immagine è diversa da quella di default
-                if ($old_image_name!='accounts_images/default_account_image.png') {
+                if ($old_image_name) {
                     //elimino la vecchia immagine
                     Storage::delete($old_image_name);
                 }
@@ -175,7 +150,7 @@ class TeamController extends Controller
                 //SE HO MODIFICATO L'IMMAGINE ESISTENTE
                 $image_path = $team->image;
 
-                if ($image_path!='accounts_images/default_account_image.png') {
+                if ($image_path) {
 
                     $filename = rand().time();
                     $ext = pathinfo($image_path, PATHINFO_EXTENSION);
@@ -194,7 +169,7 @@ class TeamController extends Controller
             $team->update($data);
         }
 
-        return redirect()->route('admin.accounts.show', ['account' => $account->id]);
+        return redirect()->route('admin.pages.show', ['page' => $page->id]);
     }
 
     public function changeTeamPosition(Request $request)
@@ -206,19 +181,19 @@ class TeamController extends Controller
 
         $member = Team::find($request->member_id);
         $up_down = $request->up_down;
-        $member_qty = Team::where('account_id',$member->account_id)
+        $member_qty = Team::where('page_id',$member->page_id)
                         ->count();
 
-        $account = Account::find($member->account_id);
+        $page = Page::find($member->page_id);
 
-        if($account->user_id==Auth::user()->id){
+        if($page->users->contains(Auth::user())){
 
             if($up_down==-1 && $member->position>=1){
 
                 $current_position = $member->position;
                 $desired_position = $current_position - 1;
 
-                $previous_member = Team::where('account_id',$member->account_id)
+                $previous_member = Team::where('page_id',$member->page_id)
                                     ->where('position',$desired_position)
                                     ->first();
 
@@ -233,7 +208,7 @@ class TeamController extends Controller
                 $current_position = $member->position;
                 $desired_position = $current_position + 1;
 
-                $next_member = Team::where('account_id',$member->account_id)
+                $next_member = Team::where('page_id',$member->page_id)
                                     ->where('position',$desired_position)
                                     ->first();
 
@@ -267,20 +242,20 @@ class TeamController extends Controller
 
         $member = Team::find($request->member_id);
 
-        $account = Account::find($member->account_id);
+        $page = Page::find($member->page_id);
 
-        if($account->user_id==Auth::user()->id){
+        if($page->users->contains(Auth::user())){
 
             $old_image_name = $member->image;
 
-            if ($old_image_name!='accounts_images/default_account_image.png'){
+            if ($old_image_name!='pages_images/default_page_image.png'){
                 Storage::delete($old_image_name);
             }
 
             $member->delete();
 
             //RIORDINO LE POSIZIONI DOPO L'ELIMINAZIONE
-            $members = Team::where('account_id', $account->id)
+            $members = Team::where('page_id', $page->id)
                         ->orderBy('position', 'ASC')
                         ->get();
 
@@ -290,7 +265,7 @@ class TeamController extends Controller
             }
         }
 
-        $team_num = Team::where('account_id', $account->id)
+        $team_num = Team::where('page_id', $page->id)
         ->count();
 
         return response()->json([

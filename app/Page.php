@@ -26,5 +26,5 @@ class Page extends Model
       'incorporated',
       'moneyrange_id',
   ];
-  
+
 }

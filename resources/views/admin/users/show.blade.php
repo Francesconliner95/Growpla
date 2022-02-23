@@ -28,6 +28,9 @@
         </div> --}}
         <div class="item-cont">
             <div class="item-style item-no-padding">
+                <a class="button-color-gray" href="{{route('admin.users.settings', $user->id)}}">
+                    <i class="fas fa-cogs"></i>
+                </a>
                 <a v-if="is_my_user" class="edit-bottom-right button-color-gray" href="{{route('admin.users.edit', $user->id)}}">
                     <i class="fas fa-pencil-alt"></i>
                 </a>
@@ -132,8 +135,31 @@
                 </div>
             </div>
         </div>
+          @foreach ($pageTypes as $pageType)
+            @if($user->pageTypes->contains($pageType->id))
+              @if($is_my_user || $startups)
+                <div class="item-cont">
+                    <div class="item-style">
+                      <h3>{{__($pageType->name)}}</h3>
+                      <div class="">
+                        @foreach ($user->pages->where('pagetype_id',$pageType->id) as $page)
+                          <div class="">
+                            <a href="{{ route('admin.pages.show', ['page'=> $page->id]) }}">
+                              <span>{{$page->page_name}}</span>
+                            </a>
+                          </div>
+                        @endforeach
+                        <div class="">
+                          <a href="{{ route('admin.pages.newPage', ['pagetype_id'=> $pageType->id]) }}">Aggiungi</a>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              @endif
+            @endif
+          @endforeach
           {{-- STARTUP --}}
-          @if($user->pageTypes->contains(1))
+          {{-- @if($user->pageTypes->contains(1))
             @if($is_my_user || $startups)
               <div class="item-cont">
                   <div class="item-style">
@@ -141,7 +167,7 @@
                     <div class="">
                       @foreach ($startups as $startup)
                         <div class="">
-                          <span>{{$startup->name}}</span>
+                          <span>{{$startup->page_name}}</span>
                         </div>
                       @endforeach
                       <div class="">
@@ -151,20 +177,25 @@
                   </div>
               </div>
             @endif
-          @endif
+          @endif --}}
           {{-- AZIENDA --}}
-          @if($user->pageTypes->contains(2))
+          {{-- @if($user->pageTypes->contains(2))
             @if($is_my_user || $companies)
               <div class="item-cont">
                   <div class="item-style">
                     <h3>{{__('Companies')}}</h3>
+                    @foreach ($companies as $company)
+                      <div class="">
+                        <span>{{$company->page_name}}</span>
+                      </div>
+                    @endforeach
                     <div class="">
-
+                      <a href="{{ route('admin.pages.newPage', ['pagetype_id'=> 2]) }}">Aggiungi</a>
                     </div>
                   </div>
               </div>
             @endif
-          @endif
+          @endif --}}
     </div>
 </div>
 @endsection

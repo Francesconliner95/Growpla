@@ -67,6 +67,7 @@
                       @enderror
                   </div>
                   {{-- Pitch --}}
+                  @if ($page->pagetype_id==1)
                   <div class="sub-section">
                       <h6>Pitch</h6>
                       <div class="edit-image-drag-drop row">
@@ -89,6 +90,7 @@
                           </div>
                       </div>
                   </div>
+                  @endif
                   <button type="submit" class="button-style button-color">
                       {{__('Save Changes')}}
                   </button>

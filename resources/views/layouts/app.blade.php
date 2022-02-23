@@ -126,29 +126,22 @@
                         </div>
                         @endif
                         <div class="account-menu d-inline-block" v-cloak>
-                            <a v-if="account_selected" :href="'/admin/accounts/' + account_selected.id">
-                                <img v-if="account_selected.image" :src="'/storage/' + account_selected.image" alt="">
+                            <a :href="'/admin/users/' + user.id">
+                                <img v-if="user.image" :src="'/storage/' + user.image" alt="">
                             </a>
                             <a id="navbarDropdown" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <div v-if="!account_selected" class="drop-menu mobile-hide"  v-cloak>
+                                {{-- <div class="drop-menu mobile-hide"> --}}
                                     @{{user.name}} @{{user.surname}}
-                                </div>
-                                <div v-else class="drop-menu mobile-hide" v-cloak>
-                                <span v-if="account_selected.name && account_selected.name.length<50" class="text-capitalize">
-                                    @{{account_selected.name}}
-                                </span>
-                                </div>
+                                {{-- </div> --}}
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                @if (Auth::user()->account_id)
-                                    <a v-if="account_selected" :href="'/admin/accounts/' + account_selected.id" class="dropdown-item">
-                                        {{__('My account')}}
-                                    </a>
-                                    <a class="dropdown-item"
-                                    :href="'/admin/settings/'">
-                                        {{__('Settings')}}
-                                    </a>
-                                @endif
+                                <a :href="'/admin/users/' + user.id" class="dropdown-item">
+                                    {{__('My account')}}
+                                </a>
+                                <a class="dropdown-item"
+                                :href="'/admin/settings/'">
+                                    {{__('Settings')}}
+                                </a>
                                 <a class="dropdown-item"
                                 href="{{ route('logout') }}"
                                    onclick="event.preventDefault();

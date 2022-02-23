@@ -44,7 +44,7 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::post('/addAdmin', 'UserController@addAdmin')->name('users.addAdmin');
     Route::get('/getAdmin', 'UserController@getAdmin')->name('users.getAdmin');
     Route::delete('/removeAdmin', 'UserController@removeAdmin')->name('users.removeAdmin');
-
+    Route::get('users/{user_id}/settings', 'UserController@settings')->name('users.settings');
 
     Route::resource('/pages', 'PageController');
     Route::get('/newPage/{pagetype_id}', 'PageController@newPage')->name('pages.newPage');
@@ -75,8 +75,8 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
 
     // TEAM
     Route::resource('/teams', 'TeamController');
-    Route::get('/addMember/{account_id}', 'TeamController@addMember')->name('teams.addMember');
-    Route::post('/storeMember/{account_id}', 'TeamController@storeMember')->name('teams.storeMember');
+    Route::get('/addMember/{page_id}', 'TeamController@addMember')->name('teams.addMember');
+    Route::post('/storeMember/{page_id}', 'TeamController@storeMember')->name('teams.storeMember');
     Route::delete('/deleteMember', 'TeamController@deleteMember')->name('deleteMember');
     Route::put('/changeTeamPosition', 'TeamController@changeTeamPosition')->name('teams.changeTeamPosition');
 

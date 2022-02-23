@@ -17,12 +17,12 @@ class CreateTeamsTable extends Migration
             $table->id();
             $table->unsignedbigInteger('page_id');
             $table->foreign('page_id')->references('id')->on('pages')->onDelete('cascade');
-            $table->unsignedbigInteger('user_id');
+            $table->unsignedbigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('name');
-            $table->string('surname');
+            $table->string('name')->nullable();
+            $table->string('surname')->nullable();
             $table->string('image')->nullable();
-            $table->string('role');
+            $table->string('role')->nullable();
             $table->string('linkedin')->nullable();
             $table->smallInteger('position')->default(0);
             $table->timestamps();

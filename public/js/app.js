@@ -74864,6 +74864,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     }
 
     ;
+    console.log(this.user);
 
     if (this.user.account_id) {
       this.account_selected = this.user.account_id;
@@ -76002,11 +76003,14 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#page-settings',
   data: {
+    user_id: user_id,
     lang: lang,
     page_id: page_id,
     user_name: '',
     users_found: '',
-    admins: ''
+    admins: '',
+    delete_alert: false,
+    message: ''
   },
   methods: {
     searchUser: function searchUser() {
@@ -76023,14 +76027,14 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           if (!_this.user_name) {
             _this.users_found = '';
           }
-
-          console.log(_this.users_found);
         });
       } else {
         this.users_found = '';
       }
     },
     addAdmin: function addAdmin(user_found_id) {
+      var _this2 = this;
+
       axios__WEBPACK_IMPORTED_MODULE_1___default()({
         method: 'post',
         url: '/admin/addAdmin',
@@ -76038,21 +76042,28 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           user_id: user_found_id,
           page_id: this.page_id
         }
-      }).then(function (response) {});
+      }).then(function (response) {
+        _this2.user_name = '';
+        _this2.users_found = '';
+
+        _this2.getAdmin();
+
+        _this2.message = '';
+      });
     },
     getAdmin: function getAdmin() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getAdmin', {
         params: {
           page_id: this.page_id
         }
       }).then(function (response) {
-        _this2.admins = response.data.results.admins;
+        _this3.admins = response.data.results.admins;
       });
     },
     removeAdmin: function removeAdmin(user_id) {
-      var _this3 = this;
+      var _this4 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default()({
         method: 'delete',
@@ -76062,7 +76073,13 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           page_id: this.page_id
         }
       }).then(function (response) {
-        _this3.getAdmin();
+        _this4.getAdmin();
+
+        _this4.message = response.data.results.message;
+
+        if (_this4.message == 'auto-delete') {
+          window.location.href = '/admin/users/' + _this4.user_id;
+        }
       });
     }
   },
@@ -76098,12 +76115,64 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   data: {
     lang: lang,
     is_my_page: is_my_page,
-    page: page
+    page: page,
+    team_members: team_members,
+    team_num: team_num
   },
   methods: {
     open: function open(filename) {
       var newWindow = window.open();
       newWindow.document.write('<iframe src="/storage/' + filename + '" style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;">');
+    },
+    teamToggle: function teamToggle() {
+      this.show_all_team = !this.show_all_team;
+
+      if (this.show_all_team) {
+        this.getTeamMembers();
+      } else {
+        this.team_members = this.team_members.slice(0, 3);
+      }
+    },
+    getTeamMembers: function getTeamMembers() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getTeamMembers', {
+        params: {
+          account_id: this.account.id // get_all: this.show_all_team?'yes':'no',
+
+        }
+      }).then(function (response) {
+        _this.team_members = response.data.results.team_members;
+      });
+    },
+    changeTeamPosition: function changeTeamPosition(member_id, value) {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default()({
+        method: 'put',
+        url: '/admin/changeTeamPosition',
+        data: {
+          member_id: member_id,
+          up_down: value
+        }
+      }).then(function (response) {
+        _this2.getTeamMembers();
+      });
+    },
+    delete_member: function delete_member(member_id) {
+      var _this3 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default()({
+        method: 'delete',
+        url: '/admin/deleteMember',
+        data: {
+          member_id: member_id
+        }
+      }).then(function (response) {
+        _this3.team_num = response.data.results.team_num;
+
+        _this3.getTeamMembers();
+      });
     }
   },
   created: function created() {
@@ -76570,16 +76639,44 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#team-create',
   data: {
-    image: 'accounts_images/default_account_image.png',
+    image: '',
     image_src: '/storage/' + app.image,
     x: 0,
     y: 0,
     width: 300,
-    height: 300
+    height: 300,
+    registered_member: true,
+    user_name: '',
+    users_found: '',
+    user_selected: ''
   },
   methods: {
-    createCrop: function createCrop() {
+    searchUser: function searchUser() {
       var _this = this;
+
+      if (this.user_name) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchUser', {
+          params: {
+            user_name: this.user_name
+          }
+        }).then(function (response) {
+          _this.users_found = response.data.results.users;
+
+          if (!_this.user_name) {
+            _this.users_found = '';
+          }
+        });
+      } else {
+        this.users_found = '';
+      }
+    },
+    addUser: function addUser(user_found) {
+      this.user_selected = user_found;
+      this.user_name = '';
+      this.users_found = '';
+    },
+    createCrop: function createCrop() {
+      var _this2 = this;
 
       var croppr = new croppr__WEBPACK_IMPORTED_MODULE_2___default.a('#croppr', {
         // options
@@ -76589,10 +76686,10 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         onCropEnd: function onCropEnd(value) {
           console.log(value.x, value.y, value.width, value.height);
           console.log(croppr.getValue());
-          _this.x = value.x;
-          _this.y = value.y;
-          _this.width = value.width;
-          _this.height = value.height; //console.log(this.x,this.y,this.width,this.height);
+          _this2.x = value.x;
+          _this2.y = value.y;
+          _this2.width = value.width;
+          _this2.height = value.height; //console.log(this.x,this.y,this.width,this.height);
         }
       });
       this.x = croppr.getValue().x;
@@ -76601,7 +76698,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       this.height = croppr.getValue().height;
     },
     newFile: function newFile() {
-      var _this2 = this;
+      var _this3 = this;
 
       var _imgInp$files = _slicedToArray(imgInp.files, 1),
           file = _imgInp$files[0];
@@ -76619,7 +76716,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         document.getElementById('copper-main').appendChild(img); //CREA IL NUOVO CROPPER
 
         img.onload = function () {
-          _this2.createCrop();
+          _this3.createCrop();
         };
       }
     },
@@ -76664,11 +76761,11 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
   },
   mounted: function mounted() {
-    var _this3 = this;
+    var _this4 = this;
 
     window.history.forward();
 
-    if (this.image != 'accounts_images/default_account_image.png') {
+    if (this.image) {
       this.createCrop();
     } //DRAG & DROP
 
@@ -76680,7 +76777,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       });
       dropZoneElement.addEventListener("change", function (e) {
         if (inputElement.files.length) {
-          _this3.updateThumbnail(dropZoneElement, inputElement.files[0]);
+          _this4.updateThumbnail(dropZoneElement, inputElement.files[0]);
         }
       });
       dropZoneElement.addEventListener("dragover", function (e) {
@@ -76698,7 +76795,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         if (e.dataTransfer.files.length) {
           inputElement.files = e.dataTransfer.files; //console.log(inputElement.files);
 
-          _this3.updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+          _this4.updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
         }
 
         dropZoneElement.classList.remove("drop-zone--over");
@@ -76791,16 +76888,45 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#team-edit',
   data: {
     member: member,
+    user: user,
     image: member.image,
     image_src: '/storage/' + member.image,
     x: 0,
     y: 0,
     width: 300,
-    height: 300
+    height: 300,
+    registered_member: member.user_id ? true : false,
+    user_name: '',
+    users_found: '',
+    user_selected: ''
   },
   methods: {
-    createCrop: function createCrop() {
+    searchUser: function searchUser() {
       var _this = this;
+
+      if (this.user_name) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchUser', {
+          params: {
+            user_name: this.user_name
+          }
+        }).then(function (response) {
+          _this.users_found = response.data.results.users;
+
+          if (!_this.user_name) {
+            _this.users_found = '';
+          }
+        });
+      } else {
+        this.users_found = '';
+      }
+    },
+    addUser: function addUser(user_found) {
+      this.user_selected = user_found;
+      this.user_name = '';
+      this.users_found = '';
+    },
+    createCrop: function createCrop() {
+      var _this2 = this;
 
       var croppr = new croppr__WEBPACK_IMPORTED_MODULE_2___default.a('#croppr', {
         // options
@@ -76810,10 +76936,10 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         onCropEnd: function onCropEnd(value) {
           // console.log(value.x, value.y, value.width, value.height);
           // console.log(croppr.getValue());
-          _this.x = value.x;
-          _this.y = value.y;
-          _this.width = value.width;
-          _this.height = value.height; //console.log(this.x,this.y,this.width,this.height);
+          _this2.x = value.x;
+          _this2.y = value.y;
+          _this2.width = value.width;
+          _this2.height = value.height; //console.log(this.x,this.y,this.width,this.height);
         }
       });
       this.x = croppr.getValue().x;
@@ -76834,7 +76960,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
     },
     newFile: function newFile() {
-      var _this2 = this;
+      var _this3 = this;
 
       var _imgInp$files = _slicedToArray(imgInp.files, 1),
           file = _imgInp$files[0];
@@ -76852,7 +76978,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         document.getElementById('copper-main').appendChild(img); //CREA IL NUOVO CROPPER
 
         img.onload = function () {
-          _this2.createCrop();
+          _this3.createCrop();
         };
       }
     },
@@ -76908,15 +77034,18 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       this.member.image = 'accounts_images/default_account_image.png';
     }
   },
+  created: function created() {
+    if (this.user) {
+      this.user = JSON.parse(this.user.replace(/&quot;/g, '"'));
+      this.user_selected = this.user;
+    }
+  },
   mounted: function mounted() {
-    var _this3 = this;
+    var _this4 = this;
 
-    console.log(this.member.image);
-    console.log(this.image);
-    console.log(this.image_src);
     window.history.forward();
 
-    if (this.image != 'accounts_images/default_account_image.png') {
+    if (this.image) {
       this.createCrop();
     } //DRAG & DROP
 
@@ -76928,7 +77057,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       });
       dropZoneElement.addEventListener("change", function (e) {
         if (inputElement.files.length) {
-          _this3.updateThumbnail(dropZoneElement, inputElement.files[0]);
+          _this4.updateThumbnail(dropZoneElement, inputElement.files[0]);
         }
       });
       dropZoneElement.addEventListener("dragover", function (e) {
@@ -76946,7 +77075,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         if (e.dataTransfer.files.length) {
           inputElement.files = e.dataTransfer.files; //console.log(inputElement.files);
 
-          _this3.updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
+          _this4.updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
         }
 
         dropZoneElement.classList.remove("drop-zone--over");

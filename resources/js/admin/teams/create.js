@@ -9,14 +9,40 @@ axios.defaults.headers.common = {
 var create = new Vue({
     el: '#team-create',
     data: {
-        image: 'accounts_images/default_account_image.png',
+        image: '',
         image_src: '/storage/' + app.image,
         x: 0,
         y: 0,
         width: 300,
         height: 300,
+        registered_member: true,
+        user_name: '',
+        users_found: '',
+        user_selected: '',
     },
     methods: {
+        searchUser(){
+          if(this.user_name){
+              axios.get('/api/searchUser',{
+                  params: {
+                      user_name: this.user_name,
+                  }
+              }).then((response) => {
+                  this.users_found = response.data.results.users;
+                  if(!this.user_name){
+                      this.users_found = '';
+                  }
+              });
+          }else{
+              this.users_found = '';
+          }
+        },
+
+        addUser(user_found){
+          this.user_selected = user_found;
+          this.user_name = '';
+          this.users_found = '';
+        },
         createCrop(){
             var croppr = new Croppr('#croppr', {
                 // options
@@ -108,7 +134,7 @@ var create = new Vue({
     mounted() {
         window.history.forward();
 
-        if(this.image!='accounts_images/default_account_image.png'){
+        if(this.image){
             this.createCrop();
         }
 
