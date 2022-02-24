@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePageSubsectorTable extends Migration
+class CreatePageSectorTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreatePageSubsectorTable extends Migration
      */
     public function up()
     {
-        Schema::create('page_subsector', function (Blueprint $table) {
+        Schema::create('page_sector', function (Blueprint $table) {
             $table->id();
             $table->unsignedbigInteger('page_id');
             $table->foreign('page_id')->references('id')->on('pages')->onDelete('cascade');
-            $table->unsignedbigInteger('subsector_id');
-            $table->foreign('subsector_id')->references('id')->on('subsectors')->onDelete('cascade');
+            $table->unsignedbigInteger('sector_id');
+            $table->foreign('sector_id')->references('id')->on('sectors')->onDelete('cascade');
 
-            $table->unique(['page_id', 'subsector_id']);
+            $table->unique(['page_id', 'sector_id']);
 
             $table->timestamps();
         });
@@ -33,6 +33,6 @@ class CreatePageSubsectorTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('page_subsector');
+        Schema::dropIfExists('page_sector');
     }
 }

@@ -28,9 +28,6 @@
         </div> --}}
         <div class="item-cont">
             <div class="item-style item-no-padding">
-                <a class="button-color-gray" href="{{route('admin.users.settings', $user->id)}}">
-                    <i class="fas fa-cogs"></i>
-                </a>
                 <a v-if="is_my_user" class="edit-bottom-right button-color-gray" href="{{route('admin.users.edit', $user->id)}}">
                     <i class="fas fa-pencil-alt"></i>
                 </a>
@@ -86,6 +83,16 @@
                                 </div>
                             </div> --}}
                         </div>
+                        <div class="sub-section">
+                          <div class="">
+                            @foreach ($user->sectors as $sector)
+                              <span class="sector-style mb-2">{{$sector->name}}</span>
+                            @endforeach
+                          </div>
+                          <a  v-if="is_my_user" class="button-style button-color-orange" href="{{route('admin.users.sectors', $user->id)}}">
+                              Modifica Settore
+                          </a>
+                        </div>
 
                         {{-- Descrizione --}}
                         @if($user->description)
@@ -131,6 +138,27 @@
                             @endif
                         </div>
                         @endif
+                    </div>
+                    <div v-if="user.startup_n || user.moneyrange_id" class="sub-section">
+                        <div class="row justify-content-center">
+                            <div v-if="user.startup_n" class="text-center col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <h6>{{__('Amount of')}}
+                                    <span class="font-weight-bold">{{__('startups incubated')}}</span>
+                                    <span  class="font-weight-bold">{{__('projects funded')}}</span>
+                                </h6>
+                                <h3 class="font-weight-bold">@{{user.startup_n}}</h3>
+                            </div>
+                            <div v-if="user.moneyrange_id" class="text-center col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <h6>
+                                    {{__('Amount of')}}
+                                    <span  class="font-weight-bold">{{__('funds raised for incubated startups')}}</span>
+                                    <span class="font-weight-bold">{{__('invested money')}}</span>
+                                </h6>
+                                <h3 class="font-weight-bold">
+                                  {{$user->moneyrange->range}} {{$user->currency->symbol}}
+                                </h3>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

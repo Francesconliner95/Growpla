@@ -13,20 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-//
-
 Auth::routes(['verify' => true]);
 
 Route::get('/home','HomeController@index')->name('home');
-//Route::get('/home/{locale}','HomeController@home')->name('home');
 Route::get('/termsAndConditions', 'HomeController@termsAndConditions')->name('termsAndConditions');
 Route::get('/privacyPolicy', 'HomeController@privacyPolicy')->name('privacyPolicy');
 Route::get('/cookiePolicy', 'HomeController@cookiePolicy')->name('cookiePolicy');
-Route::get('/acceptCookie', 'HomeController@acceptCookie')->name('acceptCookie');
-Route::get('/rejectCookie', 'HomeController@rejectCookie')->name('rejectCookie');
 
 Auth::routes(['verify' => true]);
 
@@ -37,7 +29,7 @@ Route::get('/', 'HomeController@index')->name('index');
 
 Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->group(function(){
 
-    Route::get('/', 'MainController@index')->name('index');
+    Route::get('/search', 'MainController@search')->name('search');
 
     Route::resource('/users', 'UserController');
     Route::get('/getUser', 'UserController@getUser')->name('getUser');
@@ -45,10 +37,16 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::get('/getAdmin', 'UserController@getAdmin')->name('users.getAdmin');
     Route::delete('/removeAdmin', 'UserController@removeAdmin')->name('users.removeAdmin');
     Route::get('users/{user_id}/settings', 'UserController@settings')->name('users.settings');
+    Route::get('users/{user_id}/sectors', 'UserController@sectors')->name('users.sectors');
+    Route::put('users/{user_id}/storesectors', 'UserController@storesectors')->name('users.storesectors');
+
+    // admin.users.settings
 
     Route::resource('/pages', 'PageController');
     Route::get('/newPage/{pagetype_id}', 'PageController@newPage')->name('pages.newPage');
     Route::get('pages/{page_id}/settings', 'PageController@settings')->name('pages.settings');
+    Route::get('pages/{page_id}/sectors', 'PageController@sectors')->name('pages.sectors');
+    Route::put('pages/{page_id}/storesectors', 'PageController@storesectors')->name('pages.storesectors');
 
     //IMAGE
     Route::get('/editUserImage', 'ImageController@editUserImage')->name('images.editUserImage');

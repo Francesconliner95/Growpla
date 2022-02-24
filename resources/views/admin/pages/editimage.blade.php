@@ -12,7 +12,6 @@
             <div class="item-style">
                 {{-- Immagine --}}
                 <h6>{{__('Page image')}}</h6>
-                LOL
                 <form runat="server" class="file-cont" ref="editImage" method="POST" enctype="multipart/form-data" action="{{ route('admin.images.updatePageImage',$page_id) }}">
                     @csrf
                     @method('PUT')

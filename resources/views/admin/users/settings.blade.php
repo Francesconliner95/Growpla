@@ -51,6 +51,11 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="">
+                  <a class="button-style button-color" href="{{route('admin.users.create')}}">
+                    Modifica account
+                  </a>
+                </div>
                 {{--<div class="sub-section">
                     <h6 class="text-uppercase">{{__('messages')}}</h6>
                     <h6>{{__('I want to receive messages from')}}</h6>

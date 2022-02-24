@@ -88,6 +88,18 @@
                                 </div>
                             </div> --}}
                         </div>
+                        <div class="sub-section">
+                          <div class="">
+                            @if($page->sectors)
+                              @foreach ($page->sectors as $sector)
+                                <span class="sector-style mb-2">{{$sector->name}}</span>
+                              @endforeach
+                            @endif                          
+                          </div>
+                          <a  v-if="is_my_page" class="button-style button-color-orange" href="{{route('admin.pages.sectors', $page->id)}}">
+                              Modifica Settore
+                          </a>
+                        </div>
 
                         {{-- Descrizione --}}
                         @if($page->description)
@@ -147,7 +159,7 @@
                         <span class="info-message">Aggiungi componente al team</span>
                     </div> --}}
                 </h3>
-                
+
                 <div class="row justify-content-center">
                     <div v-for="member in team_members" class="team-member-cont col-sm-12 col-md-6 col-lg-4 col-xl-4" >
                         <div class="team-member sub-item-style">

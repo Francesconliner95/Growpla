@@ -15,6 +15,12 @@ if (document.getElementById('register')) {
 }
 
 ///////ADMIN///////
+
+if (document.getElementById('search')) {
+    require('./admin/search.js');
+}
+
+
 //USERS
 if (document.getElementById('user-create')) {
     require('./admin/users/create.js');
@@ -32,6 +38,10 @@ if (document.getElementById('edit-user-image')) {
     require('./admin/users/edit-image.js');
 }
 
+if (document.getElementById('user-sectors')) {
+    require('./admin/users/sectors.js');
+}
+
 //PAGES
 if (document.getElementById('page-edit')) {
     require('./admin/pages/edit.js');
@@ -47,6 +57,10 @@ if (document.getElementById('edit-page-image')) {
 
 if (document.getElementById('page-settings')) {
     require('./admin/pages/settings.js');
+}
+
+if (document.getElementById('page-sectors')) {
+    require('./admin/pages/sectors.js');
 }
 
 //ACCOUNT

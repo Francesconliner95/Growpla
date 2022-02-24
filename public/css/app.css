@@ -17706,6 +17706,11 @@ img {
   color: white !important;
 }
 
+.button-active-orange {
+  background-color: #f6993f !important;
+  color: white !important;
+}
+
 .button-color {
   border: 2px solid #0AB89F;
   color: #0AB89F;
@@ -17774,6 +17779,14 @@ img {
   border-radius: 50%;
   text-decoration: none;
   cursor: pointer;
+}
+
+.sector-style {
+  display: inline-block;
+  padding: 5px 10px 4px 10px;
+  border-radius: 0.1875rem;
+  color: white;
+  background-color: #f6993f;
 }
 
 .button-style {

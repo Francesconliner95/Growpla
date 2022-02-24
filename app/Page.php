@@ -10,6 +10,10 @@ class Page extends Model
     return $this->belongsToMany('App\User');
   }
 
+  public function sectors(){
+      return $this->belongsToMany('App\Sector');
+  }
+
   protected $fillable = [
       'pagetype_id',
     	'page_name',

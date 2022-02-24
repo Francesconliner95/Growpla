@@ -13,6 +13,7 @@ use App\Page;
 use App\Usertype;
 use App\Pagetype;
 use App\Team;
+use App\Sector;
 
 class PageController extends Controller
 {
@@ -175,6 +176,47 @@ class PageController extends Controller
         $page->delete();
 
         return redirect()->route('admin.users.show', ['user' => Auth::user()->id]);
+
+      }abort(404);
+
+    }
+
+    public function sectors($id){
+
+      $user = Auth::user();
+      $page = Page::find($id);
+
+      if($page->users->contains($user)){
+
+        $data = [
+          'page' => $page,
+          'sectors' => Sector::all(),
+        ];
+
+        return view('admin.pages.sectors', $data);
+
+      }abort(404);
+
+    }
+
+    public function storesectors(Request $request, $id){
+
+      $request->validate([
+          'sectors'=> 'exists:sectors,id',
+      ]);
+
+      $data = $request->all();
+
+      $user = Auth::user();
+      $page = Page::find($id);
+
+      if($page->users->contains($user)){
+
+        if(array_key_exists('sectors', $data)){
+          $page->sectors()->sync($data['sectors']);
+        }
+
+        return redirect()->route('admin.pages.show',$user->id);
 
       }abort(404);
 

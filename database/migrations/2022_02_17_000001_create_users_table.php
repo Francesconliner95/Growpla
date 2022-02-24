@@ -26,11 +26,15 @@ class CreateUsersTable extends Migration
             $table->string('cv')->nullable();
             $table->string('linkedin')->nullable();
             $table->string('website')->nullable();
-            $table->tinyInteger('moneyrange_id')->nullable();
+            $table->unsignedbigInteger('moneyrange_id')->nullable();
+            $table->foreign('moneyrange_id')->references('id')->on('moneyranges');
+            $table->unsignedbigInteger('currency_id')->default(1);
+            $table->foreign('currency_id')->references('id')->on('currencies');
             $table->tinyInteger('startup_n')->nullable();
             $table->decimal('latitude')->nullable();
             $table->decimal('longitude')->nullable();
-            $table->smallInteger('language_id')->default(1);
+            $table->unsignedbigInteger('language_id')->default(1);
+            $table->foreign('language_id')->references('id')->on('languages');
             $table->timestamp('last_access')->nullable();
             $table->rememberToken();
             $table->timestamps();

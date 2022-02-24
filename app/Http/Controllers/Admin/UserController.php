@@ -14,6 +14,8 @@ use App\User;
 use App\Page;
 use App\Usertype;
 use App\Pagetype;
+use App\Moneyrange;
+use App\Sector;
 
 class UserController extends Controller
 {
@@ -25,8 +27,8 @@ class UserController extends Controller
     public function create(){
 
       $user = Auth::user();
-      $userTypes = Usertype::all();
-      $pageTypes = Pagetype::all();
+      $userTypes = Usertype::where('hidden',null)->get();
+      $pageTypes = Pagetype::where('hidden',null)->get();
 
       $data = [
         'user' => $user,
@@ -66,12 +68,11 @@ class UserController extends Controller
       $user = Auth::user();
 
       if($user->id==$id){
-        $userTypes = Usertype::all();
-
-        // dd($user->userTypes);
         $data = [
           'user' => $user,
           'userTypes' => $user->userTypes,
+          'moneyranges' => Moneyrange::all(),
+          'sectors' => Sector::all(),
         ];
 
         return view('admin.users.edit', $data);
@@ -88,6 +89,7 @@ class UserController extends Controller
           'website' => 'nullable|max:255',
           'linkedin'=> 'nullable|max:255',
           'cv' => 'nullable|mimes:pdf|max:6144',
+          'moneyrange_id' => 'nullable|integer|min:1|max:5',
       ]);
 
       $data = $request->all();
@@ -121,14 +123,51 @@ class UserController extends Controller
       $user = User::find($id);
       $userTypes = Usertype::all();
 
+      //dd($user->currency);
+
       $data = [
         'user' => $user,
         'userTypes' => $userTypes,
         'is_my_user' => Auth::user()->id==$user->id?true:false,
         'pageTypes' => $user->pagetypes,
+        'currencies' => $user->currencies,
       ];
 
       return view('admin.users.show', $data);
+
+    }
+
+    public function sectors($id){
+
+      $user = Auth::user();
+
+      if($user->id==$id){
+        $data = [
+          'user' => $user,
+          'sectors' => Sector::all(),
+        ];
+
+        return view('admin.users.sectors', $data);
+
+      }abort(404);
+
+    }
+
+    public function storesectors(Request $request, $id){
+
+      $request->validate([
+          'sectors'=> 'exists:sectors,id',
+      ]);
+
+      $data = $request->all();
+
+      $user = Auth::user();
+
+      if(array_key_exists('sectors', $data)){
+        $user->sectors()->sync($data['sectors']);
+      }
+
+      return redirect()->route('admin.users.show',$user->id);
 
     }
 

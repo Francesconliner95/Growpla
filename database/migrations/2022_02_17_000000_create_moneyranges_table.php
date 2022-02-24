@@ -16,6 +16,7 @@ class CreateMoneyrangesTable extends Migration
         Schema::create('moneyranges', function (Blueprint $table) {
             $table->id();
             $table->string('range');
+            $table->integer('value')->nullable();
             $table->timestamps();
         });
     }

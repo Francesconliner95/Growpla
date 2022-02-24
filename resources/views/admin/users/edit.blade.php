@@ -45,10 +45,17 @@
                       @enderror
                   </div>
 
+                  {{-- Settore --}}
+                  <select class="form-control" name="">
+                      @foreach ($sectors as $sector)
+                        <option value="{{$sector->id}}">{{$sector->name}}</option>
+                      @endforeach
+                  </select>
+
                   {{-- Descrizione --}}
                   <div class="sub-section">
                       <h6>{{__('Presentation')}}*</h6>
-                      <textarea name="description" rows="8" cols="80" class="form-control" placeholder="{{__('Write something about what you do')}}" min="50" required>{{ $user->description }}</textarea>
+                      <textarea name="description" rows="8" cols="80" class="form-control" placeholder="{{__('Write something about what you do')}}"  minlength="50" maxlength="500" required>{{ $user->description }}</textarea>
                       @error ('description')
                           <div class="alert alert-danger">
                               {{__($message)}}
@@ -97,6 +104,37 @@
                           </div>
                       @enderror
                   </div>
+                  {{-- Money range --}}
+                  <div class="sub-section">
+                      <h6>Moneyrange <span>({{__('Quanto hai investito sino ad oggi?')}})</span></h6>
+                      <div class="form-contrtol">
+                        @foreach ($moneyranges as $moneyrange)
+                          <div>
+                            <input type="radio" id="moneyrange-{{$moneyrange->id}}" name="moneyrange_id" value="{{$moneyrange->id}}"
+                            {{-- {{old('moneyrange_id',$moneyrange->id)?'checked':''}} --}}
+                            {{$moneyrange->id==$user->moneyrange_id?'checked':''}}
+                            {{!$user->moneyrange_id && $moneyrange->id==1?'checked':''}} required>
+                            <label for="moneyrange-{{$moneyrange->id}}">{{$moneyrange->range}}</label>
+                          </div>
+                        @endforeach
+                      </div>
+                      @error ('moneyrange')
+                          <div class="alert alert-danger">
+                              {{__($message)}}
+                          </div>
+                      @enderror
+                  </div>
+                  {{-- Startup Number --}}
+                  <div class="sub-section">
+                      <h6>Numero di startup supportate</h6>
+                      <input type="number" name="startup_n" class="form-control" value="{{ old('startup_n',$user->startup_n)}}" min="0" placeholder="">
+                      @error ('startup_n')
+                          <div class="alert alert-danger">
+                              {{__($message)}}
+                          </div>
+                      @enderror
+                  </div>
+
                   <button type="submit" class="button-style button-color">
                       {{__('Save Changes')}}
                   </button>

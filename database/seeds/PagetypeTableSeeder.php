@@ -54,8 +54,8 @@ class PagetypeTableSeeder extends Seeder
               'description_it'=>'/',
           ],
           [
-              'name'=>'agency',
-              'name_it'=>'agenzia',
+              'name'=>'organization - association',
+              'name_it'=>'ente - associazione',
               'description'=>'Agencies set up for the purpose of attracting investments and promoting business development',
               'description_it'=>'Agenzie costituite allo scopo di attrarre investimenti e favorire lo sviluppo delle imprese',
           ],

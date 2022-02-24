@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use File;
-use App\Account;
+use App\Usertype;
+use App\Pagetype;
 
 class MainController extends Controller
 {
@@ -16,44 +17,14 @@ class MainController extends Controller
         $this->middleware(['auth','verified']);
     }
 
-    public function index()
+    public function search()
     {
       $data = [
-          // 'my_accounts' => $my_accounts,
-          // 'needs' => $needs,
+          'usertypes' => Usertype::all(),
+          'pagetypes' => Pagetype::all(),
       ];
 
-      return view('admin.index', $data);
-    }
-
-    public function create()
-    {
-
-    }
-
-    public function store(Request $request, Account $account)
-    {
-
-    }
-
-    public function show($id)
-    {
-
-    }
-
-    public function edit($id)
-    {
-
-    }
-
-    public function update(Request $request, Team $team)
-    {
-
-    }
-
-    public function destroy(Team $team)
-    {
-
+      return view('admin.search', $data);
     }
 
 }

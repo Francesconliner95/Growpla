@@ -75981,6 +75981,57 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
+/***/ "./resources/js/admin/pages/sectors.js":
+/*!*********************************************!*\
+  !*** ./resources/js/admin/pages/sectors.js ***!
+  \*********************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#page-sectors',
+  data: {
+    language_id: language_id,
+    sectors: sectors
+  },
+  methods: {
+    isChecked: function isChecked(id) {
+      if (document.getElementById(id).checked) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    checkboxToggle: function checkboxToggle(id) {
+      if (document.getElementById(id).checked) {
+        document.getElementById(id).checked = false;
+        document.getElementById(id + '-b').classList.remove("button-active-orange");
+      } else {
+        document.getElementById(id).checked = true;
+        document.getElementById(id + '-b').classList.add("button-active-orange");
+      }
+    }
+  },
+  created: function created() {
+    this.sectors = JSON.parse(this.sectors.replace(/&quot;/g, '"'));
+  },
+  mounted: function mounted() {}
+});
+
+/***/ }),
+
 /***/ "./resources/js/admin/pages/settings.js":
 /*!**********************************************!*\
   !*** ./resources/js/admin/pages/settings.js ***!
@@ -76179,6 +76230,381 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     this.page = JSON.parse(this.page.replace(/&quot;/g, '"'));
   },
   mounted: function mounted() {}
+});
+
+/***/ }),
+
+/***/ "./resources/js/admin/search.js":
+/*!**************************************!*\
+  !*** ./resources/js/admin/search.js ***!
+  \**************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#search',
+  data: {
+    lang: lang,
+    search_type: false,
+    accountTypes: [],
+    account_selected: '',
+    startupStates: [],
+    startupState_selected: '',
+    all_needs: [],
+    serviceTypes: [],
+    need_selected: '',
+    region_selected: '',
+    search_tag: '',
+    tags_found: '',
+    tags: [],
+    account_name: '',
+    accounts: [],
+    accounts_show: [],
+    page: 1,
+    search_role: '',
+    roles_found: '',
+    startupserviceType: [],
+    startupserviceType_selected: '',
+    last_accounts: [],
+    last_accounts_show: [],
+    page_last_accounts: 1,
+    is_in_search: false,
+    first_search: false,
+    new_subs_over: false,
+    search_page: 0
+  },
+  methods: {
+    search_type_f: function search_type_f() {
+      this.accounts = [];
+
+      if (!this.search_type) {
+        this.account_name = '';
+      } else {
+        this.account_selected = '';
+        this.startupState_selected = '';
+        this.need_selected = '';
+        this.region_selected = '';
+        this.tags = [];
+        this.startupserviceType_selected = '';
+        this.search_role = '';
+      }
+    },
+    getAccountTypes: function getAccountTypes() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getAccountTypes', {}).then(function (response) {
+        _this.accountTypes = response.data.results.accountTypes;
+      });
+    },
+    getStartupStatus: function getStartupStatus() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getStartupStates', {}).then(function (response) {
+        _this2.startupStates = response.data.results.startupStates;
+      });
+    },
+    getAllNeeds: function getAllNeeds() {
+      var _this3 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getNeeds', {}).then(function (response) {
+        _this3.all_needs = response.data.results.needs;
+
+        _this3.getNeeds();
+      });
+    },
+    getNeeds: function getNeeds() {
+      var _this4 = this;
+
+      this.need_selected = '';
+      this.serviceTypes = [];
+
+      if (!this.startupState_selected) {
+        this.all_needs.forEach(function (all_need, i) {
+          var already_exist = false;
+
+          _this4.serviceTypes.forEach(function (need, i) {
+            if (all_need.name == need.name) {
+              already_exist = true;
+            }
+          });
+
+          if (already_exist == false) {
+            _this4.serviceTypes.push(all_need);
+          }
+        });
+      } else {
+        this.all_needs.forEach(function (all_need, i) {
+          if (_this4.startupState_selected == all_need.startup_state_id) {
+            _this4.serviceTypes.push(all_need);
+          }
+        });
+      }
+    },
+    getRegions: function getRegions() {
+      var _this5 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getRegions', {}).then(function (response) {
+        _this5.regions = response.data.results.regions;
+      });
+    },
+    searchTag: function searchTag() {
+      var _this6 = this;
+
+      if (this.search_tag) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchTag', {
+          params: {
+            tag_name: this.search_tag
+          }
+        }).then(function (response) {
+          _this6.tags_found = response.data.results.tags;
+
+          if (!_this6.search_tag) {
+            _this6.tags_found = '';
+          }
+        });
+      } else {
+        this.tags_found = '';
+      }
+    },
+    addTag: function addTag(tag) {
+      //console.log(tag);
+      //console.log(this.tags);
+      var already_exist = false;
+      this.tags.forEach(function (old_tag, i) {
+        if (old_tag.name == tag.name) {
+          already_exist = true;
+        }
+      });
+
+      if (!already_exist) {
+        this.tags.push(tag);
+      }
+
+      this.tags_found = '';
+      this.search_tag = '';
+    },
+    deleteTag: function deleteTag(index) {
+      this.tags.splice(index, index + 1);
+    },
+    setNeeds: function setNeeds(accountType, serviceType) {
+      return {
+        accountType: accountType,
+        serviceType: serviceType
+      };
+    },
+    show: function show() {//console.log(this.need_selected);
+    },
+    search: function search() {
+      var _this7 = this;
+
+      this.first_search = true;
+      this.is_in_search = true; // console.log('COSA CERCARE');
+      // console.log('account_selected: '+this.account_selected);
+      // console.log('startupState_selected: '+this.startupState_selected);
+      // console.log('need_selected: '+this.need_selected);
+      // console.log('region_selected: '+this.region_selected);
+      // console.log('tags: '+this.tags);
+      // console.log('account_name: '+ this.account_name);
+      // console.log('startupserviceType_selected: '+this.startupserviceType_selected);
+      // console.log('ruolo: '+this.search_role);
+
+      var tags_id = [];
+      this.tags.forEach(function (tag, i) {
+        tags_id.push(tag.id);
+      });
+
+      if (!this.search_type || this.search_type && this.account_name) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/advancedSearch', {
+          params: {
+            accountType_id_selected: this.account_selected,
+            startupState_id_selected: this.startupState_selected,
+            need_id_selected: this.need_selected,
+            region_id_selected: this.region_selected,
+            tags: tags_id,
+            account_name: this.account_name,
+            role: this.search_role,
+            startupserviceType_selected: this.startupserviceType_selected,
+            search_page: 0
+          }
+        }).then(function (response) {
+          _this7.accounts = response.data.results.accounts;
+          _this7.is_in_search = false;
+
+          _this7.changePage(0);
+
+          _this7.search_page = 0;
+        });
+      } else {
+        this.is_in_search = false;
+      }
+    },
+    changePage: function changePage(val) {
+      var accounts_qty = this.accounts.length;
+      var items_qty = 6;
+
+      if (val == -1 && this.page > 1) {
+        this.page--;
+      } else if (val == 1 && this.page < Math.ceil(accounts_qty / items_qty)) {
+        this.page++; //this.loadPage();
+      } else if (val == 0) {
+        this.page = 1;
+      }
+
+      this.accounts_show = this.accounts.slice(items_qty * this.page - items_qty, items_qty * this.page);
+    },
+    loadPage: function loadPage() {
+      var _this8 = this;
+
+      if (this.page > this.search_page) {
+        var tags_id = [];
+        this.tags.forEach(function (tag, i) {
+          tags_id.push(tag.id);
+        });
+        this.search_page++;
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/advancedSearch', {
+          params: {
+            accountType_id_selected: this.account_selected,
+            startupState_id_selected: this.startupState_selected,
+            need_id_selected: this.need_selected,
+            region_id_selected: this.region_selected,
+            tags: tags_id,
+            account_name: this.account_name,
+            role: this.search_role,
+            startupserviceType_selected: this.startupserviceType_selected,
+            search_page: this.search_page
+          }
+        }).then(function (response) {
+          var _this8$accounts;
+
+          (_this8$accounts = _this8.accounts).push.apply(_this8$accounts, _toConsumableArray(response.data.results.accounts));
+        });
+      }
+    },
+    arrowClass: function arrowClass(direction) {
+      if (direction == 'left') {
+        if (this.page > 1) {
+          return 'activate';
+        }
+      } else if (direction == 'right') {
+        if (this.page < Math.ceil(this.accounts.length / 6)) {
+          return 'activate';
+        }
+      }
+    },
+    searchRole: function searchRole() {
+      var _this9 = this;
+
+      if (this.search_role) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchRole', {
+          params: {
+            role_name: this.search_role
+          }
+        }).then(function (response) {
+          _this9.roles_found = response.data.results.roles;
+
+          if (!_this9.search_role) {
+            _this9.roles_found = '';
+          }
+        });
+      } else {
+        this.roles_found = '';
+      }
+    },
+    setRole: function setRole(roleName) {
+      this.search_role = roleName;
+      this.roles_found = '';
+    },
+    getStartupserviceType: function getStartupserviceType() {
+      var _this10 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getStartupserviceType', {}).then(function (response) {
+        _this10.startupserviceType = response.data.results.startupserviceType;
+      });
+    },
+    getLastAccounts: function getLastAccounts() {
+      var _this11 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getLastAccounts', {}).then(function (response) {
+        _this11.last_accounts = response.data.results.last_accounts;
+        _this11.last_accounts_show = _this11.last_accounts.slice(0, 7); //console.log(this.last_accounts);
+      });
+    },
+    getCookie: function getCookie(name) {
+      var value = "; ".concat(document.cookie);
+      var parts = value.split("; ".concat(name, "="));
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    },
+    dateUTC: function dateUTC() {
+      var d = new Date();
+      d.setMonth(d.getMonth() + 6);
+      return d.toUTCString();
+    }
+  },
+  mounted: function mounted() {
+    this.getAccountTypes();
+    this.getStartupStatus();
+    this.getStartupserviceType();
+    this.getAllNeeds();
+    this.getRegions();
+    this.getLastAccounts();
+
+    if (this.needs) {
+      this.needs = JSON.parse(this.needs.replace(/&quot;/g, '"'));
+    }
+
+    ;
+
+    if (!this.getCookie("tecCookie")) {
+      document.cookie = "tecCookie" + "=" + "accept" + ";" + "expires=" + this.dateUTC() + ";path=/";
+    }
+
+    if (!this.getCookie("analyticsCookie")) {
+      document.cookie = "analyticsCookie" + "=" + "reject" + ";" + "expires=" + this.dateUTC() + ";path=/";
+    } //FADE ANIMATION
+
+
+    var elementsArray = document.querySelectorAll(".fade-anim");
+    window.addEventListener('scroll', fadeIn);
+
+    function fadeIn() {
+      for (var i = 0; i < elementsArray.length; i++) {
+        var elem = elementsArray[i];
+        var distInView = elem.getBoundingClientRect().top - window.innerHeight + 20;
+
+        if (distInView < 0) {
+          elem.classList.add("inView");
+        } else {
+          elem.classList.remove("inView");
+        }
+      }
+    }
+
+    fadeIn();
+  }
 });
 
 /***/ }),
@@ -77470,6 +77896,57 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
+/***/ "./resources/js/admin/users/sectors.js":
+/*!*********************************************!*\
+  !*** ./resources/js/admin/users/sectors.js ***!
+  \*********************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#user-sectors',
+  data: {
+    language_id: language_id,
+    sectors: sectors
+  },
+  methods: {
+    isChecked: function isChecked(id) {
+      if (document.getElementById(id).checked) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    checkboxToggle: function checkboxToggle(id) {
+      if (document.getElementById(id).checked) {
+        document.getElementById(id).checked = false;
+        document.getElementById(id + '-b').classList.remove("button-active-orange");
+      } else {
+        document.getElementById(id).checked = true;
+        document.getElementById(id + '-b').classList.add("button-active-orange");
+      }
+    }
+  },
+  created: function created() {
+    this.sectors = JSON.parse(this.sectors.replace(/&quot;/g, '"'));
+  },
+  mounted: function mounted() {}
+});
+
+/***/ }),
+
 /***/ "./resources/js/admin/users/show.js":
 /*!******************************************!*\
   !*** ./resources/js/admin/users/show.js ***!
@@ -77532,7 +78009,11 @@ if (document.getElementById('cookie-policy')) {
 if (document.getElementById('register')) {
   __webpack_require__(/*! ./guest/register.js */ "./resources/js/guest/register.js");
 } ///////ADMIN///////
-//USERS
+
+
+if (document.getElementById('search')) {
+  __webpack_require__(/*! ./admin/search.js */ "./resources/js/admin/search.js");
+} //USERS
 
 
 if (document.getElementById('user-create')) {
@@ -77549,6 +78030,10 @@ if (document.getElementById('user-show')) {
 
 if (document.getElementById('edit-user-image')) {
   __webpack_require__(/*! ./admin/users/edit-image.js */ "./resources/js/admin/users/edit-image.js");
+}
+
+if (document.getElementById('user-sectors')) {
+  __webpack_require__(/*! ./admin/users/sectors.js */ "./resources/js/admin/users/sectors.js");
 } //PAGES
 
 
@@ -77566,6 +78051,10 @@ if (document.getElementById('edit-page-image')) {
 
 if (document.getElementById('page-settings')) {
   __webpack_require__(/*! ./admin/pages/settings.js */ "./resources/js/admin/pages/settings.js");
+}
+
+if (document.getElementById('page-sectors')) {
+  __webpack_require__(/*! ./admin/pages/sectors.js */ "./resources/js/admin/pages/sectors.js");
 } //ACCOUNT
 
 

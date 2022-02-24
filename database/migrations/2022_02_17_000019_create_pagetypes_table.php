@@ -19,6 +19,7 @@ class CreatePagetypesTable extends Migration
             $table->string('name_it')->nullable();
             $table->text('description')->nullable();
             $table->text('description_it')->nullable();
+            $table->boolean('hidden')->default(null);
             $table->timestamps();
         });
     }

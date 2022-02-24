@@ -139,7 +139,7 @@
                                     {{__('My account')}}
                                 </a>
                                 <a class="dropdown-item"
-                                :href="'/admin/settings/'">
+                                :href="'/admin/users/' + user.id + '/settings'">
                                     {{__('Settings')}}
                                 </a>
                                 <a class="dropdown-item"
