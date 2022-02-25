@@ -45,6 +45,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo('App\Moneyrange');
     }
 
+    public function companies(){
+        return $this->hasMany('App\Company');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

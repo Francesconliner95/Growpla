@@ -98,6 +98,15 @@ if (document.getElementById('team-edit')) {
     require('./admin/teams/edit.js');
 }
 
+//TEAM
+if (document.getElementById('company-create')) {
+    require('./admin/companies/create.js');
+}
+
+if (document.getElementById('company-edit')) {
+    require('./admin/companies/edit.js');
+}
+
 //OTHER
 if (document.getElementById('other-create')) {
     require('./admin/others/create.js');

@@ -3,11 +3,10 @@
 @section('content')
 <script type="text/javascript">
     window.csrf_token = "{{ csrf_token() }}";
-    member = {!! json_encode($member->toArray()) !!};
-    user = "{{$user}}";
+    company = "{{$company->page_id?$company->page:$company}}";
 </script>
 <div class="container">
-    <div id="team-edit">
+    <div id="company-edit">
         <div class="item-cont">
             <div class="item-style">
                 <div class="header">
@@ -16,46 +15,45 @@
                         <i class="fas fa-pencil-alt"></i>
                     </h1>
                 </div>
-                <form ref="editTeam" method="POST" enctype="multipart/form-data" action="{{ route('admin.teams.update', ['team'=> $member->id]) }}">
+                <form ref="editTeam" method="POST" enctype="multipart/form-data" action="{{ route('admin.companies.update', ['company'=> $company->id]) }}">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
-                      <h6>Aggiungi utente iscritto</h6>
+                      <h6>Aggiungi pagina iscritta</h6>
                       <div>
-                        <input type="radio" id="yes" name="registered_member" value="0" @click="registered_member=true" :checked="registered_member">
+                        <input type="radio" id="yes" name="registered_company" value="0" @click="registered_company=true" :checked="registered_company">
                         <label for="yes">Si</label>
                       </div>
                       <div>
-                        <input type="radio" id="no" name="registered_member" value="1" @click="registered_member=false" :checked="!registered_member">
+                        <input type="radio" id="no" name="registered_company" value="1" @click="registered_company=false" :checked="!registered_company">
                         <label for="no">No</label>
                       </div>
                     </div>
-                    <div v-if="registered_member" class="">
-                      <input type="hidden" name="user_id" :value="user_selected.id" required>
+                    <div v-if="registered_company" class="">
+                      <input type="hidden" name="page_id" :value="page_selected.id">
                       <input type="hidden" name="name" value="">
-                      <input type="hidden" name="surname" value="">
                       {{-- <input type="hidden" name="image" value=""> --}}
                       <input type="hidden" name="linkedin" value="">
-                      <h6>Seleziona utente</h6>
-                      <p v-if="user_selected">@{{user_selected.name}} @{{user_selected.surname}}
-                        <button class="button-color-gray" @click="user_selected=''">
-                            <i class="fas fa-trash"></i>
+                      <h6>Seleziona pagina</h6>
+                      <p v-if="page_selected">@{{page_selected.name}}
+                        <button class="button-color-gray" @click="page_selected=''">
+                            X
                         </button>
                       </p>
-                      <div v-if="!user_selected" class="search">
-                          <input type="hidden" name="user_id" value="">
-                          <input type="text" name="user" value="" placeholder="Nome o cognome utente" v-model="user_name" @keyup.enter="searchUser()" v-on:input="searchUser()" maxlength="70" class="form-control" autocomplete="off">
-                          @error ('user_name')
+                      <div v-if="!page_selected" class="search">
+                          <input type="hidden" name="page_id" value="">
+                          <input type="text" name="page" value="" placeholder="Nome azienda" v-model="page_name" @keyup.enter="searchPage()" v-on:input="searchPage()" maxlength="70" class="form-control" autocomplete="off">
+                          @error ('page_name')
                               <div class="alert alert-danger">
                                   {{__($message)}}
                               </div>
                           @enderror
-                          <div :class="users_found.length>0?'found':'found d-none'">
-                              <p class="item" v-for="user_found in users_found"
+                          <div :class="pages_found.length>0?'found':'found d-none'">
+                              <p class="item" v-for="page_found in pages_found"
                               >
-                                <img v-if="user_found.image" :src="'/storage/' + user_found.image" alt="">
-                                @{{user_found.name}} @{{user_found.surname}}
-                                <button type="button" name="button" @click="addUser(user_found)">{{__('Add')}}</button>
+                                <img v-if="page_found.image" :src="'/storage/' + page_found.image" alt="">
+                                @{{page_found.name}} @{{page_found.surname}}
+                                <button type="button" name="button" @click="addPage(page_found)">{{__('Add')}}</button>
                               </p>
                           </div>
                       </div>
@@ -66,12 +64,12 @@
                       <input type="hidden" name="x" v-model="x">
                       <input type="hidden" name="y" v-model="y">
 
-                      <input type="hidden" name="user_id" value="">
+                      <input type="hidden" name="page_id" value="">
 
                       {{-- Nome --}}
                       <div class="form-group">
                           <h6>{{__('Name')}}</h6>
-                          <input type="text" name="name" class="form-control" maxlength="70" value="{{ old('name',$member->name)}}" required>
+                          <input type="text" name="name" class="form-control" maxlength="70" value="{{ old('name',$company->name)}}" required>
                           @error ('name')
                               <div class="alert alert-danger">
                                   {{__($message)}}
@@ -79,18 +77,8 @@
                           @enderror
                       </div>
                       <div class="form-group">
-                          <h6>{{__('Surame')}}</h6>
-                          <input type="text" name="surname" class="form-control" maxlength="70" value="{{ old('surname',$member->surname)}}" required>
-                          @error ('surname')
-                              <div class="alert alert-danger">
-                                  {{__($message)}}
-                              </div>
-                          @enderror
-                      </div>
-
-                      <div class="form-group">
                           <h6>Linkedin</h6>
-                          <input type="text" name="linkedin" class="form-control" maxlength="255" value="{{ old('linkedin',$member->linkedin)}}">
+                          <input type="text" name="linkedin" class="form-control" maxlength="255" value="{{ old('linkedin',$company->linkedin)}}">
                           @error ('linkedin')
                               <div class="alert alert-danger">
                                   {{__($message)}}
@@ -98,19 +86,7 @@
                           @enderror
                       </div>
                     </div>
-
-                      {{-- Ruolo --}}
-                      <div class="form-group">
-                          <h6>{{__('Role')}}</h6>
-                          <input type="text" name="role" class="form-control" maxlength="50" value="{{ old('role',$member->role)}}" required>
-                          @error ('role')
-                              <div class="alert alert-danger">
-                                  {{__($message)}}
-                              </div>
-                          @enderror
-                      </div>
-
-                      <div v-show="!registered_member" class="">
+                      <div v-show="!registered_company" class="">
                         <h6>{{__('Image')}}</h6>
                         {{-- Immagine --}}
                         <div class="edit-image-drag-drop dd-cropper row">
@@ -129,18 +105,17 @@
                             </div>
                             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-1">
                                 <div class="cropper c-circle" id="copper-main">
-                                    <img v-if="image!='accounts_images/default_account_image.png'"
+                                    <img v-if="image"
                                     {{--@load="createCrop()"--}} :src="image_src" id="croppr"/>
                                 </div>
                             </div>
                         </div>
                       </div>
-
                       <button type="submit" class="button-style button-color">
                           {{__('Save Changes')}}
-                      </button>
+                      </button>                      
                 </form>
-                <form method="post" action="{{ route('admin.teams.destroy', ['team'=> $member->id])}}" class="p-0 m-0 d-inline-block">
+                <form method="post" action="{{ route('admin.companies.destroy', ['company'=> $company->id])}}" class="p-0 m-0 d-inline-block">
                 @csrf
                 @method('DELETE')
                 <button class="button-style button-color-red ml-5" type="submit" name="button">

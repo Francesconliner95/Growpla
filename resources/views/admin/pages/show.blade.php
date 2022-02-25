@@ -57,7 +57,7 @@
                             {{-- Nome --}}
                             <div class="name col-sm-12 col-md-12 col-lg-6 col-xl-6">
                                 <h2 class="text-capitalize">
-                                    {{$page->page_name}}
+                                    {{$page->name}}
                                 </h2>
                             </div>
 
@@ -94,7 +94,7 @@
                               @foreach ($page->sectors as $sector)
                                 <span class="sector-style mb-2">{{$sector->name}}</span>
                               @endforeach
-                            @endif                          
+                            @endif
                           </div>
                           <a  v-if="is_my_page" class="button-style button-color-orange" href="{{route('admin.pages.sectors', $page->id)}}">
                               Modifica Settore
@@ -186,9 +186,6 @@
                                 </button>
                             </div>
                             <div v-if="is_my_page" class="edit-top-right-vert">
-                                <a class="button-color-gray" @click="deleteController(1,member.id)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
                                 <a :href="'/admin/teams/' + member.id +'/edit'" class="button-color-gray">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>

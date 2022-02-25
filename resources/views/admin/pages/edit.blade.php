@@ -13,7 +13,7 @@
               <div class="header">
                   {{-- Nome --}}
                   <div class="">
-                      <h1 class="text-capitalize">{{$page->page_name}}</h1>
+                      <h1 class="text-capitalize">{{$page->name}}</h1>
                   </div>
                   <h1>
                       <i class="fas fa-pencil-alt"></i>
@@ -27,8 +27,8 @@
                   {{-- NOME --}}
                   <div class="sub-section">
                       <h6>{{__('Page name')}}*</h6>
-                      <input type="text" class="form-control @error('page_name') is-invalid @enderror" name="page_name" value="{{ old('page_name',$page->page_name) }}" minlength="3" maxlength="70" required autocomplete="page_name" required>
-                      @error('page_name')
+                      <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name',$page->name) }}" minlength="3" maxlength="70" required autocomplete="name" required>
+                      @error('name')
                           <span class="alert alert-danger">
                               {{__($message)}}
                           </span>

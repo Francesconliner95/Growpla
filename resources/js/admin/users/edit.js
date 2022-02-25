@@ -9,8 +9,36 @@ var create = new Vue({
     el: '#user-edit',
     data: {
       user,
+     // company,
+      registered_page: true,
+      page_name: '',
+      pages_found: '',
+      page_selected: '',
     },
     methods: {
+
+        searchPage(){
+          if(this.page_name){
+              axios.get('/api/searchPage',{
+                  params: {
+                      page_name: this.page_name,
+                  }
+              }).then((response) => {
+                  this.pages_found = response.data.results.pages;
+                  if(!this.page_name){
+                      this.pages_found = '';
+                  }
+              });
+          }else{
+              this.pages_found = '';
+          }
+        },
+
+        addPage(page_found){
+          this.page_selected = page_found;
+          this.page_name = '';
+          this.pages_found = '';
+        },
 
         // remove_file(value){
         //     axios({

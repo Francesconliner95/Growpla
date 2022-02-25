@@ -55,7 +55,6 @@
                                     {{$user->name}} {{$user->surname}}
                                 </h2>
                             </div>
-
                             {{-- <div class="main-buttons col-sm-12 col-md-12 col-lg-6 col-xl-6 pt-3">
                                 <div v-if="!is_my_user" class="d-inline-block">
 
@@ -139,16 +138,20 @@
                         </div>
                         @endif
                     </div>
-                    <div v-if="user.startup_n || user.moneyrange_id" class="sub-section">
+                    @if($user->startup_n || $user->moneyrange_id)
+                    <div class="sub-section">
                         <div class="row justify-content-center">
+                            @if($user->startup_n)
                             <div v-if="user.startup_n" class="text-center col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <h6>{{__('Amount of')}}
                                     <span class="font-weight-bold">{{__('startups incubated')}}</span>
                                     <span  class="font-weight-bold">{{__('projects funded')}}</span>
                                 </h6>
-                                <h3 class="font-weight-bold">@{{user.startup_n}}</h3>
+                                <h3 class="font-weight-bold">{{$user->startup_n}}</h3>
                             </div>
-                            <div v-if="user.moneyrange_id" class="text-center col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            @endif
+                            @if($user->moneyrange_id)
+                            <div class="text-center col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <h6>
                                     {{__('Amount of')}}
                                     <span  class="font-weight-bold">{{__('funds raised for incubated startups')}}</span>
@@ -158,14 +161,32 @@
                                   {{$user->moneyrange->range}} {{$user->currency->symbol}}
                                 </h3>
                             </div>
+                            @endif
                         </div>
+                    </div>
+                    @endif
+                    @foreach ($user->companies as $company)
+                    <div>
+                        @if($company->page_id)
+                            {{$company->page->name}}
+                        @else
+                            {{$company->name}}
+                        @endif
+                        <a href="{{route('admin.companies.edit', $company->id)}}" class="text-gray">
+                            Modifica
+                        </a>
+                    </div>
+                    @endforeach
+                    <div v-if="is_my_user" class="d-flex justify-content-center w-100">
+                        <a href="{{route('admin.companies.create')}}" class="text-gray">
+                            <i class="fas fa-plus-circle"></i>Aggiungi azienda per cui lavori
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
           @foreach ($pageTypes as $pageType)
             @if($user->pageTypes->contains($pageType->id))
-              @if($is_my_user || $startups)
                 <div class="item-cont">
                     <div class="item-style">
                       <h3>{{__($pageType->name)}}</h3>
@@ -173,17 +194,18 @@
                         @foreach ($user->pages->where('pagetype_id',$pageType->id) as $page)
                           <div class="">
                             <a href="{{ route('admin.pages.show', ['page'=> $page->id]) }}">
-                              <span>{{$page->page_name}}</span>
+                              <span>{{$page->name}}</span>
                             </a>
                           </div>
                         @endforeach
+                        @if($is_my_user)
                         <div class="">
                           <a href="{{ route('admin.pages.newPage', ['pagetype_id'=> $pageType->id]) }}">Aggiungi</a>
                         </div>
+                        @endif
                       </div>
                     </div>
                 </div>
-              @endif
             @endif
           @endforeach
           {{-- STARTUP --}}

@@ -6,18 +6,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
-  public function users(){
+
+    public function users(){
     return $this->belongsToMany('App\User');
-  }
+    }
 
-  public function sectors(){
+    public function sectors(){
       return $this->belongsToMany('App\Sector');
-  }
+    }
 
-  protected $fillable = [
+    public function company(){
+      return $this->hasOne('App\Company');
+    }
+
+    public function teams(){
+      return $this->hasMany('App\Team');
+    }
+
+    protected $fillable = [
       'pagetype_id',
-    	'page_name',
-    	'logo',
+      'name',
+      'logo',
       'description',
       'website',
       'linkedin',
@@ -29,6 +38,6 @@ class Page extends Model
       'pitch',
       'incorporated',
       'moneyrange_id',
-  ];
+    ];
 
 }

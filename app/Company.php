@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Company extends Model
 {
     protected $fillable = [
-      'company_name',
+      'user_id','page_id','name','iamge','linkedin',
     ];
 
-    public function account(){
-        return $this->belongsTo(Account::class);
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
+
+    public function page(){
+        return $this->belongsTo('App\Page');
     }
 }

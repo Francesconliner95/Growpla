@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
       $this->call(MoneyrangesTableSeeder::class);
       $this->call(PagetypeTableSeeder::class);
       $this->call(UsertypeTableSeeder::class);
+      $this->call(SectorsTableSeeder::class);
       //$this->call(SupportTypesTableSeeder::class);
     }
 }

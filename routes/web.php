@@ -78,6 +78,8 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::delete('/deleteMember', 'TeamController@deleteMember')->name('deleteMember');
     Route::put('/changeTeamPosition', 'TeamController@changeTeamPosition')->name('teams.changeTeamPosition');
 
+    // COMPANY
+    Route::resource('/companies', 'CompanyController');
 
     // OTHER
     Route::post('/addMultipleSection','OtherController@addMultipleSection')

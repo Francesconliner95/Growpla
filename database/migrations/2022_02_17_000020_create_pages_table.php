@@ -17,7 +17,7 @@ class CreatePagesTable extends Migration
             $table->id();
             $table->unsignedbigInteger('pagetype_id');
             $table->foreign('pagetype_id')->references('id')->on('pagetypes');
-            $table->string('page_name');
+            $table->string('name');
             $table->string('image')->nullable();
             $table->text('description')->nullable();
             $table->string('website')->nullable();

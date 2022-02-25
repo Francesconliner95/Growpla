@@ -39,14 +39,14 @@ class PageController extends Controller
     public function store(Request $request){
 
       $request->validate([
-          'page_name'=> 'required|string|min:3|max:70',
+          'name'=> 'required|string|min:3|max:70',
           'pagetype_id'=> 'required|integer',
       ]);
 
       $data = $request->all();
 
       //SLUG
-      $slug = Str::slug($request->page_name);
+      $slug = Str::slug($request->name);
 
       $slug_base = $slug;
 
@@ -63,7 +63,7 @@ class PageController extends Controller
 
       $new_page = new Page();
       $new_page->pagetype_id = $request->pagetype_id;
-      $new_page->page_name = Str::lower($request->page_name);
+      $new_page->name = Str::lower($request->name);
       $new_page->slug = $slug;
       $new_page->save();
 
@@ -88,7 +88,7 @@ class PageController extends Controller
     public function update(Request $request, $id){
 
       $request->validate([
-          'page_name' => 'required|string|min:3|max:70',
+          'name' => 'required|string|min:3|max:70',
           'description' => 'required|min:50',
           'website' => 'nullable|max:255',
           'linkedin'=> 'nullable|max:255',

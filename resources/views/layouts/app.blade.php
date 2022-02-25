@@ -131,7 +131,7 @@
                             </a>
                             <a id="navbarDropdown" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{-- <div class="drop-menu mobile-hide"> --}}
-                                    @{{user.name}} @{{user.surname}}
+                                    {{-- @{{user.name}} @{{user.surname}} --}}
                                 {{-- </div> --}}
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">

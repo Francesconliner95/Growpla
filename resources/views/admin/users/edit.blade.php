@@ -45,13 +45,6 @@
                       @enderror
                   </div>
 
-                  {{-- Settore --}}
-                  <select class="form-control" name="">
-                      @foreach ($sectors as $sector)
-                        <option value="{{$sector->id}}">{{$sector->name}}</option>
-                      @endforeach
-                  </select>
-
                   {{-- Descrizione --}}
                   <div class="sub-section">
                       <h6>{{__('Presentation')}}*</h6>
@@ -134,7 +127,7 @@
                           </div>
                       @enderror
                   </div>
-
+                    {{$user->companies}}
                   <button type="submit" class="button-style button-color">
                       {{__('Save Changes')}}
                   </button>

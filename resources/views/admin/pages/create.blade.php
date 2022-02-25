@@ -13,8 +13,8 @@
                 @csrf
                 <div class="pb-3">
                   <input type="hidden" name="pagetype_id" value="{{$pagetype_id}}">
-                  <input type="text" class="form-control @error('page_name') is-invalid @enderror" name="page_name" value="" minlength="3" maxlength="70" autocomplete="page_name" required>
-                  @error('page_name')
+                  <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="" minlength="3" maxlength="70" autocomplete="name" required>
+                  @error('name')
                       <span class="alert alert-danger">
                           {{__($message)}}
                       </span>
