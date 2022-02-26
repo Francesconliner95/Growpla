@@ -49,6 +49,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany('App\Company');
     }
 
+    public function skills(){
+        return $this->belongsToMany('App\Skill');
+    }
+
+    // public function services(){
+    //     return $this->belongsToMany('App\Service');
+    // }
+
     /**
      * The attributes that are mass assignable.
      *

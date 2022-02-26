@@ -32,6 +32,7 @@ class CreatePagesTable extends Migration
             $table->boolean('incorporated')->nullable();
 
             $table->tinyInteger('moneyrange_id')->nullable();
+            $table->integer('startup_n')->nullable();
 
             $table->timestamps();
 

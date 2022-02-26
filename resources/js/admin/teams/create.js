@@ -15,7 +15,7 @@ var create = new Vue({
         y: 0,
         width: 300,
         height: 300,
-        registered_member: true,
+        registered_team: true,
         user_name: '',
         users_found: '',
         user_selected: '',

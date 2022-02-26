@@ -52,7 +52,7 @@ class HomeController extends Controller
 
         //se gia loggato mi resta nell pagina admin finche non faccio logout
         if(Auth::check()){
-            return redirect()->route('admin.accounts.index');
+            return redirect()->route('admin.search');
         }else{
             return view('guest.home',$data);
         }

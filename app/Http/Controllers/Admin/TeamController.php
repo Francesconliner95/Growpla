@@ -20,7 +20,7 @@ class TeamController extends Controller
         $this->middleware(['auth','verified']);
     }
 
-    public function addMember($page_id)
+    public function addTeam($page_id)
     {
 
         $data = [
@@ -32,7 +32,7 @@ class TeamController extends Controller
         return view('admin.teams.create', $data);
     }
 
-    public function storeMember(Request $request, $page_id)
+    public function storeTeam(Request $request, $page_id)
     {
         $request->validate([
             'role'=> 'required|max:255',
@@ -54,10 +54,10 @@ class TeamController extends Controller
 
         if($page->users->contains(Auth::user()) && $team_number<50){
 
-            $new_team_member = new Team();
-            $new_team_member->fill($data);
-            $new_team_member->page_id = $page_id;
-            $new_team_member->position = $new_last_position;
+            $new_team_team = new Team();
+            $new_team_team->fill($data);
+            $new_team_team->page_id = $page_id;
+            $new_team_team->position = $new_last_position;
 
             if(array_key_exists('image', $data)){
                 //recupero la path e salvo la nuova l'immagine
@@ -67,10 +67,10 @@ class TeamController extends Controller
                             ->crop($data['width'],$data['height'], $data['x'],$data['y'])
                             ->resize(300,300)/*risoluzione*/
                             ->save('./storage/'.$image_path, 100 /*Qualita*/);
-                $new_team_member->image = $image_path;
+                $new_team_team->image = $image_path;
             }
 
-            $new_team_member->save();
+            $new_team_team->save();
         }
 
         return redirect()->route('admin.pages.show', ['page' => $page_id]);
@@ -79,15 +79,15 @@ class TeamController extends Controller
 
     public function edit($id)
     {
-        $member = Team::find($id);
+        $team = Team::find($id);
 
         $user = '';
-        if($member->user_id){
-          $user = User::find($member->user_id);
+        if($team->user_id){
+          $user = User::find($team->user_id);
         }
 
         $data = [
-            'member' => $member,
+            'team' => $team,
             'user' => $user,
         ];
         app()->setLocale(Language::find(Auth::user()->language_id)->lang);
@@ -156,48 +156,48 @@ class TeamController extends Controller
     public function changeTeamPosition(Request $request)
     {
         $request->validate([
-            'member_id' => 'required|integer',
+            'team_id' => 'required|integer',
             'up_down' => 'required',
         ]);
 
-        $member = Team::find($request->member_id);
+        $team = Team::find($request->team_id);
         $up_down = $request->up_down;
-        $member_qty = Team::where('page_id',$member->page_id)
+        $team_qty = Team::where('page_id',$team->page_id)
                         ->count();
 
-        $page = Page::find($member->page_id);
+        $page = Page::find($team->page_id);
 
         if($page->users->contains(Auth::user())){
 
-            if($up_down==-1 && $member->position>=1){
+            if($up_down==-1 && $team->position>=1){
 
-                $current_position = $member->position;
+                $current_position = $team->position;
                 $desired_position = $current_position - 1;
 
-                $previous_member = Team::where('page_id',$member->page_id)
+                $previous_team = Team::where('page_id',$team->page_id)
                                     ->where('position',$desired_position)
                                     ->first();
 
-                $previous_member->position = $current_position;
-                $previous_member->update();
+                $previous_team->position = $current_position;
+                $previous_team->update();
 
-                $member->position = $desired_position;
-                $member->update();
+                $team->position = $desired_position;
+                $team->update();
 
-            }elseif($up_down==1 && $member->position<$member_qty-1){
+            }elseif($up_down==1 && $team->position<$team_qty-1){
 
-                $current_position = $member->position;
+                $current_position = $team->position;
                 $desired_position = $current_position + 1;
 
-                $next_member = Team::where('page_id',$member->page_id)
+                $next_team = Team::where('page_id',$team->page_id)
                                     ->where('position',$desired_position)
                                     ->first();
 
-                $next_member->position = $current_position;
-                $next_member->update();
+                $next_team->position = $current_position;
+                $next_team->update();
 
-                $member->position = $desired_position;
-                $member->update();
+                $team->position = $desired_position;
+                $team->update();
             }
 
         }

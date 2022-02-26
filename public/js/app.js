@@ -77061,6 +77061,132 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
+/***/ "./resources/js/admin/services/create.js":
+/*!***********************************************!*\
+  !*** ./resources/js/admin/services/create.js ***!
+  \***********************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! croppr */ "./node_modules/croppr/dist/croppr.js");
+/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(croppr__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#service-create',
+  data: {
+    service_name: '',
+    services_found: ''
+  },
+  methods: {
+    searchService: function searchService() {
+      var _this = this;
+
+      if (this.service_name) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchService', {
+          params: {
+            service_name: this.service_name
+          }
+        }).then(function (response) {
+          _this.services_found = response.data.results.services;
+
+          if (!_this.service_name) {
+            _this.services_found = '';
+          }
+        });
+      } else {
+        this.services_found = '';
+      }
+    },
+    addService: function addService(service_found) {
+      this.service_name = service_found.name;
+      this.services_found = '';
+    }
+  },
+  created: function created() {
+    console.log('prova');
+  },
+  mounted: function mounted() {}
+});
+
+/***/ }),
+
+/***/ "./resources/js/admin/services/edit.js":
+/*!*********************************************!*\
+  !*** ./resources/js/admin/services/edit.js ***!
+  \*********************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! croppr */ "./node_modules/croppr/dist/croppr.js");
+/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(croppr__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#skill-edit',
+  data: {
+    skill: skill,
+    skill_name: '',
+    skills_found: ''
+  },
+  methods: {
+    searchSkill: function searchSkill() {
+      var _this = this;
+
+      if (this.skill_name) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchSkill', {
+          params: {
+            skill_name: this.skill_name
+          }
+        }).then(function (response) {
+          _this.skills_found = response.data.results.skills;
+
+          if (!_this.skill_name) {
+            _this.skills_found = '';
+          }
+        });
+      } else {
+        this.skills_found = '';
+      }
+    },
+    addSkill: function addSkill(skill_found) {
+      this.skill_name = skill_found.name;
+      this.skills_found = '';
+    }
+  },
+  created: function created() {
+    if (this.skill) {
+      this.skill = JSON.parse(this.skill.replace(/&quot;/g, '"'));
+      this.skill_name = this.skill.name;
+    }
+  },
+  mounted: function mounted() {}
+});
+
+/***/ }),
+
 /***/ "./resources/js/admin/settings/index.js":
 /*!**********************************************!*\
   !*** ./resources/js/admin/settings/index.js ***!
@@ -77317,6 +77443,130 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
+/***/ "./resources/js/admin/skills/create.js":
+/*!*********************************************!*\
+  !*** ./resources/js/admin/skills/create.js ***!
+  \*********************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! croppr */ "./node_modules/croppr/dist/croppr.js");
+/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(croppr__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#skill-create',
+  data: {
+    skill_name: '',
+    skills_found: ''
+  },
+  methods: {
+    searchSkill: function searchSkill() {
+      var _this = this;
+
+      if (this.skill_name) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchSkill', {
+          params: {
+            skill_name: this.skill_name
+          }
+        }).then(function (response) {
+          _this.skills_found = response.data.results.skills;
+
+          if (!_this.skill_name) {
+            _this.skills_found = '';
+          }
+        });
+      } else {
+        this.skills_found = '';
+      }
+    },
+    addSkill: function addSkill(skill_found) {
+      this.skill_name = skill_found.name;
+      this.skills_found = '';
+    }
+  },
+  created: function created() {},
+  mounted: function mounted() {}
+});
+
+/***/ }),
+
+/***/ "./resources/js/admin/skills/edit.js":
+/*!*******************************************!*\
+  !*** ./resources/js/admin/skills/edit.js ***!
+  \*******************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! croppr */ "./node_modules/croppr/dist/croppr.js");
+/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(croppr__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#skill-edit',
+  data: {
+    skill: skill,
+    skill_name: '',
+    skills_found: ''
+  },
+  methods: {
+    searchSkill: function searchSkill() {
+      var _this = this;
+
+      if (this.skill_name) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchSkill', {
+          params: {
+            skill_name: this.skill_name
+          }
+        }).then(function (response) {
+          _this.skills_found = response.data.results.skills;
+
+          if (!_this.skill_name) {
+            _this.skills_found = '';
+          }
+        });
+      } else {
+        this.skills_found = '';
+      }
+    },
+    addSkill: function addSkill(skill_found) {
+      this.skill_name = skill_found.name;
+      this.skills_found = '';
+    }
+  },
+  created: function created() {
+    if (this.skill) {
+      this.skill = JSON.parse(this.skill.replace(/&quot;/g, '"'));
+      this.skill_name = this.skill.name;
+    }
+  },
+  mounted: function mounted() {}
+});
+
+/***/ }),
+
 /***/ "./resources/js/admin/supports/create.js":
 /*!***********************************************!*\
   !*** ./resources/js/admin/supports/create.js ***!
@@ -77523,7 +77773,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     y: 0,
     width: 300,
     height: 300,
-    registered_member: true,
+    registered_team: true,
     user_name: '',
     users_found: '',
     user_selected: ''
@@ -77765,15 +78015,15 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#team-edit',
   data: {
-    member: member,
+    team: team,
     user: user,
-    image: member.image,
-    image_src: '/storage/' + member.image,
+    image: team.image,
+    image_src: '/storage/' + team.image,
     x: 0,
     y: 0,
     width: 300,
     height: 300,
-    registered_member: member.user_id ? true : false,
+    registered_team: team.user_id ? true : false,
     user_name: '',
     users_found: '',
     user_selected: ''
@@ -77904,12 +78154,12 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         method: 'put',
         url: '/admin/removeFile',
         data: {
-          account_id: this.member.account_id,
+          account_id: this.team.account_id,
           file_type: value,
-          item_id: this.member.id
+          item_id: this.team.id
         }
       }).then(function (response) {});
-      this.member.image = 'accounts_images/default_account_image.png';
+      this.team.image = 'accounts_images/default_account_image.png';
     }
   },
   created: function created() {
@@ -78572,7 +78822,7 @@ if (document.getElementById('team-create')) {
 
 if (document.getElementById('team-edit')) {
   __webpack_require__(/*! ./admin/teams/edit.js */ "./resources/js/admin/teams/edit.js");
-} //TEAM
+} //COMPANY
 
 
 if (document.getElementById('company-create')) {
@@ -78581,6 +78831,24 @@ if (document.getElementById('company-create')) {
 
 if (document.getElementById('company-edit')) {
   __webpack_require__(/*! ./admin/companies/edit.js */ "./resources/js/admin/companies/edit.js");
+} //SKILL
+
+
+if (document.getElementById('skill-create')) {
+  __webpack_require__(/*! ./admin/skills/create.js */ "./resources/js/admin/skills/create.js");
+}
+
+if (document.getElementById('skill-edit')) {
+  __webpack_require__(/*! ./admin/skills/edit.js */ "./resources/js/admin/skills/edit.js");
+} //SERVICE
+
+
+if (document.getElementById('service-create')) {
+  __webpack_require__(/*! ./admin/services/create.js */ "./resources/js/admin/services/create.js");
+}
+
+if (document.getElementById('service-edit')) {
+  __webpack_require__(/*! ./admin/services/edit.js */ "./resources/js/admin/services/edit.js");
 } //OTHER
 
 

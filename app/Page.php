@@ -23,6 +23,14 @@ class Page extends Model
       return $this->hasMany('App\Team');
     }
 
+    public function pagetype(){
+        return $this->belongsTo('App\Pagetype');
+    }
+
+    // public function services(){
+    //     return $this->belongsToMany('App\Service');
+    // }
+
     protected $fillable = [
       'pagetype_id',
       'name',
@@ -38,6 +46,7 @@ class Page extends Model
       'pitch',
       'incorporated',
       'moneyrange_id',
+      'startup_n',
     ];
 
 }

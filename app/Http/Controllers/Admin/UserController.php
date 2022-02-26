@@ -16,6 +16,7 @@ use App\Usertype;
 use App\Pagetype;
 use App\Moneyrange;
 use App\Sector;
+use App\GiveUserService;
 
 class UserController extends Controller
 {
@@ -90,6 +91,7 @@ class UserController extends Controller
           'linkedin'=> 'nullable|max:255',
           'cv' => 'nullable|mimes:pdf|max:6144',
           'moneyrange_id' => 'nullable|integer|min:1|max:5',
+          'startup_n' => 'nullable|integer',
       ]);
 
       $data = $request->all();
@@ -124,6 +126,10 @@ class UserController extends Controller
       $userTypes = Usertype::all();
 
       //dd($user->currency);
+      $give_services = GiveUserService::where('user_id',$user->id)
+      ->join('services','services.id','service_id')
+      ->select('give_user_services.id','services.name')
+      ->get();
 
       $data = [
         'user' => $user,
@@ -131,6 +137,7 @@ class UserController extends Controller
         'is_my_user' => Auth::user()->id==$user->id?true:false,
         'pageTypes' => $user->pagetypes,
         'currencies' => $user->currencies,
+        'give_services' => $give_services,
       ];
 
       return view('admin.users.show', $data);

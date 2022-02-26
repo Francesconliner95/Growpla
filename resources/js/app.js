@@ -98,13 +98,31 @@ if (document.getElementById('team-edit')) {
     require('./admin/teams/edit.js');
 }
 
-//TEAM
+//COMPANY
 if (document.getElementById('company-create')) {
     require('./admin/companies/create.js');
 }
 
 if (document.getElementById('company-edit')) {
     require('./admin/companies/edit.js');
+}
+
+//SKILL
+if (document.getElementById('skill-create')) {
+    require('./admin/skills/create.js');
+}
+
+if (document.getElementById('skill-edit')) {
+    require('./admin/skills/edit.js');
+}
+
+//SERVICE
+if (document.getElementById('service-create')) {
+    require('./admin/services/create.js');
+}
+
+if (document.getElementById('service-edit')) {
+    require('./admin/services/edit.js');
 }
 
 //OTHER

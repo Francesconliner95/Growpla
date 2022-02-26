@@ -3,7 +3,7 @@
 @section('content')
 <script type="text/javascript">
     window.csrf_token = "{{ csrf_token() }}";
-    member = {!! json_encode($member->toArray()) !!};
+    team = {!! json_encode($team->toArray()) !!};
     user = "{{$user}}";
 </script>
 <div class="container">
@@ -16,21 +16,21 @@
                         <i class="fas fa-pencil-alt"></i>
                     </h1>
                 </div>
-                <form ref="editTeam" method="POST" enctype="multipart/form-data" action="{{ route('admin.teams.update', ['team'=> $member->id]) }}">
+                <form ref="editTeam" method="POST" enctype="multipart/form-data" action="{{ route('admin.teams.update', ['team'=> $team->id]) }}">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
                       <h6>Aggiungi utente iscritto</h6>
                       <div>
-                        <input type="radio" id="yes" name="registered_member" value="0" @click="registered_member=true" :checked="registered_member">
+                        <input type="radio" id="yes" name="registered_team" value="0" @click="registered_team=true" :checked="registered_team">
                         <label for="yes">Si</label>
                       </div>
                       <div>
-                        <input type="radio" id="no" name="registered_member" value="1" @click="registered_member=false" :checked="!registered_member">
+                        <input type="radio" id="no" name="registered_team" value="1" @click="registered_team=false" :checked="!registered_team">
                         <label for="no">No</label>
                       </div>
                     </div>
-                    <div v-if="registered_member" class="">
+                    <div v-if="registered_team" class="">
                       <input type="hidden" name="user_id" :value="user_selected.id" required>
                       <input type="hidden" name="name" value="">
                       <input type="hidden" name="surname" value="">
@@ -71,7 +71,7 @@
                       {{-- Nome --}}
                       <div class="form-group">
                           <h6>{{__('Name')}}</h6>
-                          <input type="text" name="name" class="form-control" maxlength="70" value="{{ old('name',$member->name)}}" required>
+                          <input type="text" name="name" class="form-control" maxlength="70" value="{{ old('name',$team->name)}}" required>
                           @error ('name')
                               <div class="alert alert-danger">
                                   {{__($message)}}
@@ -80,7 +80,7 @@
                       </div>
                       <div class="form-group">
                           <h6>{{__('Surame')}}</h6>
-                          <input type="text" name="surname" class="form-control" maxlength="70" value="{{ old('surname',$member->surname)}}" required>
+                          <input type="text" name="surname" class="form-control" maxlength="70" value="{{ old('surname',$team->surname)}}" required>
                           @error ('surname')
                               <div class="alert alert-danger">
                                   {{__($message)}}
@@ -90,7 +90,7 @@
 
                       <div class="form-group">
                           <h6>Linkedin</h6>
-                          <input type="text" name="linkedin" class="form-control" maxlength="255" value="{{ old('linkedin',$member->linkedin)}}">
+                          <input type="text" name="linkedin" class="form-control" maxlength="255" value="{{ old('linkedin',$team->linkedin)}}">
                           @error ('linkedin')
                               <div class="alert alert-danger">
                                   {{__($message)}}
@@ -102,7 +102,7 @@
                       {{-- Ruolo --}}
                       <div class="form-group">
                           <h6>{{__('Role')}}</h6>
-                          <input type="text" name="role" class="form-control" maxlength="50" value="{{ old('role',$member->role)}}" required>
+                          <input type="text" name="role" class="form-control" maxlength="50" value="{{ old('role',$team->role)}}" required>
                           @error ('role')
                               <div class="alert alert-danger">
                                   {{__($message)}}
@@ -110,7 +110,7 @@
                           @enderror
                       </div>
 
-                      <div v-show="!registered_member" class="">
+                      <div v-show="!registered_team" class="">
                         <h6>{{__('Image')}}</h6>
                         {{-- Immagine --}}
                         <div class="edit-image-drag-drop dd-cropper row">
@@ -140,7 +140,7 @@
                           {{__('Save Changes')}}
                       </button>
                 </form>
-                <form method="post" action="{{ route('admin.teams.destroy', ['team'=> $member->id])}}" class="p-0 m-0 d-inline-block">
+                <form method="post" action="{{ route('admin.teams.destroy', ['team'=> $team->id])}}" class="p-0 m-0 d-inline-block">
                 @csrf
                 @method('DELETE')
                 <button class="button-style button-color-red ml-5" type="submit" name="button">

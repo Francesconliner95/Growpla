@@ -66,13 +66,13 @@
 
                         <a href="{{ route('home') }}" class="position-relative">
 
-                        <a href="{{ route('admin.accounts.index') }}" class="position-relative">
+                        <a href="{{ route('admin.search') }}" class="position-relative">
                             <img src="{{ asset("storage/images/logo-fullsize.svg") }}" alt="" class="logo">
                             <span class="beta">BETA</span>
                         </a>
                     </div>
                     <div class="nav-right d-inline-block col-sm-12 col-md-12 col-lg-6 col-xl-6 d-flex align-items-center">
-                        <a href="{{ route('admin.accounts.index') }}" class="mobile-show position-relative">
+                        <a href="{{ route('admin.search') }}" class="mobile-show position-relative">
 
                             <img src="{{ asset("storage/images/logo.svg") }}" alt="" class="mini-logo">
                             <span class="beta">BETA</span>

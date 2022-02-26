@@ -14,6 +14,7 @@ use App\Usertype;
 use App\Pagetype;
 use App\Team;
 use App\Sector;
+use App\Moneyrange;
 
 class PageController extends Controller
 {
@@ -74,51 +75,59 @@ class PageController extends Controller
 
     }
 
-    public function edit($id){
+    public function edit(Page $page){
 
-        $page = Page::find($id);
-        $data = [
-          'page' => $page,
-        ];
+        //verifico se l'utente ha abilitato il tipo di pagina selezionata
+        if(Auth::user()->pagetypes->contains($page->pagetype_id)){
 
-        return view('admin.pages.edit', $data);
+            $data = [
+              'page' => $page,
+              'moneyranges' => Moneyrange::all(),
+            ];
+
+            return view('admin.pages.edit', $data);
+
+        }abort(404);
 
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, Page $page){
 
-      $request->validate([
+        $request->validate([
           'name' => 'required|string|min:3|max:70',
           'description' => 'required|min:50',
           'website' => 'nullable|max:255',
           'linkedin'=> 'nullable|max:255',
           'pitch' => 'nullable|mimes:pdf|max:6144',
-      ]);
+          'incorporated' => 'nullable|boolean',
+          'moneyrange_id' => 'nullable|integer|min:1|max:5',
+          'startup_n' => 'nullable|integer',
 
-      $data = $request->all();
+        ]);
 
-      $page = Page::find($id);
+        if(Auth::user()->pagetypes->contains($page->pagetype_id)){
 
-      // if($user->id == $id){
+            $data = $request->all();
 
-          if(array_key_exists('pitch', $data)){
+            if(array_key_exists('pitch', $data)){
               $old_pitch_name = $page->pitch;
               Storage::delete($old_pitch_name);
               $pitch_path = Storage::put('pitch', $data['pitch']);
               $data['pitch'] = $pitch_path;
-          }
+            }
 
-          $page->fill($data);
+            $page->fill($data);
 
-          if($request->name){
+            if($request->name){
             $page->name = Str::lower($request->name);
-          }
+            }
 
-          $page->update();
+            $page->update();
 
-          return redirect()->route('admin.pages.show', ['page' => $page->id]);
+            return redirect()->route('admin.pages.show', ['page' => $page->id]);
 
-      // }abort(404);
+        }abort(404);
+
     }
 
     public function show($id){

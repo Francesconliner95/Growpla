@@ -154,12 +154,7 @@
                         <button aria-label="{{__('Add team member')}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
                         <i class="fas fa-info-circle"></i>
                     </div>
-                    {{-- <div class="info">
-                        <i class="fas fa-info-circle"></i>
-                        <span class="info-message">Aggiungi componente al team</span>
-                    </div> --}}
                 </h3>
-
                 <div class="row justify-content-center">
                     <div v-for="member in team_members" class="team-member-cont col-sm-12 col-md-6 col-lg-4 col-xl-4" >
                         <div class="team-member sub-item-style">
@@ -199,7 +194,7 @@
                         </a>
                     </div>
                     <div v-if="is_my_page" class="d-flex justify-content-center w-100">
-                        <a href="{{route('admin.teams.addMember', $page->id)}}" class="button-color-gray">
+                        <a href="{{route('admin.teams.addTeam', $page->id)}}" class="button-color-gray">
                             <i class="fas fa-plus-circle"></i>
                         </a>
                     </div>

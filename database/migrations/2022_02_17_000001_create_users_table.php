@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
             $table->foreign('moneyrange_id')->references('id')->on('moneyranges');
             $table->unsignedbigInteger('currency_id')->default(1);
             $table->foreign('currency_id')->references('id')->on('currencies');
-            $table->tinyInteger('startup_n')->nullable();
+            $table->integer('startup_n')->nullable();
             $table->decimal('latitude')->nullable();
             $table->decimal('longitude')->nullable();
             $table->unsignedbigInteger('language_id')->default(1);

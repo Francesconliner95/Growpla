@@ -66,8 +66,8 @@
                           </div>
                       @enderror
                   </div>
-                  {{-- Pitch --}}
-                  @if ($page->pagetype_id==1)
+                  {{-- Startup --}}
+                  @if (!$page->pagetype->hidden && $page->pagetype_id==1 && Auth::user()->pagetypes->contains($page->pagetype_id))
                   <div class="sub-section">
                       <h6>Pitch</h6>
                       <div class="edit-image-drag-drop row">
@@ -89,6 +89,54 @@
                               @enderror
                           </div>
                       </div>
+                  </div>
+                  <div class="sub-section">
+                      <div class="form-contrtol">
+                          <h6>Costituita</h6>
+                          <div>
+                            <input type="radio" id="incorporated-yes" name="incorporated" value="1"
+                            {{$page->incorporated?'checked':''}} required>
+                            <label for="incorporated-yes">Si</label>
+                          </div>
+                          <div>
+                            <input type="radio" id="incorporated-no" name="incorporated" value=""
+                            {{!$page->incorporated?'checked':''}} required>
+                            <label for="incorporated-no">No</label>
+                          </div>
+                      </div>
+                  </div>
+                  @endif
+                  @if (!$page->pagetype->hidden
+                  && $page->pagetype_id==3 || $page->pagetype_id==4
+                  || $page->pagetype_id==5 || $page->pagetype_id==8)
+                  <div class="sub-section">
+                      <h6>Moneyrange <span>({{__('Quanto hai investito sino ad oggi?')}})</span></h6>
+                      <div class="form-contrtol">
+                        @foreach ($moneyranges as $moneyrange)
+                          <div>
+                            <input type="radio" id="moneyrange-{{$moneyrange->id}}" name="moneyrange_id" value="{{$moneyrange->id}}"
+                            {{-- {{old('moneyrange_id',$moneyrange->id)?'checked':''}} --}}
+                            {{$moneyrange->id==$page->moneyrange_id?'checked':''}}
+                            {{!$page->moneyrange_id && $moneyrange->id==1?'checked':''}} required>
+                            <label for="moneyrange-{{$moneyrange->id}}">{{$moneyrange->range}}</label>
+                          </div>
+                        @endforeach
+                      </div>
+                      @error ('moneyrange')
+                          <div class="alert alert-danger">
+                              {{__($message)}}
+                          </div>
+                      @enderror
+                  </div>
+                  {{-- Startup Number --}}
+                  <div class="sub-section">
+                      <h6>Numero di startup supportate</h6>
+                      <input type="number" name="startup_n" class="form-control" value="{{ old('startup_n',$page->startup_n)}}" min="0" placeholder="">
+                      @error ('startup_n')
+                          <div class="alert alert-danger">
+                              {{__($message)}}
+                          </div>
+                      @enderror
                   </div>
                   @endif
                   <button type="submit" class="button-style button-color">

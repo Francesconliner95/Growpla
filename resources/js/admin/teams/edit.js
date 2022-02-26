@@ -9,15 +9,15 @@ axios.defaults.headers.common = {
 var create = new Vue({
     el: '#team-edit',
     data: {
-        member,
+        team,
         user,
-        image: member.image,
-        image_src: '/storage/' + member.image,
+        image: team.image,
+        image_src: '/storage/' + team.image,
         x: 0,
         y: 0,
         width: 300,
         height: 300,
-        registered_member: member.user_id?true:false,
+        registered_team: team.user_id?true:false,
         user_name: '',
         users_found: '',
         user_selected: '',
@@ -148,15 +148,15 @@ var create = new Vue({
                 method: 'put',
                 url: '/admin/removeFile',
                 data: {
-                    account_id: this.member.account_id,
+                    account_id: this.team.account_id,
                     file_type: value,
-                    item_id: this.member.id,
+                    item_id: this.team.id,
                 }
             }).then(response => {
 
             });
 
-            this.member.image = 'accounts_images/default_account_image.png';
+            this.team.image = 'accounts_images/default_account_image.png';
 
         },
     },

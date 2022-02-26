@@ -127,7 +127,6 @@
                           </div>
                       @enderror
                   </div>
-                    {{$user->companies}}
                   <button type="submit" class="button-style button-color">
                       {{__('Save Changes')}}
                   </button>

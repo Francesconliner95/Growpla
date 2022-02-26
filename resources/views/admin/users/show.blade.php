@@ -165,23 +165,63 @@
                         </div>
                     </div>
                     @endif
-                    @foreach ($user->companies as $company)
-                    <div>
-                        @if($company->page_id)
-                            {{$company->page->name}}
-                        @else
-                            {{$company->name}}
-                        @endif
-                        <a href="{{route('admin.companies.edit', $company->id)}}" class="text-gray">
-                            Modifica
-                        </a>
+                    @if($is_my_user || count($user->skills)>0)
+                    <div class="sub-section">
+                      <h6>{{__('Skills')}}</h6>
+                      @foreach ($user->skills as $skill)
+                          <p>{{$skill->name}}
+                              <a href="{{route('admin.skills.edit',$skill->id)}}" class="button-gray">
+                                  <i class="fas fa-pencil-alt"></i>
+                              </a>
+                          </p>
+                      @endforeach
+                      <div v-if="is_my_user" class="d-flex justify-content-center w-100">
+                          <a href="{{route('admin.skills.create')}}" class="text-gray">
+                              <i class="fas fa-plus-circle"></i>Aggiungi abilità
+                          </a>
+                      </div>
                     </div>
-                    @endforeach
+                    @endif
+
+                    @if($is_my_user || count($give_services)>0)
+                    <div class="sub-section">
+                      <h6>{{__('Servizi offerti')}}</h6>
+                      @foreach ($give_services as $service)
+                          <p>{{$service->name}}
+                              <a href="{{route('admin.services.edit',$service->id)}}" class="button-gray">
+                                  <i class="fas fa-pencil-alt"></i>
+                              </a>
+                          </p>
+                      @endforeach
+                      <div v-if="is_my_user" class="d-flex justify-content-center w-100">
+                          <a href="{{route('admin.services.create')}}" class="text-gray">
+                              <i class="fas fa-plus-circle"></i>Aggiungi servizio offerto
+                          </a>
+                      </div>
+                    </div>
+                    @endif
+                    @if($is_my_user || count($user->companies)>0)
+                    <div class="">
+                        <h6>{{__('Companies')}}</h6>
+                        @foreach ($user->companies as $company)
+                        <div>
+                            @if($company->page_id)
+                                {{$company->page->name}}
+                            @else
+                                {{$company->name}}
+                            @endif
+                            <a v-if="is_my_user" href="{{route('admin.companies.edit', $company->id)}}" class="text-gray">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                        </div>
+                        @endforeach
+                    </div>
                     <div v-if="is_my_user" class="d-flex justify-content-center w-100">
                         <a href="{{route('admin.companies.create')}}" class="text-gray">
                             <i class="fas fa-plus-circle"></i>Aggiungi azienda per cui lavori
                         </a>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

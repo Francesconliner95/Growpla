@@ -9,26 +9,26 @@
         <div class="item-cont">
             <div class="item-style">
                 <div class="header">
-                    <h2>{{__('Add member')}}</h2>
+                    <h2>{{__('Add team')}}</h2>
                     <h1>
                         <i class="fas fa-plus-circle"></i>
                     </h1>
                 </div>
-                <form ref="editTeam" method="POST" enctype="multipart/form-data" action="{{ route('admin.teams.storeMember', ['page_id'=> $page_id]) }}">
+                <form ref="editTeam" method="POST" enctype="multipart/form-data" action="{{ route('admin.teams.storeTeam', ['page_id'=> $page_id]) }}">
                     @csrf
 
                     <div class="form-group">
                       <h6>Aggiungi utente iscritto</h6>
                       <div>
-                        <input type="radio" id="yes" name="registered_member" value="0" @click="registered_member=true" checked>
+                        <input type="radio" id="yes" name="registered_team" value="0" @click="registered_team=true" checked>
                         <label for="yes">Si</label>
                       </div>
                       <div>
-                        <input type="radio" id="no" name="registered_member" value="1" @click="registered_member=false">
+                        <input type="radio" id="no" name="registered_team" value="1" @click="registered_team=false">
                         <label for="no">No</label>
                       </div>
                     </div>
-                    <div v-if="registered_member" class="">
+                    <div v-if="registered_team" class="">
                       <input type="hidden" name="user_id" :value="user_selected.id">
                       <input type="hidden" name="name" value="">
                       <input type="hidden" name="surname" value="">

@@ -58,6 +58,12 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     ->name('images.updatePageImage');
     Route::put('/removePageImage', 'ImageController@removePageImage')->name('removePageImage');
 
+    //Skills
+    Route::resource('/skills', 'SkillController');
+
+    //Service
+    Route::resource('/services', 'GiveUserServiceController');
+
     Route::get('/advancedSearch', 'SearchController@advancedSearch')->name('advancedSearch');
 
     Route::get('/', 'HomeController@index')->name('index');
@@ -73,9 +79,9 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
 
     // TEAM
     Route::resource('/teams', 'TeamController');
-    Route::get('/addMember/{page_id}', 'TeamController@addMember')->name('teams.addMember');
-    Route::post('/storeMember/{page_id}', 'TeamController@storeMember')->name('teams.storeMember');
-    Route::delete('/deleteMember', 'TeamController@deleteMember')->name('deleteMember');
+    Route::get('/addTeam/{page_id}', 'TeamController@addTeam')->name('teams.addTeam');
+    Route::post('/storeTeam/{page_id}', 'TeamController@storeTeam')->name('teams.storeTeam');
+    Route::delete('/deleteTeam', 'TeamController@deleteTeam')->name('deleteTeam');
     Route::put('/changeTeamPosition', 'TeamController@changeTeamPosition')->name('teams.changeTeamPosition');
 
     // COMPANY

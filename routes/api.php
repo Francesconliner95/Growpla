@@ -20,6 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/searchUser', 'Api\UserController@searchUser');
 Route::get('/searchPage', 'Api\PageController@searchPage');
+Route::get('/searchSkill', 'Api\SkillController@searchSkill');
+Route::get('/searchService', 'Api\ServiceController@searchService');
 
 Route::post('/sendEmail', 'Api\HomeController@sendEmail');
 
