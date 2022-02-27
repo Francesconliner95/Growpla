@@ -82,16 +82,19 @@
                                 </div>
                             </div> --}}
                         </div>
+                        @if($is_my_user || count($user->sectors)>0)
                         <div class="sub-section">
+                          <h6>{{__('Sector')}}</h6>
                           <div class="">
                             @foreach ($user->sectors as $sector)
-                              <span class="sector-style mb-2">{{$sector->name}}</span>
+                              <span class="d-block{{--sector-style mb-2--}}">{{$sector->name}}</span>
                             @endforeach
                           </div>
-                          <a  v-if="is_my_user" class="button-style button-color-orange" href="{{route('admin.users.sectors', $user->id)}}">
-                              Modifica Settore
+                          <a  v-if="is_my_user" class="" href="{{route('admin.users.sectors', $user->id)}}">
+                              <i class="fas fa-pencil-alt"></i>
                           </a>
                         </div>
+                        @endif
 
                         {{-- Descrizione --}}
                         @if($user->description)

@@ -87,16 +87,16 @@ var create = new Vue({
     mounted() {
         if(this.user){
             this.user = JSON.parse(this.user.replace(/&quot;/g,'"'));
-        };
+        }
 
         console.log(this.user);
 
-        if(this.user.account_id){
-            this.account_selected = this.user.account_id;
-            this.getMyAccount();
-            this.getNotReadNotifications();
-            this.getMessagesCount();
-        }
+        // if(this.user.account_id){
+        //     this.account_selected = this.user.account_id;
+        //     this.getMyAccount();
+        //     this.getNotReadNotifications();
+        //     this.getMessagesCount();
+        // }
 
     }
 

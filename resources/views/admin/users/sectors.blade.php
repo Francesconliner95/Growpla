@@ -22,8 +22,7 @@
                       'button-style button-color-orange w-100'" @click="checkboxToggle('{{$sector->id}}')" id="{{$sector->id}}-b">
                         @if($errors->any())
                           <input type="checkbox" name="sectors[]" class="d-none" value="{{$sector->id}}" id="{{$sector->id}}"
-                          {{ in_array($sector->id, old('sectors', [])) ? 'checked=checked' : ''}}
-                          >
+                          {{ in_array($sector->id, old('sectors', [])) ? 'checked=checked' : ''}}>
                         @else
                           <input type="checkbox" name="sectors[]" class="d-none" value="{{$sector->id}}" id="{{$sector->id}}"
                           {{$user->sectors->contains($sector)?'checked=checked':''}}>

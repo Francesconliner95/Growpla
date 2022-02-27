@@ -162,19 +162,21 @@ class UserController extends Controller
 
     public function storesectors(Request $request, $id){
 
-      $request->validate([
-          'sectors'=> 'exists:sectors,id',
-      ]);
+        $request->validate([
+            'sectors'=> 'exists:sectors,id',
+        ]);
 
-      $data = $request->all();
+        $data = $request->all();
 
-      $user = Auth::user();
+        $user = Auth::user();
 
-      if(array_key_exists('sectors', $data)){
-        $user->sectors()->sync($data['sectors']);
-      }
+        if(array_key_exists('sectors', $data)){
+            $user->sectors()->sync($data['sectors']);
+        }else{
+            $user->sectors()->sync([]);
+        }
 
-      return redirect()->route('admin.users.show',$user->id);
+        return redirect()->route('admin.users.show',$user->id);
 
     }
 

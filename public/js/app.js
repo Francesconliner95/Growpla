@@ -75315,15 +75315,12 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       this.user = JSON.parse(this.user.replace(/&quot;/g, '"'));
     }
 
-    ;
-    console.log(this.user);
-
-    if (this.user.account_id) {
-      this.account_selected = this.user.account_id;
-      this.getMyAccount();
-      this.getNotReadNotifications();
-      this.getMessagesCount();
-    }
+    console.log(this.user); // if(this.user.account_id){
+    //     this.account_selected = this.user.account_id;
+    //     this.getMyAccount();
+    //     this.getNotReadNotifications();
+    //     this.getMessagesCount();
+    // }
   }
 });
 var im_in_index = document.getElementById("account-index");
@@ -77145,41 +77142,41 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
   'X-CSRF-TOKEN': window.csrf_token
 };
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  el: '#skill-edit',
+  el: '#service-edit',
   data: {
-    skill: skill,
-    skill_name: '',
-    skills_found: ''
+    service: service,
+    service_name: '',
+    services_found: ''
   },
   methods: {
-    searchSkill: function searchSkill() {
+    searchService: function searchService() {
       var _this = this;
 
-      if (this.skill_name) {
-        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchSkill', {
+      if (this.service_name) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchService', {
           params: {
-            skill_name: this.skill_name
+            service_name: this.service_name
           }
         }).then(function (response) {
-          _this.skills_found = response.data.results.skills;
+          _this.services_found = response.data.results.services;
 
-          if (!_this.skill_name) {
-            _this.skills_found = '';
+          if (!_this.service_name) {
+            _this.services_found = '';
           }
         });
       } else {
-        this.skills_found = '';
+        this.services_found = '';
       }
     },
-    addSkill: function addSkill(skill_found) {
-      this.skill_name = skill_found.name;
-      this.skills_found = '';
+    addService: function addService(service_found) {
+      this.service_name = service_found.name;
+      this.services_found = '';
     }
   },
   created: function created() {
-    if (this.skill) {
-      this.skill = JSON.parse(this.skill.replace(/&quot;/g, '"'));
-      this.skill_name = this.skill.name;
+    if (this.service) {
+      this.service = JSON.parse(this.service.replace(/&quot;/g, '"'));
+      this.service_name = this.service.name;
     }
   },
   mounted: function mounted() {}

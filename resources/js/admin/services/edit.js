@@ -7,40 +7,40 @@ axios.defaults.headers.common = {
 };
 
 var create = new Vue({
-    el: '#skill-edit',
+    el: '#service-edit',
     data: {
-        skill,
-        skill_name: '',
-        skills_found: '',
+        service,
+        service_name: '',
+        services_found: '',
     },
     methods: {
-        searchSkill(){
-            if(this.skill_name){
-              axios.get('/api/searchSkill',{
+        searchService(){
+            if(this.service_name){
+              axios.get('/api/searchService',{
                   params: {
-                      skill_name: this.skill_name,
+                      service_name: this.service_name,
                   }
               }).then((response) => {
-                  this.skills_found = response.data.results.skills;
-                  if(!this.skill_name){
-                      this.skills_found = '';
+                  this.services_found = response.data.results.services;
+                  if(!this.service_name){
+                      this.services_found = '';
                   }
               });
             }else{
-              this.skills_found = '';
+              this.services_found = '';
             }
         },
 
-        addSkill(skill_found){
-            this.skill_name = skill_found.name;
-            this.skills_found='';
+        addService(service_found){
+            this.service_name = service_found.name;
+            this.services_found='';
         }
 
     },
     created() {
-        if(this.skill){
-            this.skill = JSON.parse(this.skill.replace(/&quot;/g,'"'));
-            this.skill_name = this.skill.name;
+        if(this.service){
+            this.service = JSON.parse(this.service.replace(/&quot;/g,'"'));
+            this.service_name = this.service.name;
         }
 
     },

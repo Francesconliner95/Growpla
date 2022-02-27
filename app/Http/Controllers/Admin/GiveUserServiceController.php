@@ -49,18 +49,30 @@ class GiveUserServiceController extends Controller
         }
 
         $user = Auth::user();
-        if(!$user->services->contains($service)){
-            $user->services()->attach($service);
+
+        $already_exist = GiveUserService::where('user_id',$user->id)
+                        ->where('service_id',$service->id)
+                        ->first();
+
+        if(!$already_exist){
+            $new_gus = new GiveUserService();
+            $new_gus->user_id = $user->id;
+            $new_gus->service_id = $service->id;
+            $new_gus->save();
         }
 
         return redirect()->route('admin.users.show',$user->id);
     }
 
-    public function edit(Service $service)
+    public function edit($id)
     {
 
+        $gus = GiveUserService::find($id);
+
+
         $data = [
-            'service' => $service,
+            'gus' => $gus,
+            'service' => Service::find($gus->service_id),
         ];
 
         app()->setLocale(Language::find(Auth::user()->language_id)->lang);
@@ -68,12 +80,14 @@ class GiveUserServiceController extends Controller
         return view('admin.services.edit', $data);
     }
 
-    public function update(Request $request, Service $service)
+    public function update(Request $request, $id)
     {
 
         $request->validate([
             'name'=> 'required|string',
         ]);
+
+        $gus = GiveUserService::find($id);
 
         $data = $request->all();
 
@@ -81,30 +95,42 @@ class GiveUserServiceController extends Controller
 
         $exist = Service::where('name',$name)->first();
 
-        $old_service = $service;
-
         if(!$exist){
             $new_service = new Service();
             $new_service->name = $name;
             $new_service->save();
+            $service = $new_service;
         }else{
-            $new_service = $exist;
+            $service = $exist;
         }
 
         $user = Auth::user();
-        $user->services()->detach($old_service);
 
-        if(!$user->services->contains($new_service)){
-            $user->services()->attach($new_service);
+        $exist_new_gus = GiveUserService::where('user_id',$user->id)
+                        ->where('service_id',$service->id)
+                        ->first();
+
+        //dd($gus);
+
+        if(!$exist_new_gus){
+            $gus->service_id = $service->id;
+            $gus->update();
+        }else{
+            $gus->delete();
         }
 
         return redirect()->route('admin.users.show',$user->id);
     }
 
-    public function destroy(Service $service)
+    public function destroy($id)
     {
         $user = Auth::user();
-        $user->services()->detach($service);
+
+        $gus = GiveUserService::find($id);
+
+        if($gus->user_id==$user->id){
+            $gus->delete();
+        }
 
         return redirect()->route('admin.users.show', ['user' => $user->id]);
 

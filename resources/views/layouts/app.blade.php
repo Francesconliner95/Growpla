@@ -28,7 +28,7 @@
 <body>
     <script type="text/javascript">
         window.csrf_token = "{{ csrf_token() }}";
-        user = "{{Auth::user()}}";
+        user = "{{Auth::user()->select('users.id','users.image')->first()}}";
     </script>
     <!-- Google Analytics -->
     <script>
