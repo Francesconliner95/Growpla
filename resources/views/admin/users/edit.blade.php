@@ -127,6 +127,15 @@
                           </div>
                       @enderror
                   </div>
+                  <div class="form-group">
+                      <h6>Indirizzo</h6>
+                      <div class="row">
+                          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                              <label>Città</label>
+                              <input type="text" name="municipality" class="form-control ml-md-3" value="{{ old('municipality',$user->municipality)}}" required>
+                          </div>
+                      </div>
+                  </div>
                   <button type="submit" class="button-style button-color">
                       {{__('Save Changes')}}
                   </button>

@@ -143,6 +143,23 @@
                             @endif
                         </div>
                         @endif
+                        @if($is_my_page || count($give_services)>0)
+                        <div class="sub-section">
+                          <h6>{{__('Servizi offerti')}}</h6>
+                          @foreach ($give_services as $service)
+                              <p>{{$service->name}}
+                                  <a href="{{route('admin.give-page-services.edit',$service->id)}}" class="button-gray">
+                                      <i class="fas fa-pencil-alt"></i>
+                                  </a>
+                              </p>
+                          @endforeach
+                          <div v-if="is_my_page" class="d-flex justify-content-center w-100">
+                              <a href="{{route('admin.give-page-services.create_service',['page_id'=>$page->id])}}" class="text-gray">
+                                  <i class="fas fa-plus-circle"></i>Aggiungi servizio offerto
+                              </a>
+                          </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

@@ -3,21 +3,20 @@
 @section('content')
 <script type="text/javascript">
     window.csrf_token = "{{ csrf_token() }}";
-    service = "{{$service}}";
 </script>
 <div class="container">
-    <div id="service-edit">
+    <div id="service-create">
         <div class="item-cont">
             <div class="item-style">
                 <div class="header">
-                    <h2>{{__('Edit service')}}</h2>
+                    <h2>{{__('Add service')}}</h2>
                     <h1>
                         <i class="fas fa-plus-circle"></i>
                     </h1>
                 </div>
-                <form method="POST" action="{{ route('admin.services.update',$gus->id) }}">
+                <form method="POST" action="{{ route('admin.give-user-services.store') }}">
                     @csrf
-                    @method('PUT')
+
                     <div class="form-group">
                       <h6>Aggiungi service</h6>
                     </div>
@@ -41,13 +40,6 @@
                     </div>
                     <button type="submit" class="button-style button-color">
                         {{__('Save')}}
-                    </button>
-                </form>
-                <form method="post" action="{{ route('admin.services.destroy', $gus->id)}}" class="p-0 m-0 d-inline-block">
-                @csrf
-                @method('DELETE')
-                    <button class="button-style button-color-red ml-5" type="submit" name="button">
-                        <i class="fas fa-trash-alt mr-1"></i>Elimina
                     </button>
                 </form>
             </div>

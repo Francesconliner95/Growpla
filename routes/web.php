@@ -61,8 +61,20 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     //Skills
     Route::resource('/skills', 'SkillController');
 
-    //Service
-    Route::resource('/services', 'GiveUserServiceController');
+    //GiveUserService
+    Route::resource('/give-user-services', 'GiveUserServiceController');
+    //GivePageService
+    Route::get('/create-give-page-services/{page_id}', 'GivePageServiceController@create_service')
+    ->name('give-page-services.create_service');
+    Route::post('/store-give-page-services', 'GivePageServiceController@store_service')
+    ->name('give-page-services.store_service');
+    Route::resource('/give-page-services', 'GivePageServiceController');
+    // Route::get('/edit-give-page-services/{gps_id}', 'GivePageServiceController@edit_service')
+    // ->name('give-page-services.edit_service');
+    // Route::put('/update-give-page-services', 'GivePageServiceController@update_service')
+    // ->name('give-page-services.update_service');
+    // Route::destroy('/destroy-give-page-services', 'GivePageServiceController@destroy_service')
+    // ->name('destroy-give-page-services.destroy_service');
 
     Route::get('/advancedSearch', 'SearchController@advancedSearch')->name('advancedSearch');
 

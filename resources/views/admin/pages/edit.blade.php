@@ -20,7 +20,7 @@
                   </h1>
               </div>
 
-              <form method="POST" enctype="multipart/form-data" action="{{ route('admin.pages.update', ['page'=> $page->id]) }}">
+              <form method="POST" id="editPageForm" enctype="multipart/form-data" action="{{ route('admin.pages.update', ['page'=> $page->id]) }}" {{--@submit.prevent="submitForm()"--}}>
                   @csrf
                   @method('PUT')
                   <span class="mini-txt">{{__('Filling in some of the following fields is optional, however a more complete profile has more chance of being viewed by other pages')}}</span>
@@ -139,6 +139,28 @@
                       @enderror
                   </div>
                   @endif
+                  <div class="form-group">
+                      <h6>Indirizzo</h6>
+                      <div class="row">
+                          <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9">
+                            <label>Via</label>
+                            <input type="text" name="street_name" class="form-control ml-md-3 mr-md-3"
+                            value="{{ old('street_name',$page->street_name)}}"
+                            required>
+                          </div>
+                          <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                              <label>Numero</label>
+                              <input type="text" name="street_number" class="form-control ml-md-3 mr-md-3" value="{{ old('street_number',$page->street_number)}}" required>
+                          </div>
+                          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                              <label>Città</label>
+                              <input type="text" name="municipality" class="form-control ml-md-3" value="{{ old('municipality',$page->municipality)}}" required>
+                          </div>
+                      </div>
+                      {{-- <input type="hidden" name="latitude" v-model="latitude">
+                      <input type="hidden" name="longitude" v-model="longitude">
+                      <input type="hidden" name="address" v-model="address"> --}}
+                  </div>
                   <button type="submit" class="button-style button-color">
                       {{__('Save Changes')}}
                   </button>

@@ -39,17 +39,31 @@ class CompanyController extends Controller
 
         $user_id = Auth::user()->id;
 
-        if($request->page_id){
-            $already_exist = Company::where('user_id',$user_id)
-                            ->where('page_id',$request->page_id)
-                            ->first();
+        $can_create = false;
+
+        if($request->registered_company==0){
+            //pagina non iscritta
+            if($request->page_id){
+
+                $already_exist = Company::where('user_id',$user_id)
+                                ->where('page_id',$request->page_id)
+                                ->first();
+
+                if(!$already_exist){
+                    $can_create = true;
+                }
+
+            }
+
         }else{
-            $already_exist = '';
+            //pagina iscritta
+            if($request->name){
+                $can_create = true;
+            }
+
         }
 
-        //dd($request);
-
-        if(!$already_exist){
+        if($can_create){
             $new_company = new Company();
             $new_company->fill($data);
             $new_company->user_id = Auth::user()->id;
@@ -94,15 +108,32 @@ class CompanyController extends Controller
 
         $data = $request->all();
         $user_id = Auth::user()->id;
-        if($request->page_id){
-            $already_exist = Company::where('user_id',$user_id)
-                            ->where('page_id',$request->page_id)
-                            ->first();
+
+        $can_update = false;
+
+        if($request->registered_company==0){
+            //pagina non iscritta
+            if($request->page_id){
+
+                $already_exist = Company::where('user_id',$user_id)
+                                ->where('page_id',$request->page_id)
+                                ->first();
+
+                if(!$already_exist){
+                    $can_update = true;
+                }
+
+            }
+
         }else{
-            $already_exist = '';
+            //pagina iscritta
+            if($request->name){
+                $can_update = true;
+            }
+
         }
 
-        if(!$already_exist){
+        if($can_create){
             $width = $request->width;
             $height = $request->height;
 

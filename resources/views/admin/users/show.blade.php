@@ -191,13 +191,13 @@
                       <h6>{{__('Servizi offerti')}}</h6>
                       @foreach ($give_services as $service)
                           <p>{{$service->name}}
-                              <a href="{{route('admin.services.edit',$service->id)}}" class="button-gray">
+                              <a href="{{route('admin.give-user-services.edit',$service->id)}}" class="button-gray">
                                   <i class="fas fa-pencil-alt"></i>
                               </a>
                           </p>
                       @endforeach
                       <div v-if="is_my_user" class="d-flex justify-content-center w-100">
-                          <a href="{{route('admin.services.create')}}" class="text-gray">
+                          <a href="{{route('admin.give-user-services.create')}}" class="text-gray">
                               <i class="fas fa-plus-circle"></i>Aggiungi servizio offerto
                           </a>
                       </div>

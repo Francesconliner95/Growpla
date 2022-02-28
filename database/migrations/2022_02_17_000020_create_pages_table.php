@@ -24,8 +24,11 @@ class CreatePagesTable extends Migration
             $table->string('linkedin')->nullable();
             $table->tinyInteger('page_varificated')->nullable();
             $table->string('slug')->unique();
-            $table->decimal('latitude')->nullable();
-            $table->decimal('longitude')->nullable();
+            $table->double('latitude', 10, 7)->nullable();
+            $table->double('longitude', 10, 7)->nullable();
+            $table->string('street_name')->nullable();
+            $table->string('street_number')->nullable();
+            $table->string('municipality')->nullable();
             //STURTUP
             $table->tinyInteger('lifecycle_id')->nullable();
             $table->string('pitch')->nullable();

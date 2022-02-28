@@ -31,8 +31,9 @@ class CreateUsersTable extends Migration
             $table->unsignedbigInteger('currency_id')->default(1);
             $table->foreign('currency_id')->references('id')->on('currencies');
             $table->integer('startup_n')->nullable();
-            $table->decimal('latitude')->nullable();
-            $table->decimal('longitude')->nullable();
+            $table->double('latitude', 10, 7)->nullable();
+            $table->double('longitude', 10, 7)->nullable();
+            $table->string('municipality')->nullable();
             $table->unsignedbigInteger('language_id')->default(1);
             $table->foreign('language_id')->references('id')->on('languages');
             $table->timestamp('last_access')->nullable();

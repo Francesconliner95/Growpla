@@ -92,6 +92,7 @@ class UserController extends Controller
           'cv' => 'nullable|mimes:pdf|max:6144',
           'moneyrange_id' => 'nullable|integer|min:1|max:5',
           'startup_n' => 'nullable|integer',
+          'municipality' => 'nullable',
       ]);
 
       $data = $request->all();

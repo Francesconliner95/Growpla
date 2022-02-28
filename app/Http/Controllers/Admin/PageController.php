@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 use File;
 use App\User;
 use App\Page;
@@ -15,6 +16,7 @@ use App\Pagetype;
 use App\Team;
 use App\Sector;
 use App\Moneyrange;
+use App\GivePageService;
 
 class PageController extends Controller
 {
@@ -102,7 +104,11 @@ class PageController extends Controller
           'incorporated' => 'nullable|boolean',
           'moneyrange_id' => 'nullable|integer|min:1|max:5',
           'startup_n' => 'nullable|integer',
-
+          'latitude' => 'nullable',
+          'longitude' => 'nullable',
+          'street_name' => 'nullable',
+          'street_number' => 'nullable',
+          'municipality' => 'nullable',
         ]);
 
         if(Auth::user()->pagetypes->contains($page->pagetype_id)){
@@ -148,6 +154,12 @@ class PageController extends Controller
         }
       }
 
+      //dd($user->currency);
+      $give_services = GivePageService::where('page_id',$page->id)
+      ->join('services','services.id','service_id')
+      ->select('give_page_services.id','services.name')
+      ->get();
+
       $team_num = Team::where('page_id', $id)->count();
 
       $data = [
@@ -155,6 +167,7 @@ class PageController extends Controller
         'is_my_page' => true,
         'team_members' => $team_members,
         'team_num' => $team_num,
+        'give_services' => $give_services,
       ];
 
       return view('admin.pages.show', $data);
@@ -223,6 +236,8 @@ class PageController extends Controller
 
         if(array_key_exists('sectors', $data)){
           $page->sectors()->sync($data['sectors']);
+        }else{
+          $page->sectors()->sync([]);
         }
 
         return redirect()->route('admin.pages.show',$user->id);

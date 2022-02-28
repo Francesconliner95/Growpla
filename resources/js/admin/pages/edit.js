@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios';
+import tt from '@tomtom-international/web-sdk-services';
+//npm i @tomtom-international/web-sdk-services
 axios.defaults.headers.common = {
     'X-Requested-With': 'XMLHttpRequest',
     'X-CSRF-TOKEN': window.csrf_token
@@ -9,8 +11,52 @@ var create = new Vue({
     el: '#page-edit',
     data: {
       page,
+      streetName: '',
+      streetNumber: null,
+      municipality: '',
+      latitude: null,
+      longitude: null,
+      address: '',
+      noAdressFound: false,
     },
     methods: {
+
+      // submitForm(){
+      //   tt.services.structuredGeocode({
+      //         key: 'wSHLIGhfBYex4WI2gWpiUlecXvt3TOKC',
+      //         countryCode: 'IT',
+      //         bestResult: true,
+      //         streetName: this.streetName,
+      //         streetNumber: this.streetNumber,
+      //         municipality: this.municipality
+      //     }).then(response => {
+      //         this.noAdressFound = false;
+      //         this.latitude = response.position.lat;
+      //         this.longitude = response.position.lng;
+      //
+      //         tt.services.reverseGeocode({
+      //             key: 'wSHLIGhfBYex4WI2gWpiUlecXvt3TOKC',
+      //             position: {
+      //                 longitude: this.longitude,
+      //                 latitude: this.latitude
+      //             }
+      //         }).then(response => {
+      //             var streetName = response.addresses[0].address.streetName;
+      //             var streetNumber = response.addresses[0].address.streetNumber;
+      //             var municipality = response.addresses[0].address.municipality;
+      //             // this.address = `${streetName} ${streetNumber}, ${municipality}`;
+      //
+      //             this.address = streetName + ' ' + streetNumber + ', '+ municipality;
+      //
+      //             setTimeout(() => {
+      //               document.getElementById("editPageForm").submit();
+      //             }, 500);
+      //         });
+      //
+      //     }).catch(error => {
+      //         this.noAdressFound = true;
+      //     });
+      // }
 
         // remove_file(value){
         //     axios({

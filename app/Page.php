@@ -27,6 +27,10 @@ class Page extends Model
         return $this->belongsTo('App\Pagetype');
     }
 
+    public function lifecycle(){
+        return $this->belongsTo('App\Lifecycle');
+    }
+
     // public function services(){
     //     return $this->belongsToMany('App\Service');
     // }
@@ -42,6 +46,9 @@ class Page extends Model
       'slug',
       'latitude',
       'longitude',
+      'street_name',
+      'street_number',
+      'municipality',
       'lifecycle_id',
       'pitch',
       'incorporated',

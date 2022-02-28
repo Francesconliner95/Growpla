@@ -23,7 +23,7 @@ class GiveUserServiceController extends Controller
 
         app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
-        return view('admin.services.create');
+        return view('admin.give-user-services.create');
     }
 
     public function store(Request $request)
@@ -77,7 +77,7 @@ class GiveUserServiceController extends Controller
 
         app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
-        return view('admin.services.edit', $data);
+        return view('admin.give-user-services.edit', $data);
     }
 
     public function update(Request $request, $id)

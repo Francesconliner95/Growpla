@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGiveUserServiceTable extends Migration
+class CreateGiveUserServicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateGiveUserServiceTable extends Migration
      */
     public function up()
     {
-        Schema::create('give_user_service', function (Blueprint $table) {
+        Schema::create('give_user_services', function (Blueprint $table) {
             $table->id();
             $table->unsignedbigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -33,6 +33,6 @@ class CreateGiveUserServiceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('give_user_service');
+        Schema::dropIfExists('give_user_services');
     }
 }

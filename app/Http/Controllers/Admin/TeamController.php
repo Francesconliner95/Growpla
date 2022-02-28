@@ -42,35 +42,58 @@ class TeamController extends Controller
 
         $page = Page::find($page_id);
 
-        $team_number = Team::where('page_id',$page_id)->count();
-        $last_item = Team::where('page_id',$page_id)
-                    ->orderBy('position', 'DESC')->first();
-        if($last_item){
-            $last_position = $last_item->position;
-            $new_last_position = $last_position + 1;
+        $can_create = false;
+
+        if($request->registered_team==0){
+            //pagina non iscritta
+            if($request->user_id){
+                $already_exist = Team::where('page_id',$page_id)
+                                ->where('user_id',$request->user_id)
+                                ->first();
+                if(!$already_exist){
+                    $can_create = true;
+                }
+            }
         }else{
-            $new_last_position = 0;
+            //pagina iscritta
+            if($request->name && $request->surname){
+                $can_create = true;
+            }
         }
 
-        if($page->users->contains(Auth::user()) && $team_number<50){
+        if($can_create){
 
-            $new_team_team = new Team();
-            $new_team_team->fill($data);
-            $new_team_team->page_id = $page_id;
-            $new_team_team->position = $new_last_position;
+          $team_number = Team::where('page_id',$page_id)->count();
+          $last_item = Team::where('page_id',$page_id)
+                      ->orderBy('position', 'DESC')->first();
+          if($last_item){
+              $last_position = $last_item->position;
+              $new_last_position = $last_position + 1;
+          }else{
+              $new_last_position = 0;
+          }
 
-            if(array_key_exists('image', $data)){
-                //recupero la path e salvo la nuova l'immagine
-                $image_path = Storage::put('teams_images', $data['image']);
-                //resize
-                $img = Image::make($data['image'])
-                            ->crop($data['width'],$data['height'], $data['x'],$data['y'])
-                            ->resize(300,300)/*risoluzione*/
-                            ->save('./storage/'.$image_path, 100 /*Qualita*/);
-                $new_team_team->image = $image_path;
-            }
+          if($page->users->contains(Auth::user()) && $team_number<50){
 
-            $new_team_team->save();
+              $new_team_team = new Team();
+              $new_team_team->fill($data);
+              $new_team_team->page_id = $page_id;
+              $new_team_team->position = $new_last_position;
+
+              if(array_key_exists('image', $data)){
+                  //recupero la path e salvo la nuova l'immagine
+                  $image_path = Storage::put('teams_images', $data['image']);
+                  //resize
+                  $img = Image::make($data['image'])
+                              ->crop($data['width'],$data['height'], $data['x'],$data['y'])
+                              ->resize(300,300)/*risoluzione*/
+                              ->save('./storage/'.$image_path, 100 /*Qualita*/);
+                  $new_team_team->image = $image_path;
+              }
+
+              $new_team_team->save();
+          }
+
         }
 
         return redirect()->route('admin.pages.show', ['page' => $page_id]);
@@ -104,7 +127,26 @@ class TeamController extends Controller
 
         $page = Page::find($team->page_id);
 
-        if($page->users->contains(Auth::user())){
+        $can_update = false;
+
+        if($request->registered_team==0){
+            //pagina non iscritta
+            if($request->user_id){
+                $already_exist = Team::where('page_id',$page->id)
+                                ->where('user_id',$request->user_id)
+                                ->first();
+                if(!$already_exist){
+                    $can_update = true;
+                }
+            }
+        }else{
+            //pagina iscritta
+            if($request->name && $request->surname){
+                $can_update = true;
+            }
+        }
+
+        if($can_update && $page->users->contains(Auth::user())){
 
             $width = $request->width;
             $height = $request->height;

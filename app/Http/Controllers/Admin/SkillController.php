@@ -105,7 +105,7 @@ class SkillController extends Controller
         $user = Auth::user();
         $user->skills()->detach($skill);
 
-        return redirect()->route('admin.users.show', ['user' => $user->id]);        
+        return redirect()->route('admin.users.show', ['user' => $user->id]);
 
     }
 

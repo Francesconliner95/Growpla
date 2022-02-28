@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHavePageServiceTable extends Migration
+class CreateHavePageServicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateHavePageServiceTable extends Migration
      */
     public function up()
     {
-        Schema::create('have_page_service', function (Blueprint $table) {
+        Schema::create('have_page_services', function (Blueprint $table) {
             $table->id();
             $table->unsignedbigInteger('page_id');
             $table->foreign('page_id')->references('id')->on('pages')->onDelete('cascade');
@@ -33,6 +33,6 @@ class CreateHavePageServiceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('have_page_service');
+        Schema::dropIfExists('have_page_services');
     }
 }
