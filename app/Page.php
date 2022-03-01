@@ -31,6 +31,10 @@ class Page extends Model
         return $this->belongsTo('App\Lifecycle');
     }
 
+    public function usertypes(){
+    return $this->belongsToMany('App\Usertype','have_page_usertypes','page_id','usertype_id');
+    }
+
     // public function services(){
     //     return $this->belongsToMany('App\Service');
     // }

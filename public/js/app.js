@@ -75228,6 +75228,100 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
+/***/ "./resources/js/admin/lifecycles/edit.js":
+/*!***********************************************!*\
+  !*** ./resources/js/admin/lifecycles/edit.js ***!
+  \***********************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+}; //in caso di problemi togliere
+
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#lifecycle-edit',
+  data: {
+    lang: lang,
+    lifecycles: lifecycles,
+    lifecycle_id: lifecycle_id,
+    show_services: false,
+    lifecycle_selected: '1',
+    cofounders: '',
+    search_role: '',
+    roles_found: '',
+    userRecommended: [],
+    pageRecommended: [],
+    serviceRecommended: []
+  },
+  methods: {
+    recommended: function recommended() {
+      console.log(this.lifecycle_selected);
+
+      switch (this.lifecycle_selected) {
+        case '1':
+          this.userRecommended = [1];
+          this.pageRecommended = [3];
+          this.serviceRecommended = [1, 2, 4, 5, 6, 7, 10];
+          break;
+
+        case '2':
+          this.userRecommended = [2];
+          this.pageRecommended = [3];
+          this.serviceRecommended = [2, 5, 7, 10];
+          break;
+
+        case '3':
+          this.userRecommended = [];
+          this.pageRecommended = [3];
+          this.serviceRecommended = [2, 7, 10];
+          break;
+
+        case '4':
+          this.userRecommended = [];
+          this.pageRecommended = [5];
+          this.serviceRecommended = [2, 10];
+          break;
+
+        case '5':
+          this.userRecommended = [];
+          this.pageRecommended = [5, 8];
+          this.serviceRecommended = [2, 10];
+          break;
+
+        case '6':
+          this.userRecommended = [];
+          this.pageRecommended = [];
+          this.serviceRecommended = [2, 10];
+          break;
+
+        case '7':
+          this.userRecommended = [];
+          this.pageRecommended = [];
+          this.serviceRecommended = [1];
+          break;
+
+        default:
+      }
+    }
+  },
+  mounted: function mounted() {
+    this.lifecycle_selected = this.lifecycle_id ? this.lifecycle_id : '1';
+    this.recommended();
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/admin/nav-bar.js":
 /*!***************************************!*\
   !*** ./resources/js/admin/nav-bar.js ***!
@@ -75356,271 +75450,6 @@ function scrollFunction() {
     document.getElementById("nav-bar").style.boxShadow = "none";
   }
 }
-
-/***/ }),
-
-/***/ "./resources/js/admin/needs/edit.js":
-/*!******************************************!*\
-  !*** ./resources/js/admin/needs/edit.js ***!
-  \******************************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-
-
-axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
-  'X-Requested-With': 'XMLHttpRequest',
-  'X-CSRF-TOKEN': window.csrf_token
-}; //in caso di problemi togliere
-
-var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  el: '#need-edit',
-  data: {
-    lang: lang,
-    account: account,
-    startupStates: startupStates,
-    accountNeeds: accountNeeds,
-    account_types: account_types,
-    startupservice_types: startupservice_types,
-    show_ss_types: false,
-    startup_state: '',
-    cofounders: '',
-    search_role: '',
-    roles_found: ''
-  },
-  methods: {
-    updateNeed: function updateNeed() {
-      var _this = this;
-
-      // console.log(this.account.id);
-      // console.log(this.getAccountTypesId());
-      // console.log(this.getStartupServiceTypesId());
-      axios__WEBPACK_IMPORTED_MODULE_1___default()({
-        method: 'post',
-        url: '/admin/updateNeed',
-        data: {
-          account_id: this.account.id,
-          startup_state: this.startup_state,
-          accountTypesId: this.getAccountTypesId(),
-          startupServiceTypesId: this.getStartupServiceTypesId()
-        }
-      }).then(function (response) {
-        window.location.href = '/admin/accounts/' + _this.account.id;
-      });
-    },
-    getAccountTypesId: function getAccountTypesId() {
-      var needs_id = [];
-      this.account_types.forEach(function (account_type, i) {
-        if (account_type.checked == true && account_type.id != 7) {
-          needs_id.push(account_type.id);
-        }
-      });
-      return needs_id;
-    },
-    getStartupServiceTypesId: function getStartupServiceTypesId() {
-      var needs_id = [];
-      this.startupservice_types.forEach(function (ss_type, i) {
-        if (ss_type.checked == true) {
-          needs_id.push(ss_type.id);
-        }
-      });
-      return needs_id;
-    },
-    active: function active(account_type_id) {
-      var class_v = '';
-
-      switch (this.startup_state) {
-        case 1:
-          if (account_type_id == 2 || account_type_id == 3) {
-            class_v = 'active';
-          }
-
-          break;
-
-        case 2:
-          if (account_type_id == 3 || account_type_id == 4) {
-            class_v = 'active';
-          }
-
-          break;
-
-        case 3:
-          if (account_type_id == 3) {
-            class_v = 'active';
-          }
-
-          break;
-
-        case 4:
-          if (account_type_id == 6) {
-            class_v = 'active';
-          }
-
-          break;
-
-        case 5:
-          if (account_type_id == 5 || account_type_id == 6) {
-            class_v = 'active';
-          }
-
-          break;
-
-        default:
-      }
-
-      return class_v;
-    },
-    active_ss: function active_ss(ss_type_id) {
-      var class_v = '';
-
-      switch (this.startup_state) {
-        case 1:
-          if (ss_type_id == 4 || ss_type_id == 5 || ss_type_id == 6 || ss_type_id == 7 || ss_type_id == 2 || ss_type_id == 10) {
-            class_v = 'active';
-          }
-
-          break;
-
-        case 2:
-          if (ss_type_id == 7 || ss_type_id == 2 || ss_type_id == 5 || ss_type_id == 10) {
-            class_v = 'active';
-          }
-
-          break;
-
-        case 3:
-          if (ss_type_id == 7 || ss_type_id == 2 || ss_type_id == 10) {
-            class_v = 'active';
-          }
-
-          break;
-
-        case 4:
-          if (ss_type_id == 2 || ss_type_id == 10) {
-            class_v = 'active';
-          }
-
-          break;
-
-        case 5:
-          if (ss_type_id == 2 || ss_type_id == 10) {
-            class_v = 'active';
-          }
-
-          break;
-
-        case 6:
-          if (ss_type_id == 2 || ss_type_id == 10) {
-            class_v = 'active';
-          }
-
-          break;
-
-        case 7:
-          if (ss_type_id == 1) {
-            class_v = 'active';
-          }
-
-          break;
-
-        default:
-      }
-
-      return class_v;
-    },
-    getCofounder: function getCofounder() {
-      var _this2 = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getCofounder', {
-        params: {
-          account_id: this.account.id
-        }
-      }).then(function (response) {
-        _this2.cofounders = response.data.results.cofounders; //console.log(this.cofounders);
-      });
-    },
-    searchRole: function searchRole() {
-      var _this3 = this;
-
-      //console.log(this.search_role);
-      if (this.search_role) {
-        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchRole', {
-          params: {
-            role_name: this.search_role
-          }
-        }).then(function (response) {
-          _this3.roles_found = response.data.results.roles;
-
-          if (!_this3.search_role) {
-            _this3.roles_found = '';
-          }
-        });
-      } else {
-        this.roles_found = '';
-      }
-    },
-    createRole: function createRole() {
-      var _this4 = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_1___default()({
-        method: 'post',
-        url: '/admin/createRole',
-        data: {
-          role_name: this.search_role
-        }
-      }).then(function (response) {
-        var role_id = response.data.results.role_id;
-
-        _this4.addCofounder(role_id);
-      });
-    },
-    addCofounder: function addCofounder(role_id) {
-      var _this5 = this;
-
-      // console.log(role_id);
-      // console.log(this.account.id);
-      this.search_role = '';
-      this.roles_found = '';
-      axios__WEBPACK_IMPORTED_MODULE_1___default()({
-        method: 'post',
-        url: '/admin/addCofounder',
-        data: {
-          role_id: role_id,
-          account_id: this.account.id
-        }
-      }).then(function (response) {
-        _this5.getCofounder();
-      });
-    },
-    deleteCofounder: function deleteCofounder(cofounder_id) {
-      var _this6 = this;
-
-      //console.log(cofounder_id);
-      axios__WEBPACK_IMPORTED_MODULE_1___default()({
-        method: 'delete',
-        url: '/admin/deleteCofounder',
-        data: {
-          cofounder_id: cofounder_id,
-          account_id: this.account.id
-        }
-      }).then(function (response) {
-        _this6.getCofounder();
-      });
-    }
-  },
-  mounted: function mounted() {
-    this.startup_state = this.account.startup_status_id;
-    this.getCofounder(); //console.log(this.startup_state);
-
-    console.log(this.lang);
-  }
-});
 
 /***/ }),
 
@@ -78914,11 +78743,11 @@ if (document.getElementById('other-create')) {
 
 if (document.getElementById('other-edit')) {
   __webpack_require__(/*! ./admin/others/edit.js */ "./resources/js/admin/others/edit.js");
-} //NEED
+} //lifecycle
 
 
-if (document.getElementById('need-edit')) {
-  __webpack_require__(/*! ./admin/needs/edit.js */ "./resources/js/admin/needs/edit.js");
+if (document.getElementById('lifecycle-edit')) {
+  __webpack_require__(/*! ./admin/lifecycles/edit.js */ "./resources/js/admin/lifecycles/edit.js");
 } //CHAT
 
 

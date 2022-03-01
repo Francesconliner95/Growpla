@@ -113,9 +113,8 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::delete('/deleteOther', 'OtherController@deleteOther')->name('deleteOther');
     Route::put('/changeOtherPosition', 'OtherController@changeOtherPosition')->name('others.changeOtherPosition');
 
-    //Need
-    Route::resource('/needs', 'NeedController');
-    Route::post('/updateNeed', 'NeedController@updateNeed')->name('needs.updateNeed');
+    //Lifecycle
+    Route::resource('/lifecycles', 'LifecycleController');
 
     //FOLLOW
     Route::post('/addFollow', 'FollowController@addFollow')->name('addFollow');

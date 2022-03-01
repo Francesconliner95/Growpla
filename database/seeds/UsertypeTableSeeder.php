@@ -28,26 +28,26 @@ class UsertypeTableSeeder extends Seeder
           [
               'name'=>'freelancer',
               'name_it'=>'libero professionista',
-              'description'=>'/',
-              'description_it'=>'/',
+              'description'=>'',
+              'description_it'=>'',
           ],
           [
               'name'=>'employee',
               'name_it'=>'dipendente',
-              'description'=>'/',
-              'description_it'=>'/',
+              'description'=>'',
+              'description_it'=>'',
           ],
           [
               'name'=>'student',
               'name_it'=>'studente',
-              'description'=>'/',
-              'description_it'=>'/',
+              'description'=>'',
+              'description_it'=>'',
           ],
           [
               'name'=>'other',
               'name_it'=>'altro',
-              'description'=>'/',
-              'description_it'=>'/',
+              'description'=>'',
+              'description_it'=>'',
           ],
       ];
 

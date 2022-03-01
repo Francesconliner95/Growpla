@@ -157,7 +157,7 @@ class PageController extends Controller
       //dd($user->currency);
       $give_services = GivePageService::where('page_id',$page->id)
       ->join('services','services.id','service_id')
-      ->select('give_page_services.id','services.name')
+      ->select('give_page_services.id','services.name as service_name')
       ->get();
 
       $team_num = Team::where('page_id', $id)->count();

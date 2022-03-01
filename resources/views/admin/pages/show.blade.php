@@ -147,7 +147,7 @@
                         <div class="sub-section">
                           <h6>{{__('Servizi offerti')}}</h6>
                           @foreach ($give_services as $service)
-                              <p>{{$service->name}}
+                              <p>{{$service->service_name}}
                                   <a href="{{route('admin.give-page-services.edit',$service->id)}}" class="button-gray">
                                       <i class="fas fa-pencil-alt"></i>
                                   </a>
@@ -164,6 +164,15 @@
                 </div>
             </div>
         </div>
+        @if($page->pagetype_id==1)
+        <div class="item-cont">
+            <div class="item-style">
+              <a href="{{route('admin.lifecycles.edit',$page->id)}}" class="button-gray">
+                  <i class="fas fa-pencil-alt"></i>
+              </a>
+            </div>
+        </div>
+        @endif
         <div class="item-cont" v-if="is_my_page || team_members.length>0">
             <div class="item-style">
                 <h3>Team

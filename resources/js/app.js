@@ -134,9 +134,9 @@ if (document.getElementById('other-edit')) {
     require('./admin/others/edit.js');
 }
 
-//NEED
-if (document.getElementById('need-edit')) {
-    require('./admin/needs/edit.js');
+//lifecycle
+if (document.getElementById('lifecycle-edit')) {
+    require('./admin/lifecycles/edit.js');
 }
 
 //CHAT

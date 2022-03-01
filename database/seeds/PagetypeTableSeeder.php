@@ -16,14 +16,14 @@ class PagetypeTableSeeder extends Seeder
           [
               'name'=>'startup',
               'name_it'=>'startup',
-              'description'=>'/',
-              'description_it'=>'/',
+              'description'=>'',
+              'description_it'=>'',
           ],
           [
               'name'=>'company',
               'name_it'=>'azienda',
-              'description'=>'/',
-              'description_it'=>'/',
+              'description'=>'',
+              'description_it'=>'',
           ],
           [
               'name'=>'incubator - accelerator',
@@ -38,8 +38,8 @@ class PagetypeTableSeeder extends Seeder
           [
               'name'=>'startup studio',
               'name_it'=>'startup studio',
-              'description'=>'/',
-              'description_it'=>'/',
+              'description'=>'',
+              'description_it'=>'',
           ],
           [
               'name'=>'venture capital',
@@ -50,8 +50,8 @@ class PagetypeTableSeeder extends Seeder
           [
               'name'=>'crowdfunding platform',
               'name_it'=>'piattaforma di crowdfunding',
-              'description'=>'/',
-              'description_it'=>'/',
+              'description'=>'',
+              'description_it'=>'',
           ],
           [
               'name'=>'organization - association',
@@ -68,8 +68,8 @@ class PagetypeTableSeeder extends Seeder
           [
               'name'=>'university',
               'name_it'=>'università',
-              'description'=>'/',
-              'description_it'=>'/',
+              'description'=>'',
+              'description_it'=>'',
           ],
       ];
 

@@ -20,7 +20,7 @@ use App\Mail\MailNotification;
 use Illuminate\Support\Facades\Mail;
 use App\Language;
 
-class NeedController extends Controller
+class LifecycleController extends Controller
 {
     public function __construct()
     {
