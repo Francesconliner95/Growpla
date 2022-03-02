@@ -31,13 +31,30 @@ class Page extends Model
         return $this->belongsTo('App\Lifecycle');
     }
 
-    public function usertypes(){
-    return $this->belongsToMany('App\Usertype','have_page_usertypes','page_id','usertype_id');
+    public function have_page_usertypes(){
+        return $this->belongsToMany('App\Usertype','have_page_usertypes','page_id','usertype_id')
+        ->withPivot('id');
     }
 
-    // public function services(){
-    //     return $this->belongsToMany('App\Service');
-    // }
+    public function have_page_pagetypes(){
+        return $this->belongsToMany('App\Pagetype','have_page_pagetypes','page_id','pagetype_id')
+        ->withPivot('id');
+    }
+
+    public function give_page_services(){
+        return $this->belongsToMany('App\Service','give_page_services','page_id','service_id')
+        ->withPivot('id');
+    }
+
+    public function have_page_services(){
+        return $this->belongsToMany('App\Service','have_page_services','page_id','service_id')
+        ->withPivot('id');
+    }
+
+    public function have_page_cofounders(){
+        return $this->belongsToMany('App\Skill','have_page_cofounders','page_id','skill_id')
+        ->withPivot('id');
+    }
 
     protected $fillable = [
       'pagetype_id',

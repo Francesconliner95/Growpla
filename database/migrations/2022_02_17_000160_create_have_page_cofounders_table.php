@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHavePagePagetypesTable extends Migration
+class CreateHavePageCofoundersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateHavePagePagetypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('have_page_pagetypes', function (Blueprint $table) {
+        Schema::create('have_page_cofounders', function (Blueprint $table) {
             $table->id();
             $table->unsignedbigInteger('page_id');
             $table->foreign('page_id')->references('id')->on('pages')->onDelete('cascade');
-            $table->unsignedbigInteger('pagetype_id');
-            $table->foreign('pagetype_id')->references('id')->on('pagetypes')->onDelete('cascade');
+            $table->unsignedbigInteger('skill_id');
+            $table->foreign('skill_id')->references('id')->on('skills')->onDelete('cascade');
 
-            $table->unique(['page_id', 'pagetype_id']);
+            $table->unique(['page_id', 'skill_id']);
 
             $table->timestamps();
         });
@@ -33,6 +33,6 @@ class CreateHavePagePagetypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('have_page_pagetypes');
+        Schema::dropIfExists('have_page_cofounders');
     }
 }

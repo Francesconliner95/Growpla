@@ -69,12 +69,17 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::post('/store-give-page-services', 'GivePageServiceController@store_service')
     ->name('give-page-services.store_service');
     Route::resource('/give-page-services', 'GivePageServiceController');
-    // Route::get('/edit-give-page-services/{gps_id}', 'GivePageServiceController@edit_service')
-    // ->name('give-page-services.edit_service');
-    // Route::put('/update-give-page-services', 'GivePageServiceController@update_service')
-    // ->name('give-page-services.update_service');
-    // Route::destroy('/destroy-give-page-services', 'GivePageServiceController@destroy_service')
-    // ->name('destroy-give-page-services.destroy_service');
+    //HavePageService
+    Route::get('/create-have-page-services/{page_id}', 'HavePageServiceController@create_service')
+    ->name('have-page-services.create_service');
+    Route::post('/store-have-page-services', 'HavePageServiceController@store_service')
+    ->name('have-page-services.store_service');
+    Route::resource('/have-page-services', 'HavePageServiceController');
+    //HavePagePagetype
+    Route::resource('/have-page-pagetypes', 'HavePagePagetypeController');
+    //HavePageUsertype
+    Route::resource('/have-page-usertypes', 'HavePageUsertypeController');
+
 
     Route::get('/advancedSearch', 'SearchController@advancedSearch')->name('advancedSearch');
 

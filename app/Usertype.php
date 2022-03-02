@@ -10,7 +10,7 @@ class Usertype extends Model
     return $this->belongsToMany('App\User');
   }
 
-  public function pages(){
+  public function have_page_usertypes(){
   return $this->belongsToMany('App\Page','have_page_usertypes','usertype_id','page_id');
   }
 }

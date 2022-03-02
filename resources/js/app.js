@@ -134,10 +134,15 @@ if (document.getElementById('other-edit')) {
     require('./admin/others/edit.js');
 }
 
-//lifecycle
+//LIFECYCLE
 if (document.getElementById('lifecycle-edit')) {
     require('./admin/lifecycles/edit.js');
 }
+//PAGE-USERTYPE
+if (document.getElementById('page-usertypes-edit')) {
+    require('./admin/have-page-usertypes/edit.js');
+}
+
 
 //CHAT
 if (document.getElementById('chat-index')) {

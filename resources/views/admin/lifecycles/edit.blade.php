@@ -4,7 +4,7 @@
 <script type="text/javascript">
     lang = "{{Auth::user()->language_id}}";
     lifecycles = {!! json_encode($lifecycles->toArray()) !!};
-    lifecycle_id = "{{$lifecycle_id}}";
+    lifecycle_id = "{{$page->lifecycle_id}}";
 </script>
 <div class="container">
     <div id="lifecycle-edit">
@@ -19,7 +19,7 @@
                         <i class="fas fa-pencil-alt"></i>
                     </h1>
                 </div>
-                <form method="POST" id="editPageForm" enctype="multipart/form-data" action="{{ route('admin.lifecycles.update', $page_id) }}">
+                <form method="POST" id="editPageForm" enctype="multipart/form-data" action="{{ route('admin.lifecycles.update', $page->id) }}">
                     @csrf
                     @method('PUT')
                     <div class="main-section pt-3 pb-2 row">
@@ -65,7 +65,13 @@
                             @foreach ($usertypes as $usertype)
                               @if($usertype->id==1 || $usertype->id==2)
                               <div>
-                                  <input id="usertype-{{$usertype->id}}" type="checkbox" name="usertypes[]" value="{{$usertype->id}}">
+                                  @if($errors->any())
+                                    <input id="usertype-{{$usertype->id}}" type="checkbox" name="usertypes[]" value="{{$usertype->id}}"
+                                    {{ in_array($usertype->id, old('usertypes', [])) ? 'checked=checked' : ''}}>
+                                  @else
+                                    <input id="usertype-{{$usertype->id}}" type="checkbox" name="usertypes[]" value="{{$usertype->id}}"
+                                    {{$page->have_page_usertypes->contains($usertype)?'checked=checked':''}}>
+                                  @endif
                                   <label for="usertype-{{$usertype->id}}" class="active">
                                       {{$usertype->name}}
                                       @if($usertype->description)
@@ -84,7 +90,14 @@
                             @foreach ($pagetypes as $pagetype)
                               @if($pagetype->id!=1)
                               <div>
-                                  <input id="pagetype-{{$pagetype->id}}" type="checkbox" name="pagetypes[]" value="{{$pagetype->id}}">
+                                  @if($errors->any())
+                                    <input id="pagetype-{{$pagetype->id}}" type="checkbox" name="pagetypes[]" value="{{$pagetype->id}}"
+                                    {{ in_array($pagetype->id, old('pagetypes', [])) ? 'checked=checked' : ''}}>
+                                  @else
+                                    <input id="pagetype-{{$pagetype->id}}" type="checkbox" name="pagetypes[]" value="{{$pagetype->id}}"
+                                    {{$page->have_page_pagetypes->contains($pagetype)?'checked=checked':''}}>
+                                  @endif
+                                  {{-- <input id="pagetype-{{$pagetype->id}}" type="checkbox" name="pagetypes[]" value="{{$pagetype->id}}"> --}}
                                   <label for="pagetype-{{$pagetype->id}}" class="active">
                                       {{$pagetype->name}}
                                       @if($pagetype->description)
@@ -103,8 +116,14 @@
                             <div class="startup-services">
                                 @foreach ($services as $service)
                                   <div class="startup-services-item">
-                                      <input id="service-{{$service->id}}"
-                                      type="checkbox" name="services[]" value="{{$service->id}}">
+                                      @if($errors->any())
+                                        <input id="service-{{$service->id}}"
+                                        type="checkbox" name="services[]" value="{{$service->id}}"
+                                        {{ in_array($service->id, old('services', [])) ? 'checked=checked' : ''}}>
+                                      @else
+                                        <input id="service-{{$service->id}}" type="checkbox" name="services[]" value="{{$service->id}}"
+                                        {{$page->have_page_services->contains($service)?'checked=checked':''}}>
+                                      @endif
                                       <label for="service-{{$service->id}}" class="active">
                                         {{$service->name}}
                                           @if($service->description)

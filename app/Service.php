@@ -14,8 +14,13 @@ class Service extends Model
     //     return $this->belongsToMany('App\User');
     // }
     //
-    // public function pages(){
-    //     return $this->belongsToMany('App\Page');
-    // }
+    public function give_page_services(){
+        return $this->belongsToMany('App\Page','give_page_services','page_id','service_id')
+        ->withPivot('id');
+    }
+
+    public function have_page_services(){
+        return $this->belongsToMany('App\Page','have_page_services','page_id','service_id');
+    }
 
 }

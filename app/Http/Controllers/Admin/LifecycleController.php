@@ -30,8 +30,7 @@ class LifecycleController extends Controller
         app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
         $data = [
-            'page_id' => $page->id,
-            'lifecycle_id'=>$page->lifecycle_id,
+            'page' => $page,
             'lifecycles' => Lifecycle::all(),
             'pagetypes' => Pagetype::where('hidden',null)->get(),
             'usertypes' => Usertype::where('hidden',null)->get(),
@@ -45,6 +44,11 @@ class LifecycleController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+          'usertypes'=> 'exists:usertypes,id',
+          'pagetypes'=> 'exists:pagetypes,id',
+        ]);
+        
         $data = $request->all();
         $page = Page::find($id);
         $user = Auth::user();
@@ -53,34 +57,26 @@ class LifecycleController extends Controller
 
           $page->lifecycle_id = $request->lifecycle;
 
+          $page->update();
+
           //Necessità tipo di utente
           if(array_key_exists('usertypes', $data)){
-            $page->usertypes()->sync($data['usertypes']);
+            $page->have_page_usertypes()->sync($data['usertypes']);
+          }else{
+            $page->have_page_usertypes()->sync([]);
           }
-          // $old_usertypes = HavePageUsertype::where('page_id',$page->id)
-          //                 ->get();
-          //
-          // if($old_usertypes){
-          //     foreach ($old_usertypes as $old_usertype) {
-          //         $old_usertype->delete();
-          //     }
-          // }
-          // if($request->usertypes){
-          //     $usertypes = $request->usertypes;
-          //     foreach ($usertypes as $usertype_id) {
-          //         $exist = HavePageUsertype::where('page_id',$page->id)
-          //                   ->where('usertype_id',$usertype_id)
-          //                   ->first();
-          //         if(!$exist){
-          //             $new_hpu = new HavePageUsertype;
-          //             $new_hpu->page_id = $page->id;
-          //             $new_hpu->usertype_id = $usertype_id;
-          //             $new_hpu->save();
-          //         }
-          //     }
-          // }
 
-          //dd($request->usertypes);
+          if(array_key_exists('pagetypes', $data)){
+            $page->have_page_pagetypes()->sync($data['pagetypes']);
+          }else{
+            $page->have_page_pagetypes()->sync([]);
+          }
+
+          if(array_key_exists('services', $data)){
+            $page->have_page_services()->sync($data['services']);
+          }else{
+            $page->have_page_services()->sync([]);
+          }
 
           app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 

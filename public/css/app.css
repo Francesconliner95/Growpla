@@ -19462,28 +19462,28 @@ footer .bottom-footer {
   cursor: pointer;
 }
 
-#account-show .item-no-padding {
+#page-show .item-no-padding {
   padding: 0;
 }
 
-#account-show .item-padding {
+#page-show .item-padding {
   padding: 30px;
 }
 
-#account-show .profile .profile-cover-cont {
+#page-show .profile .profile-cover-cont {
   position: relative;
   width: 100%;
   min-height: 100px;
 }
 
-#account-show .profile .profile-cover-cont .profile-cover {
+#page-show .profile .profile-cover-cont .profile-cover {
   width: 100%;
   height: 100%;
   -o-object-fit: scale-down;
      object-fit: scale-down;
 }
 
-#account-show .profile .profile-cover-cont .profile-image {
+#page-show .profile .profile-cover-cont .profile-image {
   width: 150px;
   height: 150px;
   -o-object-fit: cover;
@@ -19497,7 +19497,7 @@ footer .bottom-footer {
   box-shadow: 0px 0px 10px 1px #555;
 }
 
-#account-show .profile .profile-cover-cont .profile-image img {
+#page-show .profile .profile-cover-cont .profile-image img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
@@ -19505,29 +19505,29 @@ footer .bottom-footer {
      object-fit: cover;
 }
 
-#account-show .profile .profile-cover-cont .profile-image a {
+#page-show .profile .profile-cover-cont .profile-image a {
   top: 20px;
   right: 20px;
 }
 
-#account-show .profile .profile-header {
+#page-show .profile .profile-header {
   padding-bottom: 10px;
   padding-top: 100px;
 }
 
-#account-show .profile .profile-header .name {
+#page-show .profile .profile-header .name {
   text-align: center;
 }
 
-#account-show .profile .profile-header .name h2 {
+#page-show .profile .profile-header .name h2 {
   padding-right: 0px;
 }
 
-#account-show .profile .profile-header .main-buttons {
+#page-show .profile .profile-header .main-buttons {
   text-align: center;
 }
 
-#account-show .cicle-container {
+#page-show .cicle-container {
   height: 800px;
   display: flex;
   justify-content: space-between;
@@ -19535,7 +19535,7 @@ footer .bottom-footer {
   flex-direction: column;
 }
 
-#account-show .cicle-container .cicle-item {
+#page-show .cicle-container .cicle-item {
   height: calc(100% / 7);
   width: auto;
   display: flex;
@@ -19544,7 +19544,7 @@ footer .bottom-footer {
   position: relative;
 }
 
-#account-show .cicle-container .cicle-item .circle {
+#page-show .cicle-container .cicle-item .circle {
   width: 100px;
   height: 100px;
   background-color: #f0f0f0;
@@ -19553,7 +19553,7 @@ footer .bottom-footer {
   z-index: 1;
 }
 
-#account-show .cicle-container .cicle-item .circle span {
+#page-show .cicle-container .cicle-item .circle span {
   width: 90px;
   position: absolute;
   top: 50%;
@@ -19565,16 +19565,16 @@ footer .bottom-footer {
   color: black;
 }
 
-#account-show .cicle-container .cicle-item .c-active {
+#page-show .cicle-container .cicle-item .c-active {
   background-color: #0AB89F;
 }
 
-#account-show .cicle-container .cicle-item .c-active span {
+#page-show .cicle-container .cicle-item .c-active span {
   font-weight: bold;
   color: white;
 }
 
-#account-show .cicle-container .cicle-item .net {
+#page-show .cicle-container .cicle-item .net {
   width: 20px;
   position: absolute;
   height: 100%;
@@ -19584,44 +19584,44 @@ footer .bottom-footer {
   margin-top: 5px;
 }
 
-#account-show .cicle-container .cicle-item .n-active {
+#page-show .cicle-container .cicle-item .n-active {
   background-color: #0AB89F;
 }
 
-#account-show .needs p {
+#page-show .needs p {
   padding-top: 1rem;
   padding-bottom: 0;
   margin-bottom: 0;
 }
 
-#account-show .needs ul {
+#page-show .needs ul {
   list-style: none;
   margin-left: 0;
   margin-bottom: 0;
   padding-left: 1em;
 }
 
-#account-show .needs ul li {
+#page-show .needs ul li {
   padding: 3px 0;
 }
 
-#account-show .needs a {
+#page-show .needs a {
   padding-top: 10px;
 }
 
-#account-show .team-member-cont {
+#page-show .team-member-cont {
   padding: 10px;
   display: inline-block;
 }
 
-#account-show .team-member-cont .team-member {
+#page-show .team-member-cont .team-member {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
 }
 
-#account-show .team-member-cont .team-member img {
+#page-show .team-member-cont .team-member img {
   margin-top: 5px;
   width: 200px;
   height: 200px;
@@ -19631,16 +19631,16 @@ footer .bottom-footer {
   background-color: #f0f0f0;
 }
 
-#account-show .team-member-cont .team-member h6 {
+#page-show .team-member-cont .team-member h6 {
   padding: 10px 0;
   margin: 0;
 }
 
-#account-show .team-member-cont .team-member h6 .linkedin {
+#page-show .team-member-cont .team-member h6 .linkedin {
   color: #3490dc;
 }
 
-#account-show .team-member-cont .team-member .description {
+#page-show .team-member-cont .team-member .description {
   padding-top: 10px;
   height: 75px;
   width: 100%;
@@ -19651,13 +19651,13 @@ footer .bottom-footer {
   align-items: center;
 }
 
-#account-show .multiple-sections .other-with-image .img-cont {
+#page-show .multiple-sections .other-with-image .img-cont {
   padding: 0;
   margin: 0;
   height: 300px;
 }
 
-#account-show .multiple-sections .other-with-image img {
+#page-show .multiple-sections .other-with-image img {
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
   -o-object-fit: cover;
@@ -19670,25 +19670,25 @@ footer .bottom-footer {
   height: 100%;
 }
 
-#account-show .multiple-sections .other-with-image .other-text {
+#page-show .multiple-sections .other-with-image .other-text {
   display: inline-block;
   padding-top: 10px;
 }
 
-#account-show .multiple-sections .z-index {
+#page-show .multiple-sections .z-index {
   z-index: 1;
 }
 
-#account-show .cooperations .search-cooperations {
+#page-show .cooperations .search-cooperations {
   padding: 10px;
 }
 
-#account-show .cooperations .cooperation-item {
+#page-show .cooperations .cooperation-item {
   display: inline-block;
   padding: 5px;
 }
 
-#account-show .cooperations .cooperation-item .sub-item-style {
+#page-show .cooperations .cooperation-item .sub-item-style {
   display: inline-block;
   color: black;
   width: 100%;
@@ -19700,14 +19700,14 @@ footer .bottom-footer {
   align-items: center;
 }
 
-#account-show .cooperations .cooperation-item .sub-item-style img {
+#page-show .cooperations .cooperation-item .sub-item-style img {
   width: 100px;
   height: 100px;
   background-color: #f0f0f0;
   border-radius: 50%;
 }
 
-#account-show .cooperations .cooperation-item .sub-item-style span {
+#page-show .cooperations .cooperation-item .sub-item-style span {
   padding: 2px 5px;
   display: inline-block;
   color: white;
@@ -19716,28 +19716,28 @@ footer .bottom-footer {
   font-size: 12px;
 }
 
-#account-show .contacts i {
+#page-show .contacts i {
   margin-right: 5px;
 }
 
 @media (min-width: 992px) {
-  #account-show .profile .profile-header {
+  #page-show .profile .profile-header {
     padding-top: 20px;
   }
 
-  #account-show .profile .profile-header .name {
+  #page-show .profile .profile-header .name {
     text-align: left;
   }
 
-  #account-show .profile .profile-header .name h2 {
+  #page-show .profile .profile-header .name h2 {
     padding-right: 70px;
   }
 
-  #account-show .profile .profile-header .main-buttons {
+  #page-show .profile .profile-header .main-buttons {
     text-align: right;
   }
 
-  #account-show .cicle-container {
+  #page-show .cicle-container {
     height: 200px;
     display: flex;
     justify-content: space-between;
@@ -19745,7 +19745,7 @@ footer .bottom-footer {
     flex-direction: row;
   }
 
-  #account-show .cicle-container .cicle-item {
+  #page-show .cicle-container .cicle-item {
     width: calc(100% / 7);
     height: auto;
     display: flex;
@@ -19754,14 +19754,14 @@ footer .bottom-footer {
     flex-direction: row;
   }
 
-  #account-show .cicle-container .cicle-item .net {
+  #page-show .cicle-container .cicle-item .net {
     width: 100%;
     height: 20px;
     margin: 0;
     margin-left: 5px;
   }
 
-  #account-show .multiple-sections .other-with-image img {
+  #page-show .multiple-sections .other-with-image img {
     border-bottom-left-radius: 10px;
     border-top-left-radius: 10px;
     border-top-right-radius: 0px;
@@ -19775,7 +19775,7 @@ footer .bottom-footer {
     height: calc(100% + 40px);
   }
 
-  #account-show .multiple-sections .other-with-image .other-text {
+  #page-show .multiple-sections .other-with-image .other-text {
     display: inline-block;
     padding-top: 20px;
   }

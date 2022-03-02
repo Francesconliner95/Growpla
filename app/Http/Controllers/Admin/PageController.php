@@ -16,7 +16,7 @@ use App\Pagetype;
 use App\Team;
 use App\Sector;
 use App\Moneyrange;
-use App\GivePageService;
+use App\Lifecycle;
 
 class PageController extends Controller
 {
@@ -137,7 +137,7 @@ class PageController extends Controller
     }
 
     public function show($id){
-
+      $user = Auth::user();
       $page = Page::find($id);
       //TEAM
       $team_members = Team::where('page_id', $id)
@@ -154,20 +154,14 @@ class PageController extends Controller
         }
       }
 
-      //dd($user->currency);
-      $give_services = GivePageService::where('page_id',$page->id)
-      ->join('services','services.id','service_id')
-      ->select('give_page_services.id','services.name as service_name')
-      ->get();
-
       $team_num = Team::where('page_id', $id)->count();
 
       $data = [
         'page' => $page,
-        'is_my_page' => true,
+        'is_my_page' => $user->pages->contains($page),
+        'lifecycles' => Lifecycle::all(),
         'team_members' => $team_members,
         'team_num' => $team_num,
-        'give_services' => $give_services,
       ];
 
       return view('admin.pages.show', $data);

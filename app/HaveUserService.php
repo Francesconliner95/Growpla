@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class HavePagePagetype extends Model
+class HaveUserService extends Model
 {
     //
 }

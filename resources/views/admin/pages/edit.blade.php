@@ -145,16 +145,15 @@
                           <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9">
                             <label>Via</label>
                             <input type="text" name="street_name" class="form-control ml-md-3 mr-md-3"
-                            value="{{ old('street_name',$page->street_name)}}"
-                            required>
+                            value="{{ old('street_name',$page->street_name)}}">
                           </div>
                           <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
                               <label>Numero</label>
-                              <input type="text" name="street_number" class="form-control ml-md-3 mr-md-3" value="{{ old('street_number',$page->street_number)}}" required>
+                              <input type="text" name="street_number" class="form-control ml-md-3 mr-md-3" value="{{ old('street_number',$page->street_number)}}">
                           </div>
                           <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                               <label>Città</label>
-                              <input type="text" name="municipality" class="form-control ml-md-3" value="{{ old('municipality',$page->municipality)}}" required>
+                              <input type="text" name="municipality" class="form-control ml-md-3" value="{{ old('municipality',$page->municipality)}}">
                           </div>
                       </div>
                       {{-- <input type="hidden" name="latitude" v-model="latitude">

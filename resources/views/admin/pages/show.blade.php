@@ -59,6 +59,9 @@
                                 <h2 class="text-capitalize">
                                     {{$page->name}}
                                 </h2>
+                                @if($page->pagetype_id==1 && $page->incorporated)
+                                  <p>Costituita</p>
+                                @endif
                             </div>
 
                             {{-- <div class="main-buttons col-sm-12 col-md-12 col-lg-6 col-xl-6 pt-3">
@@ -143,23 +146,68 @@
                             @endif
                         </div>
                         @endif
-                        @if($is_my_page || count($give_services)>0)
-                        <div class="sub-section">
-                          <h6>{{__('Servizi offerti')}}</h6>
-                          @foreach ($give_services as $service)
-                              <p>{{$service->service_name}}
-                                  <a href="{{route('admin.give-page-services.edit',$service->id)}}" class="button-gray">
-                                      <i class="fas fa-pencil-alt"></i>
+                        <div class="sub-section row">
+                          <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                              <h6>{{__('Offro')}}</h6>
+                              @if($is_my_page || count($page->give_page_services)>0)
+                              <div class="services">
+                                <label>{{__('Servizo di')}}:</label>
+                                @foreach ($page->give_page_services as $service)
+                                    <p class="mb-1">{{$service->name}}
+                                        <a href="{{route('admin.give-page-services.edit',$service->pivot->id)}}" class="button-gray">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </a>
+                                    </p>
+                                @endforeach
+                                <div v-if="is_my_page" class="mb-2">
+                                    <a href="{{route('admin.give-page-services.create_service',['page_id'=>$page->id])}}" class="text-gray">
+                                        <i class="fas fa-plus-circle"></i>Aggiungi
+                                    </a>
+                                </div>
+                              </div>
+                              @endif
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            @if($is_my_page || count($page->have_page_services)>0)
+                            <h6>{{__('Cerco')}}</h6>
+                            <div class="services">
+                              <label>{{__('Servizo di')}}:</label>
+                              @foreach ($page->have_page_services as $service)
+                                  <p class="mb-1">{{$service->name}}
+                                      <a href="{{route('admin.have-page-services.edit',$service->pivot->id)}}" class="button-gray">
+                                          <i class="fas fa-pencil-alt"></i>
+                                      </a>
+                                  </p>
+                              @endforeach
+                              <div v-if="is_my_page" class="mb-2">
+                                  <a href="{{route('admin.have-page-services.create_service',['page_id'=>$page->id])}}" class="text-gray">
+                                      <i class="fas fa-plus-circle"></i>Aggiungi
                                   </a>
-                              </p>
-                          @endforeach
-                          <div v-if="is_my_page" class="d-flex justify-content-center w-100">
-                              <a href="{{route('admin.give-page-services.create_service',['page_id'=>$page->id])}}" class="text-gray">
-                                  <i class="fas fa-plus-circle"></i>Aggiungi servizio offerto
-                              </a>
+                              </div>
+                              @if($page->pagetype_id==1)
+                              <div class="pages">
+                                <label>{{__('Aziende')}}:
+                                    <a v-if="is_my_page" href="{{route('admin.have-page-pagetypes.edit',$page->id)}}" class="button-gray">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                </label>
+                                @foreach ($page->have_page_pagetypes as $pagetype)
+                                    <p class="mb-1">{{$pagetype->name}}</p>
+                                @endforeach
+                                <div class="users">
+                                  <label>{{__('Persone')}}:
+                                    <a v-if="is_my_page" href="{{route('admin.have-page-usertypes.edit',$page->id)}}" class="button-gray">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
+                                  </label>
+                                  @foreach ($page->have_page_usertypes as $usertype)
+                                      <p class="mb-1">{{$usertype->name}}</p>
+                                  @endforeach
+                              @endif
+                            </div>
+                            @endif
                           </div>
                         </div>
-                        @endif
                     </div>
                 </div>
             </div>
@@ -167,9 +215,30 @@
         @if($page->pagetype_id==1)
         <div class="item-cont">
             <div class="item-style">
-              <a href="{{route('admin.lifecycles.edit',$page->id)}}" class="button-gray">
+              <h3>{{__('Life cycle')}}
+                  <div v-if="is_my_page" class="info">
+                      <button aria-label="{{__('Specify the life cycle\'s stage of your startup')}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
+                      <i class="fas fa-info-circle"></i>
+                  </div>
+              </h3>
+              <a href="{{route('admin.lifecycles.edit',$page->id)}}" class="button-gray edit-top-right">
                   <i class="fas fa-pencil-alt"></i>
               </a>
+              @if($page->lifecycle_id)
+              <div class="cicle-container">
+                  @foreach ($lifecycles as $lifecycle)
+                    <div class="pre-seed cicle-item">
+                        <div :class="{{$lifecycle->id}}<={{$page->lifecycle_id}}?
+                        'circle c-active':'circle'">
+                            <span>{{$lifecycle->name}}</span>
+                        </div>
+                        <span v-if="{{$lifecycle->id}}<{{count($lifecycles)}}"
+                          :class="{{$lifecycle->id}}<{{$page->lifecycle_id}}?'n-active net':'net'">
+                        </span>
+                    </div>
+                  @endforeach
+              </div>
+              @endif
             </div>
         </div>
         @endif

@@ -75228,6 +75228,113 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
+/***/ "./resources/js/admin/have-page-usertypes/edit.js":
+/*!********************************************************!*\
+  !*** ./resources/js/admin/have-page-usertypes/edit.js ***!
+  \********************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! croppr */ "./node_modules/croppr/dist/croppr.js");
+/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(croppr__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#page-usertypes-edit',
+  data: {
+    skills: skills,
+    skill_name: '',
+    skills_found: ''
+  },
+  methods: {
+    searchSkill: function searchSkill() {
+      var _this = this;
+
+      if (this.skill_name) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchSkill', {
+          params: {
+            skill_name: this.skill_name
+          }
+        }).then(function (response) {
+          _this.skills_found = response.data.results.skills;
+
+          if (!_this.skill_name) {
+            _this.skills_found = '';
+          }
+        });
+      } else {
+        this.skills_found = '';
+      }
+    },
+    addSkill: function addSkill(skill_found) {
+      var exist = false;
+      this.skills.forEach(function (skill, i) {
+        if (skill.pivot.skill_id == skill_found.id) {
+          exist = true;
+        }
+      });
+
+      if (!exist) {
+        var new_skill = {
+          "name": skill_found.name,
+          "pivot": {
+            "skill_id": skill_found.id
+          }
+        };
+        this.skills.push(new_skill);
+      }
+
+      this.skills_found = '';
+      this.skill_name = '';
+    },
+    addManualSkill: function addManualSkill() {
+      var _this2 = this;
+
+      var exist = false;
+      this.skills.forEach(function (skill, i) {
+        if (skill.name == _this2.skill_name) {
+          exist = true;
+        }
+      });
+
+      if (!exist && this.skill_name) {
+        var new_skill = {
+          "name": this.skill_name // "pivot":{
+          //   "skill_id": skill_found.id,
+          // },
+
+        };
+        this.skills.push(new_skill);
+      }
+
+      this.skills_found = '';
+      this.skill_name = '';
+    },
+    removeSkill: function removeSkill(i) {
+      this.skills.splice(i, 1);
+    }
+  },
+  created: function created() {
+    if (this.skills) {
+      this.skills = JSON.parse(this.skills.replace(/&quot;/g, '"'));
+    }
+  },
+  mounted: function mounted() {}
+});
+
+/***/ }),
+
 /***/ "./resources/js/admin/lifecycles/edit.js":
 /*!***********************************************!*\
   !*** ./resources/js/admin/lifecycles/edit.js ***!
@@ -78743,11 +78850,16 @@ if (document.getElementById('other-create')) {
 
 if (document.getElementById('other-edit')) {
   __webpack_require__(/*! ./admin/others/edit.js */ "./resources/js/admin/others/edit.js");
-} //lifecycle
+} //LIFECYCLE
 
 
 if (document.getElementById('lifecycle-edit')) {
   __webpack_require__(/*! ./admin/lifecycles/edit.js */ "./resources/js/admin/lifecycles/edit.js");
+} //PAGE-USERTYPE
+
+
+if (document.getElementById('page-usertypes-edit')) {
+  __webpack_require__(/*! ./admin/have-page-usertypes/edit.js */ "./resources/js/admin/have-page-usertypes/edit.js");
 } //CHAT
 
 
