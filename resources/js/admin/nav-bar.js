@@ -8,66 +8,10 @@ axios.defaults.headers.common = {
 var create = new Vue({
     el: '#nav-bar',
     data: {
-        user,
-        my_accounts: [],
-        account_selected: '',
         notifications: [],
         message_not_read: 0,
     },
     methods: {
-
-        getMyAccount(){
-            axios.get('/admin/getMyAccounts',{
-            }).then((response) => {
-                this.my_accounts = response.data.results.my_accounts;
-                this.account_selected = response.data.results.account_selected;
-            });
-        },
-        // setAccount(account_id){
-        //     axios({
-        //         method: 'put',
-        //         url: '/admin/setAccount',
-        //         data: {
-        //             account_selected_id: account_id,
-        //         }
-        //     }).then(response => {
-        //         this.getMyAccount();
-        //     });
-        // },
-
-        getNotReadNotifications(){
-            axios.get('/admin/getNotReadNotifications',{
-            }).then((response) => {
-                this.notifications = response.data.results.notifications;
-            });
-        },
-
-        readNotifications(notification){
-            axios({
-                method: 'put',
-                url: '/admin/readNotifications',
-                data: {
-                    notification_id: notification.id,
-                }
-            }).then(response => {
-
-            });
-
-            let string = '';
-            if(notification.type==1){
-                string = "/admin/startup/";
-            }else{
-                string = "/admin/accounts/";
-            }
-            window.location.href = string + notification.ref_account_id;
-        },
-
-        getMessagesCount(){
-            axios.get('/admin/getMessagesCount',{
-            }).then((response) => {
-                this.message_not_read = response.data.results.message_not_read;
-            });
-        },
 
         getCookie(name){
           const value = `; ${document.cookie}`;
@@ -76,27 +20,12 @@ var create = new Vue({
         },
     },
     created(){
-        //console.log(this.getCookie("analyticsCookie"));
         if(this.getCookie("analyticsCookie")=='accept'){
-            // window['ga-disable-G-EX66GGGB3E'] = true;
-            // console.log('disabilitato');
             this.enableAnalytics = true;
         }
 
     },
     mounted() {
-        if(this.user){
-            this.user = JSON.parse(this.user.replace(/&quot;/g,'"'));
-        }
-
-        console.log(this.user);
-
-        // if(this.user.account_id){
-        //     this.account_selected = this.user.account_id;
-        //     this.getMyAccount();
-        //     this.getNotReadNotifications();
-        //     this.getMessagesCount();
-        // }
 
     }
 

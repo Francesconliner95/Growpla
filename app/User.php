@@ -49,13 +49,38 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany('App\Company');
     }
 
-    public function skills(){
-        return $this->belongsToMany('App\Skill');
+    public function give_user_skills(){
+        return $this->belongsToMany('App\Skill','give_user_skills','user_id','skill_id')
+        ->withPivot('id');
     }
 
-    // public function services(){
-    //     return $this->belongsToMany('App\Service');
-    // }
+    public function give_user_services(){
+        return $this->belongsToMany('App\Service','give_user_services','user_id','service_id')
+        ->withPivot('id');
+    }
+
+    public function have_user_services(){
+        return $this->belongsToMany('App\Service','have_user_services','user_id','service_id')
+        ->withPivot('id');
+    }
+
+    public function user_following(){ //utenti seguiti
+        return $this->
+        belongsToMany('App\User','follows','user_id','user_following_id')
+        ->withPivot('id');
+    }
+
+    public function user_follower(){ //utenti che mi seguono
+        return $this->
+        belongsToMany('App\User','follows','user_following_id','user_id')
+        ->withPivot('id');
+    }
+
+    public function page_following(){ //pagine seguite
+        return $this->
+        belongsToMany('App\Page','follows','user_id','page_following_id')
+        ->withPivot('id');
+    }
 
     /**
      * The attributes that are mass assignable.

@@ -6,167 +6,95 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Follow;
-use App\Account;
+use App\User;
+use App\Page;
 
 class FollowController extends Controller
 {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $user_id = Auth::user()->id;
 
-        $my_follows = Follow::where('user_id',$user_id)
-                    // ->join('accounts','accounts.id','=','follow_account_id')
-                    // ->select('follows.id as follows_id', 'accounts.id as account_id', 'accounts.name')
-                    ->get();
+        $followed = Follow::where('user_id',Auth::user()->id)
+        ->leftjoin('users','users.id','=','follows.user_following_id')
+        ->leftjoin('pages','pages.id','=','follows.page_following_id')
+        ->select('users.id as user_id', 'users.name as user_name',
+        'pages.id as page_id','pages.name as page_name')
+        ->get();
 
-        foreach ($my_follows as  $my_follow) {
-            $account = Account::find($my_follow->follow_account_id);
-            $my_follow['account_id'] = $account->id;
-            $my_follow['name'] = $account->name;
-        }
+        // dd($following);
 
         $data = [
-            'my_follows' => $my_follows,
+            'followed' => $followed,
         ];
 
         return view('admin.follows.index', $data);
     }
 
-    public function addFollow(Request $request){
+    public function toggleFollowing(Request $request){
 
         $request->validate([
+            'follow_type' => 'required|integer',
             'follow_id' => 'required|integer',
         ]);
 
-        $user_id = Auth::user()->id;
-        $follow_id = $request->follow_id;
-        $already_exist = Follow::where('user_id', $user_id)
-                        ->where('follow_account_id', $follow_id)->first();
+        switch ($request->follow_type) {
+          case 1:
+              $following = User::find($request->follow_id);
 
-        if($already_exist){
-            $already_exist->delete();
-        }else{
-            $new_follow = new Follow();
-            $new_follow->user_id = $user_id;
-            $new_follow->follow_account_id = $follow_id;
-            $new_follow->save();
-        }
+              $exist = Auth::user()->user_following->contains($following);
 
-    }
+              if($exist){
+                Auth::user()->user_following()->detach($following);
+                $following = false;
+              }else{
+                Auth::user()->user_following()->attach($following);
+                $following = true;
+              }
+          break;
+          case 2:
+              $following = Page::find($request->follow_id);
 
-    public function getFollows(){
+              $exist = Auth::user()->page_following->contains($following);
 
-        $user_id = Auth::user()->id;
+              if($exist){
+                Auth::user()->page_following()->detach($following);
+                $following = false;
+              }else{
+                Auth::user()->page_following()->attach($following);
+                $following = true;
+              }
+          break;
 
-        $my_follows = Follow::where('user_id', $user_id)->get();
-
-        foreach ($my_follows as  $my_follow) {
-            $account = Account::find($my_follow->follow_account_id);
-            $my_follow['account_id'] = $account->id;
-            $my_follow['name'] = $account->name;
+          default:
+            // code...
+          break;
         }
 
         return response()->json([
             'success' => true,
             'results' => [
-                'my_follows' => $my_follows,
+                'following' => $following,
             ]
         ]);
+
     }
 
-    public function getFollow(Request $request) {
+    public function getFollowed(){
 
-        $request->validate([
-            'follow_id' => 'required|integer',
-        ]);
+        $followed = Follow::where('user_id',Auth::user()->id)
+        ->leftjoin('users','users.id','=','follows.user_following_id')
+        ->leftjoin('pages','pages.id','=','follows.page_following_id')
+        ->select('users.id as user_id', 'users.name as user_name',
+        'pages.id as page_id','pages.name as page_name')
+        ->get();
 
-        $user_id = Auth::user()->id;
-        $follow_id = $request->follow_id;
-        $already_exist = Follow::where('user_id', $user_id)
-                        ->where('follow_account_id', $follow_id)->first();
-
-        if($already_exist){
-            $already_follow = true;
-        }else{
-            $already_follow = false;
-        }
         return response()->json([
             'success' => true,
             'results' => [
-                'already_follow' => $already_follow,
+                'followed' => $followed,
             ]
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

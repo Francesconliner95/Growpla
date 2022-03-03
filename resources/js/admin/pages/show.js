@@ -12,12 +12,26 @@ var create = new Vue({
         page,
         team_members,
         team_num,
+        following,
     },
     methods: {
 
       open(filename){
           var newWindow = window.open();
           newWindow.document.write('<iframe src="/storage/'+ filename +'" style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;">');
+      },
+
+      toggleFollow(){
+        axios({
+            method: 'post',
+            url: '/admin/toggleFollowing',
+            data: {
+                follow_type: 2,//1 utente 2 pagina
+                follow_id: this.page.id,
+            }
+        }).then(response => {
+            this.following = response.data.results.following;
+        });
       },
 
       teamToggle(){
@@ -53,22 +67,13 @@ var create = new Vue({
           });
       },
 
-      delete_member(member_id){
-          axios({
-              method: 'delete',
-              url: '/admin/deleteMember',
-              data: {
-                  member_id: member_id,
-              }
-          }).then(response => {
-              this.team_num = response.data.results.team_num;
-              this.getTeamMembers();
-          });
-      },
-
     },
     created(){
       this.page = JSON.parse(this.page.replace(/&quot;/g,'"'));
+      if(this.team_members){
+          this.team_members = JSON.parse(this.team_members.replace(/&quot;/g,'"'));
+      }
+
     },
     mounted() {
 

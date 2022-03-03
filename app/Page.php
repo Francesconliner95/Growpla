@@ -56,6 +56,12 @@ class Page extends Model
         ->withPivot('id');
     }
 
+    public function page_follower(){ //utenti seguaci della pagina
+        return $this->
+        belongsToMany('App\User','follows','page_following_id','user_id')
+        ->withPivot('id');
+    }
+
     protected $fillable = [
       'pagetype_id',
       'name',

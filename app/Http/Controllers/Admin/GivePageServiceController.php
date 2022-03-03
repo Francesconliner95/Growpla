@@ -19,72 +19,12 @@ class GivePageServiceController extends Controller
         $this->middleware(['auth','verified']);
     }
 
-    public function create_service($page_id)
+    public function edit($page_id)
     {
+        $page = Page::find($page_id);
         $data = [
-            'page_id' => $page_id,
-        ];
-
-        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
-
-        return view('admin.give-page-services.create',$data);
-    }
-
-    public function store_service(Request $request)
-    {
-
-        $request->validate([
-            'page_id' => 'required|integer',
-            'name'=> 'required|string',
-        ]);
-
-        $user = Auth::user();
-        $page = Page::find($request->page_id);
-
-        if($user->pages->contains($page)){
-          $data = $request->all();
-
-          $name = Str::lower($request->name);
-
-          $exist = Service::where('name',$name)->first();
-
-          if(!$exist){
-              $new_service = new Service();
-              $new_service->name = $name;
-              $new_service->save();
-              $service = $new_service;
-          }else{
-              $service = $exist;
-          }
-
-          $user = Auth::user();
-
-          $already_exist = GivePageService::where('page_id',$page->id)
-                          ->where('service_id',$service->id)
-                          ->first();
-
-          if(!$already_exist){
-              $new_gps = new GivePageService();
-              $new_gps->page_id = $page->id;
-              $new_gps->service_id = $service->id;
-              $new_gps->save();
-          }
-
-          return redirect()->route('admin.pages.show',$page->id);
-
-        }abort(404);
-
-
-    }
-
-    public function edit($gps_id)
-    {
-
-
-        $gps = GivePageService::find($gps_id);
-        $data = [
-            'gps' => $gps,
-            'service' => Service::find($gps->service_id),
+            'page' => $page,
+            'services' => $page->give_page_services,
         ];
 
         app()->setLocale(Language::find(Auth::user()->language_id)->lang);
@@ -92,67 +32,46 @@ class GivePageServiceController extends Controller
         return view('admin.give-page-services.edit', $data);
     }
 
-    public function update(Request $request, $gps_id)
+    public function update(Request $request, $page_id)
     {
 
-        $request->validate([
-            'name'=> 'required|string',
-        ]);
+      $request->validate([
+        //'services'=> 'exists:usertypes,id',
+      ]);
 
-        $gps = GivePageService::find($gps_id);
-        $user = Auth::user();
-        $page = Page::find($gps->page_id);
+      $data = $request->all();
 
-        if($user->pages->contains($page)){
+      $user = Auth::user();
+      $page = Page::find($page_id);
 
-            $data = $request->all();
+      if($user->pages->contains($page)){
 
-            $name = Str::lower($request->name);
 
-            $exist = Service::where('name',$name)->first();
+          $services = $request->services;
+          $services_id = [];
+          foreach ($services as $service_name) {
+              $exist = Service::where('name',$service_name)->first();
+              if($exist){
+                  array_push($services_id, $exist->id);
+              }else{
+                  if($service_name){
+                    $new_service = new Service();
+                    $new_service->name = Str::lower($service_name);
+                    $new_service->save();
+                    array_push($services_id, $new_service->id);
+                  }
+              }
+          }
 
-            if(!$exist){
-                $new_service = new Service();
-                $new_service->name = $name;
-                $new_service->save();
-                $service = $new_service;
-            }else{
-                $service = $exist;
-            }
+          if(array_key_exists('services', $data)){
+            $page->give_page_services()->sync($services_id);
+          }else{
+            $page->give_page_services()->sync([]);
+          }
 
-            $user = Auth::user();
+          return redirect()->route('admin.pages.show',$page->id);
 
-            $exist_new_gps = GivePageService::where('page_id',$page->id)
-                            ->where('service_id',$service->id)
-                            ->first();
-
-            //dd($gps);
-
-            if(!$exist_new_gps){
-                $gps->service_id = $service->id;
-                $gps->update();
-            }else{
-                $gps->delete();
-            }
-
-            return redirect()->route('admin.pages.show',$page->id);
-        }
-    }
-
-    public function destroy($gps_id)
-    {
-        $user = Auth::user();
-
-        $gps = GivePageService::find($gps_id);
-        $user = Auth::user();
-        $page = Page::find($gps->page_id);
-
-        if($user->pages->contains($page)){
-            $gps->delete();
-        }
-
-        return redirect()->route('admin.pages.show', ['page' => $page->id]);
-
-    }
+      }abort(404);
+  }
 
 }

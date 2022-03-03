@@ -28,7 +28,7 @@
 <body>
     <script type="text/javascript">
         window.csrf_token = "{{ csrf_token() }}";
-        user = "{{Auth::user()->select('users.id','users.image')->first()}}";
+        
     </script>
     <!-- Google Analytics -->
     <script>
@@ -114,7 +114,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if (Auth::user()->account_id)
+                        {{-- @if (Auth::user()->account_id)
                         <div class="chat d-inline-block" v-cloak>
                             <a class="not-navbar icon" href="{{route('admin.chats.index')}}">
                                 <i class="fas fa-comment-alt">
@@ -124,10 +124,12 @@
                                 </i>
                             </a>
                         </div>
-                        @endif
+                        @endif --}}
                         <div class="account-menu d-inline-block" v-cloak>
-                            <a :href="'/admin/users/' + user.id">
-                                <img v-if="user.image" :src="'/storage/' + user.image" alt="">
+                            <a href="{{route('admin.users.show',Auth::user()->id)}}">
+                                @if(Auth::user()->image)
+                                <img src="{{ asset('storage/'.Auth::user()->image) }}" alt="">
+                                @endif
                             </a>
                             <a id="navbarDropdown" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{-- <div class="drop-menu mobile-hide"> --}}
@@ -135,11 +137,11 @@
                                 {{-- </div> --}}
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a :href="'/admin/users/' + user.id" class="dropdown-item">
+                                <a href="{{route('admin.users.show',Auth::user()->id)}}" class="dropdown-item">
                                     {{__('My account')}}
                                 </a>
                                 <a class="dropdown-item"
-                                :href="'/admin/users/' + user.id + '/settings'">
+                                href="{{route('admin.users.settings',Auth::user()->id)}}">
                                     {{__('Settings')}}
                                 </a>
                                 <a class="dropdown-item"

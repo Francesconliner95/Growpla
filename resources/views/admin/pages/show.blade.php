@@ -6,8 +6,9 @@
     lang = "{{Auth::user()->language_id}}";
     page = "{{$page}}";
     is_my_page = "{{$is_my_page}}";
-    team_members = {!! json_encode($team_members->toArray()) !!};
+    team_members = "{{$team_members}}";
     team_num = "{{$team_num}}";
+    following = "{{Auth::user()->page_following->contains($page)}}";
 </script>
 <div class="container">
     <div id="page-show">
@@ -63,7 +64,6 @@
                                   <p>Costituita</p>
                                 @endif
                             </div>
-
                             {{-- <div class="main-buttons col-sm-12 col-md-12 col-lg-6 col-xl-6 pt-3">
                                 <div v-if="!is_my_page" class="d-inline-block">
 
@@ -90,6 +90,10 @@
 
                                 </div>
                             </div> --}}
+                            <button  :class="following?'button-style button-color-orange':'button-style button-color'" type="button" name="button" @click="toggleFollow()" v-cloak>
+                                <span v-if="following">{{__('Following')}}</span>
+                                <span v-else>{{__('Follow')}}</span>
+                            </button>
                         </div>
                         <div class="sub-section">
                           <div class="">
@@ -146,24 +150,21 @@
                             @endif
                         </div>
                         @endif
+                        @if($is_my_page || count($page->give_page_services)>0 || count($page->have_page_services)>0)
                         <div class="sub-section row">
                           <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                              <h6>{{__('Offro')}}</h6>
+                              <h6>{{__('Offro')}}
+                              </h6>
                               @if($is_my_page || count($page->give_page_services)>0)
                               <div class="services">
-                                <label>{{__('Servizo di')}}:</label>
+                                <label>{{__('Servizo di')}}:
+                                  <a v-if="is_my_page" href="{{route('admin.give-page-services.edit',$page->id)}}" class="button-gray">
+                                      <i class="fas fa-pencil-alt"></i>
+                                  </a>
+                                </label>
                                 @foreach ($page->give_page_services as $service)
-                                    <p class="mb-1">{{$service->name}}
-                                        <a href="{{route('admin.give-page-services.edit',$service->pivot->id)}}" class="button-gray">
-                                            <i class="fas fa-pencil-alt"></i>
-                                        </a>
-                                    </p>
+                                    <p class="mb-1">{{$service->name}}</p>
                                 @endforeach
-                                <div v-if="is_my_page" class="mb-2">
-                                    <a href="{{route('admin.give-page-services.create_service',['page_id'=>$page->id])}}" class="text-gray">
-                                        <i class="fas fa-plus-circle"></i>Aggiungi
-                                    </a>
-                                </div>
                               </div>
                               @endif
                           </div>
@@ -171,19 +172,16 @@
                             @if($is_my_page || count($page->have_page_services)>0)
                             <h6>{{__('Cerco')}}</h6>
                             <div class="services">
-                              <label>{{__('Servizo di')}}:</label>
+                              <label>{{__('Servizo di')}}:
+                                <a v-if="is_my_page" href="{{route('admin.have-page-services.edit',$page->id)}}" class="button-gray">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                              </label>
                               @foreach ($page->have_page_services as $service)
                                   <p class="mb-1">{{$service->name}}
-                                      <a href="{{route('admin.have-page-services.edit',$service->pivot->id)}}" class="button-gray">
-                                          <i class="fas fa-pencil-alt"></i>
-                                      </a>
+
                                   </p>
                               @endforeach
-                              <div v-if="is_my_page" class="mb-2">
-                                  <a href="{{route('admin.have-page-services.create_service',['page_id'=>$page->id])}}" class="text-gray">
-                                      <i class="fas fa-plus-circle"></i>Aggiungi
-                                  </a>
-                              </div>
                               @if($page->pagetype_id==1)
                               <div class="pages">
                                 <label>{{__('Aziende')}}:
@@ -194,20 +192,23 @@
                                 @foreach ($page->have_page_pagetypes as $pagetype)
                                     <p class="mb-1">{{$pagetype->name}}</p>
                                 @endforeach
-                                <div class="users">
+                              </div>
+                              <div class="users">
                                   <label>{{__('Persone')}}:
-                                    <a v-if="is_my_page" href="{{route('admin.have-page-usertypes.edit',$page->id)}}" class="button-gray">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </a>
+                                      <a v-if="is_my_page" href="{{route('admin.have-page-usertypes.edit',$page->id)}}" class="button-gray">
+                                          <i class="fas fa-pencil-alt"></i>
+                                      </a>
                                   </label>
-                                  @foreach ($page->have_page_usertypes as $usertype)
-                                      <p class="mb-1">{{$usertype->name}}</p>
-                                  @endforeach
+                                @foreach ($page->have_page_usertypes as $usertype)
+                                    <p class="mb-1">{{$usertype->name}}</p>
+                                @endforeach
+                              </div>
                               @endif
                             </div>
                             @endif
                           </div>
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>

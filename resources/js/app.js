@@ -108,19 +108,11 @@ if (document.getElementById('company-edit')) {
 }
 
 //SKILL
-if (document.getElementById('skill-create')) {
-    require('./admin/skills/create.js');
-}
-
 if (document.getElementById('skill-edit')) {
     require('./admin/skills/edit.js');
 }
 
 //SERVICE
-if (document.getElementById('service-create')) {
-    require('./admin/services/create.js');
-}
-
 if (document.getElementById('service-edit')) {
     require('./admin/services/edit.js');
 }
@@ -138,11 +130,11 @@ if (document.getElementById('other-edit')) {
 if (document.getElementById('lifecycle-edit')) {
     require('./admin/lifecycles/edit.js');
 }
+
 //PAGE-USERTYPE
 if (document.getElementById('page-usertypes-edit')) {
     require('./admin/have-page-usertypes/edit.js');
 }
-
 
 //CHAT
 if (document.getElementById('chat-index')) {

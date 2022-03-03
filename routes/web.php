@@ -58,8 +58,8 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     ->name('images.updatePageImage');
     Route::put('/removePageImage', 'ImageController@removePageImage')->name('removePageImage');
 
-    //Skills
-    Route::resource('/skills', 'SkillController');
+    //GiveUserSkills
+    Route::resource('/give_user_skills', 'GiveUserSkillController');
 
     //GiveUserService
     Route::resource('/give-user-services', 'GiveUserServiceController');
@@ -81,17 +81,17 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::resource('/have-page-usertypes', 'HavePageUsertypeController');
 
 
-    Route::get('/advancedSearch', 'SearchController@advancedSearch')->name('advancedSearch');
+    //Route::get('/advancedSearch', 'SearchController@advancedSearch')->name('advancedSearch');
 
     Route::get('/', 'HomeController@index')->name('index');
-    Route::resource('/accounts', 'AccountController');
-    Route::get('/getMyAccounts', 'AccountController@getMyAccounts')->name('getMyAccounts');
-    Route::put('/setAccount', 'AccountController@setAccount')->name('setAccount');
-    Route::put('/removeFile', 'AccountController@removeFile')->name('removeFile');
-    Route::get('/showImageEditor/{account_id}', 'AccountController@showImageEditor')->name('accounts.showImageEditor');
-    Route::put('/updateImage/{account_id}', 'AccountController@updateImage')->name('accounts.updateImage');
-    Route::get('/showCoverImageEditor/{account_id}', 'AccountController@showCoverImageEditor')->name('accounts.showCoverImageEditor');
-    Route::put('/updateCoverImage/{account_id}', 'AccountController@updateCoverImage')->name('accounts.updateCoverImage');
+    // Route::resource('/accounts', 'AccountController');
+    // Route::get('/getMyAccounts', 'AccountController@getMyAccounts')->name('getMyAccounts');
+    // Route::put('/setAccount', 'AccountController@setAccount')->name('setAccount');
+    // Route::put('/removeFile', 'AccountController@removeFile')->name('removeFile');
+    // Route::get('/showImageEditor/{account_id}', 'AccountController@showImageEditor')->name('accounts.showImageEditor');
+    // Route::put('/updateImage/{account_id}', 'AccountController@updateImage')->name('accounts.updateImage');
+    // Route::get('/showCoverImageEditor/{account_id}', 'AccountController@showCoverImageEditor')->name('accounts.showCoverImageEditor');
+    // Route::put('/updateCoverImage/{account_id}', 'AccountController@updateCoverImage')->name('accounts.updateCoverImage');
 
 
     // TEAM
@@ -105,56 +105,49 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::resource('/companies', 'CompanyController');
 
     // OTHER
-    Route::post('/addMultipleSection','OtherController@addMultipleSection')
-    ->name('addMultipleSection');
-    Route::put('/updateMultipleOther','OtherController@updateMultipleOther')
-    ->name('updateMultipleOther');
-    Route::delete('/deleteMultipleOther','OtherController@deleteMultipleOther')
-    ->name('deleteMultipleOther');
-    Route::put('/changeMultipleOtherPosition', 'OtherController@changeMultipleOtherPosition')->name('others.changeMultipleOtherPosition');
-    Route::resource('/others', 'OtherController');
-    Route::get('/addOther/{section_id}', 'OtherController@addOther')->name('others.addOther');
-    Route::post('/storeOther/{section_id}', 'OtherController@storeOther')->name('others.storeOther');
-    Route::delete('/deleteOther', 'OtherController@deleteOther')->name('deleteOther');
-    Route::put('/changeOtherPosition', 'OtherController@changeOtherPosition')->name('others.changeOtherPosition');
+    // Route::post('/addMultipleSection','OtherController@addMultipleSection')
+    // ->name('addMultipleSection');
+    // Route::put('/updateMultipleOther','OtherController@updateMultipleOther')
+    // ->name('updateMultipleOther');
+    // Route::delete('/deleteMultipleOther','OtherController@deleteMultipleOther')
+    // ->name('deleteMultipleOther');
+    // Route::put('/changeMultipleOtherPosition', 'OtherController@changeMultipleOtherPosition')->name('others.changeMultipleOtherPosition');
+    // Route::resource('/others', 'OtherController');
+    // Route::get('/addOther/{section_id}', 'OtherController@addOther')->name('others.addOther');
+    // Route::post('/storeOther/{section_id}', 'OtherController@storeOther')->name('others.storeOther');
+    // Route::delete('/deleteOther', 'OtherController@deleteOther')->name('deleteOther');
+    // Route::put('/changeOtherPosition', 'OtherController@changeOtherPosition')->name('others.changeOtherPosition');
 
     //Lifecycle
     Route::resource('/lifecycles', 'LifecycleController');
 
     //FOLLOW
-    Route::post('/addFollow', 'FollowController@addFollow')->name('addFollow');
-    Route::get('/getFollow', 'FollowController@getFollow')->name('getFollow');
-    Route::get('/getFollows', 'FollowController@getFollows')->name('getFollows');
+    Route::resource('/follows', 'FollowController');
+    Route::post('/toggleFollowing', 'FollowController@toggleFollowing')->name('toggleFollowing');
+    Route::get('/getFollowed', 'FollowController@getFollowed')->name('getFollowed');
 
     // SUPPORTED STARTUP
-    Route::post('/addCooperation', 'CooperationController@addCooperation')
-    ->name('addCooperation');
-    Route::delete('/deleteCooperation', 'CooperationController@deleteCooperation')
-    ->name('deleteCooperation');
-    Route::put('/confirmCooperation', 'CooperationController@confirmCooperation')
-    ->name('confirmCooperation');
-
-    //TAG
-    Route::post('/createTag', 'TagController@createTag')
-    ->name('tags.createTag');
-    Route::post('/addTag', 'TagController@addTag')->name('tags.addTag');
-    Route::delete('/deleteTag', 'TagController@deleteTag')
-    ->name('tags.deleteTag');
+    // Route::post('/addCooperation', 'CooperationController@addCooperation')
+    // ->name('addCooperation');
+    // Route::delete('/deleteCooperation', 'CooperationController@deleteCooperation')
+    // ->name('deleteCooperation');
+    // Route::put('/confirmCooperation', 'CooperationController@confirmCooperation')
+    // ->name('confirmCooperation');
 
     //SERVICE
-    Route::post('/addService', 'ServiceController@addService')->name('services.addService');
-    Route::delete('/deleteService', 'ServiceController@deleteService')
-    ->name('services.deleteService');
+    // Route::post('/addService', 'ServiceController@addService')->name('services.addService');
+    // Route::delete('/deleteService', 'ServiceController@deleteService')
+    // ->name('services.deleteService');
 
     //ROLE
-    Route::post('/createRole', 'CofounderRoleController@createRole')
-    ->name('cofounder_roles.createRole');
+    // Route::post('/createRole', 'CofounderRoleController@createRole')
+    // ->name('cofounder_roles.createRole');
 
     //COFOUNDER
-    Route::post('/addCofounder', 'CofounderController@addCofounder')
-    ->name('cofounders.addCofounder');
-    Route::delete('/deleteCofounder', 'CofounderController@deleteCofounder')
-    ->name('cofounders.deleteCofounder');
+    // Route::post('/addCofounder', 'CofounderController@addCofounder')
+    // ->name('cofounders.addCofounder');
+    // Route::delete('/deleteCofounder', 'CofounderController@deleteCofounder')
+    // ->name('cofounders.deleteCofounder');
 
     //CHATS
     Route::resource('/chats', 'ChatController');
@@ -173,27 +166,6 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::get('/getMessagesCount', 'MessageController@getMessagesCount')
     ->name('massages.getMessagesCount');
     // Route::resource('/messages', 'MessageController');
-
-    //NOMINATIONS
-    Route::resource('/nominations', 'NominationController');
-    Route::get('/cofounder', 'NominationController@cofounder')
-    ->name('nominations.cofounder');
-    Route::get('/startup/{account_id}', 'NominationController@startup')
-    ->name('nominations.startup');
-    Route::post('/addNomination', 'NominationController@addNomination')
-    ->name('nominations.addNomination');
-    Route::get('/getNeedsAndNomination', 'NominationController@getNeedsAndNomination')
-    ->name('nominations.getStartupNomination');
-    Route::get('/getNominations', 'NominationController@getNominations')
-    ->name('nominations.getNominations');
-    Route::delete('/deleteNomination', 'NominationController@deleteNomination')
-    ->name('nominations.deleteNomination');
-    // Route::put('/updateNomination', 'NominationController@updateNomination')
-    // ->name('nominations.updateNomination');
-
-
-    //FOLLOW
-    Route::resource('/follows', 'FollowController');
 
     //MAIL
     Route::get('/mailMessage', 'MailController@mailMessage')
@@ -219,8 +191,6 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     ->name('supports.success');
     Route::get('/getAllSupports', 'SupportController@getAllSupports')
     ->name('supports.getAllSupports');
-
-
 
     //FILTER MESSAGES
     Route::put('/setFilterMessage', 'FilterMessageController@setFilterMessage')

@@ -56,7 +56,7 @@ Route::get('/getCofounder', 'Api\CofounderController@getCofounder');
 Route::get('/searchRole', 'Api\CofounderRoleController@searchRole');
 Route::get('/searchCompany', 'Api\CompanyController@searchCompany');
 
-Route::get('/advancedSearch', 'Api\SearchController@advancedSearch');
+//Route::get('/advancedSearch', 'Api\SearchController@advancedSearch');
 
 Route::get('/getMultipleSections', 'Api\OtherController@getMultipleSections');
 Route::get('/getSectionOthers', 'Api\OtherController@getSectionOthers');

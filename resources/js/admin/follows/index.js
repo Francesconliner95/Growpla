@@ -8,31 +8,35 @@ axios.defaults.headers.common = {
 var create = new Vue({
     el: '#follows-index',
     data: {
-        my_follows,
+        followed,
     },
     methods: {
 
-        getfollows(){
-            axios.get('/admin/getFollows',{
+        getFollowed(){
+            axios.get('/admin/getFollowed',{
             }).then((response) => {
-                this.my_follows = response.data.results.my_follows;
-                //console.log(this.my_follows);
+                this.followed = response.data.results.followed;
             });
         },
 
-        setFollow(account_id){
-            axios({
-                method: 'post',
-                url: '/admin/addFollow',
-                data: {
-                    follow_id: account_id,
-                }
-            }).then(response => {
-                this.getfollows();
-            });
-
+        toggleFollow(following_id,follow_type){
+          axios({
+              method: 'post',
+              url: '/admin/toggleFollowing',
+              data: {
+                  follow_type: follow_type,//1 utente 2 pagina
+                  follow_id: following_id,
+              }
+          }).then(response => {
+              this.getFollowed();
+          });
         },
 
+    },
+    created(){
+      if(this.followed){
+          this.followed = JSON.parse(this.followed.replace(/&quot;/g,'"'));
+      }
     },
     mounted() {
         //console.log(this.my_follows);

@@ -28,7 +28,7 @@
                         <label for="no">No</label>
                       </div>
                     </div>
-                    <div v-if="registered_company" class="">
+                    <div v-if="registered_company" class="" v-cloak>
                       <input type="hidden" name="page_id" :value="page_selected.id">
                       <input type="hidden" name="name" value="">
                       <input type="hidden" name="linkedin" value="">
@@ -38,7 +38,7 @@
                             <i class="fas fa-trash"></i>
                         </button>
                       </p>
-                      <div v-if="!page_selected" class="search">
+                      <div v-if="!page_selected" class="search" v-cloak>
                           <input type="hidden" name="page_id" value="">
                           <input type="text" name="page" value="" placeholder="Nome azienda" v-model="page_name" @keyup.enter="searchPage()" v-on:input="searchPage()" maxlength="70" class="form-control" autocomplete="off">
                           @error ('page_name')
@@ -46,7 +46,7 @@
                                   {{__($message)}}
                               </div>
                           @enderror
-                          <div :class="pages_found.length>0?'found':'found d-none'">
+                          <div :class="pages_found.length>0?'found':'found d-none'" v-cloak>
                               <p class="item" v-for="page_found in pages_found"
                               >
                                 <img v-if="page_found.image" :src="'/storage/' + page_found.image" alt="">

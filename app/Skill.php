@@ -10,8 +10,8 @@ class Skill extends Model
       'name',
     ];
 
-    public function users(){
-        return $this->belongsToMany('App\User');
+    public function give_user_skills(){
+    return $this->belongsToMany('App\User','give_user_skills','skill_id','user_id');
     }
 
     public function have_page_cofounders(){

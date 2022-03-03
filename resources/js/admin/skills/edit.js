@@ -9,7 +9,7 @@ axios.defaults.headers.common = {
 var create = new Vue({
     el: '#skill-edit',
     data: {
-        skill,
+        skills,
         skill_name: '',
         skills_found: '',
     },
@@ -32,18 +32,66 @@ var create = new Vue({
         },
 
         addSkill(skill_found){
-            this.skill_name = skill_found.name;
-            this.skills_found='';
+
+            var exist = false;
+            this.skills.forEach((skill, i) => {
+                if(skill.pivot.skill_id==skill_found.id){
+                  exist = true;
+                }
+            });
+
+            if(!exist){
+
+              let new_skill = {
+                "name":skill_found.name,
+                "pivot":{
+                  "skill_id": skill_found.id,
+                },
+              };
+
+              this.skills.push(new_skill);
+            }
+
+            this.skills_found = '';
+            this.skill_name = '';
+        },
+
+        addManualSkill(){
+
+            var exist = false;
+            this.skills.forEach((skill, i) => {
+                if(skill.name==this.skill_name){
+                  exist = true;
+                }
+            });
+
+            if(!exist && this.skill_name){
+
+              let new_skill = {
+                "name":this.skill_name,
+                // "pivot":{
+                //   "skill_id": skill_found.id,
+                // },
+              };
+              this.skills.push(new_skill);
+            }
+
+            this.skills_found = '';
+            this.skill_name = '';
+        },
+
+        removeSkill(i){
+            this.skills.splice(i, 1);
         }
 
     },
     created() {
-        if(this.skill){
-            this.skill = JSON.parse(this.skill.replace(/&quot;/g,'"'));
-            this.skill_name = this.skill.name;
+        if(this.skills){
+            this.skills = JSON.parse(this.skills.replace(/&quot;/g,'"'));
         }
 
     },
     mounted() {
+
     }
 });

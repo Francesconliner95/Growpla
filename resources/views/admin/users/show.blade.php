@@ -4,8 +4,9 @@
 <script type="text/javascript">
     window.csrf_token = "{{ csrf_token() }}";
     lang = "{{Auth::user()->language_id}}";
-    user = "{{$user}}";
+    // user = "{{--$user--}}";
     is_my_user = "{{$is_my_user}}";
+    following = "{{Auth::user()->user_following->contains($user)}}";
 </script>
 <div class="container">
     <div id="user-show">
@@ -56,14 +57,18 @@
                                 </h2>
                             </div>
                             {{-- <div class="main-buttons col-sm-12 col-md-12 col-lg-6 col-xl-6 pt-3">
-                                <div v-if="!is_my_user" class="d-inline-block">
+                                <div v-if="!is_my_user" class="d-inline-block">--}}
 
-                                    <button  :class="already_follow?'button-style button-color-orange':'button-style button-color'" type="button" name="button" @click="setFollow()">
-                                        <span v-if="already_follow">{{__('Following')}}</span>
+                                    <a v-if="is_my_user" href="{{route('admin.follows.index')}}" class="m-4">
+                                      {{count(Auth::user()->user_following)
+                                        +count(Auth::user()->page_following)}}
+                                    </a>
+                                    <button  :class="following?'button-style button-color-orange':'button-style button-color'" type="button" name="button" @click="toggleFollow({{$user->id}})" v-cloak>
+                                        <span v-if="following">{{__('Following')}}</span>
                                         <span v-else>{{__('Follow')}}</span>
                                     </button>
 
-                                    <div class="message d-inline-block">
+                                    {{--<div class="message d-inline-block">
                                         <span v-if="alert"class="mini-txt">@{{alert}}</span>
                                         <button v-else class="button-style button-color-blue" type="button" name="button" @click="sendMessage()">{{__('Message')}}</button>
                                     </div>
@@ -145,7 +150,7 @@
                     <div class="sub-section">
                         <div class="row justify-content-center">
                             @if($user->startup_n)
-                            <div v-if="user.startup_n" class="text-center col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="text-center col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <h6>{{__('Amount of')}}
                                     <span class="font-weight-bold">{{__('startups incubated')}}</span>
                                     <span  class="font-weight-bold">{{__('projects funded')}}</span>
@@ -168,62 +173,55 @@
                         </div>
                     </div>
                     @endif
-                    @if($is_my_user || count($user->skills)>0)
+                    @if($is_my_user || count($user->give_user_skills)>0)
                     <div class="sub-section">
-                      <h6>{{__('Skills')}}</h6>
-                      @foreach ($user->skills as $skill)
-                          <p>{{$skill->name}}
-                              <a href="{{route('admin.skills.edit',$skill->id)}}" class="button-gray">
-                                  <i class="fas fa-pencil-alt"></i>
-                              </a>
-                          </p>
+                      <h6>{{__('Skills')}}
+                        <a v-if="is_my_user" href="{{route('admin.give_user_skills.edit',$user->id)}}" class="button-gray">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+                      </h6>
+                      @foreach ($user->give_user_skills as $skill)
+                          <p>{{$skill->name}}</p>
                       @endforeach
-                      <div v-if="is_my_user" class="d-flex justify-content-center w-100">
-                          <a href="{{route('admin.skills.create')}}" class="text-gray">
-                              <i class="fas fa-plus-circle"></i>Aggiungi abilità
-                          </a>
-                      </div>
+
                     </div>
                     @endif
 
                     @if($is_my_user || count($give_services)>0)
                     <div class="sub-section">
-                      <h6>{{__('Servizi offerti')}}</h6>
+                      <h6>{{__('Servizi offerti')}}
+                        <a v-if="is_my_user" href="{{route('admin.give-user-services.edit',$user->id)}}" class="button-gray">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+                      </h6>
                       @foreach ($give_services as $service)
-                          <p>{{$service->name}}
-                              <a href="{{route('admin.give-user-services.edit',$service->id)}}" class="button-gray">
-                                  <i class="fas fa-pencil-alt"></i>
-                              </a>
-                          </p>
+                          <p>{{$service->name}}</p>
                       @endforeach
-                      <div v-if="is_my_user" class="d-flex justify-content-center w-100">
-                          <a href="{{route('admin.give-user-services.create')}}" class="text-gray">
-                              <i class="fas fa-plus-circle"></i>Aggiungi servizio offerto
-                          </a>
-                      </div>
                     </div>
                     @endif
-                    @if($is_my_user || count($user->companies)>0)
-                    <div class="">
-                        <h6>{{__('Companies')}}</h6>
-                        @foreach ($user->companies as $company)
-                        <div>
-                            @if($company->page_id)
-                                {{$company->page->name}}
-                            @else
-                                {{$company->name}}
-                            @endif
-                            <a v-if="is_my_user" href="{{route('admin.companies.edit', $company->id)}}" class="text-gray">
-                                <i class="fas fa-pencil-alt"></i>
-                            </a>
-                        </div>
-                        @endforeach
-                    </div>
-                    <div v-if="is_my_user" class="d-flex justify-content-center w-100">
-                        <a href="{{route('admin.companies.create')}}" class="text-gray">
-                            <i class="fas fa-plus-circle"></i>Aggiungi azienda per cui lavori
-                        </a>
-                    </div>
+                    @if($user->usertypes->contains(4))
+                      @if($is_my_user || count($user->companies)>0)
+                      <div class="">
+                          <h6>{{__('Companies')}}</h6>
+                          @foreach ($user->companies as $company)
+                          <div>
+                              @if($company->page_id)
+                                  {{$company->page->name}}
+                              @else
+                                  {{$company->name}}
+                              @endif
+                              <a v-if="is_my_user" href="{{route('admin.companies.edit', $company->id)}}" class="text-gray">
+                                  <i class="fas fa-pencil-alt"></i>
+                              </a>
+                          </div>
+                          @endforeach
+                      </div>
+                      <div v-if="is_my_user" class="d-flex justify-content-center w-100">
+                          <a href="{{route('admin.companies.create')}}" class="text-gray">
+                              <i class="fas fa-plus-circle"></i>Aggiungi azienda per cui lavori
+                          </a>
+                      </div>
+                      @endif
                     @endif
                 </div>
             </div>

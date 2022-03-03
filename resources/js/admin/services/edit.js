@@ -9,7 +9,7 @@ axios.defaults.headers.common = {
 var create = new Vue({
     el: '#service-edit',
     data: {
-        service,
+        services,
         service_name: '',
         services_found: '',
     },
@@ -32,18 +32,66 @@ var create = new Vue({
         },
 
         addService(service_found){
-            this.service_name = service_found.name;
-            this.services_found='';
+
+            var exist = false;
+            this.services.forEach((service, i) => {
+                if(service.pivot.service_id==service_found.id){
+                  exist = true;
+                }
+            });
+
+            if(!exist){
+
+              let new_service = {
+                "name":service_found.name,
+                "pivot":{
+                  "service_id": service_found.id,
+                },
+              };
+
+              this.services.push(new_service);
+            }
+
+            this.services_found = '';
+            this.service_name = '';
+        },
+
+        addManualService(){
+
+            var exist = false;
+            this.services.forEach((service, i) => {
+                if(service.name==this.service_name){
+                  exist = true;
+                }
+            });
+
+            if(!exist && this.service_name){
+
+              let new_service = {
+                "name":this.service_name,
+                // "pivot":{
+                //   "service_id": service_found.id,
+                // },
+              };
+              this.services.push(new_service);
+            }
+
+            this.services_found = '';
+            this.service_name = '';
+        },
+
+        removeService(i){
+            this.services.splice(i, 1);
         }
 
     },
     created() {
-        if(this.service){
-            this.service = JSON.parse(this.service.replace(/&quot;/g,'"'));
-            this.service_name = this.service.name;
+        if(this.services){
+            this.services = JSON.parse(this.services.replace(/&quot;/g,'"'));
         }
 
     },
     mounted() {
+
     }
 });

@@ -75198,28 +75198,35 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#follows-index',
   data: {
-    my_follows: my_follows
+    followed: followed
   },
   methods: {
-    getfollows: function getfollows() {
+    getFollowed: function getFollowed() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getFollows', {}).then(function (response) {
-        _this.my_follows = response.data.results.my_follows; //console.log(this.my_follows);
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getFollowed', {}).then(function (response) {
+        _this.followed = response.data.results.followed;
       });
     },
-    setFollow: function setFollow(account_id) {
+    toggleFollow: function toggleFollow(following_id, follow_type) {
       var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default()({
         method: 'post',
-        url: '/admin/addFollow',
+        url: '/admin/toggleFollowing',
         data: {
-          follow_id: account_id
+          follow_type: follow_type,
+          //1 utente 2 pagina
+          follow_id: following_id
         }
       }).then(function (response) {
-        _this2.getfollows();
+        _this2.getFollowed();
       });
+    }
+  },
+  created: function created() {
+    if (this.followed) {
+      this.followed = JSON.parse(this.followed.replace(/&quot;/g, '"'));
     }
   },
   mounted: function mounted() {//console.log(this.my_follows);
@@ -75451,64 +75458,10 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#nav-bar',
   data: {
-    user: user,
-    my_accounts: [],
-    account_selected: '',
     notifications: [],
     message_not_read: 0
   },
   methods: {
-    getMyAccount: function getMyAccount() {
-      var _this = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getMyAccounts', {}).then(function (response) {
-        _this.my_accounts = response.data.results.my_accounts;
-        _this.account_selected = response.data.results.account_selected;
-      });
-    },
-    // setAccount(account_id){
-    //     axios({
-    //         method: 'put',
-    //         url: '/admin/setAccount',
-    //         data: {
-    //             account_selected_id: account_id,
-    //         }
-    //     }).then(response => {
-    //         this.getMyAccount();
-    //     });
-    // },
-    getNotReadNotifications: function getNotReadNotifications() {
-      var _this2 = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getNotReadNotifications', {}).then(function (response) {
-        _this2.notifications = response.data.results.notifications;
-      });
-    },
-    readNotifications: function readNotifications(notification) {
-      axios__WEBPACK_IMPORTED_MODULE_1___default()({
-        method: 'put',
-        url: '/admin/readNotifications',
-        data: {
-          notification_id: notification.id
-        }
-      }).then(function (response) {});
-      var string = '';
-
-      if (notification.type == 1) {
-        string = "/admin/startup/";
-      } else {
-        string = "/admin/accounts/";
-      }
-
-      window.location.href = string + notification.ref_account_id;
-    },
-    getMessagesCount: function getMessagesCount() {
-      var _this3 = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getMessagesCount', {}).then(function (response) {
-        _this3.message_not_read = response.data.results.message_not_read;
-      });
-    },
     getCookie: function getCookie(name) {
       var value = "; ".concat(document.cookie);
       var parts = value.split("; ".concat(name, "="));
@@ -75516,25 +75469,11 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     }
   },
   created: function created() {
-    //console.log(this.getCookie("analyticsCookie"));
     if (this.getCookie("analyticsCookie") == 'accept') {
-      // window['ga-disable-G-EX66GGGB3E'] = true;
-      // console.log('disabilitato');
       this.enableAnalytics = true;
     }
   },
-  mounted: function mounted() {
-    if (this.user) {
-      this.user = JSON.parse(this.user.replace(/&quot;/g, '"'));
-    }
-
-    console.log(this.user); // if(this.user.account_id){
-    //     this.account_selected = this.user.account_id;
-    //     this.getMyAccount();
-    //     this.getNotReadNotifications();
-    //     this.getMessagesCount();
-    // }
-  }
+  mounted: function mounted() {}
 });
 var im_in_index = document.getElementById("account-index");
 
@@ -76612,12 +76551,28 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     is_my_page: is_my_page,
     page: page,
     team_members: team_members,
-    team_num: team_num
+    team_num: team_num,
+    following: following
   },
   methods: {
     open: function open(filename) {
       var newWindow = window.open();
       newWindow.document.write('<iframe src="/storage/' + filename + '" style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;">');
+    },
+    toggleFollow: function toggleFollow() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default()({
+        method: 'post',
+        url: '/admin/toggleFollowing',
+        data: {
+          follow_type: 2,
+          //1 utente 2 pagina
+          follow_id: this.page.id
+        }
+      }).then(function (response) {
+        _this.following = response.data.results.following;
+      });
     },
     teamToggle: function teamToggle() {
       this.show_all_team = !this.show_all_team;
@@ -76629,7 +76584,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       }
     },
     getTeamMembers: function getTeamMembers() {
-      var _this = this;
+      var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getTeamMembers', {
         params: {
@@ -76637,11 +76592,11 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
         }
       }).then(function (response) {
-        _this.team_members = response.data.results.team_members;
+        _this2.team_members = response.data.results.team_members;
       });
     },
     changeTeamPosition: function changeTeamPosition(member_id, value) {
-      var _this2 = this;
+      var _this3 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default()({
         method: 'put',
@@ -76651,27 +76606,16 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           up_down: value
         }
       }).then(function (response) {
-        _this2.getTeamMembers();
-      });
-    },
-    delete_member: function delete_member(member_id) {
-      var _this3 = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_1___default()({
-        method: 'delete',
-        url: '/admin/deleteMember',
-        data: {
-          member_id: member_id
-        }
-      }).then(function (response) {
-        _this3.team_num = response.data.results.team_num;
-
         _this3.getTeamMembers();
       });
     }
   },
   created: function created() {
     this.page = JSON.parse(this.page.replace(/&quot;/g, '"'));
+
+    if (this.team_members) {
+      this.team_members = JSON.parse(this.team_members.replace(/&quot;/g, '"'));
+    }
   },
   mounted: function mounted() {}
 });
@@ -77053,67 +76997,6 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
-/***/ "./resources/js/admin/services/create.js":
-/*!***********************************************!*\
-  !*** ./resources/js/admin/services/create.js ***!
-  \***********************************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! croppr */ "./node_modules/croppr/dist/croppr.js");
-/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(croppr__WEBPACK_IMPORTED_MODULE_2__);
-
-
-
-axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
-  'X-Requested-With': 'XMLHttpRequest',
-  'X-CSRF-TOKEN': window.csrf_token
-};
-var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  el: '#service-create',
-  data: {
-    service_name: '',
-    services_found: ''
-  },
-  methods: {
-    searchService: function searchService() {
-      var _this = this;
-
-      if (this.service_name) {
-        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchService', {
-          params: {
-            service_name: this.service_name
-          }
-        }).then(function (response) {
-          _this.services_found = response.data.results.services;
-
-          if (!_this.service_name) {
-            _this.services_found = '';
-          }
-        });
-      } else {
-        this.services_found = '';
-      }
-    },
-    addService: function addService(service_found) {
-      this.service_name = service_found.name;
-      this.services_found = '';
-    }
-  },
-  created: function created() {
-    console.log('prova');
-  },
-  mounted: function mounted() {}
-});
-
-/***/ }),
-
 /***/ "./resources/js/admin/services/edit.js":
 /*!*********************************************!*\
   !*** ./resources/js/admin/services/edit.js ***!
@@ -77139,7 +77022,7 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#service-edit',
   data: {
-    service: service,
+    services: services,
     service_name: '',
     services_found: ''
   },
@@ -77164,14 +77047,56 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       }
     },
     addService: function addService(service_found) {
-      this.service_name = service_found.name;
+      var exist = false;
+      this.services.forEach(function (service, i) {
+        if (service.pivot.service_id == service_found.id) {
+          exist = true;
+        }
+      });
+
+      if (!exist) {
+        var new_service = {
+          "name": service_found.name,
+          "pivot": {
+            "service_id": service_found.id
+          }
+        };
+        this.services.push(new_service);
+      }
+
       this.services_found = '';
+      this.service_name = '';
+    },
+    addManualService: function addManualService() {
+      var _this2 = this;
+
+      var exist = false;
+      this.services.forEach(function (service, i) {
+        if (service.name == _this2.service_name) {
+          exist = true;
+        }
+      });
+
+      if (!exist && this.service_name) {
+        var new_service = {
+          "name": this.service_name // "pivot":{
+          //   "service_id": service_found.id,
+          // },
+
+        };
+        this.services.push(new_service);
+      }
+
+      this.services_found = '';
+      this.service_name = '';
+    },
+    removeService: function removeService(i) {
+      this.services.splice(i, 1);
     }
   },
   created: function created() {
-    if (this.service) {
-      this.service = JSON.parse(this.service.replace(/&quot;/g, '"'));
-      this.service_name = this.service.name;
+    if (this.services) {
+      this.services = JSON.parse(this.services.replace(/&quot;/g, '"'));
     }
   },
   mounted: function mounted() {}
@@ -77435,65 +77360,6 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
-/***/ "./resources/js/admin/skills/create.js":
-/*!*********************************************!*\
-  !*** ./resources/js/admin/skills/create.js ***!
-  \*********************************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! croppr */ "./node_modules/croppr/dist/croppr.js");
-/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(croppr__WEBPACK_IMPORTED_MODULE_2__);
-
-
-
-axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
-  'X-Requested-With': 'XMLHttpRequest',
-  'X-CSRF-TOKEN': window.csrf_token
-};
-var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  el: '#skill-create',
-  data: {
-    skill_name: '',
-    skills_found: ''
-  },
-  methods: {
-    searchSkill: function searchSkill() {
-      var _this = this;
-
-      if (this.skill_name) {
-        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchSkill', {
-          params: {
-            skill_name: this.skill_name
-          }
-        }).then(function (response) {
-          _this.skills_found = response.data.results.skills;
-
-          if (!_this.skill_name) {
-            _this.skills_found = '';
-          }
-        });
-      } else {
-        this.skills_found = '';
-      }
-    },
-    addSkill: function addSkill(skill_found) {
-      this.skill_name = skill_found.name;
-      this.skills_found = '';
-    }
-  },
-  created: function created() {},
-  mounted: function mounted() {}
-});
-
-/***/ }),
-
 /***/ "./resources/js/admin/skills/edit.js":
 /*!*******************************************!*\
   !*** ./resources/js/admin/skills/edit.js ***!
@@ -77519,7 +77385,7 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#skill-edit',
   data: {
-    skill: skill,
+    skills: skills,
     skill_name: '',
     skills_found: ''
   },
@@ -77544,14 +77410,56 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       }
     },
     addSkill: function addSkill(skill_found) {
-      this.skill_name = skill_found.name;
+      var exist = false;
+      this.skills.forEach(function (skill, i) {
+        if (skill.pivot.skill_id == skill_found.id) {
+          exist = true;
+        }
+      });
+
+      if (!exist) {
+        var new_skill = {
+          "name": skill_found.name,
+          "pivot": {
+            "skill_id": skill_found.id
+          }
+        };
+        this.skills.push(new_skill);
+      }
+
       this.skills_found = '';
+      this.skill_name = '';
+    },
+    addManualSkill: function addManualSkill() {
+      var _this2 = this;
+
+      var exist = false;
+      this.skills.forEach(function (skill, i) {
+        if (skill.name == _this2.skill_name) {
+          exist = true;
+        }
+      });
+
+      if (!exist && this.skill_name) {
+        var new_skill = {
+          "name": this.skill_name // "pivot":{
+          //   "skill_id": skill_found.id,
+          // },
+
+        };
+        this.skills.push(new_skill);
+      }
+
+      this.skills_found = '';
+      this.skill_name = '';
+    },
+    removeSkill: function removeSkill(i) {
+      this.skills.splice(i, 1);
     }
   },
   created: function created() {
-    if (this.skill) {
-      this.skill = JSON.parse(this.skill.replace(/&quot;/g, '"'));
-      this.skill_name = this.skill.name;
+    if (this.skills) {
+      this.skills = JSON.parse(this.skills.replace(/&quot;/g, '"'));
     }
   },
   mounted: function mounted() {}
@@ -78695,16 +78603,33 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   data: {
     lang: lang,
     is_my_user: is_my_user,
-    user: user
+    //user,
+    following: following
   },
   methods: {
     open: function open(filename) {
       var newWindow = window.open();
       newWindow.document.write('<iframe src="/storage/' + filename + '" style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;">');
+    },
+    toggleFollow: function toggleFollow(user_id) {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default()({
+        method: 'post',
+        url: '/admin/toggleFollowing',
+        data: {
+          follow_type: 1,
+          //1 utente 2 pagina
+          follow_id: user_id
+        }
+      }).then(function (response) {
+        _this.following = response.data.results.following;
+      });
     }
   },
-  created: function created() {
-    this.user = JSON.parse(this.user.replace(/&quot;/g, '"'));
+  created: function created() {// console.log(this.user);
+    // this.user = JSON.parse(this.user.replace(/&quot;/g,'"'));
+    // console.log(this.user);
   },
   mounted: function mounted() {}
 });
@@ -78826,18 +78751,10 @@ if (document.getElementById('company-edit')) {
 } //SKILL
 
 
-if (document.getElementById('skill-create')) {
-  __webpack_require__(/*! ./admin/skills/create.js */ "./resources/js/admin/skills/create.js");
-}
-
 if (document.getElementById('skill-edit')) {
   __webpack_require__(/*! ./admin/skills/edit.js */ "./resources/js/admin/skills/edit.js");
 } //SERVICE
 
-
-if (document.getElementById('service-create')) {
-  __webpack_require__(/*! ./admin/services/create.js */ "./resources/js/admin/services/create.js");
-}
 
 if (document.getElementById('service-edit')) {
   __webpack_require__(/*! ./admin/services/edit.js */ "./resources/js/admin/services/edit.js");

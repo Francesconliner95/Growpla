@@ -28,7 +28,7 @@
                         <label for="no">No</label>
                       </div>
                     </div>
-                    <div v-if="registered_team" class="">
+                    <div v-if="registered_team" class="" v-cloak>
                       <input type="hidden" name="user_id" :value="user_selected.id">
                       <input type="hidden" name="name" value="">
                       <input type="hidden" name="surname" value="">
@@ -40,7 +40,7 @@
                             <i class="fas fa-trash"></i>
                         </button>
                       </p>
-                      <div v-if="!user_selected" class="search">
+                      <div v-if="!user_selected" class="search" v-cloak>
                           <input type="hidden" name="user_id" value="">
                           <input type="text" name="user" value="" placeholder="Nome o cognome utente" v-model="user_name" @keyup.enter="searchUser()" v-on:input="searchUser()" maxlength="70" class="form-control" autocomplete="off">
                           @error ('user_name')
@@ -48,7 +48,7 @@
                                   {{__($message)}}
                               </div>
                           @enderror
-                          <div :class="users_found.length>0?'found':'found d-none'">
+                          <div :class="users_found.length>0?'found':'found d-none'" v-cloak>
                               <p class="item" v-for="user_found in users_found"
                               >
                                 <img v-if="user_found.image" :src="'/storage/' + user_found.image" alt="">
