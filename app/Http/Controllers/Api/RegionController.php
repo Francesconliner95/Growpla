@@ -9,14 +9,16 @@ use App\Region;
 
 class RegionController extends Controller
 {
-    public function getRegions(){
+    public function regionsByCountry(Request $request){
 
-        $regions = Region::all();
+        $request->validate([
+            'country_id' => 'required|integer',
+        ]);
 
         return response()->json([
             'success' => true,
             'results' => [
-                'regions' => $regions,
+                'regions' => Region::where('country_id',$request->country_id)->get(),
             ]
         ]);
     }

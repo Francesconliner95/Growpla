@@ -5,6 +5,7 @@
     lang = "{{Auth::user()->language_id}}";
     lifecycles = {!! json_encode($lifecycles->toArray()) !!};
     lifecycle_id = "{{$page->lifecycle_id}}";
+    skills = "{{$skills}}";
 </script>
 <div class="container">
     <div id="lifecycle-edit">
@@ -84,6 +85,29 @@
                                           {{__('Recommended')}}
                                       </span>
                                   </label>
+                                  @if($usertype->id==1)
+                                  <div v-for="(skill,i) in skills" class="" v-cloak>
+                                    {{-- <input type="hidden" name="skills[]" :value="skill.pivot.skill_id"> --}}
+                                    <input type="hidden" name="skills[]" :value="skill.name">
+                                    <label for="">@{{skill.name}}
+                                      <i class="fas fa-trash-alt" @click="removeSkill(i)"></i>
+                                    </label>
+                                  </div>
+                                  <div  class="search">
+                                      <input type="text" name="name" value="" placeholder="Nome abilità" v-model="skill_name" @keyup.enter="searchSkill()" v-on:input="searchSkill()" maxlength="70" class="form-control" autocomplete="off">
+                                      @error ('skill_name')
+                                          <div class="alert alert-danger">
+                                              {{__($message)}}
+                                          </div>
+                                      @enderror
+                                      <button type="button" name="button" @click="addManualSkill()" class="button-style button-color">Aggiungi</button>
+                                      <div :class="skills_found.length>0?'found':'found d-none'" v-cloak>
+                                        <a class="item" v-for="skill_found in skills_found" @click="addSkill(skill_found)">
+                                            @{{skill_found.name}}
+                                        </a>
+                                      </div>
+                                  </div>
+                                  @endif
                               </div>
                               @endif
                             @endforeach

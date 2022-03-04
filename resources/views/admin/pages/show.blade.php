@@ -201,6 +201,14 @@
                                   </label>
                                 @foreach ($page->have_page_usertypes as $usertype)
                                     <p class="mb-1">{{$usertype->name}}</p>
+                                    @if($usertype->id == 1 && $page->have_page_cofounders)
+                                      <ul>
+                                        @foreach ($page->have_page_cofounders as $skill)
+                                          <li>{{$skill->name}}</li>
+
+                                        @endforeach
+                                      </ul>            
+                                    @endif
                                 @endforeach
                               </div>
                               @endif

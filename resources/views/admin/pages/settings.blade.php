@@ -9,7 +9,8 @@
 </script>
 <div class="container">
     <div id="page-settings">
-        <div :class="delete_alert?'delete-alert active-alert':'delete-alert deactive-alert'" v-cloak>
+        <div :class="delete_alert?'delete-alert active-alert':'delete-alert deactive-alert'"
+        v-cloak>
             <div class="item-cont delete-alert-item  col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="item-style">
                     <button type="button" name="button" class="edit-top-right button-style button-color" @click="delete_alert=false">
@@ -39,12 +40,12 @@
                 <div class="sub-section">
                     <div class="">
                       <h6>Admin</h6>
-                      <p v-for="admin in admins">@{{admin.name}} @{{admin.surname}}
+                      <p v-for="admin in admins" v-cloak>@{{admin.name}} @{{admin.surname}}
                         <button class="button-color-gray" @click="removeAdmin(admin.id)">
                             <i class="fas fa-trash"></i>
                         </button>
                       </p>
-                      <div v-if="message" class="alert alert-danger">
+                      <div v-if="message" class="alert alert-danger" v-cloak>
                           @{{message}}
                       </div>
                     </div>
@@ -55,10 +56,10 @@
                                 {{__($message)}}
                             </div>
                         @enderror
-                        <div :class="users_found.length>0?'found':'found d-none'">
+                        <div :class="users_found.length>0?'found':'found d-none'" v-cloak>
                             <p class="item" v-for="user_found in users_found"
                             >
-                              <img v-if="user_found.image" :src="'/storage/' + user_found.image" alt="">
+                              <img v-if="user_found.image" :src="'/storage/' + user_found.image" alt="" v-cloak>
                               @{{user_found.name}} @{{user_found.surname}}
                               <button type="button" name="button" @click="addAdmin(user_found.id)">{{__('Add')}}</button>
                             </p>

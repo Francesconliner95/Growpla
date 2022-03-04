@@ -22,6 +22,7 @@ Route::get('/searchUser', 'Api\UserController@searchUser');
 Route::get('/searchPage', 'Api\PageController@searchPage');
 Route::get('/searchSkill', 'Api\SkillController@searchSkill');
 Route::get('/searchService', 'Api\ServiceController@searchService');
+Route::get('/regionsByCountry', 'Api\RegionController@regionsByCountry');
 
 Route::post('/sendEmail', 'Api\HomeController@sendEmail');
 

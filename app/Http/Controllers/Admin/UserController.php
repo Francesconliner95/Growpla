@@ -17,6 +17,8 @@ use App\Pagetype;
 use App\Moneyrange;
 use App\Sector;
 use App\GiveUserService;
+use App\Region;
+use App\Country;
 
 class UserController extends Controller
 {
@@ -74,6 +76,7 @@ class UserController extends Controller
           'userTypes' => $user->userTypes,
           'moneyranges' => Moneyrange::all(),
           'sectors' => Sector::all(),
+          'countries'=> Country::all(),
         ];
 
         return view('admin.users.edit', $data);
@@ -93,6 +96,7 @@ class UserController extends Controller
           'moneyrange_id' => 'nullable|integer|min:1|max:5',
           'startup_n' => 'nullable|integer',
           'municipality' => 'nullable',
+          'region_id' => 'nullable|integer|min:1|max:20',
       ]);
 
       $data = $request->all();
@@ -121,10 +125,11 @@ class UserController extends Controller
       }abort(404);
     }
 
-    public function show($id){
+    public function show(User $user){
 
-      $user = User::find($id);
       $userTypes = Usertype::all();
+
+      if($user){
 
       //dd($user->currency);
       $give_services = GiveUserService::where('user_id',$user->id)
@@ -142,6 +147,8 @@ class UserController extends Controller
       ];
 
       return view('admin.users.show', $data);
+
+    }abort(404);
 
     }
 

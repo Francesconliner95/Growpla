@@ -9,11 +9,13 @@ var create = new Vue({
     el: '#user-edit',
     data: {
       user,
-     // company,
+      regions: '',
       registered_page: true,
       page_name: '',
       pages_found: '',
       page_selected: '',
+      region_id_selected: '',
+      country_id_selected: '',
     },
     methods: {
 
@@ -38,6 +40,21 @@ var create = new Vue({
           this.page_selected = page_found;
           this.page_name = '';
           this.pages_found = '';
+        },
+
+        getRegionsByCountry(){
+          if(this.country_id_selected){
+
+            this.regions = '';
+
+            axios.get('/api/regionsByCountry',{
+                params: {
+                    country_id: this.country_id_selected,
+                }
+            }).then((response) => {
+                this.regions = response.data.results.regions;
+            });
+          }
         },
 
         // remove_file(value){
@@ -74,6 +91,13 @@ var create = new Vue({
     },
     created(){
       this.user = JSON.parse(this.user.replace(/&quot;/g,'"'));
+      if(this.regions){
+          this.regions = JSON.parse(this.regions.replace(/&quot;/g,'"'));
+      }
+
+      this.country_id_selected = this.user.country_id?this.user.country_id:1;
+      this.region_id_selected = this.user.region_id;
+      this.getRegionsByCountry();
     },
     mounted() {
 

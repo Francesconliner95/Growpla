@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Storage;
 use File;
 use App\Usertype;
 use App\Pagetype;
+use App\Lifecycle;
+use App\Sector;
+use App\Country;
 
 class MainController extends Controller
 {
@@ -22,6 +25,9 @@ class MainController extends Controller
       $data = [
           'usertypes' => Usertype::all(),
           'pagetypes' => Pagetype::all(),
+          'sectors' => Sector::all(),
+          'lifecycles' => Lifecycle::all(),
+          'countries' => Country::all(),
       ];
 
       return view('admin.search', $data);

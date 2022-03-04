@@ -17,6 +17,8 @@ use App\Team;
 use App\Sector;
 use App\Moneyrange;
 use App\Lifecycle;
+use App\Region;
+use App\Country;
 
 class PageController extends Controller
 {
@@ -85,6 +87,7 @@ class PageController extends Controller
             $data = [
               'page' => $page,
               'moneyranges' => Moneyrange::all(),
+              'countries'=> Country::all(),
             ];
 
             return view('admin.pages.edit', $data);
@@ -136,35 +139,37 @@ class PageController extends Controller
 
     }
 
-    public function show($id){
+    public function show(Page $page){
       $user = Auth::user();
-      $page = Page::find($id);
-      //TEAM
-      $team_members = Team::where('page_id', $id)
-                      ->orderBy('position', 'ASC')
-                      ->limit(3)
-                      ->get();
-      foreach ($team_members as $team_member) {
-        if($team_member->user_id){
-          $user = User::find($team_member->user_id);
-          $team_member['name'] = $user->name;
-          $team_member['surname'] = $user->surname;
-          $team_member['image'] = $user->image;
-          $team_member['linkedin'] = $user->linkedin;
+
+      if($page){
+        //TEAM
+        $team_members = Team::where('page_id', $page->id)
+                        ->orderBy('position', 'ASC')
+                        ->limit(3)
+                        ->get();
+        foreach ($team_members as $team_member) {
+          if($team_member->user_id){
+            $user = User::find($team_member->user_id);
+            $team_member['name'] = $user->name;
+            $team_member['surname'] = $user->surname;
+            $team_member['image'] = $user->image;
+            $team_member['linkedin'] = $user->linkedin;
+          }
         }
-      }
 
-      $team_num = Team::where('page_id', $id)->count();
+        $team_num = Team::where('page_id', $page->id)->count();
 
-      $data = [
-        'page' => $page,
-        'is_my_page' => $user->pages->contains($page),
-        'lifecycles' => Lifecycle::all(),
-        'team_members' => $team_members,
-        'team_num' => $team_num,
-      ];
+        $data = [
+          'page' => $page,
+          'is_my_page' => $user->pages->contains($page),
+          'lifecycles' => Lifecycle::all(),
+          'team_members' => $team_members,
+          'team_num' => $team_num,
+        ];
 
-      return view('admin.pages.show', $data);
+        return view('admin.pages.show', $data);
+      }abort(404);
 
     }
 

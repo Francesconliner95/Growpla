@@ -140,20 +140,46 @@
                   </div>
                   @endif
                   <div class="form-group">
-                      <h6>Indirizzo</h6>
+                      <h6>Indirizzo*</h6>
                       <div class="row">
+                          <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                              <label>Nazione</label>
+                              <select class="form-control" name="country_id" required @change="getRegionsByCountry()" v-model="country_id_selected">
+                                  @foreach ($countries as $country)
+                                      <option value="{{$country->id}}"
+                                        @if($page->country_id)
+                                        {{$country->id == $page->country_id ? 'selected=selected' : '' }}
+                                        @endif
+                                        >
+                                        {{$country->name}}
+                                      </option>
+                                  @endforeach
+                              </select>
+                          </div>
+                          <div v-if="regions.length>1" class="col-sm-12 col-md-6 col-lg-6 col-xl-6" v-cloak>
+                              <label>Regione</label>
+                              <select class="form-control" name="region_id" v-model="region_id_selected" required>
+                                  <option v-for="region in regions" :value="region.id"
+                                        :selected="region.id==region_id_selected">
+                                        @{{region.name}}
+                                  </option>
+                              </select>
+                          </div>
+                          <div v-else class="">
+                            <input type="hidden" name="region_id" value="">
+                          </div>
                           <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9">
                             <label>Via</label>
-                            <input type="text" name="street_name" class="form-control ml-md-3 mr-md-3"
+                            <input type="text" name="street_name" class="form-control"
                             value="{{ old('street_name',$page->street_name)}}">
                           </div>
                           <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
                               <label>Numero</label>
-                              <input type="text" name="street_number" class="form-control ml-md-3 mr-md-3" value="{{ old('street_number',$page->street_number)}}">
+                              <input type="text" name="street_number" class="form-control" value="{{ old('street_number',$page->street_number)}}">
                           </div>
                           <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
                               <label>Città</label>
-                              <input type="text" name="municipality" class="form-control ml-md-3" value="{{ old('municipality',$page->municipality)}}">
+                              <input type="text" name="municipality" class="form-control" value="{{ old('municipality',$page->municipality)}}">
                           </div>
                       </div>
                       {{-- <input type="hidden" name="latitude" v-model="latitude">

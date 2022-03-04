@@ -75368,14 +75368,15 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     lang: lang,
     lifecycles: lifecycles,
     lifecycle_id: lifecycle_id,
+    skills: skills,
     show_services: false,
     lifecycle_selected: '1',
     cofounders: '',
-    search_role: '',
-    roles_found: '',
     userRecommended: [],
     pageRecommended: [],
-    serviceRecommended: []
+    serviceRecommended: [],
+    skill_name: '',
+    skills_found: ''
   },
   methods: {
     recommended: function recommended() {
@@ -75426,6 +75427,77 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
         default:
       }
+    },
+    searchSkill: function searchSkill() {
+      var _this = this;
+
+      if (this.skill_name) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchSkill', {
+          params: {
+            skill_name: this.skill_name
+          }
+        }).then(function (response) {
+          _this.skills_found = response.data.results.skills;
+
+          if (!_this.skill_name) {
+            _this.skills_found = '';
+          }
+        });
+      } else {
+        this.skills_found = '';
+      }
+    },
+    addSkill: function addSkill(skill_found) {
+      var exist = false;
+      this.skills.forEach(function (skill, i) {
+        if (skill.pivot.skill_id == skill_found.id) {
+          exist = true;
+        }
+      });
+
+      if (!exist) {
+        var new_skill = {
+          "name": skill_found.name,
+          "pivot": {
+            "skill_id": skill_found.id
+          }
+        };
+        this.skills.push(new_skill);
+      }
+
+      this.skills_found = '';
+      this.skill_name = '';
+    },
+    addManualSkill: function addManualSkill() {
+      var _this2 = this;
+
+      var exist = false;
+      this.skills.forEach(function (skill, i) {
+        if (skill.name == _this2.skill_name) {
+          exist = true;
+        }
+      });
+
+      if (!exist && this.skill_name) {
+        var new_skill = {
+          "name": this.skill_name // "pivot":{
+          //   "skill_id": skill_found.id,
+          // },
+
+        };
+        this.skills.push(new_skill);
+      }
+
+      this.skills_found = '';
+      this.skill_name = '';
+    },
+    removeSkill: function removeSkill(i) {
+      this.skills.splice(i, 1);
+    }
+  },
+  created: function created() {
+    if (this.skills) {
+      this.skills = JSON.parse(this.skills.replace(/&quot;/g, '"'));
     }
   },
   mounted: function mounted() {
@@ -76206,17 +76278,34 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#page-edit',
   data: {
     page: page,
+    regions: '',
     streetName: '',
     streetNumber: null,
     municipality: '',
     latitude: null,
     longitude: null,
     address: '',
-    noAdressFound: false
+    noAdressFound: false,
+    region_id_selected: '',
+    country_id_selected: ''
   },
-  methods: {// submitForm(){
+  methods: {
+    getRegionsByCountry: function getRegionsByCountry() {
+      var _this = this;
+
+      if (this.country_id_selected) {
+        this.regions = '';
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/regionsByCountry', {
+          params: {
+            country_id: this.country_id_selected
+          }
+        }).then(function (response) {
+          _this.regions = response.data.results.regions;
+        });
+      }
+    } // submitForm(){
     //   tt.services.structuredGeocode({
-    //         key: 'wSHLIGhfBYex4WI2gWpiUlecXvt3TOKC',
+    //         key: 'hMc59vkmPojOb6V7lqiIGtPtDnJQeWq3',
     //         countryCode: 'IT',
     //         bestResult: true,
     //         streetName: this.streetName,
@@ -76228,7 +76317,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     //         this.longitude = response.position.lng;
     //
     //         tt.services.reverseGeocode({
-    //             key: 'wSHLIGhfBYex4WI2gWpiUlecXvt3TOKC',
+    //             key: 'hMc59vkmPojOb6V7lqiIGtPtDnJQeWq3',
     //             position: {
     //                 longitude: this.longitude,
     //                 latitude: this.latitude
@@ -76281,9 +76370,18 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     //         default:
     //     }
     // },
+
   },
   created: function created() {
     this.page = JSON.parse(this.page.replace(/&quot;/g, '"'));
+
+    if (this.regions) {
+      this.regions = JSON.parse(this.regions.replace(/&quot;/g, '"'));
+    }
+
+    this.country_id_selected = this.page.country_id ? this.page.country_id : 1;
+    this.region_id_selected = this.page.region_id;
+    this.getRegionsByCountry();
   },
   mounted: function mounted() {
     //DRAG & DROP
@@ -76635,18 +76733,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
 
 
 axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
@@ -76658,288 +76744,84 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   data: {
     lang: lang,
     search_type: false,
-    accountTypes: [],
-    account_selected: '',
-    startupStates: [],
-    startupState_selected: '',
-    all_needs: [],
-    serviceTypes: [],
-    need_selected: '',
-    region_selected: '',
-    search_tag: '',
-    tags_found: '',
-    tags: [],
-    account_name: '',
-    accounts: [],
-    accounts_show: [],
-    page: 1,
-    search_role: '',
-    roles_found: '',
-    startupserviceType: [],
-    startupserviceType_selected: '',
-    last_accounts: [],
-    last_accounts_show: [],
-    page_last_accounts: 1,
-    is_in_search: false,
-    first_search: false,
-    new_subs_over: false,
-    search_page: 0
+    category_selected: '',
+    usertype_id: '',
+    pagetype_id: '',
+    investors_selected: false,
+    organizzations_selected: false,
+    services_selected: false,
+    name: ''
   },
   methods: {
-    search_type_f: function search_type_f() {
-      this.accounts = [];
+    search_type_f: function search_type_f() {// if(!this.search_type){
+      //     this.name = '';
+      // }else{
+      //     this.account_selected = '';
+      // }
+    },
+    change_category: function change_category() {
+      switch (this.category_selected) {
+        case '1':
+          //startup
+          this.usertype_id = '';
+          this.pagetype_id = 1;
+          this.investors_selected = false;
+          this.organizzations_selected = false;
+          this.services_selected = false;
+          break;
 
-      if (!this.search_type) {
-        this.account_name = '';
-      } else {
-        this.account_selected = '';
-        this.startupState_selected = '';
-        this.need_selected = '';
-        this.region_selected = '';
-        this.tags = [];
-        this.startupserviceType_selected = '';
-        this.search_role = '';
+        case '2':
+          //aspirante-cofounder
+          this.usertype_id = 1;
+          this.pagetype_id = '';
+          this.investors_selected = false;
+          this.organizzations_selected = false;
+          this.services_selected = false;
+          break;
+
+        case '3':
+          //incubatore-acc
+          this.usertype_id = '';
+          this.pagetype_id = 3;
+          this.investors_selected = false;
+          this.organizzations_selected = false;
+          this.services_selected = false;
+          break;
+
+        case '4':
+          //investitori
+          this.usertype_id = '';
+          this.pagetype_id = '';
+          this.investors_selected = true;
+          this.organizzations_selected = false;
+          this.services_selected = false;
+          break;
+
+        case '5':
+          //enti e associazioni
+          this.usertype_id = '';
+          this.pagetype_id = '';
+          this.investors_selected = false;
+          this.organizzations_selected = true;
+          this.services_selected = false;
+          break;
+
+        case '6':
+          //servizi
+          this.usertype_id = '';
+          this.pagetype_id = '';
+          this.investors_selected = false;
+          this.organizzations_selected = false;
+          this.services_selected = true;
+          break;
+
+        default:
+          this.usertype_id = '';
+          this.pagetype_id = '';
+          this.investors_selected = false;
+          this.organizzations_selected = false;
+          this.services_selected = false;
       }
-    },
-    getAccountTypes: function getAccountTypes() {
-      var _this = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getAccountTypes', {}).then(function (response) {
-        _this.accountTypes = response.data.results.accountTypes;
-      });
-    },
-    getStartupStatus: function getStartupStatus() {
-      var _this2 = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getStartupStates', {}).then(function (response) {
-        _this2.startupStates = response.data.results.startupStates;
-      });
-    },
-    getAllNeeds: function getAllNeeds() {
-      var _this3 = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getNeeds', {}).then(function (response) {
-        _this3.all_needs = response.data.results.needs;
-
-        _this3.getNeeds();
-      });
-    },
-    getNeeds: function getNeeds() {
-      var _this4 = this;
-
-      this.need_selected = '';
-      this.serviceTypes = [];
-
-      if (!this.startupState_selected) {
-        this.all_needs.forEach(function (all_need, i) {
-          var already_exist = false;
-
-          _this4.serviceTypes.forEach(function (need, i) {
-            if (all_need.name == need.name) {
-              already_exist = true;
-            }
-          });
-
-          if (already_exist == false) {
-            _this4.serviceTypes.push(all_need);
-          }
-        });
-      } else {
-        this.all_needs.forEach(function (all_need, i) {
-          if (_this4.startupState_selected == all_need.startup_state_id) {
-            _this4.serviceTypes.push(all_need);
-          }
-        });
-      }
-    },
-    getRegions: function getRegions() {
-      var _this5 = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getRegions', {}).then(function (response) {
-        _this5.regions = response.data.results.regions;
-      });
-    },
-    searchTag: function searchTag() {
-      var _this6 = this;
-
-      if (this.search_tag) {
-        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchTag', {
-          params: {
-            tag_name: this.search_tag
-          }
-        }).then(function (response) {
-          _this6.tags_found = response.data.results.tags;
-
-          if (!_this6.search_tag) {
-            _this6.tags_found = '';
-          }
-        });
-      } else {
-        this.tags_found = '';
-      }
-    },
-    addTag: function addTag(tag) {
-      //console.log(tag);
-      //console.log(this.tags);
-      var already_exist = false;
-      this.tags.forEach(function (old_tag, i) {
-        if (old_tag.name == tag.name) {
-          already_exist = true;
-        }
-      });
-
-      if (!already_exist) {
-        this.tags.push(tag);
-      }
-
-      this.tags_found = '';
-      this.search_tag = '';
-    },
-    deleteTag: function deleteTag(index) {
-      this.tags.splice(index, index + 1);
-    },
-    setNeeds: function setNeeds(accountType, serviceType) {
-      return {
-        accountType: accountType,
-        serviceType: serviceType
-      };
-    },
-    show: function show() {//console.log(this.need_selected);
-    },
-    search: function search() {
-      var _this7 = this;
-
-      this.first_search = true;
-      this.is_in_search = true; // console.log('COSA CERCARE');
-      // console.log('account_selected: '+this.account_selected);
-      // console.log('startupState_selected: '+this.startupState_selected);
-      // console.log('need_selected: '+this.need_selected);
-      // console.log('region_selected: '+this.region_selected);
-      // console.log('tags: '+this.tags);
-      // console.log('account_name: '+ this.account_name);
-      // console.log('startupserviceType_selected: '+this.startupserviceType_selected);
-      // console.log('ruolo: '+this.search_role);
-
-      var tags_id = [];
-      this.tags.forEach(function (tag, i) {
-        tags_id.push(tag.id);
-      });
-
-      if (!this.search_type || this.search_type && this.account_name) {
-        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/advancedSearch', {
-          params: {
-            accountType_id_selected: this.account_selected,
-            startupState_id_selected: this.startupState_selected,
-            need_id_selected: this.need_selected,
-            region_id_selected: this.region_selected,
-            tags: tags_id,
-            account_name: this.account_name,
-            role: this.search_role,
-            startupserviceType_selected: this.startupserviceType_selected,
-            search_page: 0
-          }
-        }).then(function (response) {
-          _this7.accounts = response.data.results.accounts;
-          _this7.is_in_search = false;
-
-          _this7.changePage(0);
-
-          _this7.search_page = 0;
-        });
-      } else {
-        this.is_in_search = false;
-      }
-    },
-    changePage: function changePage(val) {
-      var accounts_qty = this.accounts.length;
-      var items_qty = 6;
-
-      if (val == -1 && this.page > 1) {
-        this.page--;
-      } else if (val == 1 && this.page < Math.ceil(accounts_qty / items_qty)) {
-        this.page++; //this.loadPage();
-      } else if (val == 0) {
-        this.page = 1;
-      }
-
-      this.accounts_show = this.accounts.slice(items_qty * this.page - items_qty, items_qty * this.page);
-    },
-    loadPage: function loadPage() {
-      var _this8 = this;
-
-      if (this.page > this.search_page) {
-        var tags_id = [];
-        this.tags.forEach(function (tag, i) {
-          tags_id.push(tag.id);
-        });
-        this.search_page++;
-        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/advancedSearch', {
-          params: {
-            accountType_id_selected: this.account_selected,
-            startupState_id_selected: this.startupState_selected,
-            need_id_selected: this.need_selected,
-            region_id_selected: this.region_selected,
-            tags: tags_id,
-            account_name: this.account_name,
-            role: this.search_role,
-            startupserviceType_selected: this.startupserviceType_selected,
-            search_page: this.search_page
-          }
-        }).then(function (response) {
-          var _this8$accounts;
-
-          (_this8$accounts = _this8.accounts).push.apply(_this8$accounts, _toConsumableArray(response.data.results.accounts));
-        });
-      }
-    },
-    arrowClass: function arrowClass(direction) {
-      if (direction == 'left') {
-        if (this.page > 1) {
-          return 'activate';
-        }
-      } else if (direction == 'right') {
-        if (this.page < Math.ceil(this.accounts.length / 6)) {
-          return 'activate';
-        }
-      }
-    },
-    searchRole: function searchRole() {
-      var _this9 = this;
-
-      if (this.search_role) {
-        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchRole', {
-          params: {
-            role_name: this.search_role
-          }
-        }).then(function (response) {
-          _this9.roles_found = response.data.results.roles;
-
-          if (!_this9.search_role) {
-            _this9.roles_found = '';
-          }
-        });
-      } else {
-        this.roles_found = '';
-      }
-    },
-    setRole: function setRole(roleName) {
-      this.search_role = roleName;
-      this.roles_found = '';
-    },
-    getStartupserviceType: function getStartupserviceType() {
-      var _this10 = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getStartupserviceType', {}).then(function (response) {
-        _this10.startupserviceType = response.data.results.startupserviceType;
-      });
-    },
-    getLastAccounts: function getLastAccounts() {
-      var _this11 = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getLastAccounts', {}).then(function (response) {
-        _this11.last_accounts = response.data.results.last_accounts;
-        _this11.last_accounts_show = _this11.last_accounts.slice(0, 7); //console.log(this.last_accounts);
-      });
     },
     getCookie: function getCookie(name) {
       var value = "; ".concat(document.cookie);
@@ -76953,19 +76835,6 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     }
   },
   mounted: function mounted() {
-    this.getAccountTypes();
-    this.getStartupStatus();
-    this.getStartupserviceType();
-    this.getAllNeeds();
-    this.getRegions();
-    this.getLastAccounts();
-
-    if (this.needs) {
-      this.needs = JSON.parse(this.needs.replace(/&quot;/g, '"'));
-    }
-
-    ;
-
     if (!this.getCookie("tecCookie")) {
       document.cookie = "tecCookie" + "=" + "accept" + ";" + "expires=" + this.dateUTC() + ";path=/";
     }
@@ -78383,11 +78252,13 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#user-edit',
   data: {
     user: user,
-    // company,
+    regions: '',
     registered_page: true,
     page_name: '',
     pages_found: '',
-    page_selected: ''
+    page_selected: '',
+    region_id_selected: '',
+    country_id_selected: ''
   },
   methods: {
     searchPage: function searchPage() {
@@ -78413,6 +78284,20 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       this.page_selected = page_found;
       this.page_name = '';
       this.pages_found = '';
+    },
+    getRegionsByCountry: function getRegionsByCountry() {
+      var _this2 = this;
+
+      if (this.country_id_selected) {
+        this.regions = '';
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/regionsByCountry', {
+          params: {
+            country_id: this.country_id_selected
+          }
+        }).then(function (response) {
+          _this2.regions = response.data.results.regions;
+        });
+      }
     } // remove_file(value){
     //     axios({
     //         method: 'put',
@@ -78448,6 +78333,14 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   },
   created: function created() {
     this.user = JSON.parse(this.user.replace(/&quot;/g, '"'));
+
+    if (this.regions) {
+      this.regions = JSON.parse(this.regions.replace(/&quot;/g, '"'));
+    }
+
+    this.country_id_selected = this.user.country_id ? this.user.country_id : 1;
+    this.region_id_selected = this.user.region_id;
+    this.getRegionsByCountry();
   },
   mounted: function mounted() {
     //DRAG & DROP

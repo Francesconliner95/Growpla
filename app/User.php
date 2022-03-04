@@ -45,6 +45,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo('App\Moneyrange');
     }
 
+    public function region(){
+        return $this->belongsTo('App\Region');
+    }
+
     public function companies(){
         return $this->hasMany('App\Company');
     }
@@ -101,6 +105,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'website',
         'moneyrange_id',
         'startup_n',
+        'country_id',
+        'region_id',
         'latitude',
         'longitude',
         'municipality',

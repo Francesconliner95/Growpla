@@ -31,6 +31,10 @@ class Page extends Model
         return $this->belongsTo('App\Lifecycle');
     }
 
+    public function region(){
+        return $this->belongsTo('App\Region');
+    }
+
     public function have_page_usertypes(){
         return $this->belongsToMany('App\Usertype','have_page_usertypes','page_id','usertype_id')
         ->withPivot('id');
@@ -73,6 +77,8 @@ class Page extends Model
       'slug',
       'latitude',
       'longitude',
+      'country_id',
+      'region_id',
       'street_name',
       'street_number',
       'municipality',

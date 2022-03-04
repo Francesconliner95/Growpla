@@ -11,6 +11,7 @@ var create = new Vue({
     el: '#page-edit',
     data: {
       page,
+      regions: '',
       streetName: '',
       streetNumber: null,
       municipality: '',
@@ -18,12 +19,30 @@ var create = new Vue({
       longitude: null,
       address: '',
       noAdressFound: false,
+      region_id_selected: '',
+      country_id_selected: '',
     },
     methods: {
 
+      getRegionsByCountry(){
+        if(this.country_id_selected){
+
+          this.regions = '';
+
+          axios.get('/api/regionsByCountry',{
+              params: {
+                  country_id: this.country_id_selected,
+              }
+          }).then((response) => {
+              this.regions = response.data.results.regions;
+          });
+        }
+      },
+
+
       // submitForm(){
       //   tt.services.structuredGeocode({
-      //         key: 'wSHLIGhfBYex4WI2gWpiUlecXvt3TOKC',
+      //         key: 'hMc59vkmPojOb6V7lqiIGtPtDnJQeWq3',
       //         countryCode: 'IT',
       //         bestResult: true,
       //         streetName: this.streetName,
@@ -35,7 +54,7 @@ var create = new Vue({
       //         this.longitude = response.position.lng;
       //
       //         tt.services.reverseGeocode({
-      //             key: 'wSHLIGhfBYex4WI2gWpiUlecXvt3TOKC',
+      //             key: 'hMc59vkmPojOb6V7lqiIGtPtDnJQeWq3',
       //             position: {
       //                 longitude: this.longitude,
       //                 latitude: this.latitude
@@ -92,6 +111,13 @@ var create = new Vue({
     },
     created(){
       this.page = JSON.parse(this.page.replace(/&quot;/g,'"'));
+      if(this.regions){
+          this.regions = JSON.parse(this.regions.replace(/&quot;/g,'"'));
+      }
+
+      this.country_id_selected = this.page.country_id?this.page.country_id:1;
+      this.region_id_selected = this.page.region_id;
+      this.getRegionsByCountry();
     },
     mounted() {
 

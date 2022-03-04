@@ -18971,37 +18971,37 @@ footer .bottom-footer {
   }
 }
 
-#account-index .background {
+#search .background {
   background-color: white;
   background-image: url(/images/jumbotron1.jpg?bbe54a235482f753f8c121d14dbe3af7);
   background-size: cover;
 }
 
-#account-index .search {
+#search .search {
   width: 100%;
   min-height: 840px;
   padding: 15px;
 }
 
-#account-index .search h1 {
+#search .search h1 {
   text-align: center;
   padding: 10px;
   color: white;
 }
 
-#account-index .search .search-type {
+#search .search .search-type {
   text-align: center;
   padding: 10px;
   font-size: 20px;
 }
 
-#account-index .search .search-type .search-type-switch {
+#search .search .search-type .search-type-switch {
   display: inline-block;
   background-color: #323232;
   border-radius: 20px;
 }
 
-#account-index .search .search-type .search-type-switch button {
+#search .search .search-type .search-type-switch button {
   background-color: #323232;
   border-radius: 20px;
   color: white;
@@ -19011,45 +19011,45 @@ footer .bottom-footer {
   font-weight: bold;
 }
 
-#account-index .search .search-type .search-type-switch .active {
+#search .search .search-type .search-type-switch .active {
   background-color: white;
   color: #323232;
 }
 
-#account-index .search .search-main {
+#search .search .search-main {
   width: 100%;
 }
 
-#account-index .search .search-main .search-style-hover:hover {
+#search .search .search-main .search-style-hover:hover {
   background-color: #f0f0f0;
 }
 
-#account-index .search .search-main .search-style-hover:hover select {
+#search .search .search-main .search-style-hover:hover select {
   background-color: #f0f0f0;
 }
 
-#account-index .search .search-main .search-style-hover:hover input {
+#search .search .search-main .search-style-hover:hover input {
   background-color: #f0f0f0;
 }
 
-#account-index .search .search-main .search-style {
+#search .search .search-main .search-style {
   width: 100%;
   background-color: white;
   padding: 10px;
   position: relative;
 }
 
-#account-index .search .search-main .search-style:first-child {
+#search .search .search-main .search-style:first-child {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
 
-#account-index .search .search-main .search-style:last-child {
+#search .search .search-main .search-style:last-child {
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 }
 
-#account-index .search .search-main .search-style .placeholder-info {
+#search .search .search-main .search-style .placeholder-info {
   position: absolute;
   right: 0px;
   top: 50%;
@@ -19057,12 +19057,12 @@ footer .bottom-footer {
   z-index: 2;
 }
 
-#account-index .search .search-main .search-style p {
+#search .search .search-main .search-style p {
   margin: 0;
   padding: 0;
 }
 
-#account-index .search .search-main .search-style select {
+#search .search .search-main .search-style select {
   width: 100%;
   height: 50px;
   border: none;
@@ -19070,7 +19070,7 @@ footer .bottom-footer {
   border-radius: 5px;
 }
 
-#account-index .search .search-main .search-style input {
+#search .search .search-main .search-style input {
   width: 100%;
   height: 50px;
   border: none;
@@ -19078,17 +19078,17 @@ footer .bottom-footer {
   outline: none;
 }
 
-#account-index .search .search-main .search-style button {
+#search .search .search-main .search-style button {
   width: 100%;
   height: 50px;
   border-radius: 20px;
 }
 
-#account-index .search .search-main .search-style .tag-search {
+#search .search .search-main .search-style .tag-search {
   position: relative;
 }
 
-#account-index .search .search-main .search-style .tag-search .tag-found {
+#search .search .search-main .search-style .tag-search .tag-found {
   width: 300px;
   background-color: white;
   box-shadow: 0px 0px 10px 1px #ccc;
@@ -19100,7 +19100,7 @@ footer .bottom-footer {
   z-index: 2;
 }
 
-#account-index .search .search-main .search-style .tag-search .tag-found .item {
+#search .search .search-main .search-style .tag-search .tag-found .item {
   padding: 5px;
   border-bottom: solid 1px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -19108,7 +19108,7 @@ footer .bottom-footer {
   align-items: center;
 }
 
-#account-index .search .search-main .search-style .tag-search .tag-found .item button {
+#search .search .search-main .search-style .tag-search .tag-found .item button {
   height: auto;
   width: auto;
   padding: 5px 15px;
@@ -19119,11 +19119,11 @@ footer .bottom-footer {
   color: white;
 }
 
-#account-index .search .search-main .search-style .tag-search .tag-found .item button:hover {
+#search .search .search-main .search-style .tag-search .tag-found .item button:hover {
   opacity: 0.9;
 }
 
-#account-index .search-found {
+#search .search-found {
   margin-top: 20px;
   padding-top: 10px;
   width: 100%;
@@ -19135,11 +19135,11 @@ footer .bottom-footer {
   justify-content: space-between;
 }
 
-#account-index .search-found .account-found-items .account-found-item {
+#search .search-found .account-found-items .account-found-item {
   padding: 2px 0px;
 }
 
-#account-index .search-found .account-found-items .account-found-item .item {
+#search .search-found .account-found-items .account-found-item .item {
   background-color: white;
   width: 100%;
   height: 100%;
@@ -19151,28 +19151,28 @@ footer .bottom-footer {
   position: relative;
 }
 
-#account-index .search-found .account-found-items .account-found-item .item:hover {
+#search .search-found .account-found-items .account-found-item .item:hover {
   background-color: #f0f0f0;
 }
 
-#account-index .search-found .account-found-items .account-found-item .item .item-part {
+#search .search-found .account-found-items .account-found-item .item .item-part {
   width: 70%;
   padding-top: 20px;
   display: inline-block;
 }
 
-#account-index .search-found .account-found-items .account-found-item .item .item-part .name {
+#search .search-found .account-found-items .account-found-item .item .item-part .name {
   padding-top: 2px;
   font-size: 17px;
   font-weight: bold;
   line-height: 1;
 }
 
-#account-index .search-found .account-found-items .account-found-item .item .item-part .tag {
+#search .search-found .account-found-items .account-found-item .item .item-part .tag {
   font-size: 13px;
 }
 
-#account-index .search-found .account-found-items .account-found-item .item .item-part:first-child {
+#search .search-found .account-found-items .account-found-item .item .item-part:first-child {
   width: 30%;
   padding: 0;
   display: inline-block;
@@ -19181,7 +19181,7 @@ footer .bottom-footer {
   align-items: center;
 }
 
-#account-index .search-found .account-found-items .account-found-item .item .item-part:first-child img {
+#search .search-found .account-found-items .account-found-item .item .item-part:first-child img {
   margin: 5px 0;
   width: 65px;
   height: 65px;
@@ -19192,7 +19192,7 @@ footer .bottom-footer {
      object-fit: cover;
 }
 
-#account-index .search-found .account-found-items .account-found-item .item .item-part:last-child {
+#search .search-found .account-found-items .account-found-item .item .item-part:last-child {
   width: auto;
   padding: 3px 7px;
   position: absolute;
@@ -19204,12 +19204,12 @@ footer .bottom-footer {
   font-size: 12px;
 }
 
-#account-index .search-found .account-items-nav {
+#search .search-found .account-items-nav {
   text-align: center;
   font-size: 20px;
 }
 
-#account-index .search-found .account-items-nav button {
+#search .search-found .account-items-nav button {
   background-color: gray;
   display: inline-block;
   border-radius: 50%;
@@ -19219,22 +19219,22 @@ footer .bottom-footer {
   transition: 0.2s;
 }
 
-#account-index .search-found .account-items-nav button:hover {
+#search .search-found .account-items-nav button:hover {
   transform: scale(1.01);
 }
 
-#account-index .search-found .account-items-nav .activate {
+#search .search-found .account-items-nav .activate {
   opacity: 1;
 }
 
-#account-index .search-found .account-items-nav span {
+#search .search-found .account-items-nav span {
   display: inline-block;
   min-width: 70px;
   text-align: center;
   color: white;
 }
 
-#account-index .intro {
+#search .intro {
   height: 600px;
   display: flex;
   align-items: center;
@@ -19245,19 +19245,19 @@ footer .bottom-footer {
   font-size: 50px;
 }
 
-#account-index .intro h2 {
+#search .intro h2 {
   line-height: 1.4;
   font-size: 40px;
 }
 
-#account-index .create-profile {
+#search .create-profile {
   padding-top: 10px;
   padding-bottom: 30px;
   display: flex;
   justify-content: center;
 }
 
-#account-index .create-profile .item {
+#search .create-profile .item {
   height: 100%;
   border: 2px solid #0AB89F;
   border-radius: 30px;
@@ -19271,24 +19271,24 @@ footer .bottom-footer {
   font-weight: bold;
 }
 
-#account-index .create-profile .item:hover {
+#search .create-profile .item:hover {
   transition: 0.4s;
   background-color: #0AB89F;
   color: white;
 }
 
-#account-index .new-subscribers .item-cont .item-style {
+#search .new-subscribers .item-cont .item-style {
   padding: 8px;
   padding-left: 15px;
 }
 
-#account-index .new-subscribers .item-cont .item-style:hover {
+#search .new-subscribers .item-cont .item-style:hover {
   background-color: #f0f0f0;
   opacity: 0.8;
   cursor: pointer;
 }
 
-#account-index .new-subscribers .item-cont .item-style .item {
+#search .new-subscribers .item-cont .item-style .item {
   width: 100%;
   height: 100%;
   color: black;
@@ -19297,7 +19297,7 @@ footer .bottom-footer {
   align-items: center;
 }
 
-#account-index .new-subscribers .item-cont .item-style .item img {
+#search .new-subscribers .item-cont .item-style .item img {
   width: 80px;
   height: 80px;
   border-radius: 50%;
@@ -19306,7 +19306,7 @@ footer .bottom-footer {
      object-fit: cover;
 }
 
-#account-index .new-subscribers .item-cont .item-style .item .item-txt {
+#search .new-subscribers .item-cont .item-style .item .item-txt {
   width: calc(300px - 85px);
   display: inline-block;
   padding-left: 10px;
@@ -19314,16 +19314,16 @@ footer .bottom-footer {
   font-weight: bold;
 }
 
-#account-index .top-accounts {
+#search .top-accounts {
   padding-bottom: 20px;
 }
 
-#account-index .top-accounts h5 {
+#search .top-accounts h5 {
   font-size: 16px;
   color: gray;
 }
 
-#account-index .top-accounts .item-style {
+#search .top-accounts .item-style {
   display: inline-block;
   display: flex;
   flex-direction: column;
@@ -19332,20 +19332,20 @@ footer .bottom-footer {
   height: 270px;
 }
 
-#account-index .top-accounts .item-style .img-cont {
+#search .top-accounts .item-style .img-cont {
   height: 90%;
   width: 100%;
   transition: 0.2s;
 }
 
-#account-index .top-accounts .item-style .img-cont img {
+#search .top-accounts .item-style .img-cont img {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
 }
 
-#account-index .top-accounts .item-style .a-info {
+#search .top-accounts .item-style .a-info {
   height: 10%;
   padding: 5px 20px;
   transition: 0.2s;
@@ -19353,11 +19353,11 @@ footer .bottom-footer {
   text-overflow: ellipsis;
 }
 
-#account-index .top-accounts .item-style .a-info h6 {
+#search .top-accounts .item-style .a-info h6 {
   text-align: center;
 }
 
-#account-index .top-accounts .item-style .a-info .description {
+#search .top-accounts .item-style .a-info .description {
   opacity: 0;
   height: 100%;
   font-size: 13px;
@@ -19365,23 +19365,23 @@ footer .bottom-footer {
   transition: 0.2s;
 }
 
-#account-index .top-accounts .item-style:hover .img-cont {
+#search .top-accounts .item-style:hover .img-cont {
   height: 0%;
 }
 
-#account-index .top-accounts .item-style:hover .a-info {
+#search .top-accounts .item-style:hover .a-info {
   height: 100%;
 }
 
-#account-index .top-accounts .item-style:hover .a-info .description {
+#search .top-accounts .item-style:hover .a-info .description {
   opacity: 1;
 }
 
-#account-index .cont-slicer {
+#search .cont-slicer {
   text-align: center;
 }
 
-#account-index .cont-slicer .slicer {
+#search .cont-slicer .slicer {
   width: 10px;
   height: 10px;
   display: inline-block;
@@ -19389,18 +19389,18 @@ footer .bottom-footer {
   background-color: rgba(1, 1, 1, 0.5);
 }
 
-#account-index .cont-slicer .active {
+#search .cont-slicer .active {
   background-color: #010101;
 }
 
-#account-index .need-carousel {
+#search .need-carousel {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-#account-index .need-carousel .account {
+#search .need-carousel .account {
   position: absolute;
   top: 5px;
   left: 8px;
@@ -19409,25 +19409,25 @@ footer .bottom-footer {
   font-size: 14px;
 }
 
-#account-index .need-carousel .need {
+#search .need-carousel .need {
   font-size: 17px;
   font-weight: bold;
 }
 
 @media (min-width: 992px) {
-  #account-index .search .search-main .search-style:first-child {
+  #search .search .search-main .search-style:first-child {
     border-top-left-radius: 20px;
     border-top-right-radius: 0px;
     border-bottom-left-radius: 20px;
   }
 
-  #account-index .search .search-main .search-style:last-child {
+  #search .search .search-main .search-style:last-child {
     border-top-right-radius: 20px;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 20px;
   }
 
-  #account-index .search .search-main .search-style button {
+  #search .search .search-main .search-style button {
     height: 50px;
   }
 }

@@ -56,25 +56,32 @@ class HavePageUsertypeController extends Controller
             }
 
             $skills = $request->skills;
-            $skills_id = [];
-            foreach ($skills as $skill_name) {
-                $exist = Skill::where('name',$skill_name)->first();
-                if($exist){
-                    array_push($skills_id, $exist->id);
-                }else{
-                    if($skill_name){
-                      $new_skill = new Skill();
-                      $new_skill->name = Str::lower($skill_name);
-                      $new_skill->save();
-                      array_push($skills_id, $new_skill->id);
+            //se è stata slezionata la voce aspirante-cofounder
+            if($page->have_page_usertypes->contains(1) && $skills){
+
+                $skills_id = [];
+                foreach ($skills as $skill_name) {
+                    $exist = Skill::where('name',$skill_name)->first();
+                    if($exist){
+                        array_push($skills_id, $exist->id);
+                    }else{
+                        if($skill_name){
+                          $new_skill = new Skill();
+                          $new_skill->name = Str::lower($skill_name);
+                          $new_skill->save();
+                          array_push($skills_id, $new_skill->id);
+                        }
                     }
                 }
-            }
 
-            if(array_key_exists('skills', $data)){
-              $page->have_page_cofounders()->sync($skills_id);
+                if(array_key_exists('skills', $data)){
+                  $page->have_page_cofounders()->sync($skills_id);
+                }else{
+                  $page->have_page_cofounders()->sync([]);
+                }
+
             }else{
-              $page->have_page_cofounders()->sync([]);
+                $page->have_page_cofounders()->sync([]);
             }
 
             return redirect()->route('admin.pages.show',$page->id);
