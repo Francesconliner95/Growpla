@@ -12,6 +12,7 @@ class SectorsTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('sectors')->delete();
       $sectors = [
           [
               'name'=>'Clothing',

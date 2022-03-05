@@ -12,6 +12,7 @@ class MoneyrangesTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('moneyranges')->delete();
       $moneyranges = [
           [
               'range'=>'<50k',

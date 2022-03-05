@@ -12,6 +12,7 @@ class CurrenciesTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('currencies')->delete();
         $currencies = [
             [
                 'name'=>'Euro',

@@ -36,7 +36,7 @@ class LifecycleController extends Controller
             'lifecycles' => Lifecycle::all(),
             'pagetypes' => Pagetype::where('hidden',null)->get(),
             'usertypes' => Usertype::where('hidden',null)->get(),
-            'services' => Service::where('page_id',$page->pagetype_id)
+            'services' => Service::where('pagetype_id',$page->pagetype_id)
                           ->where('hidden',null)->get(),
             'skills' => $page->have_page_cofounders,
         ];

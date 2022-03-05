@@ -17,7 +17,8 @@ class CreateSupportsTable extends Migration
             $table->id();
             $table->unsignedbigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->tinyInteger('support_type_id');
+            $table->unsignedbigInteger('support_type_id');
+            $table->foreign('support_type_id')->references('id')->on('support_types')->onDelete('cascade');
             $table->string('title');
             $table->text('description');
             $table->string('file')->nullable();

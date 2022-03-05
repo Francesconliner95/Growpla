@@ -12,6 +12,7 @@ class PagetypeTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('pagetypes')->delete();
       $pagetypes = [
           [
               'name'=>'startup',

@@ -46,32 +46,32 @@ var create = new Vue({
       getTeamMembers(){
           axios.get('/api/getTeamMembers',{
               params: {
-                  account_id: this.account.id,
-                  // get_all: this.show_all_team?'yes':'no',
+                  page_id: this.page.id,
               }
           }).then((response) => {
               this.team_members = response.data.results.team_members;
           });
       },
 
-      changeTeamPosition(member_id,value){
-          axios({
-              method: 'put',
-              url: '/admin/changeTeamPosition',
-              data: {
-                  member_id: member_id,
-                  up_down: value,
-              }
-          }).then(response => {
-              this.getTeamMembers();
-          });
-      },
+        changeTeamPosition(member_id,value){
+            axios({
+                method: 'put',
+                url: '/admin/changeTeamPosition',
+                data: {
+                    team_id: member_id,
+                    up_down: value,
+                }
+            }).then(response => {
+                this.getTeamMembers();
+            });
+        },
 
     },
     created(){
       this.page = JSON.parse(this.page.replace(/&quot;/g,'"'));
       if(this.team_members){
           this.team_members = JSON.parse(this.team_members.replace(/&quot;/g,'"'));
+          console.log(this.team_members);
       }
 
     },

@@ -12,6 +12,7 @@ class LifecyclesTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('lifecycles')->delete();
       $lifecycles = [
           [
               'name'=> 'Pre-seed',

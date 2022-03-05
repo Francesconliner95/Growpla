@@ -12,45 +12,46 @@ class SupportTypesTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('support_types')->delete();
         $supportTypes = [
             [
-                'name'=>'Collaborazioni',
+                'name_it'=>'Collaborazioni',
+                'description_it'=>'',
+                'name'=>'Collaborations',
                 'description'=>'',
-                'name_en'=>'Collaborations',
-                'description_en'=>'',
             ],
             [
-                'name'=>'Lavora con noi',
+                'name_it'=>'Lavora con noi',
+                'description_it'=>'',
+                'name'=>'Work with us',
                 'description'=>'',
-                'name_en'=>'Work with us',
-                'description_en'=>'',
             ],
             [
-                'name'=>'Segnala un problema',
+                'name_it'=>'Segnala un problema',
+                'description_it'=>'',
+                'name'=>'Report a problem',
                 'description'=>'',
-                'name_en'=>'Report a problem',
-                'description_en'=>'',
             ],
             [
-                'name'=>'Suggerisci miglioramenti o funzioni',
+                'name_it'=>'Suggerisci miglioramenti o funzioni',
+                'description_it'=>'',
+                'name'=>'Suggest improvements or features',
                 'description'=>'',
-                'name_en'=>'Suggest improvements or features',
-                'description_en'=>'',
             ],
             [
-                'name'=>'Altro',
+                'name_it'=>'Altro',
+                'description_it'=>'',
+                'name'=>'Other',
                 'description'=>'',
-                'name_en'=>'Other',
-                'description_en'=>'',
             ],
         ];
 
         foreach ($supportTypes as $supportType){
             $new_supportType = new SupportType();
+            $new_supportType->name = $supportType['name_it'];
+            $new_supportType->description = $supportType['description_it'];
             $new_supportType->name = $supportType['name'];
             $new_supportType->description = $supportType['description'];
-            $new_supportType->name_en = $supportType['name_en'];
-            $new_supportType->description_en = $supportType['description_en'];
             $new_supportType->save();
         }
     }

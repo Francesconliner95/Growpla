@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import axios from 'axios';
-import tt from '@tomtom-international/web-sdk-services';
+//import tt from '@tomtom-international/web-sdk-services';
 //npm i @tomtom-international/web-sdk-services
 axios.defaults.headers.common = {
     'X-Requested-With': 'XMLHttpRequest',

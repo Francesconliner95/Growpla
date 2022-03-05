@@ -12,6 +12,7 @@ class LanguagesTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('languages')->delete();
         $languages = [
             [
                 'lang' => 'en',

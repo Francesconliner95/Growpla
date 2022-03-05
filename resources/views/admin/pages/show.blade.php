@@ -207,7 +207,7 @@
                                           <li>{{$skill->name}}</li>
 
                                         @endforeach
-                                      </ul>            
+                                      </ul>
                                     @endif
                                 @endforeach
                               </div>

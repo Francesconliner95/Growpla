@@ -24,17 +24,23 @@ class CreatePagesTable extends Migration
             $table->string('linkedin')->nullable();
             $table->tinyInteger('page_varificated')->nullable();
             $table->string('slug')->unique();
+            $table->unsignedbigInteger('country_id')->nullable();
+            $table->foreign('country_id')->references('id')->on('countries');
+            $table->unsignedbigInteger('region_id')->nullable();
+            $table->foreign('region_id')->references('id')->on('regions');
             $table->double('latitude', 10, 7)->nullable();
             $table->double('longitude', 10, 7)->nullable();
             $table->string('street_name')->nullable();
             $table->string('street_number')->nullable();
             $table->string('municipality')->nullable();
             //STURTUP
-            $table->tinyInteger('lifecycle_id')->nullable();
+            $table->unsignedbigInteger('lifecycle_id')->nullable();
+            $table->foreign('lifecycle_id')->references('id')->on('lifecycles');
             $table->string('pitch')->nullable();
             $table->boolean('incorporated')->nullable();
 
-            $table->tinyInteger('moneyrange_id')->nullable();
+            $table->unsignedbigInteger('moneyrange_id')->nullable();
+            $table->foreign('moneyrange_id')->references('id')->on('moneyranges');
             $table->integer('startup_n')->nullable();
 
             $table->timestamps();

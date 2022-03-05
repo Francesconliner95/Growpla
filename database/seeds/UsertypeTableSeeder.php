@@ -12,6 +12,7 @@ class UsertypeTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('usertypes')->delete();
       $usertypes = [
           [
               'name'=>'aspiring co-founder',

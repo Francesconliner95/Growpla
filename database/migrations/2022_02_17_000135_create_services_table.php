@@ -19,8 +19,9 @@ class CreateServicesTable extends Migration
             $table->string('name_it')->nullable();
             $table->string('description')->nullable();
             $table->string('description_it')->nullable();
-            $table->unsignedbigInteger('page_id')->nullable();
-            $table->foreign('page_id')->references('id')->on('pages');
+            //page_id riferimento per fare uscire i servizi startup nel ciclo di vita
+            $table->unsignedbigInteger('pagetype_id')->nullable();
+            $table->foreign('pagetype_id')->references('id')->on('pagetypes');
             $table->boolean('hidden')->nullable();
             $table->timestamps();
         });

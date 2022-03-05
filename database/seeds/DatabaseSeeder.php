@@ -17,7 +17,10 @@ class DatabaseSeeder extends Seeder
       $this->call(PagetypeTableSeeder::class);
       $this->call(UsertypeTableSeeder::class);
       $this->call(SectorsTableSeeder::class);
+      $this->call(ServicesTableSeeder::class);
       $this->call(LifecyclesTableSeeder::class);
-      //$this->call(SupportTypesTableSeeder::class);
+      $this->call(CountriesTableSeeder::class);
+      $this->call(RegionsTableSeeder::class);
+      $this->call(SupportTypesTableSeeder::class);
     }
 }

@@ -44,7 +44,7 @@
                       </p>
                       <div v-if="!user_selected" class="search" v-cloak>
                           <input type="hidden" name="user_id" value="">
-                          <input type="text" name="user" value="" placeholder="Nome o cognome utente" v-model="user_name" @keyup.enter="searchUser()" v-on:input="searchUser()" maxlength="70" class="form-control" autocomplete="off">
+                          <input type="text" name="user" value="" placeholder="Nome o cognome utente" v-model="user_name" @keyup.enter="searchUser()" v-on:input="searchUser()" maxlength="70" class="form-control" autocomplete="off" required>
                           @error ('user_name')
                               <div class="alert alert-danger">
                                   {{__($message)}}

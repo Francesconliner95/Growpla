@@ -39,40 +39,39 @@ class GiveUserServiceController extends Controller
     public function update(Request $request, $user_id)
     {
 
-      $request->validate([
-        //'services'=> 'exists:usertypes,id',
-      ]);
+        $request->validate([
+            //'services'=> 'exists:usertypes,id',
+        ]);
 
-      $data = $request->all();
+        $data = $request->all();
 
-      $user = Auth::user();
+        $user = Auth::user();
 
-      $user = User::find($user_id);
-      if($user->id == Auth::user()->id){
+        $user = User::find($user_id);
+        if($user->id == Auth::user()->id){
 
-          $services = $request->services;
-          $services_id = [];
-          foreach ($services as $service_name) {
-              $exist = Service::where('name',$service_name)->first();
-              if($exist){
-                  array_push($services_id, $exist->id);
-              }else{
-                  if($service_name){
-                    $new_service = new Service();
-                    $new_service->name = Str::lower($service_name);
-                    $new_service->save();
-                    array_push($services_id, $new_service->id);
-                  }
-              }
-          }
+            $services = $request->services;
+            $services_id = [];
+            if($services){
+                foreach ($services as $service_name) {
+                    $exist = Service::where('name',$service_name)->first();
+                    if($exist){
+                        array_push($services_id, $exist->id);
+                    }else{
+                        if($service_name){
+                            $new_service = new Service();
+                            $new_service->name = Str::lower($service_name);
+                            $new_service->save();
+                            array_push($services_id, $new_service->id);
+                        }
+                    }
+                }
+                $user->give_user_services()->sync($services_id);
+            }else{
+                $user->give_user_services()->sync([]);
+            }
 
-          if(array_key_exists('services', $data)){
-            $user->give_user_services()->sync($services_id);
-          }else{
-            $user->give_user_services()->sync([]);
-          }
-
-          return redirect()->route('admin.users.show',$user->id);
+            return redirect()->route('admin.users.show',$user->id);
 
       }abort(404);
   }

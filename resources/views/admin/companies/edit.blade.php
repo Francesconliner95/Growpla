@@ -42,7 +42,7 @@
                       </p>
                       <div v-if="!page_selected" class="search" v-cloak>
                           <input type="hidden" name="page_id" value="">
-                          <input type="text" name="page" value="" placeholder="Nome azienda" v-model="page_name" @keyup.enter="searchPage()" v-on:input="searchPage()" maxlength="70" class="form-control" autocomplete="off">
+                          <input type="text" name="page" value="" placeholder="Nome azienda" v-model="page_name" @keyup.enter="searchPage()" v-on:input="searchPage()" maxlength="70" class="form-control" autocomplete="off" required>
                           @error ('page_name')
                               <div class="alert alert-danger">
                                   {{__($message)}}
