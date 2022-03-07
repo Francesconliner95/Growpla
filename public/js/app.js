@@ -76731,12 +76731,27 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     lang: lang,
     search_type: false,
     category_selected: '',
-    usertype_id: '',
-    pagetype_id: '',
+    usertypes_id: [],
+    pagetypes_id: [],
     investors_selected: false,
     organizzations_selected: false,
     services_selected: false,
-    name: ''
+    regions: '',
+    name: '',
+    skills: [],
+    skill_name: '',
+    skills_found: '',
+    investor_selected: '',
+    oragnizzation_selected: '',
+    services: [],
+    service_name: '',
+    services_found: '',
+    need_selected: '',
+    serviceToggle: false,
+    country_id_selected: '',
+    region_id_selected: '',
+    sector_id_selected: '',
+    lifecycle_id_selected: ''
   },
   methods: {
     search_type_f: function search_type_f() {// if(!this.search_type){
@@ -76745,12 +76760,18 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       //     this.account_selected = '';
       // }
     },
+    needChange: function needChange() {
+      console.log(this.need_selected);
+    },
     change_category: function change_category() {
+      this.need_selected = '';
+      this.serviceToggle = false;
+
       switch (this.category_selected) {
         case '1':
           //startup
-          this.usertype_id = '';
-          this.pagetype_id = 1;
+          this.usertypes_id = [];
+          this.pagetypes_id = [1];
           this.investors_selected = false;
           this.organizzations_selected = false;
           this.services_selected = false;
@@ -76758,8 +76779,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
         case '2':
           //aspirante-cofounder
-          this.usertype_id = 1;
-          this.pagetype_id = '';
+          this.usertypes_id = [1];
+          this.pagetypes_id = [];
           this.investors_selected = false;
           this.organizzations_selected = false;
           this.services_selected = false;
@@ -76767,8 +76788,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
         case '3':
           //incubatore-acc
-          this.usertype_id = '';
-          this.pagetype_id = 3;
+          this.usertypes_id = [];
+          this.pagetypes_id = [3];
           this.investors_selected = false;
           this.organizzations_selected = false;
           this.services_selected = false;
@@ -76776,8 +76797,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
         case '4':
           //investitori
-          this.usertype_id = '';
-          this.pagetype_id = '';
+          this.usertypes_id = [2];
+          this.pagetypes_id = [5, 8];
           this.investors_selected = true;
           this.organizzations_selected = false;
           this.services_selected = false;
@@ -76785,8 +76806,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
         case '5':
           //enti e associazioni
-          this.usertype_id = '';
-          this.pagetype_id = '';
+          this.usertypes_id = [];
+          this.pagetypes_id = [7, 9];
           this.investors_selected = false;
           this.organizzations_selected = true;
           this.services_selected = false;
@@ -76794,20 +76815,187 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
         case '6':
           //servizi
-          this.usertype_id = '';
-          this.pagetype_id = '';
+          this.usertypes_id = [];
+          this.pagetypes_id = [];
           this.investors_selected = false;
           this.organizzations_selected = false;
           this.services_selected = true;
           break;
 
         default:
-          this.usertype_id = '';
-          this.pagetype_id = '';
+          this.usertypes_id = [];
+          this.pagetypes_id = [];
           this.investors_selected = false;
           this.organizzations_selected = false;
           this.services_selected = false;
       }
+    },
+    getRegionsByCountry: function getRegionsByCountry() {
+      var _this = this;
+
+      if (this.country_id_selected) {
+        this.regions = '';
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/regionsByCountry', {
+          params: {
+            country_id: this.country_id_selected
+          }
+        }).then(function (response) {
+          _this.regions = response.data.results.regions;
+        });
+      } else {
+        this.regions = '';
+      }
+    },
+    searchSkill: function searchSkill() {
+      var _this2 = this;
+
+      if (this.skill_name.length > 2) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchSkill', {
+          params: {
+            skill_name: this.skill_name
+          }
+        }).then(function (response) {
+          _this2.skills_found = response.data.results.skills;
+
+          if (!_this2.skill_name) {
+            _this2.skills_found = '';
+          }
+        });
+      } else {
+        this.skills_found = '';
+      }
+    },
+    addSkill: function addSkill(skill_found) {
+      var exist = false;
+      this.skills.forEach(function (skill, i) {
+        if (skill.pivot.skill_id == skill_found.id) {
+          exist = true;
+        }
+      });
+
+      if (!exist) {
+        var new_skill = {
+          "name": skill_found.name,
+          "pivot": {
+            "skill_id": skill_found.id
+          }
+        };
+        this.skills.push(new_skill);
+      }
+
+      this.skills_found = '';
+      this.skill_name = '';
+    },
+    removeSkill: function removeSkill(i) {
+      this.skills.splice(i, 1);
+    },
+    investorType: function investorType() {
+      switch (this.investor_selected) {
+        case '1':
+          //business angel
+          this.usertypes_id = [2];
+          this.pagetypes_id = [];
+          this.investors_selected = true;
+          this.organizzations_selected = false;
+          this.services_selected = false;
+          break;
+
+        case '2':
+          //venture capital
+          this.usertypes_id = [];
+          this.pagetypes_id = [5];
+          this.investors_selected = true;
+          this.organizzations_selected = false;
+          this.services_selected = false;
+          break;
+
+        case '3':
+          //private equity
+          this.usertypes_id = [];
+          this.pagetypes_id = [8];
+          this.investors_selected = true;
+          this.organizzations_selected = false;
+          this.services_selected = false;
+          break;
+
+        default:
+          this.usertypes_id = [];
+          this.pagetypes_id = [];
+          this.investors_selected = true;
+          this.organizzations_selected = false;
+          this.services_selected = false;
+      }
+    },
+    oraganizzationType: function oraganizzationType() {
+      switch (this.organizzations_selected) {
+        case '1':
+          //agenzie
+          this.usertypes_id = [];
+          this.pagetypes_id = [7];
+          this.investors_selected = false;
+          this.organizzations_selected = true;
+          this.services_selected = false;
+          break;
+
+        case '2':
+          //univesità
+          this.usertypes_id = [];
+          this.pagetypes_id = [9];
+          this.investors_selected = false;
+          this.organizzations_selected = true;
+          this.services_selected = false;
+          break;
+
+        default:
+          this.usertypes_id = [];
+          this.pagetypes_id = [];
+          this.investors_selected = false;
+          this.organizzations_selected = true;
+          this.services_selected = false;
+      }
+    },
+    searchService: function searchService() {
+      var _this3 = this;
+
+      if (this.service_name) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchService', {
+          params: {
+            service_name: this.service_name
+          }
+        }).then(function (response) {
+          _this3.services_found = response.data.results.services;
+
+          if (!_this3.service_name) {
+            _this3.services_found = '';
+          }
+        });
+      } else {
+        this.services_found = '';
+      }
+    },
+    addService: function addService(service_found) {
+      var exist = false;
+      this.services.forEach(function (service, i) {
+        if (service.pivot.service_id == service_found.id) {
+          exist = true;
+        }
+      });
+
+      if (!exist) {
+        var new_service = {
+          "name": service_found.name,
+          "pivot": {
+            "service_id": service_found.id
+          }
+        };
+        this.services.push(new_service);
+      }
+
+      this.services_found = '';
+      this.service_name = '';
+    },
+    removeService: function removeService(i) {
+      this.services.splice(i, 1);
     },
     getCookie: function getCookie(name) {
       var value = "; ".concat(document.cookie);

@@ -82,7 +82,7 @@ var create = new Vue({
 
         removeService(i){
             this.services.splice(i, 1);
-        }
+        },
 
     },
     created() {

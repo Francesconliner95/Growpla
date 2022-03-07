@@ -19394,18 +19394,6 @@ footer .bottom-footer {
 }
 
 @media (min-width: 992px) {
-  #search .search .search-main .search-style:first-child {
-    border-top-left-radius: 20px;
-    border-top-right-radius: 0px;
-    border-bottom-left-radius: 20px;
-  }
-
-  #search .search .search-main .search-style:last-child {
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 20px;
-  }
-
   #search .search .search-main .search-style button {
     height: 50px;
   }

@@ -33,4 +33,20 @@ class MainController extends Controller
       return view('admin.search', $data);
     }
 
+    public function find(Request $request)
+    {
+        dd($request);
+
+        $request->validate([
+        //'skills'=> 'exists:usertypes,id',
+        ]);
+
+        $data = [
+
+        ];
+
+        return redirect()->route('admin.found',$data);
+
+  }
+
 }

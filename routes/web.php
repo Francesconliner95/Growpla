@@ -30,6 +30,8 @@ Route::get('/', 'HomeController@index')->name('index');
 Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->group(function(){
 
     Route::get('/search', 'MainController@search')->name('search');
+    Route::post('/find', 'MainController@find')->name('find');
+    Route::post('/found', 'MainController@found')->name('found');
 
     Route::resource('/users', 'UserController');
     Route::get('/getUser', 'UserController@getUser')->name('getUser');
