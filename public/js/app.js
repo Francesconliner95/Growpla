@@ -76738,6 +76738,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     services_selected: false,
     regions: '',
     name: '',
+    skillsToggle: false,
     skills: [],
     skill_name: '',
     skills_found: '',
@@ -76748,6 +76749,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     services_found: '',
     need_selected: '',
     serviceToggle: false,
+    //false=cerco true=offro
     country_id_selected: '',
     region_id_selected: '',
     sector_id_selected: '',
@@ -76829,6 +76831,9 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           this.organizzations_selected = false;
           this.services_selected = false;
       }
+
+      console.log(this.usertypes_id);
+      console.log(this.pagetypes_id);
     },
     getRegionsByCountry: function getRegionsByCountry() {
       var _this = this;
@@ -79399,8 +79404,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

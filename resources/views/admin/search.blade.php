@@ -76,10 +76,19 @@
                                 <option class="text-capitalize" :value="{'type':3, 'id':''}">Servizio</option>
                             </select>
                         </div>
+
                         {{-- cofounder --}}
                         <div v-if="usertypes_id.includes(1)
                         || need_selected.type==1 && need_selected.id==1" class="search-style">
-                            <h6>Quali abilità deve possedere?</h6>
+                            <div class="">
+                                <h6 v-if="need_selected.id==1" for="" class="d-block">Cerco startup che hanno bisogno di profili che dispongono di</h6>
+                                <h6 v-else for="" class="d-block">Cerco profili che dispongono di</h6>
+                                <input type="radio" name="skillsToggle" value="false" v-model="skillsToggle" id="one-skill" class="w-auto h-auto" :checked="!skillsToggle">
+                                <label for="one-skill">una delle seguenti competenze</label>
+                                <input type="radio" name="skillsToggle" value="true" v-model="skillsToggle" id="all-skill" class="w-auto h-auto" :checked="skillsToggle">
+                                <label for="all-skill">tutte le seguenti competenze</label>
+                            </div>
+                            <h6>Quali competenze devono possedere?</h6>
                             <div v-for="(skill,i) in skills" class="" v-cloak>
                               <input type="hidden" name="skills[]" :value="skill.name">
                               <label for="">@{{skill.name}}
@@ -188,7 +197,10 @@
                                 <input type="hidden" name="lifecycle_id" :value="lifecycle_id_selected">
                                 <input type="hidden" name="need_pagetype_id" :value="need_selected.type==2?need_selected.id:''">
                                 <input type="hidden" name="need_usertype_id" :value="need_selected.type==1?need_selected.id:''">
+                                <input type="hidden" name="skills_toggle" :value="skillsToggle">
                                 <input v-for="skill in skills" type="hidden" name="skills[]" :value="skill.pivot.skill_id">
+                                <input v-for="service in services" type="hidden" name="services[]" :value="service.pivot.service_id">
+                                <input type="hidden" name="service_toggle" :value="serviceToggle">
                                 <input type="hidden" name="sector_id" :value="sector_id_selected">
                                 <input type="hidden" name="country_id" :value="country_id_selected">
                                 <input type="hidden" name="region_id" :value="region_id_selected">

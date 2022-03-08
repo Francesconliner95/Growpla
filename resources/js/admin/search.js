@@ -18,6 +18,7 @@ var create = new Vue({
         services_selected: false,
         regions: '',
         name: '',
+        skillsToggle: false,
         skills: [],
         skill_name: '',
         skills_found: '',
@@ -27,7 +28,7 @@ var create = new Vue({
         service_name: '',
         services_found: '',
         need_selected: '',
-        serviceToggle: false,
+        serviceToggle: false,//false=cerco true=offro
         country_id_selected: '',
         region_id_selected: '',
         sector_id_selected: '',
@@ -107,8 +108,10 @@ var create = new Vue({
               this.investors_selected = false;
               this.organizzations_selected = false;
               this.services_selected = false;
-
             }
+
+            console.log(this.usertypes_id);
+            console.log(this.pagetypes_id);
         },
 
         getRegionsByCountry(){
