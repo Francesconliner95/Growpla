@@ -133,7 +133,7 @@ class CompanyController extends Controller
 
         }
 
-        if($can_create){
+        if($can_update){
             $width = $request->width;
             $height = $request->height;
 

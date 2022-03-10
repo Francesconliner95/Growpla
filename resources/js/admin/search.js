@@ -14,7 +14,6 @@ var create = new Vue({
         usertypes_id: [],
         pagetypes_id: [],
         investors_selected: false,
-        organizzations_selected: false,
         services_selected: false,
         regions: '',
         name: '',
@@ -23,30 +22,30 @@ var create = new Vue({
         skill_name: '',
         skills_found: '',
         investor_selected: '',
-        oragnizzation_selected: '',
         services: [],
         service_name: '',
         services_found: '',
         need_selected: '',
-        serviceToggle: false,//false=cerco true=offro
-        country_id_selected: '',
+        serviceToggle: false, //false=cerco true=offro
+        serviceOrAndToggle: false, //false=uno true=tutti
+        country_id_selected: 1,
         region_id_selected: '',
-        sector_id_selected: '',
+        sector_selected: '',
         lifecycle_id_selected: '',
+        sectors: [],
+        sector_selected: '',
+        sectorToggle: false,
 
     },
     methods: {
 
         search_type_f(){
-            // if(!this.search_type){
-            //     this.name = '';
-            // }else{
-            //     this.account_selected = '';
-            // }
-        },
-
-        needChange(){
-            console.log(this.need_selected);
+            if(!this.search_type){
+                this.name = '';
+            }else{
+                this.category_selected = '';
+                this.change_category();
+            }
         },
 
         change_category(){
@@ -59,7 +58,6 @@ var create = new Vue({
               this.usertypes_id = [];
               this.pagetypes_id = [1];
               this.investors_selected = false;
-              this.organizzations_selected = false;
               this.services_selected = false;
             break;
             case '2':
@@ -67,7 +65,6 @@ var create = new Vue({
               this.usertypes_id = [1];
               this.pagetypes_id = [];
               this.investors_selected = false;
-              this.organizzations_selected = false;
               this.services_selected = false;
             break;
             case '3':
@@ -75,7 +72,6 @@ var create = new Vue({
               this.usertypes_id = [];
               this.pagetypes_id = [3];
               this.investors_selected = false;
-              this.organizzations_selected = false;
               this.services_selected = false;
             break;
             case '4':
@@ -83,15 +79,13 @@ var create = new Vue({
               this.usertypes_id = [2];
               this.pagetypes_id = [5,8];
               this.investors_selected = true;
-              this.organizzations_selected = false;
               this.services_selected = false;
             break;
             case '5':
               //enti e associazioni
               this.usertypes_id = [];
-              this.pagetypes_id = [7,9];
+              this.pagetypes_id = [7];
               this.investors_selected = false;
-              this.organizzations_selected = true;
               this.services_selected = false;
             break;
             case '6':
@@ -99,19 +93,14 @@ var create = new Vue({
               this.usertypes_id = [];
               this.pagetypes_id = [];
               this.investors_selected = false;
-              this.organizzations_selected = false;
               this.services_selected = true;
             break;
             default:
               this.usertypes_id = [];
               this.pagetypes_id = [];
               this.investors_selected = false;
-              this.organizzations_selected = false;
               this.services_selected = false;
             }
-
-            console.log(this.usertypes_id);
-            console.log(this.pagetypes_id);
         },
 
         getRegionsByCountry(){
@@ -184,7 +173,6 @@ var create = new Vue({
                 this.usertypes_id = [2];
                 this.pagetypes_id = [];
                 this.investors_selected = true;
-                this.organizzations_selected = false;
                 this.services_selected = false;
               break;
               case '2':
@@ -192,7 +180,6 @@ var create = new Vue({
                 this.usertypes_id = [];
                 this.pagetypes_id = [5];
                 this.investors_selected = true;
-                this.organizzations_selected = false;
                 this.services_selected = false;
               break;
               case '3':
@@ -200,44 +187,15 @@ var create = new Vue({
                 this.usertypes_id = [];
                 this.pagetypes_id = [8];
                 this.investors_selected = true;
-                this.organizzations_selected = false;
                 this.services_selected = false;
               break;
               default:
                 this.usertypes_id = [];
                 this.pagetypes_id = [];
                 this.investors_selected = true;
-                this.organizzations_selected = false;
                 this.services_selected = false;
 
               }
-        },
-
-        oraganizzationType(){
-            switch (this.organizzations_selected) {
-                case '1':
-                    //agenzie
-                    this.usertypes_id = [];
-                    this.pagetypes_id = [7];
-                    this.investors_selected = false;
-                    this.organizzations_selected = true;
-                    this.services_selected = false;
-                break;
-                case '2':
-                    //univesità
-                    this.usertypes_id = [];
-                    this.pagetypes_id = [9];
-                    this.investors_selected = false;
-                    this.organizzations_selected = true;
-                    this.services_selected = false;
-                break;
-                default:
-                    this.usertypes_id = [];
-                    this.pagetypes_id = [];
-                    this.investors_selected = false;
-                    this.organizzations_selected = true;
-                    this.services_selected = false;
-            }
         },
 
         searchService(){
@@ -248,6 +206,7 @@ var create = new Vue({
                   }
               }).then((response) => {
                   this.services_found = response.data.results.services;
+                  console.log(this.services_found);
                   if(!this.service_name){
                       this.services_found = '';
                   }
@@ -286,6 +245,33 @@ var create = new Vue({
             this.services.splice(i, 1);
         },
 
+        addSector(){
+            if(this.sector_selected){
+              var exist = false;
+              this.sectors.forEach((sector, i) => {
+                  if(sector.id==this.sector_selected.id){
+                    exist = true;
+                  }
+              });
+
+              if(!exist){
+
+                let new_sector = {
+                  "name_it": this.sector_selected.name_it,
+                  "id": this.sector_selected.id,
+                };
+
+                this.sectors.push(new_sector);
+              }
+
+              this.sector_selected = '';
+            }
+        },
+
+        removeSector(i){
+            this.sectors.splice(i, 1);
+        },
+
         getCookie(name){
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
@@ -300,6 +286,8 @@ var create = new Vue({
 
     },
     mounted() {
+
+        this.getRegionsByCountry();
 
         if(!this.getCookie("tecCookie")){
             document.cookie = "tecCookie"+ "=" +"accept"+ ";" + "expires="+ this.dateUTC() +";path=/";

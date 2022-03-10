@@ -6,6 +6,10 @@ if (document.getElementById('guest-home')) {
     require('./guest/home.js');
 }
 
+if (document.getElementById('guest-prehome')) {
+    require('./guest/prehome.js');
+}
+
 if (document.getElementById('cookie-policy')) {
     require('./guest/cookiePolicy.js');
 }

@@ -102,10 +102,10 @@ class ServicesTableSeeder extends Seeder
 
         foreach ($services as $service){
           $new_service = new Service();
-          $new_service->name = $service['name'];
-          $new_service->name_it = $service['name_it'];
-          $new_service->description = $service['description'];
-          $new_service->description_it = $service['description_it'];
+          $new_service->name = $service['name_it'];
+          //$new_service->name_it = $service['name_it'];
+          $new_service->description = $service['description_it'];
+          //$new_service->description_it = $service['description_it'];
           $new_service->pagetype_id = $service['pagetype_id'];
           //dd($new_service);
           $new_service->save();

@@ -54,7 +54,8 @@ class HomeController extends Controller
         if(Auth::check()){
             return redirect()->route('admin.search');
         }else{
-            return view('guest.home',$data);
+            return view('guest.pre-home');
+            //return view('guest.home',$data);
         }
     }
 

@@ -206,9 +206,21 @@
                           @foreach ($user->companies as $company)
                           <div>
                               @if($company->page_id)
-                                  {{$company->page->name}}
+                                  <a href="{{route('admin.pages.show', $company->page->id)}}" class="text-gray">
+                                      {{$company->page->name}}
+                                  </a>
+                                  @if($company->page->linkedin)
+                                      <a class="linkedin" href="{{$company->page->linkedin}}" target="_blank" rel="noopener noreferrer">
+                                          <i class="fab fa-linkedin"></i>
+                                      </a>
+                                  @endif
                               @else
                                   {{$company->name}}
+                                  @if($company->linkedin)
+                                      <a class="linkedin" href="{{$company->linkedin}}" target="_blank" rel="noopener noreferrer">
+                                          <i class="fab fa-linkedin"></i>
+                                      </a>
+                                  @endif
                               @endif
                               <a v-if="is_my_user" href="{{route('admin.companies.edit', $company->id)}}" class="text-gray">
                                   <i class="fas fa-pencil-alt"></i>

@@ -42,7 +42,7 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::get('users/{user_id}/sectors', 'UserController@sectors')->name('users.sectors');
     Route::put('users/{user_id}/storesectors', 'UserController@storesectors')->name('users.storesectors');
 
-    // admin.users.settings
+    //admin.users.settings
 
     Route::resource('/pages', 'PageController');
     Route::get('/newPage/{pagetype_id}', 'PageController@newPage')->name('pages.newPage');

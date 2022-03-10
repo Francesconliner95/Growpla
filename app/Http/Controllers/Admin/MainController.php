@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use File;
+use App\Language;
 use App\Usertype;
 use App\Pagetype;
 use App\Lifecycle;
@@ -14,6 +15,7 @@ use App\Sector;
 use App\Country;
 use App\Page;
 use App\User;
+use App\GivePageService;
 
 class MainController extends Controller
 {
@@ -25,12 +27,14 @@ class MainController extends Controller
     public function search()
     {
       $data = [
-          'usertypes' => Usertype::all(),
-          'pagetypes' => Pagetype::all(),
+          'usertypes' => Usertype::where('hidden',null)->get(),
+          'pagetypes' => Pagetype::where('hidden',null)->get(),
           'sectors' => Sector::all(),
           'lifecycles' => Lifecycle::all(),
           'countries' => Country::all(),
       ];
+
+      app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
       return view('admin.search', $data);
     }
@@ -70,9 +74,12 @@ class MainController extends Controller
         $skills_toggle = $request->skills_toggle;
         $skills = $request->skills;
         //servizi
-        $services = $request->services;
+        $services_id = $request->services;
         $service_toggle = $request->service_toggle;
-
+        $service_or_and_toggle = $request->service_or_and_toggle;
+        //Settore
+        $sectors = $request->sectors;
+        $sector_toggle = $request->sector_toggle;
 
         function needPagetype($pages_input,$need_pagetype_id){
 
@@ -182,6 +189,80 @@ class MainController extends Controller
             return $users_output;
         }
 
+        function filterPageBySectors($pages_input,$sectors,$sector_toggle){
+            $pages_output = [];
+
+            if (!$sector_toggle) {
+                foreach ($pages_input as $page) {
+                    $page_sectors = $page->sectors;
+                    foreach ($page_sectors as $page_sector) {
+                        foreach ($sectors as $sector_id) {
+                            if($page_sector->id==$sector_id){
+                                array_push($pages_output,$page);
+                            }
+                        }
+                    }
+                }
+            }else{
+                foreach ($pages_input as $page) {
+                    $page_sectors = $page->sectors;
+                    $always_exist = true;
+                    foreach ($sectors as $sector_id) {
+                        $sector_exist = false;
+                        foreach ($page_sectors as $page_sector) {
+                            if($page_sector->id==$sector_id){
+                                $sector_exist = true;
+                            }
+                        }
+                        if(!$sector_exist){
+                            $always_exist = false;
+                        }
+                    }
+                    if($always_exist){
+                        array_push($pages_output,$page);
+                    }
+                }
+            }
+            return $pages_output;
+        }
+
+        function filterUserBySectors($users_input,$sectors,$sector_toggle){
+            $users_output = [];
+
+            if (!$sector_toggle) {
+                foreach ($users_input as $user) {
+                    $user_sectors = $user->sectors;
+                    foreach ($user_sectors as $user_sector) {
+                        foreach ($sectors as $sector_id) {
+                            if($user_sector->id==$sector_id){
+                                array_push($users_output,$user);
+                            }
+                        }
+                    }
+                }
+            }else{
+                foreach ($pages_input as $page) {
+                    $page_sectors = $page->sectors;
+                    $always_exist = true;
+                    foreach ($sectors as $sector_id) {
+                        $sector_exist = false;
+                        foreach ($page_sectors as $page_sector) {
+                            if($page_sector->id==$sector_id){
+                                $sector_exist = true;
+                            }
+                        }
+                        if(!$sector_exist){
+                            $always_exist = false;
+                        }
+                    }
+                    if($always_exist){
+                        array_push($pages_output,$page);
+                    }
+                }
+            }
+            return $users_output;
+        }
+
         //PAGINE
         if($pagetypes_id){
 
@@ -222,6 +303,11 @@ class MainController extends Controller
                 }
             }
 
+            if($sectors){
+                $pages_input = $pages;
+                $pages = filterPageBySectors($pages_input,$sectors,$sector_toggle);
+            }
+            //dd('$pages');
             dd($pages);
 
         }
@@ -268,8 +354,61 @@ class MainController extends Controller
               $users = filterUserBySkills($users_input,$skills,$skills_toggle);
           }
 
+          if($sectors){
+              $users_input = $users;
+              $users = filterUserBySectors($users_input,$sectors,$sectors_toggle);
+          }
+
           dd($users);
 
+        }
+
+        //SERVIZI
+        if(!$usertypes_id && !$pagetypes_id){
+            if($service_toggle){
+                //profili che offrono il servizio
+                if($services_id){
+                    //se i servizi sono stati specificati
+                    $pages = [];
+                    $services = Service::find($services_id);
+                    if($service_or_and_toggle){//OR
+                        foreach($services as $service){
+                            $service_pages = $service->give_page_services;
+                            array_push($pages,$service_pages);
+                            //aggiungere controllo se ci sono pagine doppie
+                        }
+                    }else{//AND
+                        $service_pages = GivePageService::join('pages','pages.id','=','give_page_services.page_id')
+                        ->get();
+                        $always_exist = true;
+                        foreach ($services_id as $service_id) {
+                            $service_exist = false;
+                            foreach ($service_pages as $service_page) {
+                                if($page_service->id==$service_id){
+                                    $service_exist = true;
+                                }
+                            }
+                            if(!$service_exist){
+                                $always_exist = false;
+                            }
+                        }
+                        if($always_exist){
+                            array_push($pages_output,$page);
+                            //aggiungere controllo se ci sono pagine doppie
+                        }
+                    }
+                }else{
+                    //se i servizi non sono stati specificati
+                    $pages = GivePageService::join('pages','pages.id','=','give_page_services.page_id')
+                    ->get();
+                    //aggiungere controllo se ci sono pagine doppie
+                }
+            }else{
+                //profili che cercano il servizio
+
+            }
+
+            dd($pages);
         }
 
         dd('fine');
