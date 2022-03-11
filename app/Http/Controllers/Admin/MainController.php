@@ -16,6 +16,10 @@ use App\Country;
 use App\Page;
 use App\User;
 use App\GivePageService;
+use App\GiveUserService;
+use App\HavePageService;
+use App\HaveUserService;
+use App\Service;
 
 class MainController extends Controller
 {
@@ -57,6 +61,10 @@ class MainController extends Controller
             //servizi
             'services' => 'nullable|array',
             'service_toggle' => 'nullable',
+            'service_or_and_toggle' => 'nullable',
+            //Settore
+            'sectors' => 'nullable',
+            'sector_toggle' => 'nullable',
         ]);
 
       //dd($request);
@@ -365,59 +373,174 @@ class MainController extends Controller
 
         //SERVIZI
         if(!$usertypes_id && !$pagetypes_id){
-            if($service_toggle){
+            if($service_toggle=="false"){
                 //profili che offrono il servizio
                 if($services_id){
                     //se i servizi sono stati specificati
-                    $pages = [];
-                    $services = Service::find($services_id);
-                    if($service_or_and_toggle){//OR
+                    if($service_or_and_toggle=='false'){
+                        //OR
+                        //pagine
+                        $pages = GivePageService::query();
+                        foreach($services_id as $service_id){
+                            $pages = $pages->orWhere('service_id',$service_id);
+                        }
+                        $pages =
+                        $pages->join('pages','pages.id','=','give_page_services.page_id')->get();
+                        //utenti
+                        $users = GiveUserService::query();
+                        foreach($services_id as $service_id){
+                            $users = $users->orWhere('service_id',$service_id);
+                        }
+                        $users =
+                        $users->join('users','users.id','=','give_user_services.user_id')->get();
+                    }else{
+                        //AND
+                        $services = Service::find($services_id);
+                        //pagine
+                        $pages = [];
                         foreach($services as $service){
                             $service_pages = $service->give_page_services;
-                            array_push($pages,$service_pages);
-                            //aggiungere controllo se ci sono pagine doppie
-                        }
-                    }else{//AND
-                        $service_pages = GivePageService::join('pages','pages.id','=','give_page_services.page_id')
-                        ->get();
-                        $always_exist = true;
-                        foreach ($services_id as $service_id) {
-                            $service_exist = false;
                             foreach ($service_pages as $service_page) {
-                                if($page_service->id==$service_id){
-                                    $service_exist = true;
+                                array_push($pages,$service_page);
+                            }
+                        }
+                        $pages_output = [];
+                        foreach ($pages as $page) {
+                            $page_count = 0;
+                            foreach ($pages as $page_for) {
+                                if($page->id==$page_for->id){
+                                    $page_count++;
                                 }
                             }
-                            if(!$service_exist){
-                                $always_exist = false;
+                            if($page_count==count($services) && !in_array($page->id,$pages_output)){
+                                array_push($pages_output,$page->id);
                             }
                         }
-                        if($always_exist){
-                            array_push($pages_output,$page);
-                            //aggiungere controllo se ci sono pagine doppie
+                        $pages = Page::find($pages_output);
+                        //utenti
+                        $users = [];
+                        foreach($services as $service){
+                            $service_users = $service->give_user_services;
+                            foreach ($service_users as $service_user) {
+                                array_push($users,$service_user);
+                            }
                         }
+                        $users_output = [];
+                        foreach ($users as $user) {
+                            $user_count = 0;
+                            foreach ($users as $user_for) {
+                                if($user->id==$user_for->id){
+                                    $user_count++;
+                                }
+                            }
+                            if($user_count==count($services) && !in_array($user->id,$users_output)){
+                                array_push($users_output,$user->id);
+                            }
+                        }
+                        $users = User::find($users_output);
                     }
+
                 }else{
-                    //se i servizi non sono stati specificati
                     $pages = GivePageService::join('pages','pages.id','=','give_page_services.page_id')
                     ->get();
-                    //aggiungere controllo se ci sono pagine doppie
+                    //se i servizi non sono stati specificati
+                    $users = GiveUserService::join('users','users.id','=','give_user_services.user_id')
+                    ->get();
+
                 }
+                $pages = $pages->unique('id');
+                $users = $users->unique('id');
+                //controllo se ci sono pagine doppie
             }else{
-                //profili che cercano il servizio
+                //profili che CERCANO il servizio
+                if($services_id){
+                    //se i servizi sono stati specificati
+                    if($service_or_and_toggle=='false'){
+                        //OR
+                        //pagine
+                        $pages = HavePageService::query();
+                        foreach($services_id as $service_id){
+                            $pages = $pages->orWhere('service_id',$service_id);
+                        }
+                        $pages =
+                        $pages->join('pages','pages.id','=','have_page_services.page_id')->get();
+                        //utenti
+                        $users = HaveUserService::query();
+                        foreach($services_id as $service_id){
+                            $users = $users->orWhere('service_id',$service_id);
+                        }
+                        $users =
+                        $users->join('users','users.id','=','have_user_services.user_id')->get();
+                    }else{
+                        //AND
+                        $services = Service::find($services_id);
+                        //pagine
+                        $pages = [];
+                        foreach($services as $service){
+                            $service_pages = $service->have_page_services;
+                            foreach ($service_pages as $service_page) {
+                                array_push($pages,$service_page);
+                            }
+                        }
+                        $pages_output = [];
+                        foreach ($pages as $page) {
+                            $page_count = 0;
+                            foreach ($pages as $page_for) {
+                                if($page->id==$page_for->id){
+                                    $page_count++;
+                                }
+                            }
+                            if($page_count==count($services) && !in_array($page->id,$pages_output)){
+                                array_push($pages_output,$page->id);
+                            }
+                        }
+                        $pages = Page::find($pages_output);
+                        //utenti
+                        $users = [];
+                        foreach($services as $service){
+                            $service_users = $service->have_user_services;
+                            foreach ($service_users as $service_user) {
+                                array_push($users,$service_user);
+                            }
+                        }
+                        $users_output = [];
+                        foreach ($users as $user) {
+                            $user_count = 0;
+                            foreach ($users as $user_for) {
+                                if($user->id==$user_for->id){
+                                    $user_count++;
+                                }
+                            }
+                            if($user_count==count($services) && !in_array($user->id,$users_output)){
+                                array_push($users_output,$user->id);
+                            }
+                        }
+                        $users = User::find($users_output);
+                    }
+
+                }else{
+                    $pages = HavePageService::join('pages','pages.id','=','have_page_services.page_id')
+                    ->get();
+                    //se i servizi non sono stati specificati
+                    $users = HaveUserService::join('users','users.id','=','have_user_services.user_id')
+                    ->get();
+
+                }
+                $pages = $pages->unique('id');
+                $users = $users->unique('id');
+                //controllo se ci sono pagine doppie
 
             }
-
-            dd($pages);
         }
 
-        dd('fine');
+        //dd($pages);
 
         $data = [
-
+            'users' => $users,
+            'pages' => $pages,
         ];
 
-        return redirect()->route('admin.found',$data);
+        return view('admin.found', $data);
 
   }
 

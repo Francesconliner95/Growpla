@@ -10,7 +10,6 @@
     <link rel="shortcut icon" href="{{ asset("storage/images/logo.svg") }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
     <!-- Scripts -->
     <script src="{{ asset('js/app.js?28') }}" defer></script>
     <!-- Styles -->
@@ -28,7 +27,7 @@
 <body>
     <script type="text/javascript">
         window.csrf_token = "{{ csrf_token() }}";
-        
+
     </script>
     <!-- Google Analytics -->
     <script>
