@@ -75223,6 +75223,386 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
+/***/ "./resources/js/admin/found.js":
+/*!*************************************!*\
+  !*** ./resources/js/admin/found.js ***!
+  \*************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+var _data;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#found',
+  data: (_data = {
+    lang: lang,
+    pages_id: pages_id,
+    users_id: users_id,
+    accounts: '',
+    accounts_show: '',
+    page: 1,
+    show_prev: false,
+    show_next: false,
+    search_type: false,
+    category_selected: '',
+    usertypes_id: [],
+    pagetypes_id: [],
+    investors_selected: false,
+    services_selected: false,
+    regions: '',
+    name: '',
+    skillsToggle: false,
+    skills: [],
+    skill_name: '',
+    skills_found: '',
+    investor_selected: '',
+    services: [],
+    service_name: '',
+    services_found: '',
+    need_selected: '',
+    serviceToggle: false,
+    //false=cerco true=offro
+    serviceOrAndToggle: false,
+    //false=uno true=tutti
+    country_id_selected: 1,
+    region_id_selected: '',
+    sector_selected: '',
+    lifecycle_id_selected: '',
+    sectors: []
+  }, _defineProperty(_data, "sector_selected", ''), _defineProperty(_data, "sectorToggle", false), _data),
+  methods: {
+    search_type_f: function search_type_f() {
+      if (!this.search_type) {
+        this.name = '';
+      } else {
+        this.category_selected = '';
+        this.change_category();
+      }
+    },
+    change_category: function change_category() {
+      this.need_selected = '';
+      this.serviceToggle = false;
+
+      switch (this.category_selected) {
+        case '1':
+          //startup
+          this.usertypes_id = [];
+          this.pagetypes_id = [1];
+          this.investors_selected = false;
+          this.services_selected = false;
+          break;
+
+        case '2':
+          //aspirante-cofounder
+          this.usertypes_id = [1];
+          this.pagetypes_id = [];
+          this.investors_selected = false;
+          this.services_selected = false;
+          break;
+
+        case '3':
+          //incubatore-acc
+          this.usertypes_id = [];
+          this.pagetypes_id = [3];
+          this.investors_selected = false;
+          this.services_selected = false;
+          break;
+
+        case '4':
+          //investitori
+          this.usertypes_id = [2];
+          this.pagetypes_id = [5, 8];
+          this.investors_selected = true;
+          this.services_selected = false;
+          break;
+
+        case '5':
+          //enti e associazioni
+          this.usertypes_id = [];
+          this.pagetypes_id = [7];
+          this.investors_selected = false;
+          this.services_selected = false;
+          break;
+
+        case '6':
+          //servizi
+          this.usertypes_id = [];
+          this.pagetypes_id = [];
+          this.investors_selected = false;
+          this.services_selected = true;
+          break;
+
+        default:
+          this.usertypes_id = [];
+          this.pagetypes_id = [];
+          this.investors_selected = false;
+          this.services_selected = false;
+      }
+    },
+    getRegionsByCountry: function getRegionsByCountry() {
+      var _this = this;
+
+      if (this.country_id_selected) {
+        this.regions = '';
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/regionsByCountry', {
+          params: {
+            country_id: this.country_id_selected
+          }
+        }).then(function (response) {
+          _this.regions = response.data.results.regions;
+        });
+      } else {
+        this.regions = '';
+      }
+    },
+    searchSkill: function searchSkill() {
+      var _this2 = this;
+
+      if (this.skill_name.length > 2) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchSkill', {
+          params: {
+            skill_name: this.skill_name
+          }
+        }).then(function (response) {
+          _this2.skills_found = response.data.results.skills;
+
+          if (!_this2.skill_name) {
+            _this2.skills_found = '';
+          }
+        });
+      } else {
+        this.skills_found = '';
+      }
+    },
+    addSkill: function addSkill(skill_found) {
+      var exist = false;
+      this.skills.forEach(function (skill, i) {
+        if (skill.pivot.skill_id == skill_found.id) {
+          exist = true;
+        }
+      });
+
+      if (!exist) {
+        var new_skill = {
+          "name": skill_found.name,
+          "pivot": {
+            "skill_id": skill_found.id
+          }
+        };
+        this.skills.push(new_skill);
+      }
+
+      this.skills_found = '';
+      this.skill_name = '';
+    },
+    removeSkill: function removeSkill(i) {
+      this.skills.splice(i, 1);
+    },
+    investorType: function investorType() {
+      switch (this.investor_selected) {
+        case '1':
+          //business angel
+          this.usertypes_id = [2];
+          this.pagetypes_id = [];
+          this.investors_selected = true;
+          this.services_selected = false;
+          break;
+
+        case '2':
+          //venture capital
+          this.usertypes_id = [];
+          this.pagetypes_id = [5];
+          this.investors_selected = true;
+          this.services_selected = false;
+          break;
+
+        case '3':
+          //private equity
+          this.usertypes_id = [];
+          this.pagetypes_id = [8];
+          this.investors_selected = true;
+          this.services_selected = false;
+          break;
+
+        default:
+          this.usertypes_id = [];
+          this.pagetypes_id = [];
+          this.investors_selected = true;
+          this.services_selected = false;
+      }
+    },
+    searchService: function searchService() {
+      var _this3 = this;
+
+      if (this.service_name) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchService', {
+          params: {
+            service_name: this.service_name
+          }
+        }).then(function (response) {
+          _this3.services_found = response.data.results.services;
+          console.log(_this3.services_found);
+
+          if (!_this3.service_name) {
+            _this3.services_found = '';
+          }
+        });
+      } else {
+        this.services_found = '';
+      }
+    },
+    addService: function addService(service_found) {
+      var exist = false;
+      this.services.forEach(function (service, i) {
+        if (service.pivot.service_id == service_found.id) {
+          exist = true;
+        }
+      });
+
+      if (!exist) {
+        var new_service = {
+          "name": service_found.name,
+          "pivot": {
+            "service_id": service_found.id
+          }
+        };
+        this.services.push(new_service);
+      }
+
+      this.services_found = '';
+      this.service_name = '';
+    },
+    removeService: function removeService(i) {
+      this.services.splice(i, 1);
+    },
+    addSector: function addSector() {
+      var _this4 = this;
+
+      if (this.sector_selected) {
+        var exist = false;
+        this.sectors.forEach(function (sector, i) {
+          if (sector.id == _this4.sector_selected.id) {
+            exist = true;
+          }
+        });
+
+        if (!exist) {
+          var new_sector = {
+            "name_it": this.sector_selected.name_it,
+            "id": this.sector_selected.id
+          };
+          this.sectors.push(new_sector);
+        }
+
+        this.sector_selected = '';
+      }
+    },
+    removeSector: function removeSector(i) {
+      this.sectors.splice(i, 1);
+    },
+    getCookie: function getCookie(name) {
+      var value = "; ".concat(document.cookie);
+      var parts = value.split("; ".concat(name, "="));
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    },
+    dateUTC: function dateUTC() {
+      var d = new Date();
+      d.setMonth(d.getMonth() + 6);
+      return d.toUTCString();
+    },
+    mergePagesUsers: function mergePagesUsers() {
+      var accounts = this.pages_id.concat(this.users_id); //ordinamento per id
+
+      for (var i = 0; i < accounts.length; i++) {
+        for (var j = 0; j < accounts.length - 1; j++) {
+          if (accounts[j].id > accounts[i].id) {
+            var tmp = accounts[j];
+            accounts[j] = accounts[i];
+            accounts[i] = tmp;
+          }
+        }
+      }
+
+      this.accounts = accounts;
+      this.showAccounts();
+    },
+    showAccounts: function showAccounts(prev_next) {
+      var accounts_qty = this.accounts.length;
+      var items_qty = 6;
+
+      if (prev_next == -1 && this.page > 1) {
+        this.page--;
+      } else if (prev_next == 1 && this.page < Math.ceil(accounts_qty / items_qty)) {
+        this.page++;
+      }
+
+      this.accounts_show = this.accounts.slice(items_qty * this.page - items_qty, items_qty * this.page);
+      this.checkPrevNextButton(accounts_qty, items_qty);
+    },
+    checkPrevNextButton: function checkPrevNextButton(accounts_qty, items_qty) {
+      this.page > 1 ? this.show_prev = true : this.show_prev = false;
+      this.page < Math.ceil(accounts_qty / items_qty) ? this.show_next = true : this.show_next = false;
+    }
+  },
+  created: function created() {
+    if (this.pages_id) {
+      this.pages_id = JSON.parse(this.pages_id.replace(/&quot;/g, '"'));
+    }
+
+    if (this.users_id) {
+      this.users_id = JSON.parse(this.users_id.replace(/&quot;/g, '"'));
+    }
+
+    this.mergePagesUsers();
+  },
+  mounted: function mounted() {
+    this.getRegionsByCountry();
+
+    if (!this.getCookie("tecCookie")) {
+      document.cookie = "tecCookie" + "=" + "accept" + ";" + "expires=" + this.dateUTC() + ";path=/";
+    }
+
+    if (!this.getCookie("analyticsCookie")) {
+      document.cookie = "analyticsCookie" + "=" + "reject" + ";" + "expires=" + this.dateUTC() + ";path=/";
+    } //FADE ANIMATION
+
+
+    var elementsArray = document.querySelectorAll(".fade-anim");
+    window.addEventListener('scroll', fadeIn);
+
+    function fadeIn() {
+      for (var i = 0; i < elementsArray.length; i++) {
+        var elem = elementsArray[i];
+        var distInView = elem.getBoundingClientRect().top - window.innerHeight + 20;
+
+        if (distInView < 0) {
+          elem.classList.add("inView");
+        } else {
+          elem.classList.remove("inView");
+        }
+      }
+    }
+
+    fadeIn();
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/admin/have-page-usertypes/edit.js":
 /*!********************************************************!*\
   !*** ./resources/js/admin/have-page-usertypes/edit.js ***!
@@ -76273,7 +76653,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     address: '',
     noAdressFound: false,
     region_id_selected: '',
-    country_id_selected: ''
+    country_id_selected: 1
   },
   methods: {
     getRegionsByCountry: function getRegionsByCountry() {
@@ -76287,6 +76667,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           }
         }).then(function (response) {
           _this.regions = response.data.results.regions;
+          _this.region_id_selected = '';
         });
       }
     } // submitForm(){
@@ -78427,7 +78808,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     pages_found: '',
     page_selected: '',
     region_id_selected: '',
-    country_id_selected: ''
+    country_id_selected: 1
   },
   methods: {
     searchPage: function searchPage() {
@@ -78465,6 +78846,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           }
         }).then(function (response) {
           _this2.regions = response.data.results.regions;
+          _this2.region_id_selected = '';
         });
       }
     } // remove_file(value){
@@ -78723,11 +79105,15 @@ if (document.getElementById('cookie-policy')) {
 
 if (document.getElementById('register')) {
   __webpack_require__(/*! ./guest/register.js */ "./resources/js/guest/register.js");
-} ///////ADMIN///////
+} ///////SEARCH///////
 
 
 if (document.getElementById('search')) {
   __webpack_require__(/*! ./admin/search.js */ "./resources/js/admin/search.js");
+}
+
+if (document.getElementById('found')) {
+  __webpack_require__(/*! ./admin/found.js */ "./resources/js/admin/found.js");
 } //USERS
 
 

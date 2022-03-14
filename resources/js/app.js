@@ -18,10 +18,14 @@ if (document.getElementById('register')) {
     require('./guest/register.js');
 }
 
-///////ADMIN///////
+///////SEARCH///////
 
 if (document.getElementById('search')) {
     require('./admin/search.js');
+}
+
+if (document.getElementById('found')) {
+    require('./admin/found.js');
 }
 
 

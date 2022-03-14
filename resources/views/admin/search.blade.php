@@ -218,7 +218,7 @@
                           @enderror
                       </div>
                     </div>
-                    <form v-if="search_type || category_selected" class="search-style row m-0" method="POST" action="{{ route('admin.find') }}">
+                    <form v-if="search_type || category_selected" class="search-style row m-0" method="POST" action="{{ route('admin.found') }}">
                         @csrf
                         <input v-for="usertype_id in usertypes_id" type="hidden" name="usertypes_id[]" :value="usertype_id">
                         <input v-for="pagetype_id in pagetypes_id" type="hidden" name="pagetypes_id[]" :value="pagetype_id">

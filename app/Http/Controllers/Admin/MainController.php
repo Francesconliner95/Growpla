@@ -43,7 +43,7 @@ class MainController extends Controller
       return view('admin.search', $data);
     }
 
-    public function find(Request $request)
+    public function found(Request $request)
     {
 
         $request->validate([
@@ -271,6 +271,9 @@ class MainController extends Controller
             return $users_output;
         }
 
+        $users = [];
+        $pages = [];
+
         //PAGINE
         if($pagetypes_id){
 
@@ -315,8 +318,7 @@ class MainController extends Controller
                 $pages_input = $pages;
                 $pages = filterPageBySectors($pages_input,$sectors,$sector_toggle);
             }
-            //dd('$pages');
-            dd($pages);
+            //dd($pages);
 
         }
         //UTENTI
@@ -367,7 +369,7 @@ class MainController extends Controller
               $users = filterUserBySectors($users_input,$sectors,$sectors_toggle);
           }
 
-          dd($users);
+          //dd($users);
 
         }
 
@@ -533,12 +535,38 @@ class MainController extends Controller
             }
         }
 
-        //dd($pages);
+        $pages_id = [];
+        if($pages){
+            foreach ($pages as $page) {
+                $page_id = [
+                  "id" => $page->id,
+                  "name" => $page->name,
+                  "image" => $page->image,
+                  "user_or_page" => false,
+                ];
+                array_push($pages_id,$page_id);
+            }
+        }
+        $users_id = [];
+        if($users){
+            foreach ($users as $user) {
+                $user_id = [
+                  "id" => $user->id,
+                  "name" => $user->name,
+                  "surname" => $user->surname,
+                  "image" => $user->image,
+                  "user_or_page" => true,
+                ];
+                array_push($users_id,$user_id);
+            }
+        }
 
         $data = [
-            'users' => $users,
-            'pages' => $pages,
+            'pages_id' => $pages_id,
+            'users_id' => $users_id,
         ];
+
+        //dd($data);
 
         return view('admin.found', $data);
 

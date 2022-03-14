@@ -27,7 +27,7 @@
                   {{-- NOME --}}
                   <div class="sub-section">
                       <h6>{{__('Page name')}}*</h6>
-                      <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name',$page->name) }}" minlength="3" maxlength="70" required autocomplete="name" required>
+                      <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name',$page->name) }}" minlength="3" maxlength="70" required autocomplete="" required>
                       @error('name')
                           <span class="alert alert-danger">
                               {{__($message)}}
@@ -140,9 +140,9 @@
                   </div>
                   @endif
                   <div class="form-group">
-                      <h6>Indirizzo*</h6>
+                      <h6>Indirizzo</h6>
                       <div class="row">
-                          <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                          {{-- <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                               <label>Nazione</label>
                               <select class="form-control" name="country_id" required @change="getRegionsByCountry()" v-model="country_id_selected">
                                   @foreach ($countries as $country)
@@ -155,12 +155,13 @@
                                       </option>
                                   @endforeach
                               </select>
-                          </div>
+                          </div> --}}
+                          <input type="hidden" name="country_id" value="1">
                           <div v-if="regions.length>1" class="col-sm-12 col-md-6 col-lg-6 col-xl-6" v-cloak>
                               <label>Regione</label>
-                              <select class="form-control" name="region_id" v-model="region_id_selected" required>
-                                  <option v-for="region in regions" :value="region.id"
-                                        :selected="region.id==region_id_selected">
+                              <select class="form-control" name="region_id" v-model="region_id_selected">
+                                  <option value="">Non specificata</option>
+                                  <option v-for="region in regions" :value="region.id">
                                         @{{region.name}}
                                   </option>
                               </select>

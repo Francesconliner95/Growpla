@@ -15,7 +15,7 @@ var create = new Vue({
       pages_found: '',
       page_selected: '',
       region_id_selected: '',
-      country_id_selected: '',
+      country_id_selected: 1,
     },
     methods: {
 
@@ -53,6 +53,7 @@ var create = new Vue({
                 }
             }).then((response) => {
                 this.regions = response.data.results.regions;
+                this.region_id_selected= '';
             });
           }
         },

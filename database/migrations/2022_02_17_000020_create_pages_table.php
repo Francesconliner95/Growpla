@@ -38,7 +38,15 @@ class CreatePagesTable extends Migration
             $table->foreign('lifecycle_id')->references('id')->on('lifecycles');
             $table->string('pitch')->nullable();
             $table->boolean('incorporated')->nullable();
+            $table->boolean('')->nullable();//mvp
 
+            //INCUBATORE
+            $table->tinyInteger('')->nullable();//servizi erogati
+            //fisici online ibridi
+            $table->tinyInteger('')->nullable();//tipologia
+            //privato pubblico ibrido
+
+            //INCUBATORE - INVESTITORE
             $table->unsignedbigInteger('moneyrange_id')->nullable();
             $table->foreign('moneyrange_id')->references('id')->on('moneyranges');
             $table->integer('startup_n')->nullable();
