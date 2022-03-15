@@ -243,4 +243,19 @@
         </div>
     </div>
 </div>
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<script>
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('ba4b0371aa101a54a0a8', {
+      cluster: 'eu'
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+        //cosa succede quando ricevo un evento?
+        alert(JSON.stringify(data));//visualizzo un alert
+    });
+</script>
 @endsection

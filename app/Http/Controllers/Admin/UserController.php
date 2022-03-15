@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ViewErrorBag;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Events\MyEvent;
 use File;
 use App\Language;
 use App\User;
@@ -126,6 +127,8 @@ class UserController extends Controller
     }
 
     public function show(User $user){
+
+        event(new MyEvent(2,'prova evento bello'));
 
       $userTypes = Usertype::all();
 
