@@ -11,6 +11,7 @@ use App\User;
 use App\Page;
 use App\Language;
 use App\HavePageService;
+use App\Notification;
 
 class HavePageServiceController extends Controller
 {
@@ -64,9 +65,21 @@ class HavePageServiceController extends Controller
           }
 
           if(array_key_exists('services', $data)){
-            $page->have_page_services()->sync($services_id);
+              $syncResult = $page->have_page_services()->sync($services_id);
           }else{
-            $page->have_page_services()->sync([]);
+              $syncResult = $page->have_page_services()->sync([]);
+          }
+
+          if(collect($syncResult)->flatten()->isNotEmpty()){
+              $followers = $page->page_follower;
+              foreach ($followers as $follower) {
+                  $new_notf = new Notification();
+                  $new_notf->user_id = $follower->id;
+                  $new_notf->notification_type_id = 4;
+                  $new_notf->ref_user_id = null;
+                  $new_notf->ref_page_id = $page->id;
+                  $new_notf->save();
+              }
           }
 
           return redirect()->route('admin.pages.show',$page->id);

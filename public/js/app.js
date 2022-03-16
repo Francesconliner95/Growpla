@@ -75902,6 +75902,19 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     message_not_read: 0
   },
   methods: {
+    getNotReadNotifications: function getNotReadNotifications() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getNotReadNotifications', {}).then(function (response) {
+        _this.notifications = response.data.results.notifications;
+      });
+    },
+    readNotifications: function readNotifications() {
+      axios__WEBPACK_IMPORTED_MODULE_1___default()({
+        method: 'put',
+        url: '/admin/readNotifications'
+      }).then(function (response) {});
+    },
     getCookie: function getCookie(name) {
       var value = "; ".concat(document.cookie);
       var parts = value.split("; ".concat(name, "="));
@@ -75913,9 +75926,11 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       this.enableAnalytics = true;
     }
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {
+    this.getNotReadNotifications();
+  }
 });
-var im_in_index = document.getElementById("account-index");
+var im_in_index = document.getElementById("search");
 
 if (im_in_index) {
   document.getElementById("nav-bar").style.backgroundColor = "rgb(194,214,215)";
@@ -76131,7 +76146,7 @@ if (performance.navigation.type == 2) {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#notification-index',
   data: {
-    notifications: notifications
+    notifications: []
   },
   methods: {
     getDate: function getDate(created_at) {
@@ -76160,35 +76175,13 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getNotifications', {}).then(function (response) {
         _this.notifications = response.data.results.notifications;
       });
-    },
-    readNotifications: function readNotifications(notification) {
-      //console.log(notification);
-      axios__WEBPACK_IMPORTED_MODULE_1___default()({
-        method: 'put',
-        url: '/admin/readNotifications',
-        data: {
-          notification_id: notification.id
-        }
-      }).then(function (response) {});
-      var string = '';
-
-      if (notification.type == 0) {
-        string = "/admin/accounts/";
-      } else if (notification.type == 1) {
-        string = "/admin/startup/";
-      }
-
-      window.location.href = string + notification.ref_account_id;
-    } // decodeHTML(str){
-    // 	return str.replace(/['"]+/g, '');
-    // },
-
+    }
   },
   mounted: function mounted() {
-    //console.log(performance.navigation.type);
-    //ricarico le chat quando torno indietro
+    this.getNotifications();
+
     if (performance.navigation.type == 2) {
-      this.getNotifications(); //console.log('qui');
+      this.getNotifications();
     }
   }
 });
@@ -80016,8 +80009,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

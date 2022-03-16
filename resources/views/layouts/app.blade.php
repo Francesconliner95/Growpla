@@ -80,7 +80,7 @@
                             Forum
                         </a> --}}
                         <div class="dropdown show notification not-navbar">
-                            <a href="#" role="button" id="notDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="icon">
+                            <a href="#" role="button" id="notDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="icon" @click="readNotifications()">
                                 <i class="fas fa-bell">
                                     <span v-show="notifications.length" v-cloak>
                                         @{{notifications.length}}
@@ -90,17 +90,9 @@
                             <div class="dropdown-menu show-notf-preview" aria-labelledby="notDropdown">
                                 <div v-if="notifications.length>0"  class="notf">
                                     <a v-for="notification in notifications"
-                                    @click="readNotifications(notification)"
-                                    href="#">
-                                        <span>@{{notification.type}}@{{notification.message}}</span>
-                                        {{-- stato 0
-                                        candidatura 1
-                                        bisogno account 2
-                                        bisogno account servizio 3
-                                        sezione 4
-                                        collaborazione 5
-                                        conferma collaborazione 6
-                                        rifiuta candidatura 7 --}}
+                                    :href="notification.ref_user_id?'/admin/users/'+ notification.ref_user_id : '/admin/pages/'+ notification.ref_page_id">
+                                        <strong>@{{notification.name}}</strong>
+                                        <span>@{{notification.notification_type.message_it}}</span>
                                     </a>
                                 </div>
                                 <div v-else class="notf">
@@ -113,7 +105,6 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- @if (Auth::user()->account_id)
                         <div class="chat d-inline-block" v-cloak>
                             <a class="not-navbar icon" href="{{route('admin.chats.index')}}">
                                 <i class="fas fa-comment-alt">
@@ -123,7 +114,6 @@
                                 </i>
                             </a>
                         </div>
-                        @endif --}}
                         <div class="account-menu d-inline-block" v-cloak>
                             <a href="{{route('admin.users.show',Auth::user()->id)}}">
                                 @if(Auth::user()->image)

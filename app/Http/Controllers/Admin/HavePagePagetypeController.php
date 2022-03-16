@@ -10,6 +10,7 @@ use App\Pagetype;
 use App\User;
 use App\Page;
 use App\Language;
+use App\Notification;
 
 class HavePagePagetypeController extends Controller
 {

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Follow;
 use App\User;
 use App\Page;
+use App\Notification;
 
 class FollowController extends Controller
 {
@@ -38,6 +39,17 @@ class FollowController extends Controller
             'follow_id' => 'required|integer',
         ]);
 
+        function Notification($users,$type_id,$ref_user_id,$ref_page_id){
+            foreach ($users as $user) {
+                $new_notf = new Notification();
+                $new_notf->user_id = $user->id;
+                $new_notf->notification_type_id = $type_id;
+                $new_notf->ref_user_id = $ref_user_id;
+                $new_notf->ref_page_id = $ref_page_id;
+                $new_notf->save();
+            }
+        }
+
         switch ($request->follow_type) {
           case 1:
               $following = User::find($request->follow_id);
@@ -46,10 +58,11 @@ class FollowController extends Controller
 
               if($exist){
                 Auth::user()->user_following()->detach($following);
-                $following = false;
+                $following_toggle = false;
               }else{
                 Auth::user()->user_following()->attach($following);
-                $following = true;
+                $following_toggle = true;
+                Notification([$following],2,$following->id,null);
               }
           break;
           case 2:
@@ -59,10 +72,11 @@ class FollowController extends Controller
 
               if($exist){
                 Auth::user()->page_following()->detach($following);
-                $following = false;
+                $following_toggle = false;
               }else{
                 Auth::user()->page_following()->attach($following);
-                $following = true;
+                $following_toggle = true;
+                Notification($following->users,2,null,$following->id);
               }
           break;
 
@@ -74,7 +88,7 @@ class FollowController extends Controller
         return response()->json([
             'success' => true,
             'results' => [
-                'following' => $following,
+                'following' => $following_toggle,
             ]
         ]);
 

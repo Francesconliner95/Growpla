@@ -41,6 +41,7 @@ class CreateUsersTable extends Migration
             $table->unsignedbigInteger('language_id')->default(1);
             $table->foreign('language_id')->references('id')->on('languages');
             $table->timestamp('last_access')->nullable();
+            $table->tinyInteger('tutorial')->default(1)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

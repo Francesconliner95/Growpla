@@ -11,6 +11,7 @@ use App\User;
 use App\Page;
 use App\Language;
 use App\Skill;
+use App\Notification;
 
 class HavePageUsertypeController extends Controller
 {

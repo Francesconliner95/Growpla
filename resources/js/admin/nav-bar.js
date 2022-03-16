@@ -13,11 +13,26 @@ var create = new Vue({
     },
     methods: {
 
-        getCookie(name){
-          const value = `; ${document.cookie}`;
-          const parts = value.split(`; ${name}=`);
-          if (parts.length === 2) return parts.pop().split(';').shift();
+        getNotReadNotifications(){
+            axios.get('/admin/getNotReadNotifications',{
+            }).then((response) => {
+                this.notifications = response.data.results.notifications;
+            });
         },
+
+        readNotifications(){
+            axios({
+                method: 'put',
+                url: '/admin/readNotifications',
+            }).then(response => {});
+        },
+
+        getCookie(name){
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        },
+
     },
     created(){
         if(this.getCookie("analyticsCookie")=='accept'){
@@ -26,13 +41,13 @@ var create = new Vue({
 
     },
     mounted() {
-
+        this.getNotReadNotifications();
     }
 
 });
 
 
-var im_in_index = document.getElementById("account-index");
+var im_in_index = document.getElementById("search");
 if(im_in_index){
     document.getElementById("nav-bar").style.backgroundColor = "rgb(194,214,215)";
     document.getElementById("nav-bar").style.boxShadow = "none";

@@ -10,12 +10,10 @@
     <div id="user-create">
         <div class="item-cont">
             <div class="item-style">
-              <h2>Come ti identifichi?</h2>
-              <h4 class="pb-2">Seleziona una o più delle seguenti alternative</h4>
               <form method="post" action="{{route('admin.users.store')}}">
                 @csrf
-                <h6 class="pb-1">Utenti</h6>
-                <div class="row">
+                <h4 class="pb-1">Come ti identifichi?</h4>
+                <div class="row d-flex justify-content-center">
                   @foreach ($userTypes as $userType)
                     <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4 mb-4 justify-content-center">
                       <button type="button" name="button" :class="isChecked('u-{{$userType->id}}')?
@@ -34,8 +32,8 @@
                     </div>
                   @endforeach
                 </div>
-                <h6 class="pb-1">Pagine</h6>
-                <div class="row">
+                <h4 class="pb-1">Cosa possiedi?</h4>
+                <div class="row d-flex justify-content-center">
                   @foreach ($pageTypes as $pageType)
                     <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4 mb-4 justify-content-center">
                       <button type="button" name="button" :class="isChecked('p-{{$pageType->name}}')?
@@ -54,6 +52,7 @@
                     </div>
                   @endforeach
                 </div>
+                <h6 class="pb-2">Seleziona una o più delle seguenti alternative</h6>
                 <button type="submit" name="button" class="button-style button-color-blue">Salva</button>
               </form>
             </div>

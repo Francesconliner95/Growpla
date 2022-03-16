@@ -11,6 +11,7 @@ use App\User;
 use App\Page;
 use App\Language;
 use App\GivePageService;
+use App\Notification;
 
 class GivePageServiceController extends Controller
 {
@@ -63,10 +64,25 @@ class GivePageServiceController extends Controller
               }
           }
 
+          //dd($page->give_page_services->contains($services_id)->detached);
+
           if(array_key_exists('services', $data)){
-            $page->give_page_services()->sync($services_id);
+            $syncResult = $page->give_page_services()->sync($services_id);
           }else{
-            $page->give_page_services()->sync([]);
+            $syncResult = $page->give_page_services()->sync([]);
+          }
+
+          //verifico se sono state apportate modifiche invio la notifica
+          if(collect($syncResult)->flatten()->isNotEmpty()){
+              $followers = $page->page_follower;
+              foreach ($followers as $follower) {
+                  $new_notf = new Notification();
+                  $new_notf->user_id = $follower->id;
+                  $new_notf->notification_type_id = 3;
+                  $new_notf->ref_user_id = null;
+                  $new_notf->ref_page_id = $page->id;
+                  $new_notf->save();
+              }
           }
 
           return redirect()->route('admin.pages.show',$page->id);

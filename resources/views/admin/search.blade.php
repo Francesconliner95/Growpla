@@ -6,7 +6,7 @@
     window.csrf_token = "{{ csrf_token() }}"; //token per axios api post/put/delete
 </script>
 <div id="search">
-    {{-- @if(!Auth::user()->user_usertype) --}}
+    @if(Auth::user()->tutorial)
     <div class="container">
         <h3 class="section-title">
             <b></b>
@@ -18,10 +18,10 @@
             {{ __('To complete your registration click here') }}
         </p>
         <div class="create-profile">
-            <a class="item col-sm-12 col-md-6 col-lg-6 col-xl-6" href="{{ route('admin.users.create') }}">{{__('Start')}}</a>
+            <a class="item col-sm-12 col-md-6 col-lg-6 col-xl-6" href="{{ route('admin.users.tutorial') }}">{{__('Start')}}</a>
         </div>
     </div>
-    {{-- @endif --}}
+    @endif
     <div class="background">
         <div class="container">
             <div class="search">
@@ -222,6 +222,7 @@
                         @csrf
                         <input v-for="usertype_id in usertypes_id" type="hidden" name="usertypes_id[]" :value="usertype_id">
                         <input v-for="pagetype_id in pagetypes_id" type="hidden" name="pagetypes_id[]" :value="pagetype_id">
+                        <input type="hidden" name="name" :value="name">
                         {{-- startup --}}
                         <input type="hidden" name="lifecycle_id" :value="lifecycle_id_selected">
                         <input type="hidden" name="need_pagetype_id" :value="need_selected.type==2?need_selected.id:''">
@@ -243,7 +244,8 @@
         </div>
     </div>
 </div>
-<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+{{-- PUSHER --}}
+{{-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 <script>
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
@@ -257,5 +259,5 @@
         //cosa succede quando ricevo un evento?
         alert(JSON.stringify(data));//visualizzo un alert
     });
-</script>
+</script> --}}
 @endsection

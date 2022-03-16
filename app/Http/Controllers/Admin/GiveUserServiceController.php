@@ -10,6 +10,7 @@ use App\Service;
 use App\User;
 use App\Language;
 use App\GiveUserService;
+use App\Notification;
 
 class GiveUserServiceController extends Controller
 {
@@ -66,9 +67,21 @@ class GiveUserServiceController extends Controller
                         }
                     }
                 }
-                $user->give_user_services()->sync($services_id);
+                $syncResult = $user->give_user_services()->sync($services_id);
             }else{
-                $user->give_user_services()->sync([]);
+                $syncResult = $user->give_user_services()->sync([]);
+            }
+
+            if(collect($syncResult)->flatten()->isNotEmpty()){
+                $followers = $page->page_follower;
+                foreach ($followers as $follower) {
+                    $new_notf = new Notification();
+                    $new_notf->user_id = $follower->id;
+                    $new_notf->notification_type_id = 3;
+                    $new_notf->ref_user_id = $user->id;
+                    $new_notf->ref_page_id = null;
+                    $new_notf->save();
+                }
             }
 
             return redirect()->route('admin.users.show',$user->id);

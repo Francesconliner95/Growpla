@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use App\Notification;
 use App\Language;
 use App\User;
 use App\Page;
@@ -58,9 +59,22 @@ class LifecycleController extends Controller
 
         if($page->users->contains($user)){
 
-          $page->lifecycle_id = $request->lifecycle;
 
-          $page->update();
+          if($page->lifecycle_id != $request->lifecycle){
+
+            $page->lifecycle_id = $request->lifecycle;
+            $page->update();
+            //Notification
+            $followers = $page->page_follower;
+            foreach ($followers as $follower) {
+                $new_notf = new Notification();
+                $new_notf->user_id = $follower->id;
+                $new_notf->notification_type_id = 1;
+                $new_notf->ref_user_id = null;
+                $new_notf->ref_page_id = $page->id;
+                $new_notf->save();
+            }
+          }
 
           //Necessità tipo di utente
           if(array_key_exists('usertypes', $data)){

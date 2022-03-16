@@ -28,6 +28,32 @@ class UserController extends Controller
       $this->middleware(['auth','verified']);
     }
 
+    public function tutorial(){
+
+        $my_user = Auth::user();
+        if(!$my_user->tutorial){
+            $my_user->tutorial = 1;
+            $my_user->update();
+        }
+
+        switch($my_user->tutorial){
+            case 1:
+                $my_user->tutorial = 2;
+                $my_user->update();
+                return redirect()->route('admin.users.create');
+            break;
+            case 2:
+                $my_user->tutorial = null;
+                $my_user->update();
+                return redirect()->route('admin.users.edit',$my_user->id);
+            break;
+            default:
+                return redirect()->route('admin.users.show',$my_user->id);
+            break;
+        }
+
+    }
+
     public function create(){
 
       $user = Auth::user();
@@ -63,7 +89,11 @@ class UserController extends Controller
         $user->pagetypes()->sync($data['pagetypes']);
       }
 
-      return redirect()->route('admin.users.show',$user->id);
+      if(Auth::user()->tutorial){
+          return redirect()->route('admin.users.tutorial');
+      }else{
+          return redirect()->route('admin.users.show',$user->id);
+      }
 
     }
 
@@ -121,37 +151,41 @@ class UserController extends Controller
 
           $user->update();
 
-          return redirect()->route('admin.users.show', ['user' => $user->id]);
+          if(Auth::user()->tutorial){
+              return redirect()->route('admin.users.tutorial');
+          }else {
+              return redirect()->route('admin.users.show', ['user' => $user->id]);
+          }
 
       }abort(404);
     }
 
     public function show(User $user){
 
-        event(new MyEvent(2,'prova evento bello'));
+        //event(new MyEvent(2,'prova evento bello'));
+        if(Auth::user()->tutorial){
+            return redirect()->route('admin.users.tutorial');
+        }
 
-      $userTypes = Usertype::all();
+        if($user){
+            //dd($user->currency);
+            $give_services = GiveUserService::where('user_id',$user->id)
+            ->join('services','services.id','service_id')
+            ->select('give_user_services.id','services.name')
+            ->get();
 
-      if($user){
+            $data = [
+              'user' => $user,
+              'userTypes' => Usertype::where('hidden',null)->get(),
+              'is_my_user' => Auth::user()->id==$user->id?true:false,
+              'pageTypes' => $user->pagetypes,
+              'currencies' => $user->currencies,
+              'give_services' => $give_services,
+            ];
 
-      //dd($user->currency);
-      $give_services = GiveUserService::where('user_id',$user->id)
-      ->join('services','services.id','service_id')
-      ->select('give_user_services.id','services.name')
-      ->get();
+            return view('admin.users.show', $data);
 
-      $data = [
-        'user' => $user,
-        'userTypes' => $userTypes,
-        'is_my_user' => Auth::user()->id==$user->id?true:false,
-        'pageTypes' => $user->pagetypes,
-        'currencies' => $user->currencies,
-        'give_services' => $give_services,
-      ];
-
-      return view('admin.users.show', $data);
-
-    }abort(404);
+        }abort(404);
 
     }
 

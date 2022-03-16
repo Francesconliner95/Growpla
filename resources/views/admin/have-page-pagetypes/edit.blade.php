@@ -22,7 +22,7 @@
                       <h6>Modifica</h6>
                     </div>
                     @foreach ($pagetypes as $pagetype)
-                      @if($pagetype->id!=1)
+                      @if($pagetype->id==3 || $pagetype->id==5 || $pagetype->id==6 || $pagetype->id==8)
                       <div>
                           @if($errors->any())
                             <input id="pagetype-{{$pagetype->id}}" type="checkbox" name="pagetypes[]" value="{{$pagetype->id}}"

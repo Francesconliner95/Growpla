@@ -33,6 +33,7 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::post('/found', 'MainController@found')->name('found');
 
     Route::resource('/users', 'UserController');
+    Route::get('/tutorial', 'UserController@tutorial')->name('users.tutorial');
     Route::get('/getUser', 'UserController@getUser')->name('getUser');
     Route::post('/addAdmin', 'UserController@addAdmin')->name('users.addAdmin');
     Route::get('/getAdmin', 'UserController@getAdmin')->name('users.getAdmin');

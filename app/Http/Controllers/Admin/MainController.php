@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use File;
+use DB;
 use App\Language;
 use App\Usertype;
 use App\Pagetype;
@@ -30,6 +31,10 @@ class MainController extends Controller
 
     public function search()
     {
+      // if(Auth::user()->tutorial){
+      //     return redirect()->route('admin.users.tutorial');
+      // }
+
       $data = [
           'usertypes' => Usertype::where('hidden',null)->get(),
           'pagetypes' => Pagetype::where('hidden',null)->get(),
@@ -41,6 +46,7 @@ class MainController extends Controller
       app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
       return view('admin.search', $data);
+
     }
 
     public function found(Request $request)
@@ -52,6 +58,7 @@ class MainController extends Controller
             'country_id' => 'nullable|integer',
             'region_id' => 'nullable|integer',
             'sector_id' => 'nullable|integer',
+            'name' => 'nullable|string',
             //startup
             'lifecycle_id' => 'nullable|integer',
             'need_pagetype_id' => 'nullable|integer',
@@ -74,6 +81,7 @@ class MainController extends Controller
         $country_id = $request->country_id;
         $region_id = $request->region_id;
         $sector_id = $request->sector_id;
+        $name = $request->name;
         //startup
         $lifecycle_id = $request->lifecycle_id;
         $need_pagetype_id = $request->need_pagetype_id;
@@ -374,7 +382,7 @@ class MainController extends Controller
         }
 
         //SERVIZI
-        if(!$usertypes_id && !$pagetypes_id){
+        if(!$usertypes_id && !$pagetypes_id && !$name){
             if($service_toggle=="false"){
                 //profili che offrono il servizio
                 if($services_id){
@@ -533,6 +541,16 @@ class MainController extends Controller
                 //controllo se ci sono pagine doppie
 
             }
+        }
+
+        //RICERCA PER NOME
+        if(!$usertypes_id && !$pagetypes_id && $name){
+            //dd($name);
+            $users = User::orWhere(DB::raw("concat(name, ' ', surname)"), 'LIKE', "%".$name."%")
+            ->get();
+
+            $pages = Page::orWhere('name','LIKE', "%".$name."%")
+            ->get();
         }
 
         $pages_id = [];
