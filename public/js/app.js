@@ -74580,24 +74580,29 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#chat-index',
   data: {
-    chats: chats,
+    my_user_chats: my_user_chats,
+    my_pages_chats: my_pages_chats,
     lang: lang
   },
-  methods: {
-    getChats: function getChats() {
-      var _this = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getChats', {}).then(function (response) {
-        _this.chats = response.data.results.chats;
-      });
-    }
+  methods: {// getChats(){
+    //     axios.get('/admin/getChats',{
+    //
+    //     }).then((response) => {
+    //         this.chats = response.data.results.chats;
+    //     });
+    // },
   },
   mounted: function mounted() {
-    //console.log(this.chats);
-    //ricarico le chat quando torno indietro
-    if (performance.navigation.type == 2) {
-      this.getChats();
+    if (this.my_user_chats) {
+      this.my_user_chats = JSON.parse(this.my_user_chats.replace(/&quot;/g, '"'));
     }
+
+    if (this.my_pages_chats) {
+      this.my_pages_chats = JSON.parse(this.my_pages_chats.replace(/&quot;/g, '"'));
+    } // if(performance.navigation.type == 2){
+    //    this.getChats();
+    // }
+
   }
 });
 

@@ -35,6 +35,14 @@ class Page extends Model
         return $this->belongsTo('App\Region');
     }
 
+    public function chats_sender(){
+        return $this->hasMany('App\Chat','sender_page_id');
+    }
+
+    public function chats_recipient(){
+        return $this->hasMany('App\Chat','recipient_page_id');
+    }
+
     public function have_page_usertypes(){
         return $this->belongsToMany('App\Usertype','have_page_usertypes','page_id','usertype_id')
         ->withPivot('id');

@@ -12,10 +12,6 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 
-    public function accounts() {
-        return $this->hasMany('App\Account');
-    }
-
     public function sendEmailVerificationNotification()
     {
         $this->notify(new \App\Notifications\VerifyEmailQueued);
@@ -55,6 +51,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function notifications(){
         return $this->hasMany('App\Notification');
+    }
+
+    public function chats_sender(){
+        return $this->hasMany('App\Chat','sender_user_id');
+    }
+
+    public function chats_recipient(){
+        return $this->hasMany('App\Chat','recipient_user_id');
     }
 
     public function give_user_skills(){
