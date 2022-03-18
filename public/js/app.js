@@ -74584,22 +74584,44 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     my_pages_chats: my_pages_chats,
     lang: lang
   },
-  methods: {// getChats(){
+  methods: {
+    // getChats(){
     //     axios.get('/admin/getChats',{
     //
     //     }).then((response) => {
     //         this.chats = response.data.results.chats;
     //     });
     // },
+    orderByUpdatedAt: function orderByUpdatedAt(object) {
+      for (var i = 0; i < object.length; i++) {
+        for (var j = 0; j < object.length - 1; j++) {
+          if (new Date(object[j].updated_at) < new Date(object[i].updated_at)) {
+            var tmp = object[j];
+            object[j] = object[i];
+            object[i] = tmp;
+          }
+        }
+      }
+
+      return object;
+    }
   },
   mounted: function mounted() {
+    var _this = this;
+
     if (this.my_user_chats) {
       this.my_user_chats = JSON.parse(this.my_user_chats.replace(/&quot;/g, '"'));
-    }
+      this.my_user_chats.user_chats = this.orderByUpdatedAt(this.my_user_chats.user_chats);
+    } //console.log(this.my_user_chats);
+
 
     if (this.my_pages_chats) {
       this.my_pages_chats = JSON.parse(this.my_pages_chats.replace(/&quot;/g, '"'));
-    } // if(performance.navigation.type == 2){
+      this.my_pages_chats.forEach(function (page, i) {
+        page.page_chats = _this.orderByUpdatedAt(page.page_chats);
+      });
+    } //  console.log(this.my_pages_chats);
+    // if(performance.navigation.type == 2){
     //    this.getChats();
     // }
 
@@ -74630,9 +74652,12 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#chat-show',
   data: {
-    my_account_id: my_account_id,
-    your_account: your_account,
     chat_id: chat_id,
+    my_user_id: my_user_id,
+    your_user_id: your_user_id,
+    my_page_id: my_page_id,
+    your_page_id: your_page_id,
+    displayed_name: displayed_name,
     message_text: '',
     messages: [],
     messages_qty: 0,
@@ -74650,6 +74675,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           url: '/admin/newMessage',
           data: {
             chat_id: this.chat_id,
+            my_user_id: this.my_user_id,
+            my_page_id: this.my_page_id,
             message_text: message_text
           }
         }).then(function (response) {
@@ -74662,14 +74689,15 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     getMessages: function getMessages() {
       var _this2 = this;
 
-      //console.log(this.chat_id);
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getMessages', {
         params: {
           chat_id: this.chat_id,
+          my_user_id: this.my_user_id,
+          my_page_id: this.my_page_id,
           messages_qty: this.messages_qty
         }
       }).then(function (response) {
-        _this2.messages = response.data.results.messages;
+        _this2.messages = response.data.results.messages; //console.log(this.messages);
 
         if (!_this2.first_scroll) {
           _this2.first_scroll = true;

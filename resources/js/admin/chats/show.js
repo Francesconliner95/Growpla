@@ -8,9 +8,12 @@ axios.defaults.headers.common = {
 var create = new Vue({
     el: '#chat-show',
     data: {
-        my_account_id,
-        your_account,
         chat_id,
+        my_user_id,
+        your_user_id,
+        my_page_id,
+        your_page_id,
+        displayed_name,
         message_text: '',
         messages: [],
         messages_qty: 0,
@@ -28,6 +31,8 @@ var create = new Vue({
                     url: '/admin/newMessage',
                     data: {
                         chat_id: this.chat_id,
+                        my_user_id: this.my_user_id,
+                        my_page_id: this.my_page_id,
                         message_text: message_text,
                     }
                 }).then(response => {
@@ -38,14 +43,17 @@ var create = new Vue({
         },
 
         getMessages(){
-            //console.log(this.chat_id);
+
             axios.get('/admin/getMessages',{
                 params: {
                     chat_id: this.chat_id,
+                    my_user_id: this.my_user_id,
+                    my_page_id: this.my_page_id,
                     messages_qty: this.messages_qty,
                 }
             }).then((response) => {
                 this.messages = response.data.results.messages;
+                //console.log(this.messages);
 
                 if (!this.first_scroll) {
                     this.first_scroll = true;

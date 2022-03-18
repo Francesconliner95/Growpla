@@ -10,6 +10,7 @@ use App\Chat;
 use App\FilterMessage;
 use App\Message;
 use App\Language;
+use App\Page;
 
 class ChatController extends Controller
 {
@@ -145,27 +146,101 @@ class ChatController extends Controller
     public function index()
     {
 
+        function message_not_read($chat,$my_id,$user_or_page){
+
+            if($user_or_page=='user'){
+              $not_readed1 = Message::where('chat_id',$chat->id)
+                                    ->where('readed',null)
+                                    ->where('sender_user_id','!=',$my_id)
+                                    ->count();
+              $not_readed2 = Message::where('chat_id',$chat->id)
+                                    ->where('readed',null)
+                                    ->where('sender_page_id',$my_id)
+                                    ->count();
+            }
+
+            if($user_or_page=='page'){
+                $not_readed1 = Message::where('chat_id',$chat->id)
+                                      ->where('readed',null)
+                                      ->where('sender_user_id',$my_id)
+                                      ->count();
+                $not_readed2 = Message::where('chat_id',$chat->id)
+                                      ->where('readed',null)
+                                      ->where('sender_page_id','!=',$my_id)
+                                      ->count();
+            }
+
+            $not_readed = $not_readed1 + $not_readed2;
+
+            return $not_readed;
+        }
+
         $user = Auth::user();
-        $user_chats_sender = $user->chats_sender()->join('users','users.id','=','chats.recipient_user_id')
+        $from_my_user_to_user = $user->chats_sender()
+        ->where('chats.recipient_user_id','!=',null)
+        ->join('users','users.id','=','chats.recipient_user_id')
         ->select('chats.id','users.id as user_id','users.name','users.surname','chats.updated_at')
         ->get();
-        $user_chats_recipient = $user->chats_recipient()->join('users','users.id','=','chats.sender_user_id')
+        $from_my_user_to_page = $user->chats_sender()
+        ->where('chats.recipient_page_id','!=',null)
+        ->join('pages','pages.id','=','chats.recipient_page_id')
+        ->select('chats.id','pages.id as page_id','pages.name','chats.updated_at')
+        ->get();
+        $from_user_to_my_user = $user->chats_recipient()
+        ->where('chats.sender_user_id','!=',null)
+        ->join('users','users.id','=','chats.sender_user_id')
         ->select('chats.id','users.id as user_id','users.name','users.surname','chats.updated_at')
         ->get();
-        $user_chats = $user_chats_sender->merge($user_chats_recipient);
+        $from_page_to_my_user = $user->chats_recipient()
+        ->where('chats.sender_page_id','!=',null)
+        ->join('pages','pages.id','=','chats.sender_page_id')
+        ->select('chats.id','pages.id as page_id','pages.name','chats.updated_at')
+        ->get();
         $my_user_chats = Auth::user()->select('users.id','users.name','users.surname')->first();
+        $user_chats = $from_my_user_to_user
+                      ->merge($from_my_user_to_page)
+                      ->merge($from_user_to_my_user)
+                      ->merge($from_page_to_my_user);
+
+        foreach ($user_chats as $user_chat) {
+            $user_chat['message_not_read'] = message_not_read($user_chat,$user->id,'user');
+        }
+
         $my_user_chats['user_chats'] = $user_chats;
 
 
         $my_pages_chats = $user->pages()->select('pages.id','pages.name')->get();
         foreach ($my_pages_chats as $my_page) {
-            $page_chats_sender = $my_page->chats_sender()->join('pages','pages.id','=','chats.recipient_page_id')
+            $from_my_page_to_user = $my_page->chats_sender()
+            ->where('chats.recipient_user_id','!=',null)
+            ->join('users','users.id','=','chats.recipient_user_id')
+            ->select('chats.id','users.id as user_id', 'users.name','users.surname','chats.updated_at')
+            ->get();
+            $from_my_page_to_page = $my_page->chats_sender()
+            ->where('chats.recipient_page_id','!=',null)
+            ->join('pages','pages.id','=','chats.recipient_page_id')
             ->select('chats.id','pages.id as page_id','pages.name','chats.updated_at')
             ->get();
-            $page_chats_recipient = $my_page->chats_recipient()->join('pages','pages.id','=','chats.sender_page_id')
+            $from_user_to_my_page = $my_page->chats_recipient()
+            ->where('chats.sender_user_id','!=',null)
+            ->join('users','users.id','=','chats.sender_user_id')
+            ->select('chats.id','users.id as user_id', 'users.name','users.surname','chats.updated_at')
+            ->get();
+            $from_page_to_my_page = $my_page->chats_recipient()
+            ->where('chats.sender_page_id','!=',null)
+            ->join('pages','pages.id','=','chats.sender_page_id')
             ->select('chats.id','pages.id as page_id','pages.name','chats.updated_at')
             ->get();
-            $page_chats = $page_chats_sender->merge($page_chats_recipient);
+
+            $page_chats = $from_my_page_to_user
+                          ->merge($from_my_page_to_page)
+                          ->merge($from_user_to_my_page)
+                          ->merge($from_page_to_my_page);
+
+            foreach ($page_chats as $page_chat) {
+                $page_chat['message_not_read'] = message_not_read($page_chat,$my_page->id,'page');
+            }
+
             $my_page['page_chats'] = $page_chats;
         }
 
@@ -179,39 +254,90 @@ class ChatController extends Controller
         return view('admin.chats.index', $data);
     }
 
-    public function show(Chat $chat)
+    public function show($chat_id,$page_id)
     {
+
         $user = Auth::user();
-        if($chat->sender_user_id==$user->id || $chat->recipient_user_id==$user->id){
+        $chat = Chat::find($chat_id);
+        $my_user_id = '';
+        $my_page_id = '';
+        $your_user_id = '';
+        $your_page_id = '';
 
-            $messages = $chat->messages;
+        if($page_id=='user'){
+            //CHAT UTENTE
+            if($chat->sender_user_id==$user->id || $chat->recipient_user_id==$user->id){
 
-            if($chat->sender_user_id==$user->id){
-                $my_id = $chat->sender_user_id;
-                $your_id = $chat->recipient_user_id;
-                $user_displayed = User::find($your_id);
-            }elseif($chat->recipient_user_id==$user->id){
-                $my_id = $chat->recipient_user_id;
-                $your_id = $chat->sender_user_id;
-                $user_displayed = User::find($your_id);
-            }
-            $name = $user_displayed->name;
-            $surname = $user_displayed->surname;
+                $my_user_id = $user->id;
+
+                if($chat->sender_user_id && $chat->sender_user_id!=$my_user_id){
+                    $your_user_id = $chat->sender_user_id;
+                }
+                if($chat->recipient_user_id && $chat->recipient_user_id!=$my_user_id){
+                    $your_user_id = $chat->recipient_user_id;
+                }
+                if($chat->sender_page_id){
+                    $your_page_id = $chat->sender_page_id;
+                }
+                if($chat->recipient_page_id){
+                    $your_page_id = $chat->recipient_page_id;
+                }
+
+            }//abort(404);
+        }else{
+            //CHAT PAGINA
+            $page = Page::find($page_id);
+            if($user->pages->contains($page)){
+                if($chat->sender_page_id==$page->id || $chat->recipient_page_id==$page->id){
+
+                    $my_page_id = $page_id;
+
+                    if($chat->sender_user_id){
+                        $your_user_id = $chat->sender_user_id;
+                    }
+                    if($chat->recipient_user_id){
+                        $your_user_id = $chat->recipient_user_id;
+                    }
+                    if($chat->sender_page_id && $chat->sender_page_id!=$my_page_id){
+                        $your_page_id = $chat->sender_page_id;
+                    }
+                    if($chat->recipient_page_id && $chat->recipient_page_id!=$my_page_id){
+                        $your_page_id = $chat->recipient_page_id;
+                    }
+
+                }//abort(404);
+            }//abort(404);
+        }
+
+        //dd($my_user_id,$your_user_id,$my_page_id,$your_page_id);
+
+        if($your_user_id){
+            $you = User::find($your_user_id);
+            $name = $you->name;
+            $surname = $you->surname;
             $displayed_name = $name.' '.$surname;
+        }
+        if ($your_page_id) {
+            $you = Page::find($your_page_id);
+            $displayed_name = $you->name;
+        }
 
-            $data = [
-                'messages' => $messages,
-                'chat' => $chat,
-                'my_id' => $my_id,
-                'your_id' => $your_id,
-                'displayed_name' => $displayed_name,
-            ];
+        $data = [
+            'chat_id' => $chat->id,
+            'my_user_id' => $my_user_id,
+            'your_user_id' => $your_user_id,
+            'my_page_id' => $my_page_id,
+            'your_page_id' => $your_page_id,
+            'displayed_name' => $displayed_name,
+        ];
 
-            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+        //dd($data);
 
-            return view('admin.chats.show', $data);
+        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
-        }abort(404);
+        return view('admin.chats.show', $data);
+
+        //}abort(404);
 
     }
 
