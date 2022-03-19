@@ -112,25 +112,30 @@ class MessageController extends Controller
                         ->latest()
                         //->take(20)
                         ->get();
-            //messaggi non letti
+                        
+            //messaggi non letti segna come letti
             if($user_or_page=='user'){
-                $set_readed = Message::where('chat_id',$chat_id)
-                                      ->where('readed',null)
-                                      ->where('sender_user_id','!=',$my_id)
-                                      ->update(['readed'=> 1]);
-                $set_readed = Message::where('chat_id',$chat_id)
-                                      ->where('readed',null)
-                                      ->where('sender_page_id',$my_id)
-                                      ->update(['readed'=> 1]);
-            }
-            if($user_or_page=='page'){
+                //tutti i messaggi della chat con utenti diversi sal mio
                 $set_readed = Message::where('chat_id',$chat_id)
                                     ->where('readed',null)
-                                    ->where('sender_user_id',$my_id)
+                                    ->where('sender_user_id','!=',$my_id)
                                     ->update(['readed'=> 1]);
+                //tutti i messaggi della chat senza utenti cosi prendo le pagine
+                $set_readed = Message::where('chat_id',$chat_id)
+                                    ->where('readed',null)
+                                    ->where('sender_user_id',null)
+                                    ->update(['readed'=> 1]);
+            }
+            if($user_or_page=='page'){
+                //tutti i messaggi della chat con pagine diverse dalla mia
                 $set_readed = Message::where('chat_id',$chat_id)
                                       ->where('readed',null)
-                                      ->where('sender_page_id','!=',$my_id)
+                                      ->where('sender_page_id','!=',$chat_id)
+                                      ->update(['readed'=> 1]);
+                //tutti i messaggi della chat senza pagine cosi prendo gli utenti
+                $set_readed = Message::where('chat_id',$chat_id)
+                                      ->where('readed',null)
+                                      ->where('sender_page_id',null)
                                       ->update(['readed'=> 1]);
             }
 

@@ -59,6 +59,30 @@
 
         @else
         <nav id="nav-bar" class="navbar-light">
+            <div :class="alert?'delete-alert active-alert':'delete-alert deactive-alert'" v-cloak>
+                <div class="item-cont delete-alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                    <div class="item-style">
+                        <button type="button" name="button" class="edit-top-right button-color-gray" @click="alert=false">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <div class="">
+                            <h6>Seleziona un account</h6>
+                            <a href="#" @click="setPageSelected()" class="d-block" v-cloak>
+                                <img v-if="user.image" :src="'/storage/' + user.image" alt="">
+                                @{{user.name + ' ' + user.surname}}
+                                <span class="font-weight-bold"> @{{!page_selected_id?'selezionato':''}} </span>
+                            </a>
+                            <a v-for="page in pages" href="#" @click="setPageSelected(page.id)" class="d-block" v-cloak>
+                                <img v-if="page.image" :src="'/storage/'+page.image" alt="">
+                                @{{page.name}}
+                                <span class="font-weight-bold">
+                                @{{page.id==page_selected_id?'selezionato':''}}
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="container">
                 <div class="row">
                     <div class="nav-left d-inline-block col-sm-12 col-md-12 col-lg-6 col-xl-6 d-flex align-items-center mobile-hide">
@@ -79,6 +103,9 @@
                         {{-- <a class="" href="{{route('admin.topics.create')}}">
                             Forum
                         </a> --}}
+                        <div class="">
+                            <button @click="switchAccounts()" type="button" name="button">Accounts</button>
+                        </div>
                         <div class="dropdown show notification not-navbar">
                             <a href="#" role="button" id="notDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="icon" @click="readNotifications()">
                                 <i class="fas fa-bell">

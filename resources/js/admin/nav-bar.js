@@ -10,6 +10,10 @@ var create = new Vue({
     data: {
         notifications: [],
         message_not_read: 0,
+        user: '',
+        pages: '',
+        alert: false,
+        page_selected_id: '',
     },
     methods: {
 
@@ -25,6 +29,30 @@ var create = new Vue({
                 method: 'put',
                 url: '/admin/readNotifications',
             }).then(response => {});
+        },
+
+        switchAccounts(){
+            this.alert = true;
+            axios.get('/admin/getMyAccounts',{
+            }).then((response) => {
+                this.user = response.data.results.user;
+                this.pages = response.data.results.pages;
+                this.page_selected_id = response.data.results.page_selected_id;
+                console.log(this.accounts);
+            });
+        },
+
+        setPageSelected(page_id){
+            this.alert = false;
+            axios({
+                method: 'put',
+                url: '/admin/setPageSelected',
+                data: {
+                    page_id: page_id,
+                }
+            }).then(response => {
+
+            });
         },
 
         getCookie(name){

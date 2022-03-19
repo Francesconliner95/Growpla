@@ -41,7 +41,7 @@ var create = new Vue({
             this.my_user_chats = JSON.parse(this.my_user_chats.replace(/&quot;/g,'"'));
             this.my_user_chats.user_chats = this.orderByUpdatedAt(this.my_user_chats.user_chats);
         }
-        //console.log(this.my_user_chats);
+        console.log(this.my_user_chats);
         if(this.my_pages_chats){
             this.my_pages_chats = JSON.parse(this.my_pages_chats.replace(/&quot;/g,'"'));
             this.my_pages_chats.forEach((page, i) => {

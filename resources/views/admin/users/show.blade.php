@@ -67,6 +67,9 @@
                                         <span v-if="following">{{__('Following')}}</span>
                                         <span v-else>{{__('Follow')}}</span>
                                     </button>
+                                    <a href="{{route('admin.chats.createChat',[$user->id,'user'])}}" class="button-style button-color-blue" type="button" name="button" v-cloak>
+                                        <span>Messaggio</span>
+                                    </a>
 
                                     {{--<div class="message d-inline-block">
                                         <span v-if="alert"class="mini-txt">@{{alert}}</span>

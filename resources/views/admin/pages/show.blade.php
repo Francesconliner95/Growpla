@@ -94,6 +94,9 @@
                                 <span v-if="following">{{__('Following')}}</span>
                                 <span v-else>{{__('Follow')}}</span>
                             </button>
+                            <a href="{{route('admin.chats.createChat',[$page->id,'page'])}}" class="button-style button-color-blue" type="button" name="button" v-cloak>
+                                <span>Messaggio</span>
+                            </a>
                         </div>
                         <div class="sub-section">
                           <div class="">

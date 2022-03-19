@@ -41,6 +41,8 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::get('users/{user_id}/settings', 'UserController@settings')->name('users.settings');
     Route::get('users/{user_id}/sectors', 'UserController@sectors')->name('users.sectors');
     Route::put('users/{user_id}/storesectors', 'UserController@storesectors')->name('users.storesectors');
+    Route::get('getMyAccounts', 'UserController@getMyAccounts')->name('getMyAccounts');
+    Route::put('setPageSelected', 'UserController@setPageSelected')->name('setPageSelected');
 
     //admin.users.settings
 
@@ -156,7 +158,7 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
       //Route::get('/addTeam/{page_id}', 'TeamController@addTeam')->name('teams.addTeam');
     Route::get('chats/show/{chat_id}/{page_id}', 'ChatController@show')
     ->name('chats.show');
-    Route::get('/createChat', 'ChatController@createChat')
+    Route::get('/createChat/{id}/{user_or_page}', 'ChatController@createChat')
     ->name('chats.createChat');
     Route::get('/getChats', 'ChatController@getChats')
     ->name('chats.getChats');

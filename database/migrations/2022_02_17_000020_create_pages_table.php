@@ -38,7 +38,7 @@ class CreatePagesTable extends Migration
             $table->foreign('lifecycle_id')->references('id')->on('lifecycles');
             $table->string('pitch')->nullable();
             $table->boolean('incorporated')->nullable();
-            $table->boolean('')->nullable();//mvp
+            $table->boolean('mvp')->nullable();//mvp
 
             //INCUBATORE
             $table->tinyInteger('')->nullable();//servizi erogati

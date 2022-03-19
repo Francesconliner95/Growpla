@@ -345,4 +345,40 @@ class UserController extends Controller
 
     }
 
+    public function getMyAccounts(){
+
+        $user = Auth::user();
+
+        return response()->json([
+            'success' => true,
+            'results' => [
+                'user' => $user->only(['id', 'image', 'name',  'surname']),
+                'pages' => $user->pages()->select('pages.id','pages.image','pages.name')->get(),
+                'page_selected_id' => $user->page_selected_id,
+            ]
+        ]);
+
+    }
+
+    public function setPageSelected(Request $request){
+
+        $request->validate([
+            'page_id' => 'nullable|integer',
+        ]);
+
+        $page_id = $request->page_id;
+        $user = Auth::user();
+
+        if($page_id){
+            $page = Page::find($page_id);
+            if($user->pages->contains($page)){
+                $user->page_selected_id = $page_id;
+            }
+        }else{
+            $user->page_selected_id = null;
+        }
+        $user->update();
+
+    }
+
 }

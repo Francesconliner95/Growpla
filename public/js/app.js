@@ -74612,8 +74612,9 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     if (this.my_user_chats) {
       this.my_user_chats = JSON.parse(this.my_user_chats.replace(/&quot;/g, '"'));
       this.my_user_chats.user_chats = this.orderByUpdatedAt(this.my_user_chats.user_chats);
-    } //console.log(this.my_user_chats);
+    }
 
+    console.log(this.my_user_chats);
 
     if (this.my_pages_chats) {
       this.my_pages_chats = JSON.parse(this.my_pages_chats.replace(/&quot;/g, '"'));
@@ -75932,7 +75933,11 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#nav-bar',
   data: {
     notifications: [],
-    message_not_read: 0
+    message_not_read: 0,
+    user: '',
+    pages: '',
+    alert: false,
+    page_selected_id: ''
   },
   methods: {
     getNotReadNotifications: function getNotReadNotifications() {
@@ -75946,6 +75951,27 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       axios__WEBPACK_IMPORTED_MODULE_1___default()({
         method: 'put',
         url: '/admin/readNotifications'
+      }).then(function (response) {});
+    },
+    switchAccounts: function switchAccounts() {
+      var _this2 = this;
+
+      this.alert = true;
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getMyAccounts', {}).then(function (response) {
+        _this2.user = response.data.results.user;
+        _this2.pages = response.data.results.pages;
+        _this2.page_selected_id = response.data.results.page_selected_id;
+        console.log(_this2.accounts);
+      });
+    },
+    setPageSelected: function setPageSelected(page_id) {
+      this.alert = false;
+      axios__WEBPACK_IMPORTED_MODULE_1___default()({
+        method: 'put',
+        url: '/admin/setPageSelected',
+        data: {
+          page_id: page_id
+        }
       }).then(function (response) {});
     },
     getCookie: function getCookie(name) {
@@ -80042,8 +80068,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
