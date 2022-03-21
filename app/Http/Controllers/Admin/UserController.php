@@ -182,6 +182,8 @@ class UserController extends Controller
               'currencies' => $user->currencies,
               'give_services' => $give_services,
             ];
+            
+            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
             return view('admin.users.show', $data);
 
@@ -354,7 +356,7 @@ class UserController extends Controller
             'results' => [
                 'user' => $user->only(['id', 'image', 'name',  'surname']),
                 'pages' => $user->pages()->select('pages.id','pages.image','pages.name')->get(),
-                'page_selected_id' => $user->page_selected_id,
+                'page_selected' => Page::where('id',$user->page_selected_id)->select('id','image','name')->first(),
             ]
         ]);
 
@@ -373,11 +375,20 @@ class UserController extends Controller
             $page = Page::find($page_id);
             if($user->pages->contains($page)){
                 $user->page_selected_id = $page_id;
+                $page_selected = $page->only('id','image','name');
             }
         }else{
             $user->page_selected_id = null;
+            $page_selected = '';
         }
         $user->update();
+
+        return response()->json([
+            'success' => true,
+            'results' => [
+                'page_selected' => $page_selected,
+            ]
+        ]);
 
     }
 

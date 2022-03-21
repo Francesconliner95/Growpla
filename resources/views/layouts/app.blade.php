@@ -27,7 +27,7 @@
 <body>
     <script type="text/javascript">
         window.csrf_token = "{{ csrf_token() }}";
-
+        page_selected = "{{Auth::user()->page_selected_id?App\Page::where('id',Auth::user()->page_selected_id)->select('id','image','name')->first():''}}";
     </script>
     <!-- Google Analytics -->
     <script>
@@ -52,31 +52,36 @@
             window['ga-disable-G-EX66GGGB3E'] = true;
         }
     </script>
-</script>
     <div id="app">
         @guest
         {{-- SE NON LOGGATO NON COMPARE LA NAVBAR --}}
 
         @else
         <nav id="nav-bar" class="navbar-light">
-            <div :class="alert?'delete-alert active-alert':'delete-alert deactive-alert'" v-cloak>
-                <div class="item-cont delete-alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">
+            <div :class="alert?'alert active-alert':'alert deactive-alert'" v-cloak>
+                <div class="item-cont alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">
                     <div class="item-style">
                         <button type="button" name="button" class="edit-top-right button-color-gray" @click="alert=false">
                             <i class="fas fa-times"></i>
                         </button>
                         <div class="">
                             <h6>Seleziona un account</h6>
-                            <a href="#" @click="setPageSelected()" class="d-block" v-cloak>
-                                <img v-if="user.image" :src="'/storage/' + user.image" alt="">
+                            <a v-if="user" href="#" @click="setPageSelected()" class="d-block" v-cloak>
+                                <div class="img-cont mini-img">
+                                    <img v-if="user.image" :src="'/storage/' + user.image" alt="">
+                                </div>
                                 @{{user.name + ' ' + user.surname}}
-                                <span class="font-weight-bold"> @{{!page_selected_id?'selezionato':''}} </span>
+                                <span class="font-weight-bold">
+                                  @{{!page_selected?'selezionato':''}}
+                                </span>
                             </a>
                             <a v-for="page in pages" href="#" @click="setPageSelected(page.id)" class="d-block" v-cloak>
-                                <img v-if="page.image" :src="'/storage/'+page.image" alt="">
+                                <div class="img-cont mini-img">
+                                    <img v-if="page.image" :src="'/storage/'+page.image" alt="">
+                                </div>
                                 @{{page.name}}
                                 <span class="font-weight-bold">
-                                @{{page.id==page_selected_id?'selezionato':''}}
+                                @{{page_selected &&  page.id==page_selected.id?'selezionato':''}}
                                 </span>
                             </a>
                         </div>
@@ -103,9 +108,6 @@
                         {{-- <a class="" href="{{route('admin.topics.create')}}">
                             Forum
                         </a> --}}
-                        <div class="">
-                            <button @click="switchAccounts()" type="button" name="button">Accounts</button>
-                        </div>
                         <div class="dropdown show notification not-navbar">
                             <a href="#" role="button" id="notDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="icon" @click="readNotifications()">
                                 <i class="fas fa-bell">
@@ -135,18 +137,33 @@
                         <div class="chat d-inline-block" v-cloak>
                             <a class="not-navbar icon" href="{{route('admin.chats.index')}}">
                                 <i class="fas fa-comment-alt">
-                                    <span v-if="message_not_read">
-                                        @{{message_not_read}}
+                                    <span v-if="message_not_read_qty">
+                                        @{{message_not_read_qty}}
                                     </span>
                                 </i>
                             </a>
                         </div>
-                        <div class="account-menu d-inline-block" v-cloak>
-                            <a href="{{route('admin.users.show',Auth::user()->id)}}">
-                                @if(Auth::user()->image)
-                                <img src="{{ asset('storage/'.Auth::user()->image) }}" alt="">
-                                @endif
+                        <div class="chat d-inline-block">
+                            <a class="not-navbar icon" href="#" @click="switchAccounts()">
+                                  <i class="fas fa-exchange-alt"></i>
                             </a>
+                        </div>
+                        <div class="account-menu d-inline-block" v-cloak>
+                            <div class="user-image-cont">
+                                <a href="{{route('admin.users.show',Auth::user()->id)}}">
+                                    <div class="img-cont mini-img">
+                                        @if(Auth::user()->image)
+                                        <img src="{{ asset('storage/'.Auth::user()->image) }}" alt="">
+                                        @endif
+                                    </div>
+                                </a>
+                                <a v-if="page_selected"
+                                :href="'/admin/pages/'+ page_selected.id" class="micro-item">
+                                    <div class="img-cont micro-img">
+                                        <img v-if="page_selected.image" :src="'/storage/'+ page_selected.image" alt="">
+                                    </div>
+                                </a>
+                            </div>
                             <a id="navbarDropdown" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{-- <div class="drop-menu mobile-hide"> --}}
                                     {{-- @{{user.name}} @{{user.surname}} --}}
@@ -154,19 +171,25 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a href="{{route('admin.users.show',Auth::user()->id)}}" class="dropdown-item">
-                                    {{__('My account')}}
+                                    <i class="fas fa-user"></i>
+                                    Il mio profilo
+                                </a>
+                                <a @click="switchAccounts()" type="button" name="button" class="dropdown-item">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    Cambia account
                                 </a>
                                 <a class="dropdown-item"
                                 href="{{route('admin.users.settings',Auth::user()->id)}}">
-                                    {{__('Settings')}}
+                                    <i class="fas fa-cog"></i>
+                                    Impostazioni
                                 </a>
                                 <a class="dropdown-item"
                                 href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
+                                    <i class="fas fa-sign-out-alt"></i>
                                     {{ __('Logout') }}
                                 </a>
-
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>

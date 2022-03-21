@@ -38,21 +38,33 @@ class MessageController extends Controller
         $user = Auth::user();
         $chat = Chat::find($chat_id);
 
-        function newMessage($chat_id,$user_or_page,$my_user_id,$my_page_id,$message_text){
+        function newMessage($chat,$user_or_page,$my_user_id,$my_page_id,$message_text){
 
           $new_message = new Message();
-          $new_message->chat_id = $chat_id;
+          $new_message->chat_id = $chat->id;
 
           if($user_or_page == 'user'){
               $new_message->sender_user_id = $my_user_id;
           }elseif($user_or_page == 'page'){
               $new_message->sender_page_id = $my_page_id;
           }
+          if($chat->sender_user_id && $chat->sender_user_id!=$my_user_id){
+              $new_message->recipient_user_id = $chat->sender_user_id;
+          }
+          if($chat->sender_page_id && $chat->sender_page_id!=$my_page_id){
+              $new_message->recipient_page_id = $chat->sender_page_id;
+          }
+          if($chat->recipient_user_id && $chat->recipient_user_id!=$my_user_id){
+              $new_message->recipient_user_id = $chat->recipient_user_id;
+          }
+          if($chat->recipient_page_id && $chat->recipient_page_id!=$my_page_id){
+              $new_message->recipient_page_id = $chat->recipient_page_id;
+          }
 
           $new_message->message = $message_text;
           $new_message->save();
 
-          $new_message->chat->touch();//aggiorna solo updated_at
+          $chat->touch();//aggiorna solo updated_at
 
           //MAIL
           // $reacipient_mail = User::find($recipient_account->user_id)->email;
@@ -69,14 +81,14 @@ class MessageController extends Controller
 
         if($my_user_id){
             if($chat->sender_user_id==$user->id || $chat->recipient_user_id==$user->id){
-                $new_message = newMessage($chat_id,'user',$my_user_id,$my_page_id,$message_text);
+                $new_message = newMessage($chat,'user',$my_user_id,$my_page_id,$message_text);
 
             }
         }elseif($my_page_id){
             $page = Page::find($my_page_id);
             if($user->pages->contains($page)){
                 if($chat->sender_page_id==$page->id || $chat->recipient_page_id==$page->id){
-                    $new_message = newMessage($chat_id,'page',$my_user_id,$my_page_id,$message_text);
+                    $new_message = newMessage($chat,'page',$my_user_id,$my_page_id,$message_text);
                 }
             }
         }
@@ -112,7 +124,7 @@ class MessageController extends Controller
                         ->latest()
                         //->take(20)
                         ->get();
-                        
+
             //messaggi non letti segna come letti
             if($user_or_page=='user'){
                 //tutti i messaggi della chat con utenti diversi sal mio
@@ -130,7 +142,7 @@ class MessageController extends Controller
                 //tutti i messaggi della chat con pagine diverse dalla mia
                 $set_readed = Message::where('chat_id',$chat_id)
                                       ->where('readed',null)
-                                      ->where('sender_page_id','!=',$chat_id)
+                                      ->where('sender_page_id','!=',$my_id)
                                       ->update(['readed'=> 1]);
                 //tutti i messaggi della chat senza pagine cosi prendo gli utenti
                 $set_readed = Message::where('chat_id',$chat_id)
@@ -164,40 +176,29 @@ class MessageController extends Controller
 
     }
 
-    public function updateMessages(Request $request){
+    public function getNotReadMessages(){
+        $user = Auth::user();
+        $message_not_read_qty = 0;
+        //tutti i messaggi della chat con utenti diversi sal mio
+        $message_not_read_qty = Message::where('recipient_user_id',$user->id)
+                              ->where('readed',null)
+                              ->count();
 
-        $request->validate([
-            'notReadedMessagesId' => 'required',
-        ]);
-
-        $notReadedMessagesId = $request->notReadedMessagesId;
-
-        $messages = Message::find($notReadedMessagesId);
-
-        foreach ($messages as $message) {
-            if($message->recipient_account_id==Auth::user()->account_id){
-
-                    $message->readed = 1;
-                    $message->update();
-
-            }
+        $my_pages = $user->pages;
+        foreach ($my_pages as $my_page) {
+            $message_not_read_qty =
+            $message_not_read_qty + Message::where('recipient_page_id',$my_page->id)
+                                            ->where('readed',null)
+                                            ->count();
         }
-    }
-
-    public function getMessagesCount(){
-
-        $account_id = Auth::user()->account_id;
-        $message_not_read = Message::where('recipient_account_id',$account_id)
-        ->where('readed',null)->count();
 
         return response()->json([
             'success' => true,
             'results' => [
-                'message_not_read' => $message_not_read,
+                'message_not_read_qty' => $message_not_read_qty,
             ]
         ]);
 
     }
-
 
 }

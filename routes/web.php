@@ -67,6 +67,8 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
 
     //GiveUserService
     Route::resource('/give-user-services', 'GiveUserServiceController');
+    //HaveUserService
+    Route::resource('/have-user-services', 'HaveUserServiceController');
     //GivePageService
     Route::get('/create-give-page-services/{page_id}', 'GivePageServiceController@create_service')
     ->name('give-page-services.create_service');
@@ -172,7 +174,8 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     ->name('massages.updateMessages');
     Route::get('/getMessagesCount', 'MessageController@getMessagesCount')
     ->name('massages.getMessagesCount');
-    // Route::resource('/messages', 'MessageController');
+    Route::get('/getNotReadMessages', 'MessageController@getNotReadMessages')
+    ->name('messages.getNotReadMessages');
 
     //MAIL
     Route::get('/mailMessage', 'MailController@mailMessage')

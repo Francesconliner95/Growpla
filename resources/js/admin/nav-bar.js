@@ -8,12 +8,12 @@ axios.defaults.headers.common = {
 var create = new Vue({
     el: '#nav-bar',
     data: {
+        page_selected,
         notifications: [],
-        message_not_read: 0,
+        message_not_read_qty: 0,
         user: '',
         pages: '',
         alert: false,
-        page_selected_id: '',
     },
     methods: {
 
@@ -21,6 +21,13 @@ var create = new Vue({
             axios.get('/admin/getNotReadNotifications',{
             }).then((response) => {
                 this.notifications = response.data.results.notifications;
+            });
+        },
+
+        getNotReadMessages(){
+            axios.get('/admin/getNotReadMessages',{
+            }).then((response) => {
+                this.message_not_read_qty = response.data.results.message_not_read_qty;
             });
         },
 
@@ -37,13 +44,13 @@ var create = new Vue({
             }).then((response) => {
                 this.user = response.data.results.user;
                 this.pages = response.data.results.pages;
-                this.page_selected_id = response.data.results.page_selected_id;
-                console.log(this.accounts);
+                this.page_selected = response.data.results.page_selected;
             });
         },
 
         setPageSelected(page_id){
             this.alert = false;
+            console.log(page_id);
             axios({
                 method: 'put',
                 url: '/admin/setPageSelected',
@@ -51,7 +58,8 @@ var create = new Vue({
                     page_id: page_id,
                 }
             }).then(response => {
-
+                this.page_selected = response.data.results.page_selected;
+                console.log(this.page_selected);
             });
         },
 
@@ -66,10 +74,15 @@ var create = new Vue({
         if(this.getCookie("analyticsCookie")=='accept'){
             this.enableAnalytics = true;
         }
+        if (this.page_selected) {
+            this.page_selected = JSON.parse(this.page_selected.replace(/&quot;/g,'"'));
+        }
 
     },
     mounted() {
         this.getNotReadNotifications();
+        this.getNotReadMessages();
+
     }
 
 });

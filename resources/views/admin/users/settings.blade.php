@@ -7,8 +7,8 @@
 </script>
 <div class="container">
     <div id="user-settings">
-        {{-- <div :class="delete_alert?'delete-alert active-alert':'delete-alert deactive-alert'" v-cloak>
-            <div class="item-cont delete-alert-item  col-sm-12 col-md-12 col-lg-6 col-xl-6">
+        {{-- <div :class="delete_alert?'alert active-alert':'alert deactive-alert'" v-cloak>
+            <div class="item-cont alert-item  col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="item-style">
                     <button type="button" name="button" class="edit-top-right button-style button-color" @click="delete_alert=false">
                         <i class="fas fa-times"></i>
@@ -101,7 +101,7 @@
                 </div>
                 <div class="main-section pt-3 pb-2">
                     <div class="sub-item-cont">
-                        <div class="sub-item-style delete-account row">
+                        <div class="sub-item-style account row">
                             <div class="text-center col-sm-12 col-md-12 col-lg-4 col-xl-4">
                                 <img :src="'/storage/' + account.image" alt="" class="">
                             </div>

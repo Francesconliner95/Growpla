@@ -110,7 +110,7 @@
                   && $page->pagetype_id==3 || $page->pagetype_id==4
                   || $page->pagetype_id==5 || $page->pagetype_id==8)
                   <div class="sub-section">
-                      <h6>Moneyrange <span>({{__('Quanto hai investito sino ad oggi?')}})</span></h6>
+                      <h6>{{__('Taglio d\'investimenti')}}</span></h6>
                       <div class="form-contrtol">
                         @foreach ($moneyranges as $moneyrange)
                           <div>

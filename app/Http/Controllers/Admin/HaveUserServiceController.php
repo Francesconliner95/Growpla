@@ -9,10 +9,10 @@ use Illuminate\Support\Str;
 use App\Service;
 use App\User;
 use App\Language;
-use App\GiveUserService;
+use App\HaveUserService;
 use App\Notification;
 
-class GiveUserServiceController extends Controller
+class HaveUserServiceController extends Controller
 {
     public function __construct()
     {
@@ -26,12 +26,12 @@ class GiveUserServiceController extends Controller
 
           $data = [
               'user' => $user,
-              'services' => $user->give_user_services,
+              'services' => $user->have_user_services,
           ];
 
           app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
-          return view('admin.give-user-services.edit', $data);
+          return view('admin.have-user-services.edit', $data);
 
         }abort(404);
 
@@ -67,9 +67,9 @@ class GiveUserServiceController extends Controller
                         }
                     }
                 }
-                $syncResult = $user->give_user_services()->sync($services_id);
+                $syncResult = $user->have_user_services()->sync($services_id);
             }else{
-                $syncResult = $user->give_user_services()->sync([]);
+                $syncResult = $user->have_user_services()->sync([]);
             }
 
             if(collect($syncResult)->flatten()->isNotEmpty()){

@@ -75932,12 +75932,12 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#nav-bar',
   data: {
+    page_selected: page_selected,
     notifications: [],
-    message_not_read: 0,
+    message_not_read_qty: 0,
     user: '',
     pages: '',
-    alert: false,
-    page_selected_id: ''
+    alert: false
   },
   methods: {
     getNotReadNotifications: function getNotReadNotifications() {
@@ -75947,6 +75947,13 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         _this.notifications = response.data.results.notifications;
       });
     },
+    getNotReadMessages: function getNotReadMessages() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getNotReadMessages', {}).then(function (response) {
+        _this2.message_not_read_qty = response.data.results.message_not_read_qty;
+      });
+    },
     readNotifications: function readNotifications() {
       axios__WEBPACK_IMPORTED_MODULE_1___default()({
         method: 'put',
@@ -75954,25 +75961,30 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       }).then(function (response) {});
     },
     switchAccounts: function switchAccounts() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.alert = true;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getMyAccounts', {}).then(function (response) {
-        _this2.user = response.data.results.user;
-        _this2.pages = response.data.results.pages;
-        _this2.page_selected_id = response.data.results.page_selected_id;
-        console.log(_this2.accounts);
+        _this3.user = response.data.results.user;
+        _this3.pages = response.data.results.pages;
+        _this3.page_selected = response.data.results.page_selected;
       });
     },
     setPageSelected: function setPageSelected(page_id) {
+      var _this4 = this;
+
       this.alert = false;
+      console.log(page_id);
       axios__WEBPACK_IMPORTED_MODULE_1___default()({
         method: 'put',
         url: '/admin/setPageSelected',
         data: {
           page_id: page_id
         }
-      }).then(function (response) {});
+      }).then(function (response) {
+        _this4.page_selected = response.data.results.page_selected;
+        console.log(_this4.page_selected);
+      });
     },
     getCookie: function getCookie(name) {
       var value = "; ".concat(document.cookie);
@@ -75984,9 +75996,14 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     if (this.getCookie("analyticsCookie") == 'accept') {
       this.enableAnalytics = true;
     }
+
+    if (this.page_selected) {
+      this.page_selected = JSON.parse(this.page_selected.replace(/&quot;/g, '"'));
+    }
   },
   mounted: function mounted() {
     this.getNotReadNotifications();
+    this.getNotReadMessages();
   }
 });
 var im_in_index = document.getElementById("search");
@@ -80068,8 +80085,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

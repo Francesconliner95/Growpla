@@ -75,21 +75,27 @@
         padding: 0 15px;
         display: flex;
         align-items: center;
+        .user-image-cont{
+            display: inline-block;
+            position: relative;
+            .micro-item{
+                position: absolute;
+                bottom: 0px;
+                right: 0px;
+                padding: 0px;
+                margin: 0px;
+                line-height: 0;
+            }
+        }
         a{
             color: black;
-            img{
-                width: 45px;
-                height: 45px;
-                margin-right: 10px;
-                border-radius: 50%;
-            }
             .drop-menu{
                 display: inline-block;
             }
         }
         .dropdown-menu{
             min-width: auto !important;
-            max-width: 100px;
+            //max-width: 100px;
             position: absolute;
             left:50%;
             transform: translateX(-50%);

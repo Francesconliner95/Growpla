@@ -11,9 +11,9 @@
     following = "{{Auth::user()->page_following->contains($page)}}";
 </script>
 <div class="container">
-    <div id="page-show">
-        {{-- <div :class="delete_alert?'delete-alert active-alert':'delete-alert deactive-alert'" v-cloak>
-            <div class="item-cont delete-alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">
+    <div id="show">
+        {{-- <div :class="delete_alert?'alert active-alert':'alert deactive-alert'" v-cloak>
+            <div class="item-cont alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="item-style">
                     <button type="button" name="button" class="edit-top-right button-color-gray" @click="rejectDelete()">
                         <i class="fas fa-times"></i>
@@ -44,9 +44,11 @@
                         {{-- Immagine --}}
                         <div class="profile-image">
                             <div class="position-relative w-100 h-100">
-                                @if($page->image)
-                                  <img src="{{ asset("storage/" . $page->image) }}" alt="" class="">
-                                @endif
+                                <div class="img-cont medium-img">
+                                  @if($page->image)
+                                    <img src="{{ asset("storage/" . $page->image) }}" alt="" class="">
+                                  @endif
+                                </div>
                                 <a v-if="is_my_page" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.images.editPageImage', $page->id)}}">
                                   <i class="fas fa-pencil-alt"></i>
                                 </a>
@@ -102,7 +104,7 @@
                           <div class="">
                             @if($page->sectors)
                               @foreach ($page->sectors as $sector)
-                                <span class="sector-style mb-2">{{$sector->name}}</span>
+                                <span class="border-style mb-2">{{$sector->name}}</span>
                               @endforeach
                             @endif
                           </div>

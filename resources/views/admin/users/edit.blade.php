@@ -99,7 +99,7 @@
                   </div>
                   {{-- Money range --}}
                   <div class="sub-section">
-                      <h6>Moneyrange <span>({{__('Quanto hai investito sino ad oggi?')}})</span></h6>
+                      <h6>{{__('Taglio d\'investimenti')}}</h6>
                       <div class="form-contrtol">
                         @foreach ($moneyranges as $moneyrange)
                           <div>

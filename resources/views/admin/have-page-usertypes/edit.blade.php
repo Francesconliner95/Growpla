@@ -20,7 +20,7 @@
                     @csrf
                     @method('PUT')
                     <div class="form-group">
-                      <h6>Modifica</h6>
+                      <h6>Inserisci servizi che intendi richiedere</h6>
                     </div>
                     @foreach ($usertypes as $usertype)
                       @if($usertype->id==1 || $usertype->id==2)

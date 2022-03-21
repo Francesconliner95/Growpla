@@ -11,13 +11,13 @@
         <div class="item-cont">
             <div class="item-style">
                 <div class="header">
-                    <h2>Servizi offerti</h2>
+                    <h2>Servizi richiesti</h2>
                 </div>
-                <form method="POST" action="{{ route('admin.give-user-services.update',$user->id) }}">
+                <form method="POST" action="{{ route('admin.have-user-services.update',$user->id) }}">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
-                      <h6>Inserisci servizi che intendi offrire in piattaforma</h6>
+                      <h6>Modifica</h6>
                     </div>
                     <div v-for="(service,i) in services" class="d-inline-block border-style" v-cloak>
                       {{-- <input type="hidden" name="services[]" :value="service.pivot.service_id"> --}}

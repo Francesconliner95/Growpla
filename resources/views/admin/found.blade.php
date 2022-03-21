@@ -14,7 +14,9 @@
                 <h3 >Risultati</h3>
                 <div class="">
                     <div v-for="account in accounts_show" class="" v-cloak>
-                        <img v-if="account.image" :src="'/storage/' + account.image" alt="">
+                        <div class="img-cont medium-img">
+                            <img v-if="account.image" :src="'/storage/' + account.image" alt="">
+                        </div>
                         <span class="text-capitalize">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</span>
                         <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="button-style button-color">Visita profilo</a>
                     </div>

@@ -13,8 +13,8 @@
 </script>
 <div class="container">
     <div id="settings-index">
-        <div :class="delete_alert?'delete-alert active-alert':'delete-alert deactive-alert'" v-cloak>
-            <div class="item-cont delete-alert-item  col-sm-12 col-md-12 col-lg-6 col-xl-6">
+        <div :class="delete_alert?'alert active-alert':'alert deactive-alert'" v-cloak>
+            <div class="item-cont alert-item  col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="item-style">
                     <button type="button" name="button" class="edit-top-right button-style button-color" @click="delete_alert=false">
                         <i class="fas fa-times"></i>
