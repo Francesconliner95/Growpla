@@ -9,7 +9,7 @@
     following = "{{Auth::user()->user_following->contains($user)}}";
 </script>
 <div class="container">
-    <div id="show">
+    <div id="user-show">
         {{-- <div :class="delete_alert?'alert active-alert':'alert deactive-alert'" v-cloak>
             <div class="item-cont alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="item-style">
@@ -51,7 +51,7 @@
                         <div class="">
                             <a v-if="is_my_user" class="button-style button-color-orange" href="{{route('admin.follows.index')}}">
                                 {{count(Auth::user()->user_following)
-                                +count(Auth::user()->page_following)}} Seguaci
+                                +count(Auth::user()->page_following)}} Seguiti
                             </a>
                             <button v-if="!is_my_user" :class="following?'button-style button-color-orange':'button-style button-color'" type="button" name="button" @click="toggleFollow({{$user->id}})" v-cloak>
                                 <span v-if="following">{{__('Following')}}</span>

@@ -22,10 +22,10 @@ var create = new Vue({
       checkboxToggle(id){
         if(document.getElementById(id).checked){
           document.getElementById(id).checked = false;
-          document.getElementById(id+'-b').classList.remove("button-active-orange");
+          document.getElementById(id+'-b').classList.remove("button-active-sector");
         }else{
           document.getElementById(id).checked = true;
-          document.getElementById(id+'-b').classList.add("button-active-orange");
+          document.getElementById(id+'-b').classList.add("button-active-sector");
         }
       }
 

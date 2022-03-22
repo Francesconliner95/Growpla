@@ -35,6 +35,10 @@ class SectorsTableSeeder extends Seeder
               'name_it'=>'Cibo e Bevande',
           ],
           [
+              'name'=>'Circular Economy',
+              'name_it'=>'Circular Economy',
+          ],
+          [
               'name'=>'Business',
               'name_it'=>'Commercio',
           ],
@@ -51,6 +55,10 @@ class SectorsTableSeeder extends Seeder
               'name_it'=>'Editoria',
           ],
           [
+              'name'=>'Education',
+              'name_it'=>'Educazione',
+          ],
+          [
               'name'=>'Electronics',
               'name_it'=>'Elettronica',
           ],
@@ -59,16 +67,32 @@ class SectorsTableSeeder extends Seeder
               'name_it'=>'Energia',
           ],
           [
+              'name'=>'Fintech e Insuretech',
+              'name_it'=>'Fintech e Insuretech',
+          ],
+          [
               'name'=>'Gaming',
               'name_it'=>'Gaming',
+          ],
+          [
+              'name'=>'Green Economy',
+              'name_it'=>'Green Economy',
           ],
           [
               'name'=>'Hardware',
               'name_it'=>'Hardware',
           ],
           [
+              'name'=>'ICT',
+              'name_it'=>'ICT',
+          ],
+          [
               'name'=>'Real estate',
               'name_it'=>'Immobiliare',
+          ],
+          [
+              'name'=>'Industry 4.0',
+              'name_it'=>'Industria 4.0',
           ],
           [
               'name'=>'Informatics',
@@ -97,6 +121,10 @@ class SectorsTableSeeder extends Seeder
           [
               'name'=>'Media and entertainment',
               'name_it'=>'Media e intrattenimento',
+          ],
+          [
+              'name'=>'Medicine',
+              'name_it'=>'Medicina',
           ],
           [
               'name'=>'Music and audio',
@@ -173,6 +201,10 @@ class SectorsTableSeeder extends Seeder
           [
               'name'=>'Video',
               'name_it'=>'Video',
+          ],
+          [
+              'name'=>'VR/AR',
+              'name_it'=>'VR/AR',
           ],
           [
               'name'=>'Other',

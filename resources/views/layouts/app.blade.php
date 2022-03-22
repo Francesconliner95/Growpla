@@ -27,7 +27,6 @@
 <body>
     <script type="text/javascript">
         window.csrf_token = "{{ csrf_token() }}";
-        page_selected = "{{Auth::user()->page_selected_id?App\Page::where('id',Auth::user()->page_selected_id)->select('id','image','name')->first():''}}";
     </script>
     <!-- Google Analytics -->
     <script>
@@ -57,6 +56,9 @@
         {{-- SE NON LOGGATO NON COMPARE LA NAVBAR --}}
 
         @else
+        <script type="text/javascript">
+            page_selected = "{{Auth::user()->page_selected_id?App\Page::where('id',Auth::user()->page_selected_id)->select('id','image','name')->first():''}}";
+        </script>
         <nav id="nav-bar" class="navbar-light">
             <div :class="alert?'alert active-alert':'alert deactive-alert'" v-cloak>
                 <div class="item-cont alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">

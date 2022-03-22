@@ -230,7 +230,7 @@ class PageController extends Controller
 
       $user = Auth::user();
       $page = Page::find($id);
-
+      
       if($page->users->contains($user)){
 
         if(array_key_exists('sectors', $data)){
@@ -239,7 +239,7 @@ class PageController extends Controller
           $page->sectors()->sync([]);
         }
 
-        return redirect()->route('admin.pages.show',$user->id);
+        return redirect()->route('admin.pages.show',$page->id);
 
       }abort(404);
 

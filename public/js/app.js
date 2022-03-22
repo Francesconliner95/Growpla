@@ -76934,10 +76934,10 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     checkboxToggle: function checkboxToggle(id) {
       if (document.getElementById(id).checked) {
         document.getElementById(id).checked = false;
-        document.getElementById(id + '-b').classList.remove("button-active-orange");
+        document.getElementById(id + '-b').classList.remove("button-active-sector");
       } else {
         document.getElementById(id).checked = true;
-        document.getElementById(id + '-b').classList.add("button-active-orange");
+        document.getElementById(id + '-b').classList.add("button-active-sector");
       }
     }
   },
@@ -79077,10 +79077,10 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     checkboxToggle: function checkboxToggle(id) {
       if (document.getElementById(id).checked) {
         document.getElementById(id).checked = false;
-        document.getElementById(id + '-b').classList.remove("button-active-orange");
+        document.getElementById(id + '-b').classList.remove("button-active-sector");
       } else {
         document.getElementById(id).checked = true;
-        document.getElementById(id + '-b').classList.add("button-active-orange");
+        document.getElementById(id + '-b').classList.add("button-active-sector");
       }
     }
   },
@@ -80085,8 +80085,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
