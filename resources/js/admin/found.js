@@ -12,7 +12,7 @@ var create = new Vue({
         pages_id,
         users_id,
         accounts: '',
-        accounts_show: '',
+        accounts_show: [],
         page: 1,
         show_prev: false,
         show_next: false,
@@ -304,32 +304,60 @@ var create = new Vue({
                 }
             }
             this.accounts = accounts;
-            this.showAccounts();
-
+            this.showMore();
         },
 
-        showAccounts(prev_next){
+        showMore(){
             var accounts_qty = this.accounts.length;
             var items_qty = 6;
-
-            if(prev_next==-1 && this.page>1){
-                this.page--;
-            }else if(prev_next==1  && this.page<Math.ceil(accounts_qty/items_qty)){
+            if(this.page<=Math.ceil(accounts_qty/items_qty)){
+                var new_accounts_show = this.accounts.slice(items_qty*this.page-items_qty,items_qty*this.page);
+                this.loadInfo(new_accounts_show);
                 this.page++;
             }
-
-            this.accounts_show =
-            this.accounts.slice(items_qty*this.page-items_qty,items_qty*this.page);
-
-            this.checkPrevNextButton(accounts_qty,items_qty);
         },
 
-        checkPrevNextButton(accounts_qty,items_qty){
+        // showAccounts(prev_next){
+        //     var accounts_qty = this.accounts.length;
+        //     var items_qty = 6;
+        //
+        //     if(prev_next==-1 && this.page>1){
+        //         this.page--;
+        //     }else if(prev_next==1  && this.page<Math.ceil(accounts_qty/items_qty)){
+        //         this.page++;
+        //     }
+        //
+        //     this.accounts_show =
+        //     this.accounts.slice(items_qty*this.page-items_qty,items_qty*this.page);
+        //
+        //     this.checkPrevNextButton(accounts_qty,items_qty);
+        //     this.moreInfo(this.accounts_show);
+        // },
 
-            this.page>1 ? this.show_prev = true : this.show_prev = false;
-            this.page<Math.ceil(accounts_qty/items_qty) ? this.show_next = true : this.show_next = false;
+        // checkPrevNextButton(accounts_qty,items_qty){
+        //
+        //     this.page>1 ? this.show_prev = true : this.show_prev = false;
+        //     this.page<Math.ceil(accounts_qty/items_qty) ? this.show_next = true : this.show_next = false;
+        //
+        // },
 
-        }
+        loadInfo(new_accounts){
+            if(new_accounts){
+                axios.get('/admin/loadInfo',{
+                    params: {
+                        accounts: new_accounts,
+                    }
+                }).then((response) => {
+                    this.accounts_show.push(...response.data.results.accounts);
+                });
+            }
+        },
+        scrollFunction(){
+          //console.log((window.innerHeight + window.scrollY) >= document.body.offsetHeight);
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                this.showMore();
+            }
+        },
 
     },
     created(){
@@ -346,6 +374,9 @@ var create = new Vue({
     mounted() {
 
         this.getRegionsByCountry();
+
+        window.onscroll = ()=>{this.scrollFunction()};
+
 
         if(!this.getCookie("tecCookie")){
             document.cookie = "tecCookie"+ "=" +"accept"+ ";" + "expires="+ this.dateUTC() +";path=/";

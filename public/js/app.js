@@ -75272,6 +75272,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 var _data;
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -75287,7 +75299,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     pages_id: pages_id,
     users_id: users_id,
     accounts: '',
-    accounts_show: '',
+    accounts_show: [],
     page: 1,
     show_prev: false,
     show_next: false,
@@ -75572,24 +75584,60 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       }
 
       this.accounts = accounts;
-      this.showAccounts();
+      this.showMore();
     },
-    showAccounts: function showAccounts(prev_next) {
+    showMore: function showMore() {
       var accounts_qty = this.accounts.length;
       var items_qty = 6;
 
-      if (prev_next == -1 && this.page > 1) {
-        this.page--;
-      } else if (prev_next == 1 && this.page < Math.ceil(accounts_qty / items_qty)) {
+      if (this.page <= Math.ceil(accounts_qty / items_qty)) {
+        var new_accounts_show = this.accounts.slice(items_qty * this.page - items_qty, items_qty * this.page);
+        this.loadInfo(new_accounts_show);
         this.page++;
       }
-
-      this.accounts_show = this.accounts.slice(items_qty * this.page - items_qty, items_qty * this.page);
-      this.checkPrevNextButton(accounts_qty, items_qty);
     },
-    checkPrevNextButton: function checkPrevNextButton(accounts_qty, items_qty) {
-      this.page > 1 ? this.show_prev = true : this.show_prev = false;
-      this.page < Math.ceil(accounts_qty / items_qty) ? this.show_next = true : this.show_next = false;
+    // showAccounts(prev_next){
+    //     var accounts_qty = this.accounts.length;
+    //     var items_qty = 6;
+    //
+    //     if(prev_next==-1 && this.page>1){
+    //         this.page--;
+    //     }else if(prev_next==1  && this.page<Math.ceil(accounts_qty/items_qty)){
+    //         this.page++;
+    //     }
+    //
+    //     this.accounts_show =
+    //     this.accounts.slice(items_qty*this.page-items_qty,items_qty*this.page);
+    //
+    //     this.checkPrevNextButton(accounts_qty,items_qty);
+    //     this.moreInfo(this.accounts_show);
+    // },
+    // checkPrevNextButton(accounts_qty,items_qty){
+    //
+    //     this.page>1 ? this.show_prev = true : this.show_prev = false;
+    //     this.page<Math.ceil(accounts_qty/items_qty) ? this.show_next = true : this.show_next = false;
+    //
+    // },
+    loadInfo: function loadInfo(new_accounts) {
+      var _this5 = this;
+
+      if (new_accounts) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/loadInfo', {
+          params: {
+            accounts: new_accounts
+          }
+        }).then(function (response) {
+          var _this5$accounts_show;
+
+          (_this5$accounts_show = _this5.accounts_show).push.apply(_this5$accounts_show, _toConsumableArray(response.data.results.accounts));
+        });
+      }
+    },
+    scrollFunction: function scrollFunction() {
+      //console.log((window.innerHeight + window.scrollY) >= document.body.offsetHeight);
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        this.showMore();
+      }
     }
   },
   created: function created() {
@@ -75604,7 +75652,13 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     this.mergePagesUsers();
   },
   mounted: function mounted() {
+    var _this6 = this;
+
     this.getRegionsByCountry();
+
+    window.onscroll = function () {
+      _this6.scrollFunction();
+    };
 
     if (!this.getCookie("tecCookie")) {
       document.cookie = "tecCookie" + "=" + "accept" + ";" + "expires=" + this.dateUTC() + ";path=/";
@@ -75788,37 +75842,37 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         case '1':
           this.userRecommended = [1];
           this.pageRecommended = [3];
-          this.serviceRecommended = [1, 2, 4, 5, 6, 7, 10];
+          this.serviceRecommended = [2, 3, 4, 5, 6, 8];
           break;
 
         case '2':
           this.userRecommended = [2];
           this.pageRecommended = [3];
-          this.serviceRecommended = [2, 5, 7, 10];
+          this.serviceRecommended = [2, 4, 6, 8];
           break;
 
         case '3':
           this.userRecommended = [];
           this.pageRecommended = [3];
-          this.serviceRecommended = [2, 7, 10];
+          this.serviceRecommended = [2, 6, 8];
           break;
 
         case '4':
           this.userRecommended = [];
           this.pageRecommended = [5];
-          this.serviceRecommended = [2, 10];
+          this.serviceRecommended = [2, 8];
           break;
 
         case '5':
           this.userRecommended = [];
           this.pageRecommended = [5, 8];
-          this.serviceRecommended = [2, 10];
+          this.serviceRecommended = [2, 8];
           break;
 
         case '6':
           this.userRecommended = [];
           this.pageRecommended = [];
-          this.serviceRecommended = [2, 10];
+          this.serviceRecommended = [2, 8];
           break;
 
         case '7':
@@ -76736,7 +76790,10 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           }
         }).then(function (response) {
           _this.regions = response.data.results.regions;
-          _this.region_id_selected = '';
+
+          if (!_this.region_id_selected) {
+            _this.region_id_selected = '';
+          }
         });
       }
     } // submitForm(){
@@ -78639,10 +78696,10 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     checkboxToggle: function checkboxToggle(id) {
       if (document.getElementById(id).checked) {
         document.getElementById(id).checked = false;
-        document.getElementById(id + '-b').classList.remove("button-active");
+        document.getElementById(id + '-b').classList.remove("button-active-multichoise");
       } else {
         document.getElementById(id).checked = true;
-        document.getElementById(id + '-b').classList.add("button-active");
+        document.getElementById(id + '-b').classList.add("button-active-multichoise");
       }
     }
   },
@@ -78915,7 +78972,10 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           }
         }).then(function (response) {
           _this2.regions = response.data.results.regions;
-          _this2.region_id_selected = '';
+
+          if (!_this2.region_id_selected) {
+            _this2.region_id_selected = '';
+          }
         });
       }
     } // remove_file(value){
@@ -80085,8 +80145,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

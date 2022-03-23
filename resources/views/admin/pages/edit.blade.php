@@ -9,7 +9,6 @@
     <div id="page-edit">
         <div class="item-cont">
             <div class="item-style">
-              <h2>Modifica utente</h2>
               <div class="header">
                   {{-- Nome --}}
                   <div class="">
@@ -34,18 +33,24 @@
                           </span>
                       @enderror
                   </div>
-
-                  {{-- Descrizione --}}
                   <div class="sub-section">
-                      <h6>{{__('Presentation')}}*</h6>
-                      <textarea name="description" rows="8" cols="80" class="form-control" placeholder="{{__('Write something about what you do')}}" min="50" required>{{ $page->description }}</textarea>
+                      <h6>Sommario*</h6>
+                      <textarea name="summary" rows="2" cols="80" class="form-control" placeholder="Descrivi brevente cio che fai"  minlength="50" maxlength="250" required>{{ $page->summary }}</textarea>
+                      @error ('summary')
+                          <div class="alert alert-danger">
+                              {{__($message)}}
+                          </div>
+                      @enderror
+                  </div>
+                  <div class="sub-section">
+                      <h6>{{__('Presentation')}}</h6>
+                      <textarea name="description" rows="8" cols="80" class="form-control" placeholder="{{__('Write something about what you do')}}" maxlength="1000">{{ $page->description }}</textarea>
                       @error ('description')
                           <div class="alert alert-danger">
                               {{__($message)}}
                           </div>
                       @enderror
                   </div>
-
                   {{-- SitoWeb --}}
                   <div class="sub-section">
                       <h6>{{__('Website')}} <span>({{__('enter the URL of your web site')}})</span></h6>
@@ -105,6 +110,58 @@
                           </div>
                       </div>
                   </div>
+                  <div class="sub-section">
+                      <div class="form-contrtol">
+                          <h6>MVP</h6>
+                          <div>
+                            <input type="radio" id="mvp-yes" name="type_bool_1" value="1"
+                            {{$page->type_bool_1?'checked':''}} required>
+                            <label for="mvp-yes">Si</label>
+                          </div>
+                          <div>
+                            <input type="radio" id="mvp-no" name="type_bool_1" value=""
+                            {{!$page->type_bool_1?'checked':''}} required>
+                            <label for="mvp-no">No</label>
+                          </div>
+                      </div>
+                  </div>
+                  @endif
+                  @if (!$page->pagetype->hidden && $page->pagetype_id==3)
+                      <div class="sub-section">
+                          <div class="form-contrtol">
+                              <h6>Tipologia</h6>
+                              <div>
+                                <input type="radio" id="i-private" name="type_bool_1" value=""
+                                {{!$page->type_bool_1?'checked':''}} required>
+                                <label for="i-private">Privato</label>
+                              </div>
+                              <div>
+                                <input type="radio" id="i-public" name="type_bool_1" value="1"
+                                {{$page->type_bool_1?'checked':''}} required>
+                                <label for="i-public">Pubblico</label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="sub-section">
+                          <div class="form-contrtol">
+                              <h6>Servizi erogati:</h6>
+                              <div>
+                                <input type="radio" id="i-fisici" name="type_int_1" value=""
+                                {{!$page->type_int_1?'checked':''}} required>
+                                <label for="i-fisici">Fisici</label>
+                              </div>
+                              <div>
+                                <input type="radio" id="i-online" name="type_int_1" value="1"
+                                {{$page->type_int_1==1?'checked':''}} required>
+                                <label for="i-online">Online</label>
+                              </div>
+                              <div>
+                                <input type="radio" id="i-ibrid" name="type_int_1" value="2"
+                                {{$page->type_int_1==2?'checked':''}} required>
+                                <label for="i-ibrid">Ibridi</label>
+                              </div>
+                          </div>
+                      </div>
                   @endif
                   @if (!$page->pagetype->hidden
                   && $page->pagetype_id==3 || $page->pagetype_id==4
@@ -139,7 +196,7 @@
                       @enderror
                   </div>
                   @endif
-                  <div class="form-group">
+                  <div class="last-sub-section">
                       <h6>Indirizzo</h6>
                       <div class="row">
                           {{-- <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">

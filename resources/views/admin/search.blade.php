@@ -97,7 +97,7 @@
                                 <i class="fas fa-trash-alt" @click="removeSkill(i)"></i>
                               </label>
                             </div>
-                            <input type="text" name="name" value="" placeholder="Nome abilità" v-model="skill_name" @keyup.enter="searchSkill()" v-on:input="searchSkill()" maxlength="70" class="form-control" autocomplete="off">
+                            <input type="text" name="name" value="" placeholder="Nome competenza" v-model="skill_name" @keyup.enter="searchSkill()" v-on:input="searchSkill()" maxlength="70" class="form-control" autocomplete="off">
                             @error ('skill_name')
                                 <div class="alert alert-danger">
                                     {{__($message)}}

@@ -354,9 +354,20 @@ ul>p{
 
 //BUTTON
 
-.button-active{
+.button-active-multichoise{
   background-color: $default_green !important;
   color: white !important;
+}
+
+.button-color-multichoise{
+    border: 2px solid $default_green;
+    color: $default_green;
+    background-color: white;
+    &:hover{
+        transition: 0.2s;
+        background-color: $default_green;
+        color: white;
+    }
 }
 
 .button-active-sector{

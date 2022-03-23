@@ -53,7 +53,9 @@ var create = new Vue({
                 }
             }).then((response) => {
                 this.regions = response.data.results.regions;
-                this.region_id_selected= '';
+                if(!this.region_id_selected){
+                    this.region_id_selected= '';
+                }
             });
           }
         },

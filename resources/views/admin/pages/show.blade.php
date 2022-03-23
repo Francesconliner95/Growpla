@@ -81,15 +81,18 @@
                   </div>
                 </div>
                 @endif
-
-                {{-- Descrizione --}}
-                @if($page->description)
+                @if($page->summary)
                 <div class="sub-section">
-                  <h6>{{__('Presentation')}}</h6>
-                  <p class="description">{{$page->description}}</p>
+                    <h6>Sommario</h6>
+                    <p class="description">{{$page->summary}}</p>
                 </div>
                 @endif
-
+                @if($page->description)
+                <div class="sub-section">
+                    <h6>{{__('Presentation')}}</h6>
+                    <p class="description">{{$page->description}}</p>
+                </div>
+                @endif
                 @if($page->website
                 || $page->linkedin
                 || $page->pitch)

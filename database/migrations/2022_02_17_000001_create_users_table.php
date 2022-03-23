@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->unsignedbigInteger('page_selected_id')->nullable();//nessun collegamento
             $table->date('date_of_birth');
             $table->string('image')->nullable();
+            $table->string('summary')->nullable();
             $table->text('description')->nullable();
             $table->string('cv')->nullable();
             $table->string('linkedin')->nullable();

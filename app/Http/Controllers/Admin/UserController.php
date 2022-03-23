@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Events\MyEvent;
 use File;
+use App\View;
 use App\Language;
 use App\User;
 use App\Page;
@@ -65,6 +66,7 @@ class UserController extends Controller
         'userTypes' => $userTypes,
         'pageTypes' => $pageTypes,
       ];
+      app()->setLocale(Language::find(Auth::user()->language_id)->lang);
       return view('admin.users.create', $data);
       //return redirect()->route('admin.users.create');
 
@@ -109,7 +111,7 @@ class UserController extends Controller
           'sectors' => Sector::all(),
           'countries'=> Country::all(),
         ];
-
+        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
         return view('admin.users.edit', $data);
       }abort(404);
 
@@ -120,7 +122,8 @@ class UserController extends Controller
       $request->validate([
           'name' => 'required|string|min:3|max:70',
           'surname' => 'required|string|min:3|max:70',
-          'description' => 'required|min:50',
+          'summary' => 'required|min:50|max:250',
+          'description' => 'nullable|min:50|max:1000',
           'website' => 'nullable|max:255',
           'linkedin'=> 'nullable|max:255',
           'cv' => 'nullable|mimes:pdf|max:6144',
@@ -174,17 +177,25 @@ class UserController extends Controller
             ->select('give_user_services.id','services.name')
             ->get();
 
+            $my_user_id = Auth::user()->id;
+            $already_viewed = View::where('user_id',$my_user_id)->where('viewed_user_id',$user->id)->first();
+            if(!$already_viewed){
+                $new_view = new View();
+                $new_view->user_id = $my_user_id;
+                $new_view->viewed_user_id = $user->id;
+                $new_view->save();
+            }
+
             $data = [
               'user' => $user,
               'userTypes' => Usertype::where('hidden',null)->get(),
               'is_my_user' => Auth::user()->id==$user->id?true:false,
-              'pageTypes' => $user->pagetypes,
+              'pageTypes' => $user->pagetypes->where('hidden',null),
               'currencies' => $user->currencies,
               'give_services' => $give_services,
             ];
-            
-            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
+            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
             return view('admin.users.show', $data);
 
         }abort(404);
@@ -200,7 +211,7 @@ class UserController extends Controller
           'user' => $user,
           'sectors' => Sector::all(),
         ];
-
+        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
         return view('admin.users.sectors', $data);
 
       }abort(404);
@@ -254,7 +265,7 @@ class UserController extends Controller
         'user' => $user,
         'languages' => $languages,
       ];
-
+      app()->setLocale(Language::find(Auth::user()->language_id)->lang);
       return view('admin.users.settings', $data);
 
     }

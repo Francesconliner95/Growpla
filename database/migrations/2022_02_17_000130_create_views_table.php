@@ -17,10 +17,10 @@ class CreateViewsTable extends Migration
             $table->id();
             $table->unsignedbigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            
-            $table->unsignedbigInteger('viewed_user_id');
+
+            $table->unsignedbigInteger('viewed_user_id')->nullable();
             $table->foreign('viewed_user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedbigInteger('viewed_page_id');
+            $table->unsignedbigInteger('viewed_page_id')->nullable();
             $table->foreign('viewed_page_id')->references('id')->on('pages')->onDelete('cascade');
             $table->timestamps();
         });

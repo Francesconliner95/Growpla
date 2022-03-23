@@ -10,7 +10,6 @@
     <div id="user-edit">
         <div class="item-cont">
             <div class="item-style">
-              <h2>Modifica utente</h2>
               <div class="header">
                   {{-- Nome --}}
                   <div class="">
@@ -27,28 +26,39 @@
                   <span class="mini-txt">{{__('Filling in some of the following fields is optional, however a more complete profile has more chance of being viewed by other users')}}</span>
                   {{-- NOME --}}
                   <div class="sub-section">
-                      <h6>{{__('Name')}}*</h6>
-                      <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name',$user->name) }}" minlength="3" maxlength="70" required autocomplete="name" required>
-                      @error('name')
-                          <span class="alert alert-danger">
+                      <div class="row">
+                          <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                              <h6>{{__('Name')}}*</h6>
+                              <input type="text" class="text-capitalize form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name',$user->name) }}" minlength="3" maxlength="70" required autocomplete="name" required>
+                              @error('name')
+                                  <span class="alert alert-danger">
+                                      {{__($message)}}
+                                  </span>
+                              @enderror
+                          </div>
+                          <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                              <h6>{{__('Surname')}}*</h6>
+                              <input type="text" class="text-capitalize form-control @error('surname') is-invalid @enderror" name="surname" value="{{ old('surname',$user->surname) }}" minlength="3" maxlength="70" required autocomplete="surname" required>
+                              @error('surname')
+                                  <span class="alert alert-danger">
+                                      {{__($message)}}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+                  </div>
+                  <div class="sub-section">
+                      <h6>Sommario*</h6>
+                      <textarea name="summary" rows="2" cols="80" class="form-control" placeholder="Descrivi brevente cio che fai"  minlength="50" maxlength="250" required>{{ $user->summary }}</textarea>
+                      @error ('summary')
+                          <div class="alert alert-danger">
                               {{__($message)}}
-                          </span>
+                          </div>
                       @enderror
                   </div>
                   <div class="sub-section">
-                      <h6>{{__('Surname')}}*</h6>
-                      <input type="text" class="form-control @error('surname') is-invalid @enderror" name="surname" value="{{ old('surname',$user->surname) }}" minlength="3" maxlength="70" required autocomplete="surname" required>
-                      @error('surname')
-                          <span class="alert alert-danger">
-                              {{__($message)}}
-                          </span>
-                      @enderror
-                  </div>
-
-                  {{-- Descrizione --}}
-                  <div class="sub-section">
-                      <h6>{{__('Presentation')}}*</h6>
-                      <textarea name="description" rows="8" cols="80" class="form-control" placeholder="{{__('Write something about what you do')}}"  minlength="50" maxlength="500" required>{{ $user->description }}</textarea>
+                      <h6>{{__('Presentation')}}</h6>
+                      <textarea name="description" rows="8" cols="80" class="form-control" placeholder="{{__('Write something about what you do')}}" maxlength="1000">{{ $user->description }}</textarea>
                       @error ('description')
                           <div class="alert alert-danger">
                               {{__($message)}}
@@ -57,7 +67,7 @@
                   </div>
                   <div class="sub-section">
                       <h6>Curriculum Vitae</h6>
-                      <div class="edit-image-drag-drop row">
+                      <div class="edit-image-drag-drop row m-0">
                           <div v-if="user.cv" class="file-cont  col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-2">
                               <embed src="{{ asset("storage/" . $user->cv) }}" />
                               <button type="button" @click="remove_file('cv')" class="button-style button-color-red edit-top-right">
@@ -127,7 +137,7 @@
                           </div>
                       @enderror
                   </div>
-                  <div class="form-group">
+                  <div class="last-sub-section">
                       <h6>Indirizzo*</h6>
                       <div class="row">
                           {{-- <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">

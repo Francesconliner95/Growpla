@@ -31,6 +31,7 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
 
     Route::get('/search', 'MainController@search')->name('search');
     Route::post('/found', 'MainController@found')->name('found');
+    Route::get('/loadInfo', 'MainController@loadInfo')->name('loadInfo');
 
     Route::resource('/users', 'UserController');
     Route::get('/tutorial', 'UserController@tutorial')->name('users.tutorial');

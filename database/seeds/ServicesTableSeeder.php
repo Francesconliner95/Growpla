@@ -29,13 +29,6 @@ class ServicesTableSeeder extends Seeder
               'pagetype_id' => 1,
             ],
             [
-              'name_it'=>'Costituzione ed aspetti legali',
-              'description_it'=>'',
-              'name'=>'Constitution and legal aspects',
-              'description'=>'',
-              'pagetype_id' => 1,
-            ],
-            [
               'name_it'=>'Creazione pitch',
               'description_it'=>'',
               'name'=>'Pitch',
@@ -43,7 +36,7 @@ class ServicesTableSeeder extends Seeder
               'pagetype_id' => 1,
             ],
             [
-              'name_it'=>'Creazione business plan',
+              'name_it'=>'Business plan',
               'description_it'=>'',
               'name'=>'Business plan',
               'description'=>'',
@@ -71,13 +64,6 @@ class ServicesTableSeeder extends Seeder
               'pagetype_id' => 1,
             ],
             [
-              'name_it'=>'Marketing',
-              'description_it'=>'',
-              'name'=>'Marketing',
-              'description'=>'',
-              'pagetype_id' => 1,
-            ],
-            [
               'name_it'=>'Mentoring',
               'description_it'=>'Il mentor offre servizi di consulenza volti a guidare le startup dalla fase di concepimento dell\'idea, al fine di individuare la strategia di sviluppo più opportuna.',
               'name'=>'Mentoring',
@@ -85,18 +71,61 @@ class ServicesTableSeeder extends Seeder
               'pagetype_id' => 1,
             ],
             [
+              'name_it'=>'Costituzione societaria',
+              'description_it'=>'',
+              'name'=>'Company constitution',
+              'description'=>'',
+              'pagetype_id' => null,
+            ],                      
+            [
+              'name_it'=>'Marketing e Digital Marketing',
+              'description_it'=>'',
+              'name'=>'Marketing e Digital Marketing',
+              'description'=>'',
+              'pagetype_id' => null,
+            ],
+
+            [
               'name_it'=>'Sviluppo nocode',
               'description_it'=>'',
               'name'=>'Nocode development',
               'description'=>'',
-              'pagetype_id' => 1,
+              'pagetype_id' => null,
             ],
             [
               'name_it'=>'Sviluppo Software',
               'description_it'=>'',
               'name'=>'Software development',
               'description'=>'',
-              'pagetype_id' => 1,
+              'pagetype_id' => null,
+            ],
+            [
+              'name_it'=>'Graphic designer',
+              'description_it'=>'',
+              'name'=>'Graphic designer',
+              'description'=>'',
+              'pagetype_id' => null,
+            ],
+            [
+              'name_it'=>'UI/UX',
+              'description_it'=>'',
+              'name'=>'UI/UX',
+              'description'=>'',
+              'pagetype_id' => null,
+            ],
+            [
+              'name_it'=>'Commercialista',
+              'description_it'=>'',
+              'name'=>'Financial advisor',
+              'description'=>'',
+              'pagetype_id' => null,
+            ],
+            [
+              'name_it'=>'Consulenza legale',
+              'description_it'=>'',
+              'name'=>'Legal advice',
+              'description'=>'',
+              'pagetype_id' => null,
             ],
         ];
 

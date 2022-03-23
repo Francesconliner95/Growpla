@@ -4,7 +4,6 @@
 <script type="text/javascript">
     window.csrf_token = "{{ csrf_token() }}";
     lang = "{{Auth::user()->language_id}}";
-    // user = "{{--$user--}}";
     is_my_user = "{{$is_my_user}}";
     following = "{{Auth::user()->user_following->contains($user)}}";
 </script>
@@ -77,7 +76,12 @@
                   </div>
                 </div>
                 @endif
-                {{-- Descrizione --}}
+                @if($user->summary)
+                <div class="sub-section">
+                    <h6>Sommario</h6>
+                    <p class="description">{{$user->summary}}</p>
+                </div>
+                @endif
                 @if($user->description)
                 <div class="sub-section">
                   <h6>{{__('Presentation')}}</h6>
@@ -89,7 +93,6 @@
                 || $user->pitch
                 || $user->cv)
                 <div class="sub-section link-cont">
-                    {{-- SitoWeb --}}
                     @if($user->website)
                     <div class="link-item">
                         <a class="website" href="{{$user->website}}" target="_blank" rel="noopener noreferrer">
@@ -98,8 +101,6 @@
                         </a>
                     </div>
                     @endif
-
-                    {{-- Linkedin --}}
                     @if($user->linkedin)
                     <div class="link-item">
                         <a class="linkedin" href="{{$user->linkedin}}" target="_blank" rel="noopener noreferrer">
@@ -108,8 +109,6 @@
                         </a>
                     </div>
                     @endif
-
-                    {{-- CO-FOUNDER-UTENTE --}}
                     @if ($user->cv)
                     <div class="link-item">
                         <a class="cv" href="#" @click="open(user.cv)">
@@ -127,18 +126,13 @@
                       <div class="row justify-content-center">
                           @if($user->startup_n)
                           <div class="text-center col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                              <h6>{{__('Amount of')}}
-                                  <span class="font-weight-bold">{{__('startups incubated')}}</span>
-                                  <span  class="font-weight-bold">{{__('projects funded')}}</span>
-                              </h6>
+                              <h6>Quantità di progetti finanziati</h6>
                               <h3 class="font-weight-bold">{{$user->startup_n}}</h3>
                           </div>
                           @endif
                           @if($user->moneyrange_id)
                           <div class="text-center col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                              <h6>
-                                  <span class="font-weight-bold">Taglio d'investimenti</span>
-                              </h6>
+                              <h6>Taglio d'investimenti</h6>
                               <h3 class="font-weight-bold">
                                 {{$user->moneyrange->range}} {{$user->currency->symbol}}
                               </h3>
@@ -201,42 +195,44 @@
                 {{-- DIPENDENTE --}}
                 @if($user->usertypes->contains(4))
                   @if($is_my_user || count($user->companies)>0)
-                  <div class="">
+                  <div class="last-sub-section">
                       <h6>Aziende per cui lavoro</h6>
-                      @foreach ($user->companies as $company)
-                      <div>
-                          @if($company->page_id)
-                              <a href="{{route('admin.pages.show', $company->page->id)}}" class="text-gray">
+                      <div class="row">
+                          @foreach ($user->companies as $company)
+                          <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                              @if($company->page_id)
+                                  <a href="{{route('admin.pages.show', $company->page->id)}}" class="text-gray">
+                                      <div class="img-cont mini-img">
+                                          @if($company->page->image)
+                                            <img src="{{ asset("storage/" . $company->page->image) }}" alt="" class="">
+                                          @endif
+                                      </div>
+                                      {{$company->page->name}}
+                                  </a>
+                                  @if($company->page->linkedin)
+                                      <a class="linkedin" href="{{$company->page->linkedin}}" target="_blank" rel="noopener noreferrer">
+                                          <i class="fab fa-linkedin"></i>
+                                      </a>
+                                  @endif
+                              @else
                                   <div class="img-cont mini-img">
-                                      @if($company->page->image)
+                                      @if($company->image)
                                         <img src="{{ asset("storage/" . $company->page->image) }}" alt="" class="">
                                       @endif
                                   </div>
-                                  {{$company->page->name}}
-                              </a>
-                              @if($company->page->linkedin)
-                                  <a class="linkedin" href="{{$company->page->linkedin}}" target="_blank" rel="noopener noreferrer">
-                                      <i class="fab fa-linkedin"></i>
-                                  </a>
-                              @endif
-                          @else
-                              <div class="img-cont mini-img">
-                                  @if($company->image)
-                                    <img src="{{ asset("storage/" . $company->page->image) }}" alt="" class="">
+                                  {{$company->name}}
+                                  @if($company->linkedin)
+                                      <a class="linkedin" href="{{$company->linkedin}}" target="_blank" rel="noopener noreferrer">
+                                          <i class="fab fa-linkedin"></i>
+                                      </a>
                                   @endif
-                              </div>
-                              {{$company->name}}
-                              @if($company->linkedin)
-                                  <a class="linkedin" href="{{$company->linkedin}}" target="_blank" rel="noopener noreferrer">
-                                      <i class="fab fa-linkedin"></i>
-                                  </a>
                               @endif
-                          @endif
-                          <a v-if="is_my_user" href="{{route('admin.companies.edit', $company->id)}}" class="button-style-circle button-color-gray">
-                              <i class="fas fa-pencil-alt"></i>
-                          </a>
+                              <a v-if="is_my_user" href="{{route('admin.companies.edit', $company->id)}}" class="button-style-circle button-color-gray">
+                                  <i class="fas fa-pencil-alt"></i>
+                              </a>
+                          </div>
+                          @endforeach
                       </div>
-                      @endforeach
                   </div>
                   <div v-if="is_my_user" class="d-flex justify-content-center w-100">
                       <a href="{{route('admin.companies.create')}}" class="text-gray">

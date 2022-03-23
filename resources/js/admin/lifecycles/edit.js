@@ -30,32 +30,32 @@ var create = new Vue({
                 case '1':
                     this.userRecommended = [1];
                     this.pageRecommended = [3];
-                    this.serviceRecommended = [1,2,4,5,6,7,10];
+                    this.serviceRecommended = [2,3,4,5,6,8];
                 break;
                 case '2':
                     this.userRecommended = [2];
                     this.pageRecommended = [3];
-                    this.serviceRecommended = [2,5,7,10];
+                    this.serviceRecommended = [2,4,6,8];
                 break;
                 case '3':
                     this.userRecommended = [];
                     this.pageRecommended = [3];
-                    this.serviceRecommended = [2,7,10];
+                    this.serviceRecommended = [2,6,8];
                 break;
                 case '4':
                     this.userRecommended = [];
                     this.pageRecommended = [5];
-                    this.serviceRecommended = [2,10];
+                    this.serviceRecommended = [2,8];
                 break;
                 case '5':
                     this.userRecommended = [];
                     this.pageRecommended = [5,8];
-                    this.serviceRecommended = [2,10];
+                    this.serviceRecommended = [2,8];
                 break;
                 case '6':
                     this.userRecommended = [];
                     this.pageRecommended = [];
-                    this.serviceRecommended = [2,10];
+                    this.serviceRecommended = [2,8];
                 break;
                 case '7':
                     this.userRecommended = [];

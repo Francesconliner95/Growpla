@@ -590,4 +590,39 @@ class MainController extends Controller
 
   }
 
+  public function loadInfo(Request $request){
+
+    $request->validate([
+        'accounts' => 'required',
+    ]);
+
+    $_accounts = $request->accounts;
+    $accounts_info = [];
+    foreach ($_accounts as $_account) {
+        $account = json_decode($_account);
+        if($account->user_or_page){
+            $account_info = User::where('id',$account->id)
+                                ->select('id','name','surname','image','summary')
+                                ->first();
+            $account_info['user_or_page'] = true;
+            $account_info['sectors'] = $account_info->sectors;
+        }else{
+            $account_info = Page::where('id',$account->id)
+                                ->select('id','name','image','summary')
+                                ->first();
+            $account_info['user_or_page'] = false;
+            $account_info['sectors'] = $account_info->sectors;
+        }
+        array_push($accounts_info,$account_info);
+    }
+
+    return response()->json([
+        'success' => true,
+        'results' => [
+            'accounts' => $accounts_info,
+        ]
+    ]);
+
+  }
+
 }

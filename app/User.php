@@ -107,6 +107,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'date_of_birth',
         'language_id',
         'image',
+        'summary',
         'description',
         'cv',
         'linkedin',

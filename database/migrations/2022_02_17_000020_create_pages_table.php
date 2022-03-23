@@ -19,6 +19,7 @@ class CreatePagesTable extends Migration
             $table->foreign('pagetype_id')->references('id')->on('pagetypes');
             $table->string('name');
             $table->string('image')->nullable();
+            $table->string('summary')->nullable();
             $table->text('description')->nullable();
             $table->string('website')->nullable();
             $table->string('linkedin')->nullable();
@@ -33,23 +34,24 @@ class CreatePagesTable extends Migration
             $table->string('street_name')->nullable();
             $table->string('street_number')->nullable();
             $table->string('municipality')->nullable();
+
             //STURTUP
             $table->unsignedbigInteger('lifecycle_id')->nullable();
             $table->foreign('lifecycle_id')->references('id')->on('lifecycles');
             $table->string('pitch')->nullable();
             $table->boolean('incorporated')->nullable();
-            $table->boolean('mvp')->nullable();//mvp
-
-            //INCUBATORE
-            $table->tinyInteger('')->nullable();//servizi erogati
-            //fisici online ibridi
-            $table->tinyInteger('')->nullable();//tipologia
-            //privato pubblico ibrido
 
             //INCUBATORE - INVESTITORE
             $table->unsignedbigInteger('moneyrange_id')->nullable();
             $table->foreign('moneyrange_id')->references('id')->on('moneyranges');
             $table->integer('startup_n')->nullable();
+
+            //VARIABILI GENERICHE UTILIZZABILI PER OGNI TIPOLOGIA DI ACCOUNT
+            //STARTUP(mvp: no/si)
+            //INCUBATORE(tipologia: privato/pubblico)
+            $table->boolean('type_bool_1')->nullable();
+            //INCUBATORE(servizi erogati: fisici-online-ibridi)
+            $table->tinyInteger('type_int_1')->nullable();
 
             $table->timestamps();
 

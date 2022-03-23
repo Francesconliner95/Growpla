@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
+use App\Language;
 use File;
+use App\View;
 use App\User;
 use App\Page;
 use App\Usertype;
@@ -36,7 +38,7 @@ class PageController extends Controller
       $data = [
         'pagetype_id' => $pagetype_id,
       ];
-
+      app()->setLocale(Language::find(Auth::user()->language_id)->lang);
       return view('admin.pages.create', $data);
 
     }
@@ -89,7 +91,7 @@ class PageController extends Controller
               'moneyranges' => Moneyrange::all(),
               'countries'=> Country::all(),
             ];
-
+            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
             return view('admin.pages.edit', $data);
 
         }abort(404);
@@ -100,7 +102,8 @@ class PageController extends Controller
 
         $request->validate([
           'name' => 'required|string|min:3|max:70',
-          'description' => 'required|min:50',
+          'summary' => 'required|min:50|max:250',
+          'description' => 'nullable|min:50|max:1000',
           'website' => 'nullable|max:255',
           'linkedin'=> 'nullable|max:255',
           'pitch' => 'nullable|mimes:pdf|max:6144',
@@ -160,6 +163,15 @@ class PageController extends Controller
 
         $team_num = Team::where('page_id', $page->id)->count();
 
+        $my_user_id = Auth::user()->id;
+        $already_viewed = View::where('user_id',$my_user_id)->where('viewed_page_id',$page->id)->first();
+        if(!$already_viewed){
+            $new_view = new View();
+            $new_view->user_id = $my_user_id;
+            $new_view->viewed_page_id = $page->id;
+            $new_view->save();
+        }
+
         $data = [
           'page' => $page,
           'is_my_page' => $user->pages->contains($page),
@@ -167,7 +179,7 @@ class PageController extends Controller
           'team_members' => $team_members,
           'team_num' => $team_num,
         ];
-
+        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
         return view('admin.pages.show', $data);
       }abort(404);
 
@@ -182,7 +194,7 @@ class PageController extends Controller
         $data = [
           'page_id' => $page->id,
         ];
-
+        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
         return view('admin.pages.settings', $data);
       }abort(404);
 
@@ -213,7 +225,7 @@ class PageController extends Controller
           'page' => $page,
           'sectors' => Sector::all(),
         ];
-
+        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
         return view('admin.pages.sectors', $data);
 
       }abort(404);
@@ -230,7 +242,7 @@ class PageController extends Controller
 
       $user = Auth::user();
       $page = Page::find($id);
-      
+
       if($page->users->contains($user)){
 
         if(array_key_exists('sectors', $data)){
