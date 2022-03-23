@@ -51,7 +51,7 @@ class PagetypeTableSeeder extends Seeder
               'name_it'=>'venture capital',
               'description'=>'Venture capital are institutional investors who intervene in a phase in which startups have already registered significant growth rates in turnover, bringing capital and experience in strategy and governance.',
               'description_it'=>'I Venture capital sono investitori istituzionali che intervengono in una fase in cui le startup hanno già fatto registrare tassi di crescita del fatturato rilevanti, apportando capitali ed esperienza in strategia e governance.',
-              'hidden' => 1,
+              'hidden' => null,
           ],
           [
               'name'=>'crowdfunding platform',
