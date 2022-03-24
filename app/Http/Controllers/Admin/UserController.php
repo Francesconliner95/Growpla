@@ -21,6 +21,7 @@ use App\Sector;
 use App\GiveUserService;
 use App\Region;
 use App\Country;
+use App\Collaboration;
 
 class UserController extends Controller
 {

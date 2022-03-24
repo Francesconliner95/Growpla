@@ -5,6 +5,7 @@
     window.csrf_token = "{{ csrf_token() }}";
     lang = "{{Auth::user()->language_id}}";
     page = "{{$page}}";
+    id = "{{$page->id}}";
     is_my_page = "{{$is_my_page}}";
     team_members = "{{$team_members}}";
     team_num = "{{$team_num}}";
@@ -272,6 +273,39 @@
                             <i class="fas fa-plus-circle"></i>
                         </a>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="is_my_page || collaborations.length>0" class="item-cont" v-cloak>
+            <div class="item-style">
+                <h3 class="text-capitalize">Collaborazioni</h3>
+                <div class="row">
+                    <div v-for="collaboration in collaborations"class="col-sm-12 col-md-6 col-lg-4 col-xl-3  p-1">
+                        <div class="page-list">
+                            <a :href="collaboration.recipient_user_id?
+                            '/admin/users/'+collaboration.account.id
+                            :'/admin/pages/'+collaboration.account.id" class="">
+                                <div class="img-cont mini-img">
+                                  <img
+                                  v-if="collaboration.account.image"
+                                  :src="'/storage/' +collaboration.account.image" alt="" class="">
+                                </div>
+                                <span>@{{collaboration.account.name}}
+                                    @{{collaboration.account.surname?
+                                    collaboration.account.surname:''}}
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    @if($is_my_page)
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 p-1">
+                      <div class="page-list">
+                          <a class="" href="{{ route('admin.collaborations.create', ['id'=> $page->id,'user_or_page'=> 'page']) }}">
+                            <i class="fas fa-plus"></i>
+                          </a>
+                      </div>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

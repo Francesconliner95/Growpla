@@ -5,49 +5,48 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use App\Account;
-
+use DB;
+use App\User;
+use App\Page;
 
 
 class AccountController extends Controller
 {
 
-    public function getAccount(Request $request) {
+    public function searchAccount(Request $request) {
 
         $request->validate([
-            'account_id' => 'required|integer',
-            'account_name' => 'required|min:1|max:50',
+            'account_name' => 'required',
         ]);
 
-        $account_id = $request->account_id;
         $account_name = $request->account_name;
 
-        $accounts = Account::where('id','!=', $account_id)
-                    ->where('name','LIKE', '%'.$account_name.'%')
-                    ->get();
-                            //mi cerca una parte della parola
+        $accounts = [];
+
+        $users = User::where(DB::raw("concat(name, ' ', surname)"), 'LIKE', "%".$account_name."%")
+        ->select('id','name','surname','image')
+        ->get();
+
+        foreach ($users as $user) {
+            $user['user_or_page'] = 'user';
+        }
+
+        array_push($accounts,...$users);
+
+        $pages = Page::where('name','LIKE', "%".$account_name."%")
+        ->select('id','name','image')
+        ->get();
+
+        foreach ($pages as $page) {
+            $page['user_or_page'] = 'page';
+        }
+
+        array_push($accounts,...$pages);
 
         return response()->json([
             'success' => true,
             'results' => [
                 'accounts' => $accounts,
-            ]
-        ]);
-    }
-
-    public function getLastAccounts(Request $request) {
-
-        $last_accounts =
-        Account::orderBy('id', 'desc')
-        ->join('account_types','account_types.id','=','account_type_id')
-        ->select('accounts.id', 'accounts.name', 'accounts.image', 'account_types.name as accountTypeName','account_types.name_en as accountTypeName_en')
-        ->take(7)
-        ->get();
-
-        return response()->json([
-            'success' => true,
-            'results' => [
-                'last_accounts' => $last_accounts,
             ]
         ]);
     }

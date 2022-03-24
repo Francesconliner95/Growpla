@@ -16,67 +16,61 @@ class SkillsTableSeeder extends Seeder
         $skills = [
 
             [
-                'name'=>'Visual Merchandiser',
+                'name'=>'Compliance',
             ],
             [
-                'name'=>'Operations Manager',
+                'name'=>'GDPR',
             ],
             [
-                'name'=>'Project Manager',
+                'name'=>'Brevetti',
             ],
             [
-                'name'=>'Buyer',
+                'name'=>'Redazione Contratti',
             ],
             [
-                'name'=>'Business Analyst',
+                'name'=>'Privacy Policy',
             ],
             [
-                'name'=>'Assistente Amministrativo',
+                'name'=>'Cookie Policy',
             ],
             [
-                'name'=>'Art Director',
+                'name'=>'Grafica',
             ],
             [
-                'name'=>'Grafico',
+                'name'=>'Organizzazione',
             ],
             [
-                'name'=>'Tecnico del Suono',
+                'name'=>'Business Development',
             ],
             [
-                'name'=>'Risk manager',
+                'name'=>'Negoziazione',
             ],
             [
-                'name'=>'Commercialista',
+                'name'=>'Team Working',
             ],
             [
-                'name'=>'Contabile',
+                'name'=>'Problem Solving',
             ],
             [
-                'name'=>'Controller',
+                'name'=>'UI Design',
             ],
             [
-                'name'=>'Revisore Contabile',
+                'name'=>'Product Design',
             ],
             [
-                'name'=>'Internal Auditor',
+                'name'=>'UX Design',
             ],
             [
-                'name'=>'Product Designer',
+                'name'=>'Web Design',
             ],
             [
-                'name'=>'UX Designer',
+                'name'=>'CRO - Conversion Rate Optimization',
             ],
             [
-                'name'=>'Web Designer',
+                'name'=>'SEM - Search Engine Marketing',
             ],
             [
-                'name'=>'Analista di Mercato',
-            ],
-            [
-                'name'=>'Analista Finanziario',
-            ],
-            [
-                'name'=>'Asset Manager',
+                'name'=>'Editorial Expert',
             ],
             [
                 'name'=>'Avvocato',
@@ -85,203 +79,90 @@ class SkillsTableSeeder extends Seeder
                 'name'=>'Notaio',
             ],
             [
-                'name'=>'Consulente Legale',
+                'name'=>'Database',
             ],
             [
-                'name'=>'Facility Manager',
+                'name'=>'Hacking',
             ],
             [
-                'name'=>'Lean Manager',
+                'name'=>'Software Development',
             ],
             [
-                'name'=>'Programmatore CNC',
+                'name'=>'Software Testing',
             ],
             [
-                'name'=>'Programmatore PLC',
+                'name'=>'Web Development',
             ],
             [
-                'name'=>'Analista Funzionale',
+                'name'=>'Ingegneria',
             ],
             [
-                'name'=>'Analista Programmatore',
+                'name'=>'Brand',
             ],
             [
-                'name'=>'Consulente Informatico',
+                'name'=>'Community',
             ],
             [
-                'name'=>'Consulente SAP',
-            ],
-            [
-                'name'=>'Database Administrator',
-            ],
-            [
-                'name'=>'Ethical Hacker',
-            ],
-            [
-                'name'=>'Programmatore Informatico',
-            ],
-            [
-                'name'=>'Sistemista',
-            ],
-            [
-                'name'=>'Software Developer',
-            ],
-            [
-                'name'=>'Software Tester',
-            ],
-            [
-                'name'=>'Tecnico Elettronico',
-            ],
-            [
-                'name'=>'Tecnico Informatico',
-            ],
-            [
-                'name'=>'Web Developer',
-            ],
-            [
-                'name'=>'Webmaster',
-            ],
-            [
-                'name'=>'Ingegnere Aerospaziale',
-            ],
-            [
-                'name'=>'Ingegnere Ambientale',
-            ],
-            [
-                'name'=>'Ingegnere Biomedico',
-            ],
-            [
-                'name'=>'Ingegnere Chimico',
-            ],
-            [
-                'name'=>'Ingegnere Elettrico',
-            ],
-            [
-                'name'=>'Ingegnere dei Materiali',
-            ],
-            [
-                'name'=>'Ingegnere dell\'Automazione',
-            ],
-            [
-                'name'=>'Ingegnere delle Telecomunicazioni',
-            ],
-            [
-                'name'=>'Ingegnere di Processo',
-            ],
-            [
-                'name'=>'Ingegnere Gestionale',
-            ],
-            [
-                'name'=>'Ingegnere Informatico',
-            ],
-            [
-                'name'=>'Ingegnere Meccanico',
-            ],
-            [
-                'name'=>'Supply Chain Manager',
-            ],
-            [
-                'name'=>'Brand Manager',
-            ],
-            [
-                'name'=>'Community Manager',
-            ],
-            [
-                'name'=>'Content Manager',
+                'name'=>'Content',
             ],
             [
                 'name'=>'Data Analyst',
             ],
             [
-                'name'=>'Influencer',
+                'name'=>'Pubbliche Relazioni',
             ],
             [
-                'name'=>'Manager delle Pubbliche Relazioni',
+                'name'=>'Marketing',
             ],
             [
-                'name'=>'Marketing Manager',
+                'name'=>'Media Planning',
             ],
             [
-                'name'=>'Media Buyer',
+                'name'=>'Product',
             ],
             [
-                'name'=>'Media Planner',
+                'name'=>'Comunicazione',
             ],
             [
-                'name'=>'Product Manager',
+                'name'=>'SEO - Search Engine Optimization',
             ],
             [
-                'name'=>'Responsabile della Comunicazione',
+                'name'=>'Social Media',
             ],
             [
-                'name'=>'SEO Specialist',
+                'name'=>'Web Marketing',
             ],
             [
-                'name'=>'Social Media Manager',
+                'name'=>'Blogging',
             ],
             [
-                'name'=>'Web Marketing Manager',
+                'name'=>'Copywriting',
             ],
             [
-                'name'=>'Blogger',
+                'name'=>'Web Editing',
             ],
             [
-                'name'=>'Copywriter',
+                'name'=>'HR',
             ],
             [
-                'name'=>'Instagrammer',
+                'name'=>'Data Science',
             ],
             [
-                'name'=>'Youtuber',
+                'name'=>'IT Security',
             ],
             [
-                'name'=>'Web Editor',
+                'name'=>'IT',
             ],
             [
-                'name'=>'Streamer',
-            ],
-            [
-                'name'=>'HR Manager',
-            ],
-            [
-                'name'=>'Data Scientist',
-            ],
-            [
-                'name'=>'Customer Service Manager',
-            ],
-            [
-                'name'=>'Tecnico Help Desk',
-            ],
-            [
-                'name'=>'IT Security Manager',
-            ],
-            [
-                'name'=>'Account Manager',
-            ],
-            [
-                'name'=>'Area Manager',
-            ],
-            [
-                'name'=>'e-Commerce Manager',
-            ],
-            [
-                'name'=>'Sales Manager',
-            ],
-            [
-                'name'=>'Sales Analyst',
-            ],
-            [
-                'name'=>'Export Manager',
-            ],
-            [
-                'name'=>'Ket Account Manager',
+                'name'=>'Management',
             ],
         ];
 
-      foreach ($skills as $skill){
-          $new_skill = new Skill();
-          $new_skill->name = $skill['skill'];
-          $new_skill->save();
-      }
+        foreach ($skills as $skill){
+            $new_skill = new Skill();
+            $new_skill->name = $skill['skill'];
+            $new_skill->save();
+        }
+        
     }
 }

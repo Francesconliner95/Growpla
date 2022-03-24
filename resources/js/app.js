@@ -115,6 +115,11 @@ if (document.getElementById('company-edit')) {
     require('./admin/companies/edit.js');
 }
 
+//COLLABORATION
+if (document.getElementById('collaboration-create')) {
+    require('./admin/collaborations/create.js');
+}
+
 //SKILL
 if (document.getElementById('skill-edit')) {
     require('./admin/skills/edit.js');

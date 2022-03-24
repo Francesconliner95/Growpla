@@ -244,17 +244,17 @@ ul>p{
             display: flex;
             justify-content: space-between;
             align-items: center;
-            button{
-                padding: 5px 15px;
-                border: none;
-                outline: none;
-                border-radius: 20px;
-                background-color: $default_green;
-                color: white;
-                &:hover{
-                    opacity: 0.9;
-                }
-            }
+            // button{
+            //     padding: 5px 15px;
+            //     border: none;
+            //     outline: none;
+            //     border-radius: 20px;
+            //     background-color: $default_green;
+            //     color: white;
+            //     &:hover{
+            //         opacity: 0.9;
+            //     }
+            // }
         }
     }
 }

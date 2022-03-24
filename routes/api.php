@@ -23,6 +23,7 @@ Route::get('/searchPage', 'Api\PageController@searchPage');
 Route::get('/searchSkill', 'Api\SkillController@searchSkill');
 Route::get('/searchService', 'Api\ServiceController@searchService');
 Route::get('/regionsByCountry', 'Api\RegionController@regionsByCountry');
+Route::get('/searchAccount', 'Api\AccountController@searchAccount');
 
 Route::post('/sendEmail', 'Api\HomeController@sendEmail');
 
@@ -32,7 +33,7 @@ Route::get('/getAccountTypes', 'Api\AccountTypesController@getAccountTypes');
 
 Route::get('/getStartupStates', 'Api\StartupStateController@getStartupStates');
 
-Route::get('/getAccountServices', 'Api\StartupserviceTypeController@getAccountServices');
+
 
 Route::get('/getStartupserviceType', 'Api\StartupserviceTypeController@getStartupserviceType');
 
@@ -47,7 +48,6 @@ Route::get('/getAccountNeeds', 'Api\NeedController@getAccountNeeds');
 
 Route::get('/getRegions', 'Api\RegionController@getRegions');
 
-Route::get('/getCooperation', 'Api\CooperationController@getCooperation');
 
 Route::get('/getTag', 'Api\TagController@getTag');
 Route::get('/searchTag', 'Api\TagController@searchTag');

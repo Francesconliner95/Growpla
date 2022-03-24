@@ -133,32 +133,13 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::post('/toggleFollowing', 'FollowController@toggleFollowing')->name('toggleFollowing');
     Route::get('/getFollowed', 'FollowController@getFollowed')->name('getFollowed');
 
-    // SUPPORTED STARTUP
-    // Route::post('/addCooperation', 'CooperationController@addCooperation')
-    // ->name('addCooperation');
-    // Route::delete('/deleteCooperation', 'CooperationController@deleteCooperation')
-    // ->name('deleteCooperation');
-    // Route::put('/confirmCooperation', 'CooperationController@confirmCooperation')
-    // ->name('confirmCooperation');
-
-    //SERVICE
-    // Route::post('/addService', 'ServiceController@addService')->name('services.addService');
-    // Route::delete('/deleteService', 'ServiceController@deleteService')
-    // ->name('services.deleteService');
-
-    //ROLE
-    // Route::post('/createRole', 'CofounderRoleController@createRole')
-    // ->name('cofounder_roles.createRole');
-
-    //COFOUNDER
-    // Route::post('/addCofounder', 'CofounderController@addCofounder')
-    // ->name('cofounders.addCofounder');
-    // Route::delete('/deleteCofounder', 'CofounderController@deleteCofounder')
-    // ->name('cofounders.deleteCofounder');
+    //COLLABORATIONS
+    Route::resource('/collaborations', 'CollaborationController');
+    Route::get('collaborations/create/{id}/{user_or_page}', 'CollaborationController@create')->name('collaborations.create');
+    Route::get('getCollaborations', 'CollaborationController@getCollaborations')->name('getCollaborations');
 
     //CHATS
     Route::resource('/chats', 'ChatController');
-      //Route::get('/addTeam/{page_id}', 'TeamController@addTeam')->name('teams.addTeam');
     Route::get('chats/show/{chat_id}/{page_id}', 'ChatController@show')
     ->name('chats.show');
     Route::get('/createChat/{id}/{user_or_page}', 'ChatController@createChat')

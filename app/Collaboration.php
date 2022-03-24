@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Cooperation extends Model
+class Collaboration extends Model
 {
-
+    
 }

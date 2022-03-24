@@ -7,12 +7,14 @@ axios.defaults.headers.common = {
 var create = new Vue({
     el: '#page-show',
     data: {
+        id,
         lang,
         is_my_page,
         page,
         team_members,
         team_num,
         following,
+        collaborations: [],
     },
     methods: {
 
@@ -66,6 +68,19 @@ var create = new Vue({
             });
         },
 
+        getCollaborations(){
+
+            axios.get('/admin/getCollaborations',{
+                params: {
+                    account_id: this.id,
+                    user_or_page: 'page',
+                }
+            }).then((response) => {
+                this.collaborations = response.data.results.collaborations;
+                console.log(this.collaborations);
+            });
+        }
+
     },
     created(){
       this.page = JSON.parse(this.page.replace(/&quot;/g,'"'));
@@ -76,7 +91,7 @@ var create = new Vue({
 
     },
     mounted() {
-
+        this.getCollaborations();
     },
 
 });

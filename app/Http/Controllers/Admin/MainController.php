@@ -546,10 +546,10 @@ class MainController extends Controller
         //RICERCA PER NOME
         if(!$usertypes_id && !$pagetypes_id && $name){
             //dd($name);
-            $users = User::orWhere(DB::raw("concat(name, ' ', surname)"), 'LIKE', "%".$name."%")
+            $users = User::where(DB::raw("concat(name, ' ', surname)"), 'LIKE', "%".$name."%")
             ->get();
 
-            $pages = Page::orWhere('name','LIKE', "%".$name."%")
+            $pages = Page::where('name','LIKE', "%".$name."%")
             ->get();
         }
 

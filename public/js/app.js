@@ -74746,6 +74746,75 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
+/***/ "./resources/js/admin/collaborations/create.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/admin/collaborations/create.js ***!
+  \*****************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! croppr */ "./node_modules/croppr/dist/croppr.js");
+/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(croppr__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#collaboration-create',
+  data: {
+    account_name: '',
+    accounts_found: '',
+    account_selected: ''
+  },
+  methods: {
+    searchAccount: function searchAccount() {
+      var _this = this;
+
+      if (this.account_name) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchAccount', {
+          params: {
+            account_name: this.account_name
+          }
+        }).then(function (response) {
+          _this.accounts_found = response.data.results.accounts;
+          console.log(_this.accounts_found);
+
+          if (!_this.account_name) {
+            _this.accounts_found = '';
+          }
+        });
+      } else {
+        this.accounts_found = '';
+      }
+    },
+    addAccount: function addAccount(account_found) {
+      this.account_selected = account_found;
+      this.account_name = '';
+      this.accounts_found = '';
+      setTimeout(function () {
+        document.collaborationForm.submit();
+      }, 100);
+    }
+  },
+  mounted: function mounted() {} // watch: {
+  //     account_selected: function(new_val, old_val) {
+  //         console.log(new_val, old_val);
+  //     }
+  // }
+
+});
+
+/***/ }),
+
 /***/ "./resources/js/admin/companies/create.js":
 /*!************************************************!*\
   !*** ./resources/js/admin/companies/create.js ***!
@@ -77138,12 +77207,14 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#page-show',
   data: {
+    id: id,
     lang: lang,
     is_my_page: is_my_page,
     page: page,
     team_members: team_members,
     team_num: team_num,
-    following: following
+    following: following,
+    collaborations: []
   },
   methods: {
     open: function open(filename) {
@@ -77198,6 +77269,19 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       }).then(function (response) {
         _this3.getTeamMembers();
       });
+    },
+    getCollaborations: function getCollaborations() {
+      var _this4 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getCollaborations', {
+        params: {
+          account_id: this.id,
+          user_or_page: 'page'
+        }
+      }).then(function (response) {
+        _this4.collaborations = response.data.results.collaborations;
+        console.log(_this4.collaborations);
+      });
     }
   },
   created: function created() {
@@ -77208,7 +77292,9 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       console.log(this.team_members);
     }
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {
+    this.getCollaborations();
+  }
 });
 
 /***/ }),
@@ -79174,10 +79260,12 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#user-show',
   data: {
+    id: id,
     lang: lang,
     is_my_user: is_my_user,
     //user,
-    following: following
+    following: following,
+    collaborations: []
   },
   methods: {
     open: function open(filename) {
@@ -79198,13 +79286,28 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       }).then(function (response) {
         _this.following = response.data.results.following;
       });
+    },
+    getCollaborations: function getCollaborations() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getCollaborations', {
+        params: {
+          account_id: this.id,
+          user_or_page: 'user'
+        }
+      }).then(function (response) {
+        _this2.collaborations = response.data.results.collaborations;
+        console.log(_this2.collaborations);
+      });
     }
   },
   created: function created() {// console.log(this.user);
     // this.user = JSON.parse(this.user.replace(/&quot;/g,'"'));
     // console.log(this.user);
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {
+    this.getCollaborations();
+  }
 });
 
 /***/ }),
@@ -79329,6 +79432,11 @@ if (document.getElementById('company-create')) {
 
 if (document.getElementById('company-edit')) {
   __webpack_require__(/*! ./admin/companies/edit.js */ "./resources/js/admin/companies/edit.js");
+} //COLLABORATION
+
+
+if (document.getElementById('collaboration-create')) {
+  __webpack_require__(/*! ./admin/collaborations/create.js */ "./resources/js/admin/collaborations/create.js");
 } //SKILL
 
 
@@ -80145,8 +80253,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
