@@ -23,7 +23,7 @@ class CreateCollaborationsTable extends Migration
             $table->foreign('recipient_user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedbigInteger('recipient_page_id')->nullable();
             $table->foreign('recipient_page_id')->references('id')->on('pages')->onDelete('cascade');
-            $table->boolean('confirmed')->nullable();
+            $table->tinyInteger('confirmed')->nullable();
             $table->timestamps();
         });
     }

@@ -119,6 +119,9 @@ if (document.getElementById('company-edit')) {
 if (document.getElementById('collaboration-create')) {
     require('./admin/collaborations/create.js');
 }
+if (document.getElementById('collaboration-index')) {
+    require('./admin/collaborations/index.js');
+}
 
 //SKILL
 if (document.getElementById('skill-edit')) {

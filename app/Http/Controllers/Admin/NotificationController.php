@@ -43,6 +43,13 @@ class NotificationController extends Controller
             }else {
                 $notification['name'] = Page::find($notification->ref_page_id)->name;
             }
+            if($notification->ref_to_user_id){
+                $user = User::find($notification->ref_user_id);
+                $notification['end_name'] = $user->name. ' ' . $user->surname;
+            }
+            if($notification->ref_to_page_id){
+                $notification['end_name'] = Page::find($notification->ref_page_id)->name;
+            }
             $notification = $notification->notification_type;
         }
 
@@ -66,8 +73,16 @@ class NotificationController extends Controller
           if ($notification->ref_user_id) {
               $user = User::find($notification->ref_user_id);
               $notification['name'] = $user->name. ' ' . $user->surname;
-          }else {
+          }
+          if($notification->ref_page_id){
               $notification['name'] = Page::find($notification->ref_page_id)->name;
+          }
+          if($notification->ref_to_user_id){
+              $user = User::find($notification->ref_to_user_id);
+              $notification['end_name'] = $user->name. ' ' . $user->surname;
+          }
+          if($notification->ref_to_page_id){
+              $notification['end_name'] = Page::find($notification->ref_to_page_id)->name;
           }
           $notification = $notification->notification_type;
       }

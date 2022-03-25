@@ -17,6 +17,7 @@ class NotificationTypesTableSeeder extends Seeder
             [
                 'message'=> '/',
                 'message_it'=> 'ha cambiato fase del ciclo di vita',
+                // 'url' => 'admin/pages/',
             ],
             [
                 'message'=> '/',
@@ -34,10 +35,30 @@ class NotificationTypesTableSeeder extends Seeder
                 'message'=> '/',
                 'message_it'=> 'ha bisogno di',
             ],
-            // [
-            //     'message'=> '/',
-            //     'message_it'=> 'Un investitore ha guardato il tuo profilo',
-            // ],
+            [ //collaborazione ai followers
+                'message'=> '/',
+                'message_it'=> 'ha avviato una collaborazione con',
+            ],
+            [ //collaborazione ad utente
+                'message'=> '/',
+                'message_it'=> 'ti ha aggiunto alle sue collaborazioni',
+            ],
+            [ //collaborazione ad una mia pagina
+                'message'=> '/',
+                'message_it'=> 'ha aggiunto alle sue collaborazioni la tua pagina',
+            ],
+            [//conferma collaborazione ad utente
+                'message'=> '/',
+                'message_it'=> 'ha confermato la tua collaborazione',
+            ],
+            [//conferma collaborazione ad una mia pagina
+                'message'=> '/',
+                'message_it'=> 'ha confermato la collaborazione con la tua pagina',
+            ],
+            [
+                'message'=> '/',
+                'message_it'=> 'Un investitore ha guardato il tuo profilo',
+            ],
         ];
 
         foreach ($notification_types as $notification_type){

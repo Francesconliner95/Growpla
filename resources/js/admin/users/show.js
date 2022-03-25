@@ -35,7 +35,7 @@ var create = new Vue({
         },
 
         getCollaborations(){
-
+            
             axios.get('/admin/getCollaborations',{
                 params: {
                     account_id: this.id,

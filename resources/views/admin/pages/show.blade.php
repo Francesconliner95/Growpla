@@ -278,7 +278,11 @@
         </div>
         <div v-if="is_my_page || collaborations.length>0" class="item-cont" v-cloak>
             <div class="item-style">
-                <h3 class="text-capitalize">Collaborazioni</h3>
+                <h3 class="text-capitalize">Collaborazioni
+                    <a  v-if="is_my_page" class="button-style-circle button-color-gray" href="{{route('admin.collaborations.index', [$page->id,'page'])}}">
+                        <i class="fas fa-pencil-alt"></i>
+                    </a>
+                </h3>
                 <div class="row">
                     <div v-for="collaboration in collaborations"class="col-sm-12 col-md-6 col-lg-4 col-xl-3  p-1">
                         <div class="page-list">
@@ -293,6 +297,7 @@
                                 <span>@{{collaboration.account.name}}
                                     @{{collaboration.account.surname?
                                     collaboration.account.surname:''}}
+                                    @{{collaboration.confirmed?'confermata':''}}
                                 </span>
                             </a>
                         </div>
