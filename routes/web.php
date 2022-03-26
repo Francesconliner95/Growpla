@@ -143,6 +143,8 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     ->name('deleteCollaboration');
     Route::put('confirmCollaboration', 'CollaborationController@confirmCollaboration')
     ->name('confirmCollaboration');
+    Route::post('addCollaboration', 'CollaborationController@addCollaboration')
+    ->name('addCollaboration');
 
     //CHATS
     Route::resource('/chats', 'ChatController');
@@ -166,8 +168,8 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     ->name('messages.getNotReadMessages');
 
     //MAIL
-    Route::get('/mailMessage', 'MailController@mailMessage')
-    ->name('mails.mailMessage');
+    // Route::get('/mailMessage', 'MailController@mailMessage')
+    // ->name('mails.mailMessage');
 
     //NOTIFICATIONS
     Route::resource('/notifications', 'NotificationController');

@@ -8,6 +8,23 @@
 </script>
 <div class="container">
     <div id="collaboration-index">
+        <div :class="delete_alert?'alert active-alert':'alert deactive-alert'" v-cloak>
+            <div class="item-cont alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                <div class="item-style">
+                    <button type="button" name="button" class="edit-top-right button-color-gray" @click="alertCancel()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3 class="p-2 pt-4">@{{message}}</h3>
+                    <div class="">
+                        <button type="button" name="button" class="button-style button-color mr-5" @click="option1()">
+                            @{{alert_b1}}
+                        <button class="button-style button-color-red ml-5" type="submit" name="button" @click="option2()">
+                            @{{alert_b2}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="item-cont">
             <div class="item-style">
                 <div class="header">
@@ -32,7 +49,7 @@
                                     Visita profilo
                                 </a>
                             </div class="inf">
-                            <button class="edit-top-right button-style-circle button-color-gray" type="submit" name="button" @click="deleteCooperation(collaboration.id)">
+                            <button class="edit-top-right button-style-circle button-color-gray" type="submit" name="button" @click="alertMenu(1,collaboration)">
                                 <i class="fas fa-trash-alt mr-1"></i>
                             </button>
                         </div>
@@ -69,10 +86,10 @@
                                         Visita profilo
                                     </a>
                                 </div class="inf">
-                                <button class="button-style button-color" type="submit" name="button" @click="confirmCooperation(collaboration.id)">
+                                <button class="button-style button-color" type="submit" name="button" @click="alertMenu(2,collaboration)">
                                     Conferma
                                 </button>
-                                <button class="edit-top-right button-style-circle button-color-gray" type="submit" name="button" @click="deleteCooperation(collaboration.id)">
+                                <button class="edit-top-right button-style-circle button-color-gray" type="submit" name="button" @click="alertMenu(1,collaboration)">
                                     <i class="fas fa-trash-alt mr-1"></i>
                                 </button>
                             </div>

@@ -13,9 +13,75 @@ var create = new Vue({
         user_or_page,
         collaborations: [],
         prop_collaborations: [],
+        delete_alert: false,
+        case_type: '',
+        alert_par: '',
+        message: '',
+        alert_b1: '',
+        alert_b2: '',
     },
     methods: {
 
+        alertMenu(case_type,parameter){
+            this.delete_alert = true;
+            this.case_type = case_type;
+            this.alert_par = parameter;
+            switch (this.case_type) {
+                case 1:
+                    this.message = 'Sei sicuro di voler eliminare la collaborazione?';
+                    this.alert_b1 = 'Annulla';
+                    this.alert_b2 = 'Elimina';
+                break;
+                case 2:
+                    this.message = 'Vuoi aggiungerla anche tra le tue collaborazioni?';
+                    this.alert_b1 = 'Si';
+                    this.alert_b2 = 'No';
+                break;
+
+                default:
+            }
+        },
+        alertCancel(){
+            this.delete_alert = false;
+            this.case_type = '';
+            this.message = '';
+            this.alert_b1 = '';
+            this.alert_b2 = '';
+            this.alert_par = '';
+        },
+        //bottone positivo
+        option1(){
+            switch (this.case_type) {
+                case 1:
+                    //annulla eliminazione
+                break;
+                case 2:
+                    //conferma collaborazione ed aggiungila alle mie
+                    this.confirmCollaboration(this.alert_par);
+                    this.addCollaboration(this.alert_par)
+                break;
+
+                default:
+            }
+            this.alertCancel();
+
+        },
+        //bottone negativo
+        option2(){
+            switch (this.case_type) {
+                case 1:
+                    //conferma eliminazione
+                    this.deleteCollaboration(this.alert_par);
+                break;
+                case 2:
+                    //conferma collaborazione
+                    this.confirmCollaboration(this.alert_par);
+                break;
+
+                default:
+            }
+            this.alertCancel();
+        },
         getCollaborations(){
             axios.get('/admin/getCollaborations',{
                 params: {
@@ -38,12 +104,12 @@ var create = new Vue({
             });
         },
 
-        deleteCooperation(collaboration_id){
+        deleteCollaboration(collaboration){
             axios({
                 method: 'delete',
                 url: '/admin/deleteCollaboration',
                 data: {
-                    collaboration_id: collaboration_id,
+                    collaboration_id: collaboration.id,
                 }
             }).then(response => {
                 this.getCollaborations();
@@ -51,15 +117,47 @@ var create = new Vue({
             });
         },
 
-        confirmCooperation(collaboration_id){
+        confirmCollaboration(collaboration){
             axios({
                 method: 'put',
                 url: '/admin/confirmCollaboration',
                 data: {
-                    collaboration_id: collaboration_id,
+                    collaboration_id: collaboration.id,
                 }
             }).then(response => {
                 this.getProposalCollaborations();
+            });
+        },
+
+        addCollaboration(collaboration){
+
+            if(collaboration.sender_user_id){
+                var recipient_id = collaboration.sender_user_id;
+                var recipient_user_or_page = 'user';
+            }
+            if(collaboration.recipient_user_id){
+                var sender_id = collaboration.recipient_user_id;
+                var sender_user_or_page = 'user';
+            }
+            if(collaboration.sender_page_id){
+                var recipient_id = collaboration.sender_page_id;
+                var recipient_user_or_page = 'page';
+            }
+            if(collaboration.recipient_page_id){
+                var sender_id = collaboration.recipient_page_id;
+                var sender_user_or_page = 'page';
+            }
+            axios({
+                method: 'post',
+                url: '/admin/collaborations',
+                data: {
+                    sender_id: sender_id,
+                    sender_user_or_page: sender_user_or_page,
+                    recipient_id: recipient_id,
+                    recipient_user_or_page: recipient_user_or_page,
+                }
+            }).then(response => {
+                this.getCollaborations();
             });
         },
 
