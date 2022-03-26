@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Pagetype;
+use Illuminate\Support\Facades\Schema;
 
 class PagetypeTableSeeder extends Seeder
 {
@@ -12,7 +13,10 @@ class PagetypeTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('pagetypes')->delete();
+        Schema::disableForeignKeyConstraints();
+        DB::table('pagetypes')->truncate();
+        Schema::enableForeignKeyConstraints();
+
       $pagetypes = [
           [
               'name'=>'startup',

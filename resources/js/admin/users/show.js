@@ -35,7 +35,7 @@ var create = new Vue({
         },
 
         getCollaborations(){
-            
+
             axios.get('/admin/getCollaborations',{
                 params: {
                     account_id: this.id,
@@ -57,4 +57,14 @@ var create = new Vue({
         this.getCollaborations();
     },
 
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
 });

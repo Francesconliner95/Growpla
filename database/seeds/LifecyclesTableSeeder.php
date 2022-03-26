@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Lifecycle;
+use Illuminate\Support\Facades\Schema;
 
 class LifecyclesTableSeeder extends Seeder
 {
@@ -12,7 +13,9 @@ class LifecyclesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('lifecycles')->delete();
+        Schema::disableForeignKeyConstraints();
+        DB::table('lifecycles')->truncate();
+        Schema::enableForeignKeyConstraints();
       $lifecycles = [
           [
               'name'=> 'Pre-seed',

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Skill;
+use Illuminate\Support\Facades\Schema;
 
 class SkillsTableSeeder extends Seeder
 {
@@ -12,7 +13,10 @@ class SkillsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('skills')->delete();
+        Schema::disableForeignKeyConstraints();
+        DB::table('skills')->truncate();
+        Schema::enableForeignKeyConstraints();
+
         $skills = [
 
             [
@@ -163,6 +167,6 @@ class SkillsTableSeeder extends Seeder
             $new_skill->name = $skill['skill'];
             $new_skill->save();
         }
-        
+
     }
 }

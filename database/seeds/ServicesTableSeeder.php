@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Service;
+use Illuminate\Support\Facades\Schema;
 
 class ServicesTableSeeder extends Seeder
 {
@@ -12,7 +13,10 @@ class ServicesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('services')->delete();
+        Schema::disableForeignKeyConstraints();
+        DB::table('services')->truncate();
+        Schema::enableForeignKeyConstraints();
+
         $services = [
             [
               'name_it'=>'Advisor',
@@ -76,7 +80,7 @@ class ServicesTableSeeder extends Seeder
               'name'=>'Company constitution',
               'description'=>'',
               'pagetype_id' => null,
-            ],                      
+            ],
             [
               'name_it'=>'Marketing e Digital Marketing',
               'description_it'=>'',

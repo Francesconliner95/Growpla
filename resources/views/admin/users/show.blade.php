@@ -161,7 +161,7 @@
                 @endif
                 {{-- SERVIZI --}}
                 @if($is_my_user || count($user->give_user_services)>0 || count($user->have_user_services)>0)
-                <div class="sub-section row">
+                <div id="services" class="sub-section row">
                   <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                       <h6>{{__('Offro')}}
                       </h6>
@@ -244,7 +244,7 @@
                 @endif
             </div>
         </div>
-        <div v-if="is_my_user || collaborations.length>0" class="item-cont" v-cloak>
+        <div v-if="is_my_user || collaborations.length>0" id="collaborations" class="item-cont" v-cloak>
             <div class="item-style">
                 <h3 class="text-capitalize">Collaborazioni
                     <a  v-if="is_my_user" class="button-style-circle button-color-gray" href="{{route('admin.collaborations.index', [$user->id,'user'])}}">

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Sector;
+use Illuminate\Support\Facades\Schema;
 
 class SectorsTableSeeder extends Seeder
 {
@@ -12,7 +13,10 @@ class SectorsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('sectors')->delete();
+        Schema::disableForeignKeyConstraints();
+        DB::table('sectors')->truncate();
+        Schema::enableForeignKeyConstraints();
+
       $sectors = [
           [
               'name'=>'Clothing',

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Currency;
+use Illuminate\Support\Facades\Schema;
 
 class CurrenciesTableSeeder extends Seeder
 {
@@ -12,7 +13,9 @@ class CurrenciesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('currencies')->delete();
+        Schema::disableForeignKeyConstraints();
+        DB::table('currencies')->truncate();
+        Schema::enableForeignKeyConstraints();
         $currencies = [
             [
                 'name'=>'Euro',

@@ -72,6 +72,7 @@ class LifecycleController extends Controller
                 $new_notf->notification_type_id = 1;
                 $new_notf->ref_user_id = null;
                 $new_notf->ref_page_id = $page->id;
+                $new_notf->parameter = $page->id.'/#lifecycle';
                 $new_notf->save();
             }
           }

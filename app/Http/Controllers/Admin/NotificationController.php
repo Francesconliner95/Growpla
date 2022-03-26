@@ -9,6 +9,8 @@ use App\Notification;
 use App\Language;
 use App\User;
 use App\Page;
+use App\Usertype;
+use App\Pagetype;
 
 class NotificationController extends Controller
 {
@@ -40,15 +42,22 @@ class NotificationController extends Controller
             if ($notification->ref_user_id) {
                 $user = User::find($notification->ref_user_id);
                 $notification['name'] = $user->name. ' ' . $user->surname;
-            }else {
+            }
+            if($notification->ref_page_id){
                 $notification['name'] = Page::find($notification->ref_page_id)->name;
             }
             if($notification->ref_to_user_id){
-                $user = User::find($notification->ref_user_id);
+                $user = User::find($notification->ref_to_user_id);
                 $notification['end_name'] = $user->name. ' ' . $user->surname;
             }
             if($notification->ref_to_page_id){
-                $notification['end_name'] = Page::find($notification->ref_page_id)->name;
+                $notification['end_name'] = Page::find($notification->ref_to_page_id)->name;
+            }
+            if($notification->pagetype_id){
+                $notification['name_type'] = Pagetype::find($notification->pagetype_id)->name_it;
+            }
+            if($notification->usertype_id){
+                $notification['name_type'] = Usertype::find($notification->usertype_id)->name_it;
             }
             $notification = $notification->notification_type;
         }
@@ -83,6 +92,12 @@ class NotificationController extends Controller
           }
           if($notification->ref_to_page_id){
               $notification['end_name'] = Page::find($notification->ref_to_page_id)->name;
+          }
+          if($notification->pagetype_id){
+              $notification['name_type'] = Pagetype::find($notification->pagetype_id)->name_it;
+          }
+          if($notification->usertype_id){
+              $notification['name_type'] = Usertype::find($notification->usertype_id)->name_it;
           }
           $notification = $notification->notification_type;
       }

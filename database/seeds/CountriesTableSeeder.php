@@ -2,14 +2,17 @@
 
 use Illuminate\Database\Seeder;
 use App\Country;
+use Illuminate\Support\Facades\Schema;
 
 class CountriesTableSeeder extends Seeder
 {
 
     public function run()
     {
-      DB::table('countries')->delete();
-
+        Schema::disableForeignKeyConstraints();
+        DB::table('countries')->truncate();
+        Schema::enableForeignKeyConstraints();
+        
       $countries = array(
         array('code' => 'IT', 'name' => 'Italy'),
         array('code' => 'US', 'name' => 'United States'),

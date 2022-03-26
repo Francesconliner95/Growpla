@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Moneyrange;
+use Illuminate\Support\Facades\Schema;
 
 class MoneyrangesTableSeeder extends Seeder
 {
@@ -12,7 +13,9 @@ class MoneyrangesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('moneyranges')->delete();
+        Schema::disableForeignKeyConstraints();
+        DB::table('moneyranges')->truncate();
+        Schema::enableForeignKeyConstraints();
       $moneyranges = [
           [
               'range'=>'<50k',

@@ -163,9 +163,10 @@ class CollaborationController extends Controller
                     //NOTIFICA al utente ricevente
                     $new_notf = new Notification();
                     $new_notf->user_id = $recipient_id;
-                    $new_notf->notification_type_id = 7;
+                    $new_notf->notification_type_id = 10;
                     $new_notf->ref_user_id = $sender_id;
                     $new_notf->ref_page_id = null;
+                    $new_notf->parameter = $recipient_id.'/user';
                     $new_notf->save();
                 }else{
                     $new_coll->recipient_page_id = $recipient_id;
@@ -176,10 +177,11 @@ class CollaborationController extends Controller
                     foreach ($page_recipent->users as $user) {
                         $new_notf = new Notification();
                         $new_notf->user_id = $user->id;
-                        $new_notf->notification_type_id = 8;
+                        $new_notf->notification_type_id = 11;
                         $new_notf->ref_user_id = $sender_id;
                         $new_notf->ref_page_id = null;
                         $new_notf->ref_to_page_id = $recipient_id;
+                        $new_notf->parameter = $recipient_id.'/page';
                         $new_notf->save();
                     }
                 }
@@ -190,11 +192,12 @@ class CollaborationController extends Controller
                 foreach ($followers as $follower) {
                     $new_notf = new Notification();
                     $new_notf->user_id = $follower->id;
-                    $new_notf->notification_type_id = 6;
+                    $new_notf->notification_type_id = 8;
                     $new_notf->ref_user_id = $user->id;
                     $new_notf->ref_page_id = null;
                     $new_notf->ref_to_user_id = $ref_to_user_id;
                     $new_notf->ref_to_page_id = $ref_to_page_id;
+                    $new_notf->parameter = $user->id.'/#collaborations';
                     $new_notf->save();
                 }
 
@@ -222,9 +225,10 @@ class CollaborationController extends Controller
                         //NOTIFICA al utente ricevente
                         $new_notf = new Notification();
                         $new_notf->user_id = $recipient_id;
-                        $new_notf->notification_type_id = 7;
+                        $new_notf->notification_type_id = 10;
                         $new_notf->ref_user_id = null;
                         $new_notf->ref_page_id = $sender_id;
+                        $new_notf->parameter = $recipient_id.'/user';
                         $new_notf->save();
                     }else{
                         $new_coll->recipient_page_id = $recipient_id;
@@ -235,11 +239,12 @@ class CollaborationController extends Controller
                         foreach ($page_recipent->users as $user) {
                             $new_notf = new Notification();
                             $new_notf->user_id = $user->id;
-                            $new_notf->notification_type_id = 8;
+                            $new_notf->notification_type_id = 11;
                             $new_notf->ref_user_id = null;
                             $new_notf->ref_page_id = $sender_id;
                             $new_notf->ref_to_user_id = null;
                             $new_notf->ref_to_page_id = $recipient_id;
+                            $new_notf->parameter = $recipient_id.'/page';
                             $new_notf->save();
                         }
                     }
@@ -249,11 +254,12 @@ class CollaborationController extends Controller
                     foreach ($followers as $follower) {
                         $new_notf = new Notification();
                         $new_notf->user_id = $follower->id;
-                        $new_notf->notification_type_id = 6;
+                        $new_notf->notification_type_id = 9;
                         $new_notf->ref_user_id = null;
                         $new_notf->ref_page_id = $page->id;
                         $new_notf->ref_to_user_id = $ref_to_user_id;
                         $new_notf->ref_to_page_id = $ref_to_page_id;
+                        $new_notf->parameter = $page->id.'/#collaborations';
                         $new_notf->save();
                     }
                 }
@@ -271,6 +277,7 @@ class CollaborationController extends Controller
         $collaboration = Collaboration::find($collaboration_id);
         $can_delete = false;
         $user = Auth::user();
+        //puo eliminare la collaborazione chi la invia
         if($collaboration->sender_user_id){
             if($user->id==$collaboration->sender_user_id){
                 $can_delete = true;
@@ -278,6 +285,18 @@ class CollaborationController extends Controller
         }
         if($collaboration->sender_page_id){
             $page = Page::find($collaboration->sender_page_id);
+            if($user->pages->contains($page)){
+                $can_delete = true;
+            }
+        }
+        //e chi la riceve
+        if($collaboration->recipient_user_id){
+            if($user->id==$collaboration->recipient_user_id){
+                $can_delete = true;
+            }
+        }
+        if($collaboration->recipient_page_id){
+            $page = Page::find($collaboration->recipient_page_id);
             if($user->pages->contains($page)){
                 $can_delete = true;
             }
@@ -299,17 +318,65 @@ class CollaborationController extends Controller
         if($collaboration->recipient_user_id){
             if($user->id==$collaboration->recipient_user_id){
                 $can_update = true;
+                $user_or_page = 'user';
             }
         }
         if($collaboration->recipient_page_id){
             $page = Page::find($collaboration->recipient_page_id);
             if($user->pages->contains($page)){
                 $can_update = true;
+                $user_or_page = 'page';
             }
         }
         if($can_update){
             $collaboration->confirmed = 1;
             $collaboration->update();
+            //NOTIFICA
+            //se a confermare è un utente
+            if($user_or_page=='user'){
+                if($collaboration->sender_user_id){
+                    $new_notf = new Notification();
+                    $new_notf->user_id = $collaboration->sender_user_id;
+                    $new_notf->notification_type_id = 12;
+                    $new_notf->ref_user_id = $user->id;
+                    $new_notf->ref_page_id = null;
+                    $new_notf->parameter = $collaboration->sender_user_id.'/#collaborations';
+                    $new_notf->save();
+                }
+                if($collaboration->sender_page_id){
+                    $page_sender = Page::find($collaboration->sender_page_id);
+                    foreach ($page_sender->users as $user_page) {
+                        $new_notf = new Notification();
+                        $new_notf->user_id = $user_page->id;
+                        $new_notf->notification_type_id = 13;
+                        $new_notf->ref_user_id = $user->id;
+                        $new_notf->ref_to_page_id = $page_sender->id;
+                        $new_notf->parameter = $page_sender->id.'/#collaborations';
+                        $new_notf->save();
+                    }
+                }
+            }elseif($user_or_page=='page'){
+                if($collaboration->sender_user_id){
+                    $new_notf = new Notification();
+                    $new_notf->user_id = $collaboration->sender_user_id;
+                    $new_notf->notification_type_id = 12;
+                    $new_notf->ref_page_id = $collaboration->recipient_page_id;
+                    $new_notf->parameter = $collaboration->sender_user_id.'/#collaborations';
+                    $new_notf->save();
+                }
+                if($collaboration->sender_page_id){
+                    $page_sender = Page::find($collaboration->sender_page_id);
+                    foreach ($page_sender->users as $user_page) {
+                        $new_notf = new Notification();
+                        $new_notf->user_id = $user_page->id;
+                        $new_notf->notification_type_id = 13;
+                        $new_notf->ref_page_id = $collaboration->recipient_page_id;
+                        $new_notf->ref_to_page_id = $page_sender->id;
+                        $new_notf->parameter = $page_sender->id.'/#collaborations';
+                        $new_notf->save();
+                    }
+                }
+            }
         }
     }
 

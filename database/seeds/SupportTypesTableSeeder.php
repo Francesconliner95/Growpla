@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\SupportType;
+use Illuminate\Support\Facades\Schema;
 
 class SupportTypesTableSeeder extends Seeder
 {
@@ -12,7 +13,10 @@ class SupportTypesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('support_types')->delete();
+        Schema::disableForeignKeyConstraints();
+        DB::table('support_types')->truncate();
+        Schema::enableForeignKeyConstraints();
+
         $supportTypes = [
             [
                 'name_it'=>'Collaborazioni',

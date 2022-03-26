@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Language;
+use Illuminate\Support\Facades\Schema;
 
 class LanguagesTableSeeder extends Seeder
 {
@@ -12,7 +13,9 @@ class LanguagesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('languages')->delete();
+        Schema::disableForeignKeyConstraints();
+        DB::table('languages')->truncate();
+        Schema::enableForeignKeyConstraints();
         $languages = [
             [
                 'lang' => 'en',

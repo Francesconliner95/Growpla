@@ -80,6 +80,7 @@ class GiveUserServiceController extends Controller
                     $new_notf->notification_type_id = 3;
                     $new_notf->ref_user_id = $user->id;
                     $new_notf->ref_page_id = null;
+                    $new_notf->parameter = $user->id.'/#services';
                     $new_notf->save();
                 }
             }

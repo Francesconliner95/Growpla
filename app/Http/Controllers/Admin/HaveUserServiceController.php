@@ -77,9 +77,10 @@ class HaveUserServiceController extends Controller
                 foreach ($followers as $follower) {
                     $new_notf = new Notification();
                     $new_notf->user_id = $follower->id;
-                    $new_notf->notification_type_id = 3;
+                    $new_notf->notification_type_id = 4;
                     $new_notf->ref_user_id = $user->id;
                     $new_notf->ref_page_id = null;
+                    $new_notf->parameter = $user->id.'/#services';
                     $new_notf->save();
                 }
             }

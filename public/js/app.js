@@ -74880,9 +74880,9 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           collaboration_id: collaboration_id
         }
       }).then(function (response) {
-        console.log('qua');
-
         _this3.getCollaborations();
+
+        _this3.getProposalCollaborations();
       });
     },
     confirmCooperation: function confirmCooperation(collaboration_id) {
@@ -76470,6 +76470,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getNotifications', {}).then(function (response) {
         _this.notifications = response.data.results.notifications;
+        console.log(_this.notifications);
       });
     }
   },
@@ -77392,6 +77393,14 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   mounted: function mounted() {
     this.getCollaborations();
   }
+});
+document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    document.querySelector(this.getAttribute('href')).scrollIntoView({
+      behavior: 'smooth'
+    });
+  });
 });
 
 /***/ }),
@@ -79406,6 +79415,14 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     this.getCollaborations();
   }
 });
+document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    document.querySelector(this.getAttribute('href')).scrollIntoView({
+      behavior: 'smooth'
+    });
+  });
+});
 
 /***/ }),
 
@@ -80354,8 +80371,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

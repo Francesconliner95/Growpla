@@ -47,9 +47,26 @@ class HavePagePagetypeController extends Controller
         if($user->pages->contains($page)){
 
             if(array_key_exists('pagetypes', $data)){
-              $page->have_page_pagetypes()->sync($data['pagetypes']);
+              $syncResult = $page->have_page_pagetypes()->sync($data['pagetypes']);
             }else{
-              $page->have_page_pagetypes()->sync([]);
+              $syncResult = $page->have_page_pagetypes()->sync([]);
+            }
+
+            if(collect($syncResult)->flatten()->isNotEmpty()){
+
+                $followers = $page->page_follower;
+                foreach ($followers as $follower) {
+                    foreach ($data['pagetypes'] as $pagetype) {
+                        $new_notf = new Notification();
+                        $new_notf->user_id = $follower->id;
+                        $new_notf->notification_type_id = 7;
+                        $new_notf->ref_page_id = $page->id;
+                        $new_notf->pagetype_id = $pagetype;
+                        $new_notf->usertype_id = null;
+                        $new_notf->parameter = $page->id.'/#services';
+                        $new_notf->save();
+                    }
+                }
             }
 
             return redirect()->route('admin.pages.show',$page->id);

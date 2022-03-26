@@ -121,9 +121,13 @@
                             <div class="dropdown-menu show-notf-preview" aria-labelledby="notDropdown">
                                 <div v-if="notifications.length>0"  class="notf">
                                     <a v-for="notification in notifications"
-                                    :href="notification.ref_user_id?'/admin/users/'+ notification.ref_user_id : '/admin/pages/'+ notification.ref_page_id">
-                                        <strong>@{{notification.name}}</strong>
-                                        <span>@{{notification.notification_type.message_it}}</span>
+                                    :href="notification.notification_type.url + notification.parameter">
+                                        <div class="">
+                                          <strong>@{{notification.name}}</strong>
+                                          <span>@{{notification.notification_type.message_it}}</span>
+                                          <strong>@{{notification.end_name}}</strong>
+                                          <strong>@{{notification.name_type}}</strong>
+                                        </div>
                                     </a>
                                 </div>
                                 <div v-else class="notf">

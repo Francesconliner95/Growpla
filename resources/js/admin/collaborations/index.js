@@ -46,8 +46,8 @@ var create = new Vue({
                     collaboration_id: collaboration_id,
                 }
             }).then(response => {
-              console.log('qua');
                 this.getCollaborations();
+                this.getProposalCollaborations();
             });
         },
 

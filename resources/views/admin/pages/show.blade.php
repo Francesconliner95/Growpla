@@ -129,7 +129,7 @@
                 </div>
                 @endif
                 @if($is_my_page || count($page->give_page_services)>0 || count($page->have_page_services)>0)
-                <div class="sub-section row">
+                <div id="services" class="sub-section row">
                     <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                         <h6>{{__('Offro')}}</h6>
                         @if($is_my_page || count($page->give_page_services)>0)
@@ -195,7 +195,7 @@
             </div>
         </div>
         @if($page->pagetype_id==1)
-        <div class="item-cont">
+        <div class="item-cont" id="lifecycle">
             <div class="item-style">
               <h3>{{__('Life cycle')}}
                   <div v-if="is_my_page" class="info">
@@ -276,7 +276,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="is_my_page || collaborations.length>0" class="item-cont" v-cloak>
+        <div v-if="is_my_page || collaborations.length>0" id="collaborations" class="item-cont" v-cloak>
             <div class="item-style">
                 <h3 class="text-capitalize">Collaborazioni
                     <a  v-if="is_my_page" class="button-style-circle button-color-gray" href="{{route('admin.collaborations.index', [$page->id,'page'])}}">

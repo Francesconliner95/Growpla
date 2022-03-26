@@ -51,9 +51,25 @@ class HavePageUsertypeController extends Controller
         if($user->pages->contains($page)){
 
             if(array_key_exists('usertypes', $data)){
-              $page->have_page_usertypes()->sync($data['usertypes']);
+              $syncResult = $page->have_page_usertypes()->sync($data['usertypes']);
             }else{
-              $page->have_page_usertypes()->sync([]);
+              $syncResult = $page->have_page_usertypes()->sync([]);
+            }
+
+            if(collect($syncResult)->flatten()->isNotEmpty()){
+
+                $followers = $page->page_follower;
+                foreach ($followers as $follower) {
+                    foreach ($data['usertypes'] as $usertype) {
+                        $new_notf = new Notification();
+                        $new_notf->user_id = $follower->id;
+                        $new_notf->notification_type_id = 7;
+                        $new_notf->ref_page_id = $page->id;
+                        $new_notf->usertype_id = $usertype;
+                        $new_notf->parameter = $page->id.'/#services';
+                        $new_notf->save();
+                    }
+                }
             }
 
             $skills = $request->skills;
@@ -80,6 +96,8 @@ class HavePageUsertypeController extends Controller
                 }else{
                   $page->have_page_cofounders()->sync([]);
                 }
+
+
 
             }else{
                 $page->have_page_cofounders()->sync([]);

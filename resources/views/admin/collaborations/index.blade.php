@@ -72,9 +72,9 @@
                                 <button class="button-style button-color" type="submit" name="button" @click="confirmCooperation(collaboration.id)">
                                     Conferma
                                 </button>
-                                {{-- <button class="edit-top-right button-style-circle button-color-gray" type="submit" name="button" @click="deleteCooperation(collaboration.id)">
+                                <button class="edit-top-right button-style-circle button-color-gray" type="submit" name="button" @click="deleteCooperation(collaboration.id)">
                                     <i class="fas fa-trash-alt mr-1"></i>
-                                </button> --}}
+                                </button>
                             </div>
                         </div>
                     </div>

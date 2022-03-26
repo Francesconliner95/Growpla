@@ -40,6 +40,7 @@ var create = new Vue({
 
             }).then((response) => {
                 this.notifications = response.data.results.notifications;
+                console.log(this.notifications);
             });
         },
     },

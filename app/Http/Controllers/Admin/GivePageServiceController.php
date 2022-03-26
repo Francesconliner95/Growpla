@@ -78,9 +78,10 @@ class GivePageServiceController extends Controller
               foreach ($followers as $follower) {
                   $new_notf = new Notification();
                   $new_notf->user_id = $follower->id;
-                  $new_notf->notification_type_id = 3;
+                  $new_notf->notification_type_id = 5;
                   $new_notf->ref_user_id = null;
                   $new_notf->ref_page_id = $page->id;
+                  $new_notf->parameter = $page->id.'/#services';
                   $new_notf->save();
               }
           }

@@ -11,13 +11,13 @@
                 <h1>{{__('Notifications')}}</h1>
                 <div class="not-cont">
                     <a v-for="notification in notifications"
-                    :href="notification.ref_user_id?'/admin/users/'+ notification.ref_user_id : '/admin/pages/'+ notification.ref_page_id"
-                    {{-- :href="notification.notification_type.url" --}}
+                    :href="notification.notification_type.url + notification.parameter"
                     :class="notification.read?'not-item':'not-item active'" v-cloak>
                         <div class="">
                           <strong>@{{notification.name}}</strong>
                           <span>@{{notification.notification_type.message_it}}</span>
                           <strong>@{{notification.end_name}}</strong>
+                          <strong>@{{notification.name_type}}</strong>
                         </div>
                         <span class="mini-txt">@{{getDate(notification.created_at)}}</span>
                     </a>

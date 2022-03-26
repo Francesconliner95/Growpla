@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Usertype;
+use Illuminate\Support\Facades\Schema;
 
 class UsertypeTableSeeder extends Seeder
 {
@@ -12,7 +13,10 @@ class UsertypeTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('usertypes')->delete();
+        Schema::disableForeignKeyConstraints();
+        DB::table('usertypes')->truncate();
+        Schema::enableForeignKeyConstraints();
+
       $usertypes = [
           [
               'name'=>'aspiring co-founder',

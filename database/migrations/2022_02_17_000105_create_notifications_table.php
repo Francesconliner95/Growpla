@@ -27,6 +27,11 @@ class CreateNotificationsTable extends Migration
             $table->foreign('ref_to_user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedbigInteger('ref_to_page_id')->nullable();
             $table->foreign('ref_to_page_id')->references('id')->on('pages')->onDelete('cascade');
+            $table->unsignedbigInteger('usertype_id')->nullable();
+            $table->foreign('usertype_id')->references('id')->on('usertypes')->onDelete('cascade');
+            $table->unsignedbigInteger('pagetype_id')->nullable();
+            $table->foreign('pagetype_id')->references('id')->on('pagetypes')->onDelete('cascade');
+            $table->string('parameter');
             $table->boolean('read')->nullable();
             $table->timestamps();
         });

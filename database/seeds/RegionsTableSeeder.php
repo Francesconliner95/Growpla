@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Region;
+use Illuminate\Support\Facades\Schema;
 
 class RegionsTableSeeder extends Seeder
 {
@@ -13,8 +14,9 @@ class RegionsTableSeeder extends Seeder
     public function run()
     {
 
-      DB::table('regions')->delete();
-
+        Schema::disableForeignKeyConstraints();
+        DB::table('regions')->truncate();
+        Schema::enableForeignKeyConstraints();
       $regions = [
           [
               'country_id'=>1,
