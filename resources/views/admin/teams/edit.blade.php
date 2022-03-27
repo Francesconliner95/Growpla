@@ -8,6 +8,23 @@
 </script>
 <div class="container">
     <div id="team-edit">
+        <div :class="delete_alert?'alert active-alert':'alert deactive-alert'" v-cloak>
+            <div class="item-cont alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                <div class="item-style">
+                    <button type="button" name="button" class="edit-top-right button-color-gray" @click="alertCancel()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3 class="p-2 pt-4">@{{message}}</h3>
+                    <div class="">
+                        <button type="button" name="button" class="button-style button-color mr-5" @click="option1()">
+                            @{{alert_b1}}
+                        <button class="button-style button-color-red ml-5" type="submit" name="button" @click="option2()">
+                            @{{alert_b2}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="item-cont">
             <div class="item-style">
                 <div class="header">
@@ -139,14 +156,15 @@
                       <button type="submit" class="button-style button-color">
                           {{__('Save Changes')}}
                       </button>
-                </form>
-                <form method="post" action="{{ route('admin.teams.destroy', ['team'=> $team->id])}}" class="p-0 m-0 d-inline-block">
+                      <button class="button-style button-color-red ml-5" type="button" name="button" @click="alertMenu(1)">
+                          <i class="fas fa-trash-alt mr-1"></i>Elimina
+                      </button>
+                </form>                
+                <form method="post" name="deleteTeam" action="{{ route('admin.teams.destroy', ['team'=> $team->id])}}" class="invisible">
                 @csrf
                 @method('DELETE')
-                <button class="button-style button-color-red ml-5" type="submit" name="button">
-                    <i class="fas fa-trash-alt mr-1"></i>Elimina
-                </button>
                 </form>
+
             </div>
         </div>
     </div>

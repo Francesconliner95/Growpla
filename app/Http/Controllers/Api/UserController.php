@@ -20,7 +20,7 @@ class UserController extends Controller
     $user_name = $request->user_name;
 
     //concatenare due colonne nel database
-    $users = User::select("id", "name", "surname")
+    $users = User::select("id", "name", "surname","image")
             ->orWhere(DB::raw("concat(name, ' ', surname)"), 'LIKE', "%".$user_name."%")
             ->get();
 

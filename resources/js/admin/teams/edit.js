@@ -21,8 +21,55 @@ var create = new Vue({
         user_name: '',
         users_found: '',
         user_selected: '',
+        delete_alert: false,
+        case_type: '',
+        message: '',
+        alert_b1: '',
+        alert_b2: '',
     },
     methods: {
+        alertMenu(case_type){
+            this.delete_alert = true;
+            this.case_type = case_type;
+            switch (this.case_type) {
+                case 1:
+                    this.message = 'Sei sicuro di voler eliminare il membro del team';
+                    this.alert_b1 = 'Annulla';
+                    this.alert_b2 = 'Elimina';
+                break;
+
+                default:
+            }
+        },
+        alertCancel(){
+            this.delete_alert = false;
+            this.case_type = '';
+            this.message = '';
+            this.alert_b1 = '';
+            this.alert_b2 = '';
+        },
+        //bottone positivo
+        option1(){
+            switch (this.case_type) {
+                case 1:
+                    //annulla eliminazione
+                break;
+                default:
+            }
+            this.alertCancel();
+
+        },
+        //bottone negativo
+        option2(){
+            switch (this.case_type) {
+                case 1:
+                    //conferma eliminazione
+                    document.deleteTeam.submit();
+                break;
+                default:
+            }
+            this.alertCancel();
+        },
         searchUser(){
           if(this.user_name){
               axios.get('/api/searchUser',{

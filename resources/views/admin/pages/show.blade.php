@@ -13,23 +13,31 @@
 </script>
 <div class="container">
     <div id="page-show">
-        {{-- <div :class="delete_alert?'alert active-alert':'alert deactive-alert'" v-cloak>
+        <div :class="alert?'alert active-alert':'alert deactive-alert'" v-cloak>
             <div class="item-cont alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="item-style">
-                    <button type="button" name="button" class="edit-top-right button-color-gray" @click="rejectDelete()">
+                    <button type="button" name="button" class="edit-top-right button-color-gray" @click="alert=false">
                         <i class="fas fa-times"></i>
                     </button>
-                    <h3 class="p-2 pt-4">@{{delete_alert_message}}</h3>
                     <div class="">
-                        <button type="button" name="button" class="button-style button-color mr-5" @click="rejectDelete()">
-                            {{__('Cancel')}}
-                        <button class="button-style button-color-red ml-5" type="submit" name="button" @click="confirmDelete()">
-                            <i class="fas fa-trash-alt mr-1"></i>{{__('Proceed')}}
-                        </button>
+                        <h6>Seleziona l'account con cui vuoi contattare</h6>
+                        <a v-if="list_user.id" href="#" @click="startChat()" class="d-block" v-cloak>
+                            <div class="img-cont mini-img">
+                                <img v-if="list_user.image" :src="'/storage/' + list_user.image" alt="">
+                            </div>
+                            @{{list_user.name + ' ' + list_user.surname}}
+                        </a>
+                        <a v-for="page in list_pages"
+                        v-if="page.id!=id" href="#" @click="startChat(page.id)" class="d-block" v-cloak>
+                            <div class="img-cont mini-img">
+                                <img v-if="page.image" :src="'/storage/'+page.image" alt="">
+                            </div>
+                            @{{page.name}}
+                        </a>
                     </div>
                 </div>
             </div>
-        </div> --}}
+        </div>
         <div class="item-cont">
             <div class="item-style">
                 <div class="profile row">
@@ -57,14 +65,25 @@
                               <p>Costituita</p>
                             @endif
                         </h2>
+                        <div class="address">
+                            <span>{{$page->region_id?$page->region->name:''}}</span>
+                            <span>{{$page->region_id && $page->municipality?',':''}}</span>
+                            <span>{{$page->municipality}}</span>
+                            <span>{{$page->municipality && $page->street_name?',':''}}</span>
+                            <span>{{$page->municipality && $page->street_name?$page->street_name:''}}</span>
+                            <span>{{$page->municipality && $page->street_name && $page->street_number?$page->street_number:''}}</span>
+                        </div>
                         <div class="">
                             <button v-if="!is_my_page" :class="following?'button-style button-color-orange':'button-style button-color'" type="button" name="button" @click="toggleFollow({{$page->id}})" v-cloak>
                                 <span v-if="following">Seguito</span>
                                 <span v-else>Segui</span>
                             </button>
-                            <a href="{{route('admin.chats.createChat',[$page->id,'page'])}}" class="button-style button-color-blue" type="button" name="button" v-cloak>
+                            {{-- <a href="{{route('admin.chats.createChat',[$page->id,'page'])}}" class="button-style button-color-blue" type="button" name="button" v-cloak>
                                 <span>Messaggio</span>
-                            </a>
+                            </a> --}}
+                            <button class="button-style button-color-blue" type="button" name="button" @click="switchAccounts()">
+                                <span>Messaggio</span>
+                            </button>
                         </div>
                     </div>
                 </div>

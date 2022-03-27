@@ -93,6 +93,7 @@ class PagetypeTableSeeder extends Seeder
           $new_pagetype->name_it = $pagetype['name_it'];
           $new_pagetype->description = $pagetype['description'];
           $new_pagetype->description_it = $pagetype['description_it'];
+          $new_pagetype->hidden = $pagetype['hidden'];
           $new_pagetype->save();
       }
     }

@@ -150,7 +150,7 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::resource('/chats', 'ChatController');
     Route::get('chats/show/{chat_id}/{page_id}', 'ChatController@show')
     ->name('chats.show');
-    Route::get('/createChat/{id}/{user_or_page}', 'ChatController@createChat')
+    Route::post('/createChat', 'ChatController@createChat')
     ->name('chats.createChat');
     Route::get('/getChats', 'ChatController@getChats')
     ->name('chats.getChats');

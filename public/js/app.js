@@ -75270,9 +75270,60 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     registered_company: false,
     page_name: '',
     pages_found: '',
-    page_selected: ''
+    page_selected: '',
+    delete_alert: false,
+    case_type: '',
+    message: '',
+    alert_b1: '',
+    alert_b2: ''
   },
   methods: {
+    alertMenu: function alertMenu(case_type) {
+      this.delete_alert = true;
+      this.case_type = case_type;
+
+      switch (this.case_type) {
+        case 1:
+          this.message = 'Sei sicuro di voler eliminare l\'azienda per cui lavori?';
+          this.alert_b1 = 'Annulla';
+          this.alert_b2 = 'Elimina';
+          break;
+
+        default:
+      }
+    },
+    alertCancel: function alertCancel() {
+      this.delete_alert = false;
+      this.case_type = '';
+      this.message = '';
+      this.alert_b1 = '';
+      this.alert_b2 = '';
+    },
+    //bottone positivo
+    option1: function option1() {
+      switch (this.case_type) {
+        case 1:
+          //annulla eliminazione
+          break;
+
+        default:
+      }
+
+      this.alertCancel();
+    },
+    //bottone negativo
+    option2: function option2() {
+      switch (this.case_type) {
+        case 1:
+          //conferma eliminazione
+          document.deleteCompany.submit();
+          break;
+
+        default:
+      }
+
+      this.alertCancel();
+    },
     searchPage: function searchPage() {
       var _this = this;
 
@@ -77308,10 +77359,79 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     user_name: '',
     users_found: '',
     admins: '',
+    error_message: '',
     delete_alert: false,
-    message: ''
+    case_type: '',
+    alert_par: '',
+    message: '',
+    alert_b1: '',
+    alert_b2: ''
   },
   methods: {
+    alertMenu: function alertMenu(case_type, parameter) {
+      this.delete_alert = true;
+      this.case_type = case_type;
+      this.alert_par = parameter;
+
+      switch (this.case_type) {
+        case 1:
+          this.message = 'Sei sicuro di voler eliminare la tua pagina?';
+          this.alert_b1 = 'Annulla';
+          this.alert_b2 = 'Elimina';
+          break;
+
+        case 2:
+          this.message = 'Sei sicuro di voler eliminare questo amministratore?';
+          this.alert_b1 = 'No';
+          this.alert_b2 = 'Si';
+          break;
+
+        default:
+      }
+    },
+    alertCancel: function alertCancel() {
+      this.delete_alert = false;
+      this.case_type = '';
+      this.message = '';
+      this.alert_b1 = '';
+      this.alert_b2 = '';
+      this.alert_par = '';
+    },
+    //bottone positivo
+    option1: function option1() {
+      switch (this.case_type) {
+        case 1:
+          //annulla eliminazione pagina
+          break;
+
+        case 2:
+          //annulla eliminazione admin
+          break;
+
+        default:
+      }
+
+      this.alertCancel();
+    },
+    //bottone negativo
+    option2: function option2() {
+      switch (this.case_type) {
+        case 1:
+          //conferma eliminazione pagina
+          console.log('brana');
+          document.deletePage.submit();
+          break;
+
+        case 2:
+          //eliminae admin
+          this.removeAdmin(this.alert_par);
+          break;
+
+        default:
+      }
+
+      this.alertCancel();
+    },
     searchUser: function searchUser() {
       var _this = this;
 
@@ -77374,9 +77494,9 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       }).then(function (response) {
         _this4.getAdmin();
 
-        _this4.message = response.data.results.message;
+        _this4.error_message = response.data.results.message;
 
-        if (_this4.message == 'auto-delete') {
+        if (_this4.error_message == 'auto-delete') {
           window.location.href = '/admin/users/' + _this4.user_id;
         }
       });
@@ -77419,15 +77539,41 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     team_members: team_members,
     team_num: team_num,
     following: following,
-    collaborations: []
+    collaborations: [],
+    list_user: '',
+    list_pages: '',
+    alert: false
   },
   methods: {
+    switchAccounts: function switchAccounts() {
+      var _this = this;
+
+      this.alert = true;
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getMyAccounts', {}).then(function (response) {
+        _this.list_user = response.data.results.user;
+        _this.list_pages = response.data.results.pages;
+      });
+    },
+    startChat: function startChat(page_id) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default()({
+        method: 'post',
+        url: '/admin/createChat',
+        data: {
+          recipient_id: id,
+          recipient_user_or_page: 'page',
+          page_selected_id: page_id
+        }
+      }).then(function (response) {
+        var route = response.data.results.route;
+        window.location.href = route;
+      });
+    },
     open: function open(filename) {
       var newWindow = window.open();
       newWindow.document.write('<iframe src="/storage/' + filename + '" style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;">');
     },
     toggleFollow: function toggleFollow() {
-      var _this = this;
+      var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default()({
         method: 'post',
@@ -77438,7 +77584,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           follow_id: this.page.id
         }
       }).then(function (response) {
-        _this.following = response.data.results.following;
+        _this2.following = response.data.results.following;
       });
     },
     teamToggle: function teamToggle() {
@@ -77451,18 +77597,18 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       }
     },
     getTeamMembers: function getTeamMembers() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getTeamMembers', {
         params: {
           page_id: this.page.id
         }
       }).then(function (response) {
-        _this2.team_members = response.data.results.team_members;
+        _this3.team_members = response.data.results.team_members;
       });
     },
     changeTeamPosition: function changeTeamPosition(member_id, value) {
-      var _this3 = this;
+      var _this4 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default()({
         method: 'put',
@@ -77472,11 +77618,11 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           up_down: value
         }
       }).then(function (response) {
-        _this3.getTeamMembers();
+        _this4.getTeamMembers();
       });
     },
     getCollaborations: function getCollaborations() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getCollaborations', {
         params: {
@@ -77484,8 +77630,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           user_or_page: 'page'
         }
       }).then(function (response) {
-        _this4.collaborations = response.data.results.collaborations;
-        console.log(_this4.collaborations);
+        _this5.collaborations = response.data.results.collaborations;
+        console.log(_this5.collaborations);
       });
     }
   },
@@ -78770,9 +78916,60 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     registered_team: team.user_id ? true : false,
     user_name: '',
     users_found: '',
-    user_selected: ''
+    user_selected: '',
+    delete_alert: false,
+    case_type: '',
+    message: '',
+    alert_b1: '',
+    alert_b2: ''
   },
   methods: {
+    alertMenu: function alertMenu(case_type) {
+      this.delete_alert = true;
+      this.case_type = case_type;
+
+      switch (this.case_type) {
+        case 1:
+          this.message = 'Sei sicuro di voler eliminare il membro del team';
+          this.alert_b1 = 'Annulla';
+          this.alert_b2 = 'Elimina';
+          break;
+
+        default:
+      }
+    },
+    alertCancel: function alertCancel() {
+      this.delete_alert = false;
+      this.case_type = '';
+      this.message = '';
+      this.alert_b1 = '';
+      this.alert_b2 = '';
+    },
+    //bottone positivo
+    option1: function option1() {
+      switch (this.case_type) {
+        case 1:
+          //annulla eliminazione
+          break;
+
+        default:
+      }
+
+      this.alertCancel();
+    },
+    //bottone negativo
+    option2: function option2() {
+      switch (this.case_type) {
+        case 1:
+          //conferma eliminazione
+          document.deleteTeam.submit();
+          break;
+
+        default:
+      }
+
+      this.alertCancel();
+    },
     searchUser: function searchUser() {
       var _this = this;
 
@@ -79478,15 +79675,41 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     is_my_user: is_my_user,
     //user,
     following: following,
-    collaborations: []
+    collaborations: [],
+    list_user: '',
+    list_pages: '',
+    alert: false
   },
   methods: {
+    switchAccounts: function switchAccounts() {
+      var _this = this;
+
+      this.alert = true;
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getMyAccounts', {}).then(function (response) {
+        _this.list_user = response.data.results.user;
+        _this.list_pages = response.data.results.pages;
+      });
+    },
+    startChat: function startChat(page_id) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default()({
+        method: 'post',
+        url: '/admin/createChat',
+        data: {
+          recipient_id: id,
+          recipient_user_or_page: 'user',
+          page_selected_id: page_id
+        }
+      }).then(function (response) {
+        var route = response.data.results.route;
+        window.location.href = route;
+      });
+    },
     open: function open(filename) {
       var newWindow = window.open();
       newWindow.document.write('<iframe src="/storage/' + filename + '" style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;">');
     },
     toggleFollow: function toggleFollow(user_id) {
-      var _this = this;
+      var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default()({
         method: 'post',
@@ -79497,11 +79720,11 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           follow_id: user_id
         }
       }).then(function (response) {
-        _this.following = response.data.results.following;
+        _this2.following = response.data.results.following;
       });
     },
     getCollaborations: function getCollaborations() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getCollaborations', {
         params: {
@@ -79509,8 +79732,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           user_or_page: 'user'
         }
       }).then(function (response) {
-        _this2.collaborations = response.data.results.collaborations;
-        console.log(_this2.collaborations);
+        _this3.collaborations = response.data.results.collaborations;
+        console.log(_this3.collaborations);
       });
     }
   },

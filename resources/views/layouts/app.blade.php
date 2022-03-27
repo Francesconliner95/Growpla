@@ -149,11 +149,11 @@
                                 </i>
                             </a>
                         </div>
-                        <div class="chat d-inline-block">
+                        {{-- <div class="chat d-inline-block">
                             <a class="not-navbar icon" href="#" @click="switchAccounts()">
                                   <i class="fas fa-exchange-alt"></i>
                             </a>
-                        </div>
+                        </div> --}}
                         <div class="account-menu d-inline-block" v-cloak>
                             <div class="user-image-cont">
                                 <a href="{{route('admin.users.show',Auth::user()->id)}}">
@@ -180,10 +180,10 @@
                                     <i class="fas fa-user"></i>
                                     Il mio profilo
                                 </a>
-                                <a @click="switchAccounts()" type="button" name="button" class="dropdown-item">
+                                {{-- <a @click="switchAccounts()" type="button" name="button" class="dropdown-item">
                                     <i class="fas fa-exchange-alt"></i>
                                     Cambia account
-                                </a>
+                                </a> --}}
                                 <a class="dropdown-item"
                                 href="{{route('admin.users.settings',Auth::user()->id)}}">
                                     <i class="fas fa-cog"></i>

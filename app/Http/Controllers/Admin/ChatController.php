@@ -19,57 +19,68 @@ class ChatController extends Controller
         $this->middleware(['auth','verified']);
     }
 
-    public function createChat($id,$user_or_page)
+    public function createChat(Request $request)
     {
+        $request->validate([
+            'recipient_id'=> 'required|integer',
+            'recipient_user_or_page' => 'required|string',
+            'page_selected_id' => 'nullable|integer',
+        ]);
+
+        $recipient_id = $request->recipient_id;
+        $recipient_user_or_page = $request->recipient_user_or_page;
+        $page_selected_id = $request->page_selected_id;
+
         //dd($id,$user_or_page);
+
         $user = Auth::user();
         //ho selezionato il mio utente
-        if(!$user->page_selected_id){
+        if(!$page_selected_id){
             //voglio inviare un messaggio ad un utente
-            if ($user_or_page=='user') {
+            if ($recipient_user_or_page=='user') {
                 $user_id = $user->id;
                 $chat = Chat::where(function ($query) use ($user_id) {
                             $query->where('sender_user_id', '=', $user_id)
                                   ->orWhere('recipient_user_id', '=', $user_id);
-                        })->where(function ($query) use ($id) {
-                            $query->where('sender_user_id', '=', $id)
-                                  ->orWhere('recipient_user_id', '=', $id);
+                        })->where(function ($query) use ($recipient_id) {
+                            $query->where('sender_user_id', '=', $recipient_id)
+                                  ->orWhere('recipient_user_id', '=', $recipient_id);
                         })->first();
             //voglio inviare un messaggio ad una pagina
-            }elseif($user_or_page=='page'){
+        }elseif($recipient_user_or_page=='page'){
                 $user_id = $user->id;
                 $chat = Chat::where(function ($query) use ($user_id) {
                             $query->where('sender_user_id', '=', $user_id)
                                   ->orWhere('recipient_user_id', '=', $user_id);
-                        })->where(function ($query) use ($id) {
-                            $query->where('sender_page_id', '=', $id)
-                                  ->orWhere('recipient_page_id', '=', $id);
+                        })->where(function ($query) use ($recipient_id) {
+                            $query->where('sender_page_id', '=', $recipient_id)
+                                  ->orWhere('recipient_page_id', '=', $recipient_id);
                         })->first();
-                //dd($id);
+                //dd($recipient_id);
                 //dd($chat);
             }
             $page_id = 'user';
         }else {//ho selezionato una mia pagina
             //voglio inviare un messaggio ad un utente
-            if ($user_or_page=='user') {
-                $page_selected_id = $user->page_selected_id;
+            if ($recipient_user_or_page=='user') {
+                $page_selected_id = $page_selected_id;
                 $chat = Chat::where(function ($query) use ($page_selected_id){
                             $query->where('sender_page_id', '=', $page_selected_id)
                                   ->orWhere('recipient_page_id', '=', $page_selected_id);
-                        })->where(function ($query) use ($id) {
-                            $query->where('sender_user_id', '=', $id)
-                                  ->orWhere('recipient_user_id', '=', $id);
+                        })->where(function ($query) use ($recipient_id) {
+                            $query->where('sender_user_id', '=', $recipient_id)
+                                  ->orWhere('recipient_user_id', '=', $recipient_id);
                         })->first();
 
             //voglio inviare un messaggio ad una pagina
-            }elseif($user_or_page=='page'){
-                $page_selected_id = $user->page_selected_id;
+        }elseif($recipient_user_or_page=='page'){
+                $page_selected_id = $page_selected_id;
                 $chat = Chat::where(function ($query) use ($page_selected_id){
                             $query->where('sender_page_id', '=', $page_selected_id)
                                   ->orWhere('recipient_page_id', '=', $page_selected_id);
-                        })->where(function ($query) use ($id) {
-                            $query->where('sender_page_id', '=', $id)
-                                  ->orWhere('recipient_page_id', '=', $id);
+                        })->where(function ($query) use ($recipient_id) {
+                            $query->where('sender_page_id', '=', $recipient_id)
+                                  ->orWhere('recipient_page_id', '=', $recipient_id);
                         })->first();
             }
             $page_id = $page_selected_id;
@@ -77,27 +88,39 @@ class ChatController extends Controller
 
         if($chat){
 
-            return redirect()->route('admin.chats.show',[$chat->id,$page_id]);
+            // return redirect()->route('admin.chats.show',[$chat->id,$page_id]);
+
+            return response()->json([
+                'success' => true,
+                'results' => [
+                    'route' => '/admin/chats/show/'.$chat->id.'/'.$page_id,
+                ]
+            ]);
         }else{
 
             $new_chat = new Chat();
-            if(!$user->page_selected_id){
+            if(!$page_selected_id){
                 $new_chat->sender_user_id = $user->id;
                 $page_id = 'user';
             }else {
-                $new_chat->sender_page_id = $user->page_selected_id;
+                $new_chat->sender_page_id = $page_selected_id;
                 $page_id = $user->page_selected_id;
             }
-            if($user_or_page=='user'){
-                $new_chat->recipient_user_id = $id;
+            if($recipient_user_or_page=='user'){
+                $new_chat->recipient_user_id = $recipient_id;
 
-            }elseif($user_or_page=='page'){
-                $new_chat->recipient_page_id = $id;
+            }elseif($recipient_user_or_page=='page'){
+                $new_chat->recipient_page_id = $recipient_id;
             }
             $new_chat->save();
-            return redirect()->route('admin.chats.show',[$new_chat->id,$page_id]);
+            // return redirect()->route('admin.chats.show',[$new_chat->id,$page_id]);
+            return response()->json([
+                'success' => true,
+                'results' => [
+                    'route' => '/admin/chats/show/'.$new_chat->id.'/'.$page_id,
+                ]
+            ]);
         }
-        //dd('qua');
 
     }
 
@@ -290,7 +313,7 @@ class ChatController extends Controller
             'your_page_id' => $your_page_id,
             'displayed_name' => $displayed_name,
         ];
-        
+
 
         app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 

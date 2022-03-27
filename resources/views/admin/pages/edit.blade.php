@@ -26,7 +26,7 @@
                   {{-- NOME --}}
                   <div class="sub-section">
                       <h6>{{__('Page name')}}*</h6>
-                      <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name',$page->name) }}" minlength="3" maxlength="70" required autocomplete="" required>
+                      <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name',$page->name) }}" minlength="3" maxlength="70" required>
                       @error('name')
                           <span class="alert alert-danger">
                               {{__($message)}}

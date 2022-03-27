@@ -13,8 +13,35 @@ var create = new Vue({
         //user,
         following,
         collaborations: [],
+        list_user: '',
+        list_pages: '',
+        alert: false,
     },
     methods: {
+
+        switchAccounts(){
+            this.alert = true;
+            axios.get('/admin/getMyAccounts',{
+            }).then((response) => {
+                this.list_user = response.data.results.user;
+                this.list_pages = response.data.results.pages;
+            });
+        },
+
+        startChat(page_id){
+            axios({
+                method: 'post',
+                url: '/admin/createChat',
+                data: {
+                    recipient_id: id,
+                    recipient_user_or_page: 'user',
+                    page_selected_id: page_id,
+                }
+            }).then(response => {
+                var route = response.data.results.route;
+                window.location.href = route;
+            });
+        },
 
         open(filename){
           var newWindow = window.open();
