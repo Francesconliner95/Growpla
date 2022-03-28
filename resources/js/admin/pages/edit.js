@@ -21,6 +21,7 @@ var create = new Vue({
       noAdressFound: false,
       region_id_selected: '',
       country_id_selected: 1,
+      remove_pitch: false,
     },
     methods: {
 

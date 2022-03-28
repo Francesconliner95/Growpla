@@ -76408,6 +76408,116 @@ function scrollFunction() {
 
 /***/ }),
 
+/***/ "./resources/js/admin/needs/index.js":
+/*!*******************************************!*\
+  !*** ./resources/js/admin/needs/index.js ***!
+  \*******************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#needs',
+  data: {
+    lang: lang,
+    needs: needs,
+    needs_show: [],
+    page: 1,
+    show_prev: false,
+    show_next: false
+  },
+  methods: {
+    orderById: function orderById(needs) {
+      //ordinamento per id
+      for (var i = 0; i < needs.length; i++) {
+        for (var j = 0; j < needs.length - 1; j++) {
+          if (needs[j].id > needs[i].id) {
+            var tmp = needs[j];
+            needs[j] = needs[i];
+            needs[i] = tmp;
+          }
+        }
+      }
+
+      this.needs = needs;
+      this.showMore();
+    },
+    showMore: function showMore() {
+      var needs_qty = this.needs.length;
+      var items_qty = 6;
+
+      if (this.page <= Math.ceil(needs_qty / items_qty)) {
+        var new_needs_show = this.needs.slice(items_qty * this.page - items_qty, items_qty * this.page);
+        this.loadNeedInfo(new_needs_show);
+        this.page++;
+      }
+    },
+    loadNeedInfo: function loadNeedInfo(new_needs) {
+      var _this = this;
+
+      console.log(new_needs);
+
+      if (new_needs) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/loadNeedInfo', {
+          params: {
+            needs: new_needs
+          }
+        }).then(function (response) {
+          var _this$needs_show;
+
+          (_this$needs_show = _this.needs_show).push.apply(_this$needs_show, _toConsumableArray(response.data.results.needs));
+
+          console.log(_this.needs_show);
+        });
+      }
+    },
+    scrollFunction: function scrollFunction() {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        this.showMore();
+      }
+    }
+  },
+  created: function created() {
+    if (this.needs) {
+      this.needs = JSON.parse(this.needs.replace(/&quot;/g, '"'));
+    }
+
+    this.orderById(this.needs);
+  },
+  mounted: function mounted() {
+    var _this2 = this;
+
+    window.onscroll = function () {
+      _this2.scrollFunction();
+    };
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/admin/nominations/startup.js":
 /*!***************************************************!*\
   !*** ./resources/js/admin/nominations/startup.js ***!
@@ -76638,6 +76748,116 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     if (performance.navigation.type == 2) {
       this.getNotifications();
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/admin/offers/index.js":
+/*!********************************************!*\
+  !*** ./resources/js/admin/offers/index.js ***!
+  \********************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#offers',
+  data: {
+    lang: lang,
+    offers: offers,
+    offers_show: [],
+    page: 1,
+    show_prev: false,
+    show_next: false
+  },
+  methods: {
+    orderById: function orderById(offers) {
+      //ordinamento per id
+      for (var i = 0; i < offers.length; i++) {
+        for (var j = 0; j < offers.length - 1; j++) {
+          if (offers[j].id > offers[i].id) {
+            var tmp = offers[j];
+            offers[j] = offers[i];
+            offers[i] = tmp;
+          }
+        }
+      }
+
+      this.offers = offers;
+      this.showMore();
+    },
+    showMore: function showMore() {
+      var offers_qty = this.offers.length;
+      var items_qty = 6;
+
+      if (this.page <= Math.ceil(offers_qty / items_qty)) {
+        var new_offers_show = this.offers.slice(items_qty * this.page - items_qty, items_qty * this.page);
+        this.loadNeedInfo(new_offers_show);
+        this.page++;
+      }
+    },
+    loadNeedInfo: function loadNeedInfo(new_offers) {
+      var _this = this;
+
+      console.log(new_offers);
+
+      if (new_offers) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/loadNeedInfo', {
+          params: {
+            needs: new_offers
+          }
+        }).then(function (response) {
+          var _this$offers_show;
+
+          (_this$offers_show = _this.offers_show).push.apply(_this$offers_show, _toConsumableArray(response.data.results.needs));
+
+          console.log(_this.offers_show);
+        });
+      }
+    },
+    scrollFunction: function scrollFunction() {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        this.showMore();
+      }
+    }
+  },
+  created: function created() {
+    if (this.offers) {
+      this.offers = JSON.parse(this.offers.replace(/&quot;/g, '"'));
+    }
+
+    this.orderById(this.offers);
+  },
+  mounted: function mounted() {
+    var _this2 = this;
+
+    window.onscroll = function () {
+      _this2.scrollFunction();
+    };
   }
 });
 
@@ -77101,7 +77321,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     address: '',
     noAdressFound: false,
     region_id_selected: '',
-    country_id_selected: 1
+    country_id_selected: 1,
+    remove_pitch: false
   },
   methods: {
     getRegionsByCountry: function getRegionsByCountry() {
@@ -79430,7 +79651,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     pages_found: '',
     page_selected: '',
     region_id_selected: '',
-    country_id_selected: 1
+    country_id_selected: 1,
+    remove_cv: false
   },
   methods: {
     searchPage: function searchPage() {
@@ -79474,6 +79696,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           }
         });
       }
+    },
+    removeCV: function removeCV() {// this.user.cv='';
     } // remove_file(value){
     //     axios({
     //         method: 'put',
@@ -79790,6 +80014,14 @@ if (document.getElementById('search')) {
 
 if (document.getElementById('found')) {
   __webpack_require__(/*! ./admin/found.js */ "./resources/js/admin/found.js");
+}
+
+if (document.getElementById('needs')) {
+  __webpack_require__(/*! ./admin/needs/index.js */ "./resources/js/admin/needs/index.js");
+}
+
+if (document.getElementById('offers')) {
+  __webpack_require__(/*! ./admin/offers/index.js */ "./resources/js/admin/offers/index.js");
 } //USERS
 
 
@@ -80701,8 +80933,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

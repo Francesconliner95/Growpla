@@ -66,6 +66,13 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     //GiveUserSkills
     Route::resource('/give_user_skills', 'GiveUserSkillController');
 
+    //All needs
+
+    Route::get('/needs', 'GiveHaveController@getAllHave')
+    ->name('needs.getAllHave');
+    Route::get('/offers', 'GiveHaveController@getAllGive')
+    ->name('offers.getAllGive');
+    Route::get('/loadNeedInfo', 'GiveHaveController@loadNeedInfo')->name('loadNeedInfo');
     //GiveUserService
     Route::resource('/give-user-services', 'GiveUserServiceController');
     //HaveUserService
@@ -137,6 +144,8 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::resource('/collaborations', 'CollaborationController');
     Route::get('collaborations/create/{id}/{user_or_page}', 'CollaborationController@create')->name('collaborations.create');
     Route::get('collaborations/index/{id}/{user_or_page}', 'CollaborationController@index')->name('collaborations.index');
+    Route::get('collaborations/all', 'CollaborationController@all')
+    ->name('collaborations.all');
     Route::get('getCollaborations', 'CollaborationController@getCollaborations')->name('getCollaborations');
     Route::get('getProposalCollaborations', 'CollaborationController@getProposalCollaborations')->name('getProposalCollaborations');
     Route::delete('deleteCollaboration', 'CollaborationController@deleteCollaboration')

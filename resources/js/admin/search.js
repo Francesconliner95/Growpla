@@ -38,7 +38,6 @@ var create = new Vue({
 
     },
     methods: {
-
         search_type_f(){
             if(!this.search_type){
                 this.name = '';

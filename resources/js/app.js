@@ -28,6 +28,14 @@ if (document.getElementById('found')) {
     require('./admin/found.js');
 }
 
+if (document.getElementById('needs')) {
+    require('./admin/needs/index.js');
+}
+
+if (document.getElementById('offers')) {
+    require('./admin/offers/index.js');
+}
+
 
 //USERS
 if (document.getElementById('user-create')) {

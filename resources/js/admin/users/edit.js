@@ -16,6 +16,7 @@ var create = new Vue({
       page_selected: '',
       region_id_selected: '',
       country_id_selected: 1,
+      remove_cv: false,
     },
     methods: {
 
@@ -59,6 +60,11 @@ var create = new Vue({
             });
           }
         },
+
+        removeCV(){
+            // this.user.cv='';
+        },
+
 
         // remove_file(value){
         //     axios({

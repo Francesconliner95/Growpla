@@ -78,10 +78,11 @@
                       <div class="edit-image-drag-drop row">
                           <div v-if="page.pitch" class="file-cont  col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-2">
                               <embed  src="{{ asset("storage/" . $page->pitch) }}" />
-                              <button type="button" @click="remove_file('pitch')" class="button-style button-color-red edit-top-right">
+                              <button type="button" @click="page.pitch='';remove_pitch=true" class="button-style button-color-red edit-top-right">
                                   <i class="fas fa-times"></i>
                               </button>
                           </div>
+                          <input type="hidden" name="remove_pitch" :value="remove_pitch">
                           <div class="drop-zone col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-2">
                               <span class="drop-zone__prompt">{{__('Drop file here or click to upload')}}
                                   <span class="mini-txt d-block">{{__('Supported formats')}} .pdf max:6Mb</span>

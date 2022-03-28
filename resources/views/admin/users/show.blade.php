@@ -128,7 +128,7 @@
                     @endif
                     @if ($user->cv)
                     <div class="link-item">
-                        <a class="cv" href="#" @click="open(user.cv)">
+                        <a class="cv" href="#" @click="open('{{$user->cv}}')">
                             <i class="fas fa-address-card"></i>
                             <span>CV</span>
                         </a>

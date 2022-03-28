@@ -139,10 +139,19 @@ class UserController extends Controller
       $user = Auth::user();
 
       if($user->id == $id){
-
-          if(array_key_exists('cv', $data)){
+          if($data['remove_cv'] && $user->cv){
               $old_cv_name = $user->cv;
-              Storage::delete($old_cv_name);
+              if($old_cv_name){
+                  Storage::delete($old_cv_name);
+              }
+              $data['cv'] = '';
+          }
+
+          if($data['cv']){
+              $old_cv_name = $user->cv;
+              if($old_cv_name){
+                  Storage::delete($old_cv_name);
+              }
               $cv_path = Storage::put('cv', $data['cv']);
               $data['cv'] = $cv_path;
           }

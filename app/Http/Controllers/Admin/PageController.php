@@ -120,18 +120,27 @@ class PageController extends Controller
         if(Auth::user()->pagetypes->contains($page->pagetype_id)){
 
             $data = $request->all();
+            if($data['remove_pitch'] && $page->pitch){
+                $old_pitch_name = $page->pitch;
+                if($old_pitch_name){
+                    Storage::delete($old_pitch_name);
+                }
+                $data['pitch'] = '';
+            }
 
-            if(array_key_exists('pitch', $data)){
-              $old_pitch_name = $page->pitch;
-              Storage::delete($old_pitch_name);
-              $pitch_path = Storage::put('pitch', $data['pitch']);
-              $data['pitch'] = $pitch_path;
+            if($data['pitch']){
+                $old_pitch_name = $page->pitch;
+                if($old_pitch_name){
+                    Storage::delete($old_pitch_name);
+                }
+                $pitch_path = Storage::put('pitch', $data['pitch']);
+                $data['pitch'] = $pitch_path;
             }
 
             $page->fill($data);
 
             if($request->name){
-            $page->name = Str::lower($request->name);
+              $page->name = Str::lower($request->name);
             }
 
             $page->update();

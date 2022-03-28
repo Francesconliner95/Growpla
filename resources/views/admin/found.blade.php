@@ -11,7 +11,7 @@
     <div class="container">
         <div class="item-cont">
             <div class="item-style">
-                <h3 >Risultati</h3>
+                <h3 >Risultati per "{{$search_type}}"</h3>
                 <div class="">
                     <div v-for="account in accounts_show" class="row" v-cloak>
                         <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">

@@ -14,6 +14,16 @@ use App\Notification;
 class CollaborationController extends Controller
 {
 
+    public function all()
+    {
+        dd('qua');
+        $data = [
+            'collaborations' => $collaborations,
+        ];
+        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+        return view('admin.collaborations.all', $data);
+    }
+
     public function index($id,$user_or_page)
     {
 

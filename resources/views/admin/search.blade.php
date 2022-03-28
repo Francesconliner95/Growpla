@@ -218,7 +218,7 @@
                           @enderror
                       </div>
                     </div>
-                    <form v-if="search_type || category_selected" class="search-style row m-0" method="POST" action="{{ route('admin.found') }}">
+                    <form v-if="search_type && name || category_selected" class="search-style row m-0" method="POST" action="{{ route('admin.found') }}" >
                         @csrf
                         <input v-for="usertype_id in usertypes_id" type="hidden" name="usertypes_id[]" :value="usertype_id">
                         <input v-for="pagetype_id in pagetypes_id" type="hidden" name="pagetypes_id[]" :value="pagetype_id">
@@ -242,6 +242,59 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container">
+        <h4>Ricerca rapida</h4>
+        <div class="rapid-search row d-flex justify-content-center ">
+            <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2">
+                <form class="page-list" method="POST" action="{{ route('admin.found') }}">
+                    @csrf
+                    <input type="hidden" name="pagetypes_id[]" value="1">
+                    <button class="" type="submit" name="button">Startup</button>
+                </form>
+            </div>
+            <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2">
+                <form class="page-list" method="POST" action="{{ route('admin.found') }}">
+                    @csrf
+                    <input type="hidden" name="pagetypes_id[]" value="3">
+                    <button class="" type="submit" name="button">Incubatori/Acceleratori</button>
+                </form>
+            </div>
+            <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2">
+                <form class="page-list" method="POST" action="{{ route('admin.found') }}">
+                    @csrf
+                    <input type="hidden" name="usertypes_id[]" value="2">
+                    <input type="hidden" name="pagetypes_id[]" value="5">
+                    <input type="hidden" name="pagetypes_id[]" value="8">
+                    <button class="" type="submit" name="button">Investitori</button>
+                </form>
+            </div>
+            <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2">
+                <form class="page-list" method="POST" action="{{ route('admin.found') }}">
+                    @csrf
+                    <input type="hidden" name="usertypes_id[]" value="1">
+                    <button class="" type="submit" name="button">Aspiranti Co-founder</button>
+                </form>
+            </div>
+            <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2">
+                <form class="page-list" method="POST" action="{{ route('admin.found') }}">
+                    @csrf
+                    <button class="" type="submit" name="button">Servizi</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h4>Necessità</h4>
+        <a href="{{route('admin.needs.getAllHave')}}">Mostra altro</a>
+    </div>
+    <div class="container">
+        <h4>Offerta</h4>
+        <a href="{{route('admin.offers.getAllGive')}}">Mostra altro</a>
+    </div>
+    <div class="container">
+        <h4>Collaborazioni</h4>
+        <a href="{{route('admin.collaborations.all')}}">Mostra altro</a>
     </div>
 </div>
 {{-- PUSHER --}}

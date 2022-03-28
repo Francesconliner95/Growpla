@@ -74,8 +74,6 @@ class MainController extends Controller
             'sector_toggle' => 'nullable',
         ]);
 
-      //dd($request);
-
         $usertypes_id = $request->usertypes_id;
         $pagetypes_id = $request->pagetypes_id;
         $country_id = $request->country_id;
@@ -96,6 +94,39 @@ class MainController extends Controller
         //Settore
         $sectors = $request->sectors;
         $sector_toggle = $request->sector_toggle;
+        //dd($usertypes_id,$pagetypes_id);
+        //TIPO di ricerca
+        $search_type = '';
+        if($pagetypes_id && $pagetypes_id[0]==1){
+            $search_type = 'Startup';
+        }
+        if($usertypes_id && $usertypes_id[0]==1){
+            $search_type = 'Aspiranti Co-founder';
+        }
+        if($pagetypes_id && $pagetypes_id[0]==3){
+            $search_type = 'Incubatori-Acceleratori';
+        }
+        if($usertypes_id && $usertypes_id[0]==2
+        && $pagetypes_id && $pagetypes_id[0]==5
+        && !$name){
+            $search_type = 'Investitori';
+        }
+        if(!$pagetypes_id && $usertypes_id && $usertypes_id[0]==2){
+            $search_type = 'Business-Angel';
+        }
+        if(!$usertypes_id && $pagetypes_id && $pagetypes_id[0]==5){
+            $search_type = 'Venture-Capital';
+        }
+        if(!$usertypes_id && $pagetypes_id && $pagetypes_id[0]==8){
+            $search_type = 'Private-Equity';
+        }
+        if(!$usertypes_id && !$pagetypes_id && !$name){
+            $search_type = 'Servizi';
+        }
+        if(!$usertypes_id && !$pagetypes_id  && $name){
+            $search_type = $name;
+        }
+        //dd($usertypes_id,$pagetypes_id,$name,$search_type);
 
         function needPagetype($pages_input,$need_pagetype_id){
 
@@ -305,7 +336,7 @@ class MainController extends Controller
                 $pages_query->where('lifecycle_id',$lifecycle_id);
             }
 
-            $pages = $pages_query->get();
+            $pages = $pages_query/*->select('id')*/->get();
 
             if($need_pagetype_id){
                 $pages_input = $pages;
@@ -558,8 +589,8 @@ class MainController extends Controller
             foreach ($pages as $page) {
                 $page_id = [
                   "id" => $page->id,
-                  "name" => $page->name,
-                  "image" => $page->image,
+                  // "name" => $page->name,
+                  // "image" => $page->image,
                   "user_or_page" => false,
                 ];
                 array_push($pages_id,$page_id);
@@ -570,9 +601,9 @@ class MainController extends Controller
             foreach ($users as $user) {
                 $user_id = [
                   "id" => $user->id,
-                  "name" => $user->name,
-                  "surname" => $user->surname,
-                  "image" => $user->image,
+                  // "name" => $user->name,
+                  // "surname" => $user->surname,
+                  // "image" => $user->image,
                   "user_or_page" => true,
                 ];
                 array_push($users_id,$user_id);
@@ -580,6 +611,7 @@ class MainController extends Controller
         }
 
         $data = [
+            'search_type' => $search_type,
             'pages_id' => $pages_id,
             'users_id' => $users_id,
         ];

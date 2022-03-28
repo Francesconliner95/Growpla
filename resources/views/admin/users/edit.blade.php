@@ -69,11 +69,12 @@
                       <h6>Curriculum Vitae</h6>
                       <div class="edit-image-drag-drop row m-0">
                           <div v-if="user.cv" class="file-cont  col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-2">
-                              <embed src="{{ asset("storage/" . $user->cv) }}" />
-                              <button type="button" @click="remove_file('cv')" class="button-style button-color-red edit-top-right">
+                              <embed :src="'/storage/'+user.cv" />
+                              <button type="button" @click="user.cv='';remove_cv=true" class="button-style button-color-red edit-top-right">
                                   <i class="fas fa-times"></i>
-                              </button>
+                              </button>                            
                           </div>
+                          <input type="hidden" name="remove_cv" :value="remove_cv">
                           <div class="drop-zone  col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-2">
                               <span class="drop-zone__prompt">{{__('Drop file here or click to upload')}}
                                   <span class="mini-txt d-block">{{__('Supported formats')}} .pdf max:6Mb</span>
