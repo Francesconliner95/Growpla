@@ -14,17 +14,68 @@ use App\Notification;
 class CollaborationController extends Controller
 {
 
-    public function all()
+    public function index()
     {
-        dd('qua');
+        $collaborations = Collaboration::where('confirmed',1)
+                            ->latest()
+                            ->get();
+
         $data = [
             'collaborations' => $collaborations,
         ];
         app()->setLocale(Language::find(Auth::user()->language_id)->lang);
-        return view('admin.collaborations.all', $data);
+        return view('admin.collaborations.index', $data);
     }
 
-    public function index($id,$user_or_page)
+    public function loadCollaborationsInfo(Request $request){
+
+        $request->validate([
+            'collaborations' => 'required',
+        ]);
+
+        $_collaborations = $request->collaborations;
+        $collaborations_info = [];
+        foreach ($_collaborations as $_collaboration) {
+            $collaboration = json_decode($_collaboration,true);
+            $collaboration_info['id'] = $collaboration['id'];
+            if($collaboration['sender_user_id']){
+                $collaboration_info['account_1'] = User::where('id',$collaboration['sender_user_id'])
+                ->select('id','name','surname','image','summary')
+                ->first();
+                $collaboration_info['account_1']['user_or_page'] = true;
+            }
+            if($collaboration['sender_page_id']){
+                $collaboration_info['account_1'] = Page::where('id',$collaboration['sender_page_id'])
+                ->select('id','name','image','summary')
+                ->first();
+                $collaboration_info['account_1']['user_or_page'] = false;
+            }
+            if($collaboration['recipient_user_id']){
+                $collaboration_info['account_2'] =
+                User::where('id',$collaboration['recipient_user_id'])
+                ->select('id','name','surname','image','summary')
+                ->first();
+                $collaboration_info['account_2']['user_or_page'] = true;
+            }
+            if($collaboration['recipient_page_id']){
+                $collaboration_info['account_2'] =
+                Page::where('id',$collaboration['recipient_page_id'])
+                ->select('id','name','image','summary')
+                ->first();
+                $collaboration_info['account_2']['user_or_page'] = false;
+            }
+            array_push($collaborations_info,$collaboration_info);
+        }
+
+        return response()->json([
+            'success' => true,
+            'results' => [
+                'collaborations' => $collaborations_info,
+            ]
+        ]);
+    }
+
+    public function my($id,$user_or_page)
     {
 
         $data = [
@@ -32,7 +83,7 @@ class CollaborationController extends Controller
             'user_or_page' => $user_or_page,
         ];
         app()->setLocale(Language::find(Auth::user()->language_id)->lang);
-        return view('admin.collaborations.index', $data);
+        return view('admin.collaborations.my', $data);
     }
 
     public function create($id,$user_or_page)

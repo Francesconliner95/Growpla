@@ -298,7 +298,7 @@
         <div v-if="is_my_page || collaborations.length>0" id="collaborations" class="item-cont" v-cloak>
             <div class="item-style">
                 <h3 class="text-capitalize">Collaborazioni
-                    <a  v-if="is_my_page" class="button-style-circle button-color-gray" href="{{route('admin.collaborations.index', [$page->id,'page'])}}">
+                    <a  v-if="is_my_page" class="button-style-circle button-color-gray" href="{{route('admin.collaborations.my', [$page->id,'page'])}}">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
                 </h3>

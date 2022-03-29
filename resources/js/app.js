@@ -124,11 +124,14 @@ if (document.getElementById('company-edit')) {
 }
 
 //COLLABORATION
+if (document.getElementById('collaboration-index')) {
+    require('./admin/collaborations/index.js');
+}
 if (document.getElementById('collaboration-create')) {
     require('./admin/collaborations/create.js');
 }
-if (document.getElementById('collaboration-index')) {
-    require('./admin/collaborations/index.js');
+if (document.getElementById('my-collaboration')) {
+    require('./admin/collaborations/my.js');
 }
 
 //SKILL

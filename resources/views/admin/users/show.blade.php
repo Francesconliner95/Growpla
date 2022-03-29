@@ -263,7 +263,7 @@
         <div v-if="is_my_user || collaborations.length>0" id="collaborations" class="item-cont" v-cloak>
             <div class="item-style">
                 <h3 class="text-capitalize">Collaborazioni
-                    <a  v-if="is_my_user" class="button-style-circle button-color-gray" href="{{route('admin.collaborations.index', [$user->id,'user'])}}">
+                    <a  v-if="is_my_user" class="button-style-circle button-color-gray" href="{{route('admin.collaborations.my', [$user->id,'user'])}}">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
                 </h3>

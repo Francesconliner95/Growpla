@@ -294,7 +294,7 @@
     </div>
     <div class="container">
         <h4>Collaborazioni</h4>
-        <a href="{{route('admin.collaborations.all')}}">Mostra altro</a>
+        <a href="{{route('admin.collaborations.index')}}">Mostra altro</a>
     </div>
 </div>
 {{-- PUSHER --}}

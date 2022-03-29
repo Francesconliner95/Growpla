@@ -143,9 +143,7 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     //COLLABORATIONS
     Route::resource('/collaborations', 'CollaborationController');
     Route::get('collaborations/create/{id}/{user_or_page}', 'CollaborationController@create')->name('collaborations.create');
-    Route::get('collaborations/index/{id}/{user_or_page}', 'CollaborationController@index')->name('collaborations.index');
-    Route::get('collaborations/all', 'CollaborationController@all')
-    ->name('collaborations.all');
+    Route::get('collaborations/my/{id}/{user_or_page}', 'CollaborationController@my')->name('collaborations.my');
     Route::get('getCollaborations', 'CollaborationController@getCollaborations')->name('getCollaborations');
     Route::get('getProposalCollaborations', 'CollaborationController@getProposalCollaborations')->name('getProposalCollaborations');
     Route::delete('deleteCollaboration', 'CollaborationController@deleteCollaboration')
@@ -154,6 +152,8 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     ->name('confirmCollaboration');
     Route::post('addCollaboration', 'CollaborationController@addCollaboration')
     ->name('addCollaboration');
+    Route::get('/loadCollaborationsInfo', 'CollaborationController@loadCollaborationsInfo')
+    ->name('loadCollaborationsInfo');
 
     //CHATS
     Route::resource('/chats', 'ChatController');
