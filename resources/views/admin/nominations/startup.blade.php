@@ -8,7 +8,7 @@
 </script>
 <div class="container">
     <div id="nomination-startup">
-        <div :class="delete_alert?'delete-alert active-alert':'delete-alert deactive-alert'" v-cloak>
+        <div :class="delete_alert?'d-alert active-alert':'d-alert deactive-alert'" v-cloak>
             <div class="item-cont delete-alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="item-style">
                     <button type="button" name="button" class="edit-top-right button-style button-color" @click="rejectDelete()">

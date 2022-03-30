@@ -28,8 +28,14 @@ class GiveHaveController extends Controller
         $this->middleware(['auth','verified']);
     }
 
-    public function getAllHave()
+    public function getAllHave(Request $request)
     {
+        $request->validate([
+            'api_or_route' => 'nullable',
+        ]);
+
+        $api_or_route = $request->api_or_route;
+
         $needs = [];
         array_push($needs,...HavePagePagetype::select('id','page_id','pagetype_id')->get());
         array_push($needs,...HavePageUsertype::where('usertype_id','!=',1)
@@ -38,15 +44,31 @@ class GiveHaveController extends Controller
         array_push($needs,...HavePageService::select('id','page_id','service_id')->get());
         array_push($needs,...HaveUserService::select('id','user_id','service_id')->get());
 
-        $data = [
-            'needs'=> $needs,
-        ];
-        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
-        return view('admin.needs.index', $data);
+        if($api_or_route){
+            return response()->json([
+                'success' => true,
+                'results' => [
+                    'needs'=> $needs,
+                ]
+            ]);
+        }else{
+            $data = [
+                'needs'=> $needs,
+            ];
+            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+            return view('admin.needs.index', $data);
+        }
+
     }
 
-    public function getAllGive()
+    public function getAllGive(Request $request)
     {
+        $request->validate([
+            'api_or_route' => 'nullable',
+        ]);
+
+        $api_or_route = $request->api_or_route;
+        
         $offers = [];
         array_push($offers,...GiveUserSkill::select('id','user_id','skill_id')->get());
         array_push($offers,...GivePageService::select('id','page_id','service_id')
@@ -54,11 +76,21 @@ class GiveHaveController extends Controller
         array_push($offers,...GiveUserService::select('id','user_id','service_id')
         ->get());
 
-        $data = [
-            'offers'=> $offers,
-        ];
-        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
-        return view('admin.offers.index', $data);
+        if($api_or_route){
+            return response()->json([
+                'success' => true,
+                'results' => [
+                    'offers'=> $offers,
+                ]
+            ]);
+        }else{
+            $data = [
+                'offers'=> $offers,
+            ];
+            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+            return view('admin.offers.index', $data);
+        }
+
     }
 
     public function loadNeedInfo(Request $request){

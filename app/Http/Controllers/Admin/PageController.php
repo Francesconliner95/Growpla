@@ -128,7 +128,7 @@ class PageController extends Controller
                 $data['pitch'] = '';
             }
 
-            if($data['pitch']){
+            if(array_key_exists('pitch',$data) && $data['pitch']){
                 $old_pitch_name = $page->pitch;
                 if($old_pitch_name){
                     Storage::delete($old_pitch_name);

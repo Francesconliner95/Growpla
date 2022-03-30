@@ -37,6 +37,8 @@ var create = new Vue({
         sectorToggle: false,
         myLatestViews: [],
         mostViewedAccounts: [],
+        needs: [],
+        offers: [],
 
     },
     methods: {
@@ -284,6 +286,67 @@ var create = new Vue({
             return d.toUTCString();
         },
 
+        getLastHave(){
+            axios.get('/admin/needs',{
+                params: {
+                    api_or_route: true,
+                }
+            }).then((response) => {
+                var needs = response.data.results.needs;
+                //ordinamento per id
+                for (var i=0; i < needs.length; i++) {
+                    for (var j=0; j < needs.length-1; j++) {
+                        if (needs[j].id<needs[i].id) {
+                          var tmp=needs[j];
+                          needs[j]=needs[i];
+                          needs[i]=tmp;
+                        }
+                    }
+                }
+                needs = needs.slice(0,4);
+                if(needs){
+                    axios.get('/admin/loadNeedInfo',{
+                        params: {
+                            needs: needs,
+                        }
+                    }).then((response) => {
+                        this.needs.push(...response.data.results.needs);
+                    });
+                }
+            });
+        },
+
+        getLastOffer(){
+            axios.get('/admin/offers',{
+                params: {
+                    api_or_route: true,
+                }
+            }).then((response) => {
+                var offers = response.data.results.offers;
+                //ordinamento per id
+                for (var i=0; i < offers.length; i++) {
+                    for (var j=0; j < offers.length-1; j++) {
+                        if (offers[j].id<offers[i].id) {
+                          var tmp=offers[j];
+                          offers[j]=offers[i];
+                          offers[i]=tmp;
+                        }
+                    }
+                }
+                offers = offers.slice(0,4);
+                console.log(offers);
+                if(offers){
+                    axios.get('/admin/loadNeedInfo',{
+                        params: {
+                            needs: offers,
+                        }
+                    }).then((response) => {
+                        this.offers.push(...response.data.results.needs);
+                    });
+                }
+            });
+        },
+
         myLatestViews_f(){
             axios.get('/admin/myLatestViews',{
             }).then((response) => {
@@ -294,7 +357,18 @@ var create = new Vue({
         mostViewedAccounts_f(){
             axios.get('/admin/mostViewedAccounts',{
             }).then((response) => {
-              this.mostViewedAccounts = response.data.results.accounts;
+                var accounts = response.data.results.accounts;
+
+                for (var i=0; i < accounts.length; i++) {
+                   for (var j=0; j < accounts.length-1; j++) {
+                        if (accounts[j].views<accounts[i].views) {
+                            var tmp=accounts[j];
+                            accounts[j]=accounts[i];
+                            accounts[i]=tmp;
+                        }
+                   }
+                }
+                this.mostViewedAccounts = accounts.slice(0,4);
             });
         },
 
@@ -303,6 +377,8 @@ var create = new Vue({
     },
     mounted() {
 
+        this.getLastHave();
+        this.getLastOffer();
         this.getRegionsByCountry();
         this.myLatestViews_f();
         this.mostViewedAccounts_f();

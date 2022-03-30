@@ -31,20 +31,22 @@ class UserController extends Controller
     }
 
     public function tutorial(){
-
+        //null = tutorial completato
+        //1 = tutorial mai fatto
+        //2 = in su in tutorial
         $my_user = Auth::user();
-        if(!$my_user->tutorial){
-            $my_user->tutorial = 1;
+        if($my_user->tutorial==1){
+            $my_user->tutorial = 2;
             $my_user->update();
         }
-
+        //dd($my_user->tutorial);
         switch($my_user->tutorial){
-            case 1:
-                $my_user->tutorial = 2;
+            case 2:
+                $my_user->tutorial = 3;
                 $my_user->update();
                 return redirect()->route('admin.users.create');
             break;
-            case 2:
+            case 3:
                 $my_user->tutorial = null;
                 $my_user->update();
                 return redirect()->route('admin.users.edit',$my_user->id);
@@ -92,7 +94,7 @@ class UserController extends Controller
         $user->pagetypes()->sync($data['pagetypes']);
       }
 
-      if(Auth::user()->tutorial){
+      if(Auth::user()->tutorial>=2){
           return redirect()->route('admin.users.tutorial');
       }else{
           return redirect()->route('admin.users.show',$user->id);
@@ -146,8 +148,8 @@ class UserController extends Controller
               }
               $data['cv'] = '';
           }
-
-          if($data['cv']){
+          //dd($data);
+          if(array_key_exists('cv',$data) && $data['cv']){
               $old_cv_name = $user->cv;
               if($old_cv_name){
                   Storage::delete($old_cv_name);
@@ -164,7 +166,7 @@ class UserController extends Controller
 
           $user->update();
 
-          if(Auth::user()->tutorial){
+          if(Auth::user()->tutorial>=2){
               return redirect()->route('admin.users.tutorial');
           }else {
               return redirect()->route('admin.users.show', ['user' => $user->id]);
@@ -176,7 +178,7 @@ class UserController extends Controller
     public function show(User $user){
 
         //event(new MyEvent(2,'prova evento bello'));
-        if(Auth::user()->tutorial){
+        if(Auth::user()->tutorial>=2){
             return redirect()->route('admin.users.tutorial');
         }
 

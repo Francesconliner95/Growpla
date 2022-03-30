@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="search-main" v-cloak>
-                    <div v-if="!search_type" class="search-filter row">
+                    <div v-if="!search_type" class="search-filter">
                         <div class="search-style">
                             <h6>Cosa cerchi?</h6>
                             <select class="text-capitalize" name="" v-model="category_selected" @change="change_category()" required>
@@ -207,7 +207,7 @@
                             </select>
                         </div>
                     </div>
-                    <div v-else class="search-filter row">
+                    <div v-else class="search-filter">
                       <div class="search-style" v-cloak>
                           <h6>Cerca per nome</h6>
                           <input type="text" name="name" value="" placeholder="Inserisci nome qui" v-model="name" @keyup.enter="" v-on:input="" maxlength="70" class="form-control" autocomplete="off">
@@ -218,7 +218,7 @@
                           @enderror
                       </div>
                     </div>
-                    <form v-if="search_type && name || category_selected" class="search-style row m-0" method="POST" action="{{ route('admin.found') }}" >
+                    <form v-if="search_type && name || category_selected" class="search-style" method="POST" action="{{ route('admin.found') }}" >
                         @csrf
                         <input v-for="usertype_id in usertypes_id" type="hidden" name="usertypes_id[]" :value="usertype_id">
                         <input v-for="pagetype_id in pagetypes_id" type="hidden" name="pagetypes_id[]" :value="pagetype_id">
@@ -242,93 +242,120 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="container">
-        <h4>Ricerca rapida</h4>
-        <div class="rapid-search row d-flex justify-content-center ">
-            <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2">
-                <form class="page-list" method="POST" action="{{ route('admin.found') }}">
-                    @csrf
-                    <input type="hidden" name="pagetypes_id[]" value="1">
-                    <button class="" type="submit" name="button">Startup</button>
-                </form>
-            </div>
-            <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2">
-                <form class="page-list" method="POST" action="{{ route('admin.found') }}">
-                    @csrf
-                    <input type="hidden" name="pagetypes_id[]" value="3">
-                    <button class="" type="submit" name="button">Incubatori/Acceleratori</button>
-                </form>
-            </div>
-            <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2">
-                <form class="page-list" method="POST" action="{{ route('admin.found') }}">
-                    @csrf
-                    <input type="hidden" name="usertypes_id[]" value="2">
-                    <input type="hidden" name="pagetypes_id[]" value="5">
-                    <input type="hidden" name="pagetypes_id[]" value="8">
-                    <button class="" type="submit" name="button">Investitori</button>
-                </form>
-            </div>
-            <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2">
-                <form class="page-list" method="POST" action="{{ route('admin.found') }}">
-                    @csrf
-                    <input type="hidden" name="usertypes_id[]" value="1">
-                    <button class="" type="submit" name="button">Aspiranti Co-founder</button>
-                </form>
-            </div>
-            <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2">
-                <form class="page-list" method="POST" action="{{ route('admin.found') }}">
-                    @csrf
-                    <button class="" type="submit" name="button">Servizi</button>
-                </form>
+        <div class="container">
+            <h4>Ricerca rapida</h4>
+            <div class="rapid-search row d-flex justify-content-around pt-3 pb-5">
+                <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2 p-1">
+                    <form class="" method="POST" action="{{ route('admin.found') }}">
+                        @csrf
+                        <input type="hidden" name="pagetypes_id[]" value="1">
+                        <button class="button-style button-color  w-100 h-100" type="submit" name="button">Startup</button>
+                    </form>
+                </div>
+                <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2 p-1">
+                    <form class="" method="POST" action="{{ route('admin.found') }}">
+                        @csrf
+                        <input type="hidden" name="pagetypes_id[]" value="3">
+                        <button class="button-style button-color  w-100 h-100" type="submit" name="button">Incubatori/Acceleratori</button>
+                    </form>
+                </div>
+                <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2 p-1">
+                    <form class="" method="POST" action="{{ route('admin.found') }}">
+                        @csrf
+                        <input type="hidden" name="usertypes_id[]" value="2">
+                        <input type="hidden" name="pagetypes_id[]" value="5">
+                        <input type="hidden" name="pagetypes_id[]" value="8">
+                        <button class="button-style button-color  w-100 h-100" type="submit" name="button">Investitori</button>
+                    </form>
+                </div>
+                <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2 p-1">
+                    <form class="" method="POST" action="{{ route('admin.found') }}">
+                        @csrf
+                        <input type="hidden" name="usertypes_id[]" value="1">
+                        <button class="button-style button-color  w-100 h-100" type="submit" name="button">Aspiranti Co-founder</button>
+                    </form>
+                </div>
+                <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2 p-1">
+                    <form class="" method="POST" action="{{ route('admin.found') }}">
+                        @csrf
+                        <button class="button-style button-color w-100 h-100" type="submit" name="button">Servizi</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-    <div class="container">
+    <div v-if="needs.length>0" class="container pt-3 pb-5" v-cloak>
         <h4>Necessità</h4>
+        <div class="row">
+            <div v-for="need in needs" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
+                <div class=" img-cont medium-img">
+                    <img v-if="need.image" :src="'/storage/' + need.image" alt="">
+                </div>
+                <div class="">
+                    <strong class="text-capitalize">
+                        @{{need.user_or_page? need.name +' ' +need.surname : need.name}}
+                    </strong>
+                    <span>@{{need.service_id?'cerca servizio di':'cerca'}}</span>
+                    <strong class="text-capitalize">
+                        @{{need.need}}
+                    </strong>
+                </div>
+                <a :href="need.user_or_page?'/admin/users/'+ need.id : '/admin/pages/'+ need.id" class="button-style button-color">Visita profilo</a>
+            </div>
+        </div>
         <a href="{{route('admin.needs.getAllHave')}}">Mostra altro</a>
     </div>
-    <div class="container">
-        <h4>Offerta</h4>
+    <div class="container pt-3 pb-5">
+        <h4>Offerte</h4>
+        <div class="row">
+            <div v-for="offer in offers" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center" v-cloak>
+                <div class=" img-cont medium-img">
+                    <img v-if="offer.image" :src="'/storage/' + offer.image" alt="">
+                </div>
+                <div class="">
+                    <strong class="text-capitalize">
+                        @{{offer.user_or_page? offer.name +' ' +offer.surname : offer.name}}
+                    </strong>
+                    <span>offre servizio di</span>
+                    <strong class="text-capitalize">
+                        @{{offer.need}}
+                    </strong>
+                </div>
+                <a :href="offer.user_or_page?'/admin/users/'+ offer.id : '/admin/pages/'+ offer.id" class="button-style button-color">Visita profilo</a>
+            </div>
+        </div>
         <a href="{{route('admin.offers.getAllGive')}}">Mostra altro</a>
     </div>
-    <div class="container">
+    <div class="container pt-3 pb-5">
         <h4>Collaborazioni</h4>
         <a href="{{route('admin.collaborations.index')}}">Mostra altro</a>
     </div>
-    <div class="container">
-        <h4>Visti di recente</h4>
+    <div v-if="mostViewedAccounts.length>0" class="container pt-3 pb-5" v-cloak>
+        <h4>I più popolari</h4>
         <div class="row">
-            <div v-for="account in myLatestViews" class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
+            <div v-for="account in mostViewedAccounts" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
+                <div class="">
                     <div class=" img-cont medium-img">
                         <img v-if="account.image" :src="'/storage/' + account.image" alt="">
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-10 col-lg-10 col-xl-10">
+                <div class="">
                     <span class="text-capitalize font-weight-bold">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</span>
-                    <p>@{{account.summary}}</p>
-                    <div class="">
-                        <div v-for="sector in account.sectors" class="d-inline-block border-style" v-cloak>
-                          <span>@{{sector.name}}</span>
-                        </div>
-                    </div>
-                    <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="button-style button-color">Visita profilo</a>
                 </div>
+                <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="button-style button-color">Visita profilo</a>
             </div>
         </div>
     </div>
-
-    <div class="container">
-        <h4>Profili più popolari</h4>
+    <div v-if="myLatestViews.length>0" class="container pt-3 pb-5" v-cloak>
+        <h4>Visti di recente</h4>
         <div class="row">
-            <div v-for="account in mostViewedAccounts" class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
+            <div v-for="account in myLatestViews" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
+                <div class="">
                     <div class=" img-cont medium-img">
                         <img v-if="account.image" :src="'/storage/' + account.image" alt="">
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-10 col-lg-10 col-xl-10">
+                <div class="">
                     <span class="text-capitalize font-weight-bold">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</span>
                     <p>@{{account.summary}}</p>
                     <div class="">

@@ -8,7 +8,7 @@
 </script>
 <div class="container">
     <div id="team-edit">
-        <div :class="delete_alert?'alert active-alert':'alert deactive-alert'" v-cloak>
+        <div :class="delete_alert?'d-alert active-alert':'d-alert deactive-alert'" v-cloak>
             <div class="item-cont alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">
                 <div class="item-style">
                     <button type="button" name="button" class="edit-top-right button-color-gray" @click="alertCancel()">
@@ -159,7 +159,7 @@
                       <button class="button-style button-color-red ml-5" type="button" name="button" @click="alertMenu(1)">
                           <i class="fas fa-trash-alt mr-1"></i>Elimina
                       </button>
-                </form>                
+                </form>
                 <form method="post" name="deleteTeam" action="{{ route('admin.teams.destroy', ['team'=> $team->id])}}" class="invisible">
                 @csrf
                 @method('DELETE')

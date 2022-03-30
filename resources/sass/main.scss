@@ -16,7 +16,7 @@ body{
     margin: 0px;
     padding: 0px;
     overflow-x: hidden;
-    .alert{
+    .d-alert{
         position: fixed;
         //overflow-y: hidden;
         // position: absolute;
@@ -433,7 +433,7 @@ ul>p{
     &:hover{
         transition: 0.2s;
         color: $default_green;
-        background-color: white;
+        background-color: transparent;
     }
 }
 

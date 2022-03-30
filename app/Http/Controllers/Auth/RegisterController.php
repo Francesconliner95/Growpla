@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -55,7 +56,16 @@ class RegisterController extends Controller
             'surname' => ['required', 'string', 'max:100'],
             'date_of_birth' => ['required', 'date'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'confirmed',
+                // 'regex:/[a-z]/',// must contain at least one lowercase letter
+                // 'regex:/[A-Z]/',// must contain at least one uppercase letter
+                // 'regex:/[0-9]/',// must contain at least one digit
+                // 'regex:/[@$!%*#?&_-]/',// must contain a special character
+            ],
             'language_id' => ['required', 'integer'],
         ]);
     }
@@ -69,12 +79,12 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
-            'surname' => $data['surname'],
+            'name' => Str::lower($data['name']),
+            'surname' => Str::lower($data['surname']),
             'date_of_birth' => $data['date_of_birth'],
-            'email' => $data['email'],
+            'email' => Str::lower($data['email']),
             'password' => Hash::make($data['password']),
-            'language_id' => $data['language_id'],
+            'language_id' => 2/*$data['language_id']*/,
         ]);
     }
 }

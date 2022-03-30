@@ -21,7 +21,7 @@ var create = new Vue({
             //ordinamento per id
             for (var i=0; i < offers.length; i++) {
                 for (var j=0; j < offers.length-1; j++) {
-                    if (offers[j].id>offers[i].id) {
+                    if (offers[j].id<offers[i].id) {
                       var tmp=offers[j];
                       offers[j]=offers[i];
                       offers[i]=tmp;
