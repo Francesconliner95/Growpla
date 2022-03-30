@@ -33,6 +33,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany('App\Sector');
     }
 
+    public function views(){
+        return $this->belongsToMany('App\View');
+    }
+
     public function currency(){
         return $this->belongsTo('App\Currency');
     }

@@ -217,4 +217,8 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::get('/getFilterNotf', 'FilterNotificationController@getFilterNotf')
     ->name('filternotification.getFilterNotf');
 
+    //VIEW
+    Route::get('/myLatestViews', 'ViewController@myLatestViews')->name('myLatestViews');
+    Route::get('/mostViewedAccounts', 'ViewController@mostViewedAccounts')->name('mostViewedAccounts');
+
 });

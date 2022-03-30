@@ -296,6 +296,51 @@
         <h4>Collaborazioni</h4>
         <a href="{{route('admin.collaborations.index')}}">Mostra altro</a>
     </div>
+    <div class="container">
+        <h4>Visti di recente</h4>
+        <div class="row">
+            <div v-for="account in myLatestViews" class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
+                    <div class=" img-cont medium-img">
+                        <img v-if="account.image" :src="'/storage/' + account.image" alt="">
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-10 col-lg-10 col-xl-10">
+                    <span class="text-capitalize font-weight-bold">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</span>
+                    <p>@{{account.summary}}</p>
+                    <div class="">
+                        <div v-for="sector in account.sectors" class="d-inline-block border-style" v-cloak>
+                          <span>@{{sector.name}}</span>
+                        </div>
+                    </div>
+                    <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="button-style button-color">Visita profilo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h4>Profili più popolari</h4>
+        <div class="row">
+            <div v-for="account in mostViewedAccounts" class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
+                    <div class=" img-cont medium-img">
+                        <img v-if="account.image" :src="'/storage/' + account.image" alt="">
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-10 col-lg-10 col-xl-10">
+                    <span class="text-capitalize font-weight-bold">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</span>
+                    <p>@{{account.summary}}</p>
+                    <div class="">
+                        <div v-for="sector in account.sectors" class="d-inline-block border-style" v-cloak>
+                          <span>@{{sector.name}}</span>
+                        </div>
+                    </div>
+                    <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="button-style button-color">Visita profilo</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {{-- PUSHER --}}
 {{-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script>

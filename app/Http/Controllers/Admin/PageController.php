@@ -174,7 +174,9 @@ class PageController extends Controller
 
         $my_user_id = Auth::user()->id;
         $already_viewed = View::where('user_id',$my_user_id)->where('viewed_page_id',$page->id)->first();
-        if(!$already_viewed){
+        if($already_viewed){
+            $already_viewed->touch();
+        }else{
             $new_view = new View();
             $new_view->user_id = $my_user_id;
             $new_view->viewed_page_id = $page->id;

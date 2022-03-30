@@ -78029,7 +78029,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     sector_selected: '',
     lifecycle_id_selected: '',
     sectors: []
-  }, _defineProperty(_data, "sector_selected", ''), _defineProperty(_data, "sectorToggle", false), _data),
+  }, _defineProperty(_data, "sector_selected", ''), _defineProperty(_data, "sectorToggle", false), _defineProperty(_data, "myLatestViews", []), _defineProperty(_data, "mostViewedAccounts", []), _data),
   methods: {
     search_type_f: function search_type_f() {
       if (!this.search_type) {
@@ -78201,7 +78201,6 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           }
         }).then(function (response) {
           _this3.services_found = response.data.results.services;
-          console.log(_this3.services_found);
 
           if (!_this3.service_name) {
             _this3.services_found = '';
@@ -78269,10 +78268,26 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       var d = new Date();
       d.setMonth(d.getMonth() + 6);
       return d.toUTCString();
+    },
+    myLatestViews_f: function myLatestViews_f() {
+      var _this5 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/myLatestViews', {}).then(function (response) {
+        _this5.myLatestViews = response.data.results.accounts;
+      });
+    },
+    mostViewedAccounts_f: function mostViewedAccounts_f() {
+      var _this6 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/mostViewedAccounts', {}).then(function (response) {
+        _this6.mostViewedAccounts = response.data.results.accounts;
+      });
     }
   },
   mounted: function mounted() {
     this.getRegionsByCountry();
+    this.myLatestViews_f();
+    this.mostViewedAccounts_f();
 
     if (!this.getCookie("tecCookie")) {
       document.cookie = "tecCookie" + "=" + "accept" + ";" + "expires=" + this.dateUTC() + ";path=/";

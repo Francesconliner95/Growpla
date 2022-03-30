@@ -35,6 +35,8 @@ var create = new Vue({
         sectors: [],
         sector_selected: '',
         sectorToggle: false,
+        myLatestViews: [],
+        mostViewedAccounts: [],
 
     },
     methods: {
@@ -205,7 +207,6 @@ var create = new Vue({
                   }
               }).then((response) => {
                   this.services_found = response.data.results.services;
-                  console.log(this.services_found);
                   if(!this.service_name){
                       this.services_found = '';
                   }
@@ -283,10 +284,28 @@ var create = new Vue({
             return d.toUTCString();
         },
 
+        myLatestViews_f(){
+            axios.get('/admin/myLatestViews',{
+            }).then((response) => {
+              this.myLatestViews = response.data.results.accounts;
+            });
+        },
+
+        mostViewedAccounts_f(){
+            axios.get('/admin/mostViewedAccounts',{
+            }).then((response) => {
+              this.mostViewedAccounts = response.data.results.accounts;
+            });
+        },
+
+
+
     },
     mounted() {
 
         this.getRegionsByCountry();
+        this.myLatestViews_f();
+        this.mostViewedAccounts_f();
 
         if(!this.getCookie("tecCookie")){
             document.cookie = "tecCookie"+ "=" +"accept"+ ";" + "expires="+ this.dateUTC() +";path=/";
