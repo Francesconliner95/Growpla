@@ -67,6 +67,42 @@ class ServicesTableSeeder extends Seeder
                 'hidden'=>null,
             ],
             [
+                'name'=>'Patti Parasociali',
+                'description'=> null,
+                'main_service_id'=> 1,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Term Sheet ed Accordi di Investimento',
+                'description'=> null,
+                'main_service_id'=> 1,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Tutela della Proprietà Intellettuale',
+                'description'=> null,
+                'main_service_id'=> 1,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Contrattualistica',
+                'description'=> null,
+                'main_service_id'=> 1,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Due Diligence',
+                'description'=> null,
+                'main_service_id'=> 1,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Internazionalizzazione',
+                'description'=> null,
+                'main_service_id'=> 1,
+                'hidden'=>null,
+            ],
+            [
                 'name'=>'Blogging',
                 'description'=> null,
                 'main_service_id'=> 2,
@@ -145,6 +181,18 @@ class ServicesTableSeeder extends Seeder
                 'hidden'=>null,
             ],
             [
+                'name'=>'Video Making',
+                'description'=> null,
+                'main_service_id'=> 2,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Video Editing',
+                'description'=> null,
+                'main_service_id'=> 2,
+                'hidden'=>null,
+            ],
+            [
                 'name'=>'Database',
                 'description'=> null,
                 'main_service_id'=> 3,
@@ -199,7 +247,7 @@ class ServicesTableSeeder extends Seeder
                 'hidden'=>null,
             ],
             [
-                'name'=>'Business Plan',
+                'name'=>'Analisi di Mercato & Business Plan',
                 'description'=> null,
                 'main_service_id'=> 5,
                 'hidden'=>null,
@@ -211,7 +259,7 @@ class ServicesTableSeeder extends Seeder
                 'hidden'=>null,
             ],
             [
-                'name'=>'Compilazione Bandi',
+                'name'=>'Compilazione Bandi & Finanza Agevolata',
                 'description'=> null,
                 'main_service_id'=> 5,
                 'hidden'=>null,
@@ -228,12 +276,12 @@ class ServicesTableSeeder extends Seeder
                 'main_service_id'=> 5,
                 'hidden'=>null,
             ],
-            [
-                'name'=>'Finanza Agevolata',
-                'description'=> null,
-                'main_service_id'=> 5,
-                'hidden'=>null,
-            ],
+            // [
+            //     'name'=>'Finanza Agevolata',
+            //     'description'=> null,
+            //     'main_service_id'=> 5,
+            //     'hidden'=>null,
+            // ],
             [
                 'name'=>'Mentoring',
                 'description'=>'Il mentor offre servizi di consulenza volti a guidare le startup dalla fase di concepimento dell\'idea, al fine di individuare la strategia di sviluppo più opportuna.',
@@ -278,6 +326,42 @@ class ServicesTableSeeder extends Seeder
             ],
             [
                 'name'=>'Project Management',
+                'description'=> null,
+                'main_service_id'=> 7,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Fundraising',
+                'description'=> null,
+                'main_service_id'=> 7,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Valutazione pre-money',
+                'description'=> null,
+                'main_service_id'=> 7,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Pianificazione Strategica e Piani Industriali',
+                'description'=> null,
+                'main_service_id'=> 7,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Analisi di Fattibilità Economica/Finanziaria',
+                'description'=> null,
+                'main_service_id'=> 7,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Gestione contabilità e dichiarazioni fiscali',
+                'description'=> null,
+                'main_service_id'=> 7,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Controllo di Gestione',
                 'description'=> null,
                 'main_service_id'=> 7,
                 'hidden'=>null,

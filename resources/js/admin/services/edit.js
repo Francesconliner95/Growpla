@@ -167,45 +167,45 @@ var create = new Vue({
 
         //ONLY STARTUP
         recommended(){
-            console.log('qui');
             switch (this.lifecycle_selected) {
                 case 1:
                     this.userRecommended = [1];
                     this.pageRecommended = [3];
-                    this.serviceRecommended = [31,32,33,34,35,37];
+                    this.serviceRecommended = [39,40,41,42,43,44];
                 break;
                 case 2:
                     this.userRecommended = [2];
                     this.pageRecommended = [3];
-                    this.serviceRecommended = [31,32,35,37];
+                    this.serviceRecommended = [39,40,43,44];
                 break;
                 case 3:
                     this.userRecommended = [];
                     this.pageRecommended = [3];
-                    this.serviceRecommended = [32,35,37];
+                    this.serviceRecommended = [40,43,44];
                 break;
                 case 4:
                     this.userRecommended = [];
                     this.pageRecommended = [5];
-                    this.serviceRecommended = [32,37];
+                    this.serviceRecommended = [40,44];
                 break;
                 case 5:
                     this.userRecommended = [];
                     this.pageRecommended = [5,8];
-                    this.serviceRecommended = [32,37];
+                    this.serviceRecommended = [40,44];
                 break;
                 case 6:
                     this.userRecommended = [];
                     this.pageRecommended = [];
-                    this.serviceRecommended = [32,37];
+                    this.serviceRecommended = [40,44];
                 break;
                 case 7:
                     this.userRecommended = [];
                     this.pageRecommended = [];
-                    this.serviceRecommended = [30];
+                    this.serviceRecommended = [38];
                 break;
                 default:
             }
+            console.log(this.serviceRecommended);
         },
 
         searchSkill(){
