@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import axios from 'axios';
+
 axios.defaults.headers.common = {
     'X-Requested-With': 'XMLHttpRequest',
     'X-CSRF-TOKEN': window.csrf_token
@@ -25,6 +26,11 @@ var create = new Vue({
         services: [],
         service_name: '',
         services_found: '',
+        main_services: [],
+        sub_services: [],
+        sub_services_show: [],
+        main_service_selected: '',
+        sub_service_selected: '',
         need_selected: '',
         serviceToggle: false, //false=cerco true=offro
         serviceOrAndToggle: false, //false=uno true=tutti
@@ -39,7 +45,9 @@ var create = new Vue({
         mostViewedAccounts: [],
         needs: [],
         offers: [],
-
+        collaborations: [],
+        interval:false,
+        is_mobile: false,
     },
     methods: {
         search_type_f(){
@@ -68,7 +76,7 @@ var create = new Vue({
               this.usertypes_id = [1];
               this.pagetypes_id = [];
               this.investors_selected = false;
-              this.services_selected = false;
+              this.services_selected = true;
             break;
             case '3':
               //incubatore-acc
@@ -201,6 +209,34 @@ var create = new Vue({
               }
         },
 
+        getAllServices(){
+            axios.get('/api/getAllServices',{
+            }).then((response) => {
+                this.main_services = response.data.results.main_services;
+                this.sub_services = response.data.results.sub_services;
+                this.main_service_selected = this.main_services[0].id;
+                this.changeMainService();
+            });
+        },
+
+        changeMainService(){
+            this.sub_services_show = [];
+            this.sub_services.forEach((sub_service, i) => {
+                if(sub_service.main_service_id==this.main_service_selected){
+                    this.sub_services_show.push(sub_service);
+                }
+            });
+            this.sub_service_selected = this.sub_services_show[0].id;
+        },
+
+        addServiceSelected(service_id){
+            this.sub_services_show.forEach((sub_service, i) => {
+                if(sub_service.id==service_id){
+                    this.addService(sub_service);
+                }
+            });
+        },
+
         searchService(){
             if(this.service_name){
               axios.get('/api/searchService',{
@@ -303,7 +339,8 @@ var create = new Vue({
                         }
                     }
                 }
-                needs = needs.slice(0,4);
+
+                needs = needs.slice(0,8);
                 if(needs){
                     axios.get('/admin/loadNeedInfo',{
                         params: {
@@ -333,8 +370,7 @@ var create = new Vue({
                         }
                     }
                 }
-                offers = offers.slice(0,4);
-                console.log(offers);
+                offers = offers.slice(0,8);
                 if(offers){
                     axios.get('/admin/loadNeedInfo',{
                         params: {
@@ -372,7 +408,66 @@ var create = new Vue({
             });
         },
 
+        latestCollaborations(){
+            axios.get('/admin/latestCollaborations',{
+            }).then((response) => {
+              this.collaborations = response.data.results.collaborations;
+            });
+        },
 
+        scrollLeft(slider_id){
+            var content =
+            document.getElementById('multi-slider-cont-' + slider_id);
+            const content_scroll_width = content.scrollWidth;
+            let content_scoll_left = content.scrollLeft;
+            content_scoll_left -= 10;
+            if (content_scoll_left <= 0) {
+                content_scoll_left = 0;
+            }
+            content.scrollLeft = content_scoll_left;
+        },
+
+        scrollRight(slider_id){
+            var content =
+            document.getElementById('multi-slider-cont-' + slider_id);
+            const content_scroll_width = content.scrollWidth;
+            let content_scoll_left = content.scrollLeft;
+            content_scoll_left += 10;
+            if (content_scoll_left >= content_scroll_width) {
+                content_scoll_left = content_scroll_width;
+            }
+            content.scrollLeft = content_scoll_left;
+
+        },
+
+        start(slider_id,direction){
+    	    if(!this.interval){
+                this.interval = setInterval(()=>{
+                    if(direction=='right'){
+                        this.scrollRight(slider_id);
+                    }else{
+                        this.scrollLeft(slider_id);
+                    }
+                }, 10);
+            }
+        },
+
+        stop(slider_id,direction){
+        	clearInterval(this.interval);
+            this.interval = false;
+        },
+
+        checkMobile(){
+            // if(window.innerWidth>=768){
+            //     if(this.is_mobile){
+            //         this.is_mobile = false;
+            //     }
+            // }else{
+            //     if(!this.is_mobile){
+            //         this.is_mobile = true;
+            //     }
+            // }
+        }
 
     },
     mounted() {
@@ -382,6 +477,14 @@ var create = new Vue({
         this.getRegionsByCountry();
         this.myLatestViews_f();
         this.mostViewedAccounts_f();
+        this.getAllServices();
+        this.latestCollaborations();
+
+        //check if is mobile
+        this.checkMobile();
+        window.addEventListener('resize', (event)=> {
+            this.checkMobile();
+        }, true);
 
         if(!this.getCookie("tecCookie")){
             document.cookie = "tecCookie"+ "=" +"accept"+ ";" + "expires="+ this.dateUTC() +";path=/";

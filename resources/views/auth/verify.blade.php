@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+    use Illuminate\Support\Facades\Auth;
+    use App\Language;
+    app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+@endphp
 <div class="container not-log-main-hg">
     <div class="item-cont pt-4">
         <div class="item-style">

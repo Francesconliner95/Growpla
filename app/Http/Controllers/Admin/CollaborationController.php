@@ -13,6 +13,10 @@ use App\Notification;
 
 class CollaborationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth','verified']);
+    }
 
     public function index()
     {
@@ -185,12 +189,14 @@ class CollaborationController extends Controller
             'sender_user_or_page' => 'required|string',
             'recipient_id' => 'required|integer',
             'recipient_user_or_page' => 'required|string',
+            'old_collaboration_id' => 'nullable|integer',//PER CONFERMARE AUTOMATICAMENTE UNA COLLABORAZZIONE GIA INVIATA
         ]);
 
         $sender_id = $request->sender_id;
         $sender_user_or_page = $request->sender_user_or_page;
         $recipient_id = $request->recipient_id;
         $recipient_user_or_page = $request->recipient_user_or_page;
+        $old_collaboration_id = $request->old_collaboration_id;
         $user = Auth::user();
         $query = Collaboration::query();
         if($sender_user_or_page=='user'){
@@ -246,6 +252,26 @@ class CollaborationController extends Controller
                         $new_notf->save();
                     }
                 }
+                //Auto conferma collaborazione nel caso la sto accettando una collaborazione proposta
+                if($old_collaboration_id){
+                    $auto_confirm = false;
+                    $old_collaboration = Collaboration::find($old_collaboration_id);
+                    if($old_collaboration->recipient_user_id){
+                        if($old_collaboration->recipient_user_id==$user->id){
+                            $auto_confirm = true;
+                        }
+                    }
+                    if($old_collaboration->recipient_page_id){
+                        $old_coll_page = Page::find($old_collaboration->recipient_page_id);
+                        if($user->pages->contains($old_coll_page)){
+                            $auto_confirm = true;
+                        }
+                    }
+                    if($auto_confirm){
+                        $new_coll->confirmed = 1;
+                    }
+                }
+
                 $new_coll->save();
 
                 //NOTIFICA ai miei followers
@@ -440,5 +466,46 @@ class CollaborationController extends Controller
             }
         }
     }
-
+    public function latestCollaborations(){
+        $collaborations = Collaboration::latest()
+        ->take(4)
+        ->get();
+        $collaborations_info = [];
+        foreach ($collaborations as $collaboration) {
+            $collaboration_info['id'] = $collaboration['id'];
+            if($collaboration['sender_user_id']){
+                $collaboration_info['account_1'] = User::where('id',$collaboration['sender_user_id'])
+                ->select('id','name','surname','image','summary')
+                ->first();
+                $collaboration_info['account_1']['user_or_page'] = true;
+            }
+            if($collaboration['sender_page_id']){
+                $collaboration_info['account_1'] = Page::where('id',$collaboration['sender_page_id'])
+                ->select('id','name','image','summary')
+                ->first();
+                $collaboration_info['account_1']['user_or_page'] = false;
+            }
+            if($collaboration['recipient_user_id']){
+                $collaboration_info['account_2'] =
+                User::where('id',$collaboration['recipient_user_id'])
+                ->select('id','name','surname','image','summary')
+                ->first();
+                $collaboration_info['account_2']['user_or_page'] = true;
+            }
+            if($collaboration['recipient_page_id']){
+                $collaboration_info['account_2'] =
+                Page::where('id',$collaboration['recipient_page_id'])
+                ->select('id','name','image','summary')
+                ->first();
+                $collaboration_info['account_2']['user_or_page'] = false;
+            }
+            array_push($collaborations_info,$collaboration_info);
+        }
+        return response()->json([
+            'success' => true,
+            'results' => [
+                'collaborations' => $collaborations_info,
+            ]
+        ]);
+    }
 }

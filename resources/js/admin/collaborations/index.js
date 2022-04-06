@@ -26,9 +26,7 @@ var create = new Vue({
                 this.page++;
             }
         },
-
         loadNeedInfo(new_collaborations){
-            console.log(new_collaborations);
             if(new_collaborations){
                 axios.get('/admin/loadCollaborationsInfo',{
                     params: {
@@ -36,7 +34,6 @@ var create = new Vue({
                     }
                 }).then((response) => {
                     this.collaborations_show.push(...response.data.results.collaborations);
-                    console.log(this.collaborations_show);
                 });
             }
         },

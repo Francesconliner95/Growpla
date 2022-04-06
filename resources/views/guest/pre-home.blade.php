@@ -14,63 +14,6 @@
                     <h4 class="mb-5 text-center" style="font-size: 23px;line-height: 1.6em;">
                        Crea la tua Startup, sviluppa la tua idea di business, forma il tuo team, incontra persone e stringi relazioni. Entra a far parte della prima piattaforma italiana che genera ecosistemi tra incubatori, acceleratori, investitori, aspiranti co-founder, enti, professionisti ed imprese al fine di favorire occupazione, contaminazione ed innovazione
                     </h4>
-                    <div v-if="!send_success" class="form-group text-center"  v-cloak>
-                        <h6 class="pl-3 pr-3 pb-2">Inserisci qui la tua mail per essere contattato non appena Growpla sarà online</h6>
-                        <div class="d-flex justify-content-center">
-                            <input type="email" name="" value="" class="form-control mr-2 w-50" autocomplete="email" v-model="email" placeholder="Inserisci email qui">
-                            <button type="button" name="button" class="button-style button-color" @click="sendEmail()">Invia</button>
-                        </div>
-                    </div>
-                    <div v-else class="text-center" v-cloak>
-                        <i class="fas fa-check-circle txt-green mb-4"></i>
-                        <h4 for="email" class="text-center">Mail inviata correttamente.</h4>
-                    </div>
-                    <div v-if="error" class="input-error text-center"  v-cloak>
-                        <strong>Email non valida</strong>
-                    </div>
-                    <div class="social">
-                        <div class="text-center">
-                            <a href="https://www.instagram.com/growpla/" target="_blank">
-                                <i class="fab fa-instagram"></i>
-                            </a>
-                            <a href="https://www.linkedin.com/company/78734323" target="_blank">
-                                <i class="fab fa-linkedin"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container pb-2">
-            <h3 class="section-title">
-                <b></b>
-                {{-- <span class="text-uppercase">{{__('partners')}}</span> --}}
-                <b></b>
-            </h3>
-            <div class="partner row justify-content-center">
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 text-center fade-anim fade-right">
-                    <h6 class="text-center">PATROCINIO</h6>
-                   <a href="https://www.lum.it/" target="_blank" class="d-inline-block">
-                       <img src="/storage/images/lum-logo.png" alt="">
-                   </a>
-               </div>
-               <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 text-center fade-anim fade-right">
-                    <h6 class="text-center">INCUBATORE</h6>
-                  <a href="https://www.ic406.com/" target="_blank" class="d-inline-block">
-                      <img src="/storage/images/ic406-logo.png" alt="">
-                  </a>
-
-              </div>
-              <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 text-center fade-anim fade-right">
-                    <h6 class="text-center">PARTNER</h6>
-                    <a href="https://www.goheroes.it/" target="_blank" class="d-inline-block">
-                        <img src="/storage/images/heroes-logo.png" alt="">
-                    </a>
-                </div>
-              <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 text-center fade-anim fade-right">
-                    <h6 class="text-center">PARTNER</h6>
-                    <a href="https://www.viscontilegal.it/" target="_blank" class="d-inline-block">
-                        <img src="/storage/images/visconti-logo.png" alt="">
-                    </a>
                 </div>
             </div>
         </div>

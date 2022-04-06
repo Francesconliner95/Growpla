@@ -20,8 +20,8 @@ class CreateServicesTable extends Migration
             $table->string('description')->nullable();
             //$table->string('description_it')->nullable();
             //page_id riferimento per fare uscire i servizi startup nel ciclo di vita
-            $table->unsignedbigInteger('pagetype_id')->nullable();
-            $table->foreign('pagetype_id')->references('id')->on('pagetypes');
+            $table->unsignedbigInteger('main_service_id');
+            $table->foreign('main_service_id')->references('id')->on('main_services')->onDelete('cascade');
             $table->boolean('hidden')->nullable();
             $table->timestamps();
         });

@@ -20,7 +20,7 @@
                   </h1>
               </div>
 
-              <form method="POST" enctype="multipart/form-data" action="{{ route('admin.users.update', ['user'=> $user->id]) }}">
+                <form method="POST" enctype="multipart/form-data" action="{{ route('admin.users.update', ['user'=> $user->id]) }}">
                   @csrf
                   @method('PUT')
                   <span class="mini-txt">{{__('Filling in some of the following fields is optional, however a more complete profile has more chance of being viewed by other users')}}</span>
@@ -72,7 +72,7 @@
                               <embed :src="'/storage/'+user.cv" />
                               <button type="button" @click="user.cv='';remove_cv=true" class="button-style button-color-red edit-top-right">
                                   <i class="fas fa-times"></i>
-                              </button>                            
+                              </button>
                           </div>
                           <input type="hidden" name="remove_cv" :value="remove_cv">
                           <div class="drop-zone  col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-2">
@@ -108,75 +108,77 @@
                           </div>
                       @enderror
                   </div>
-                  {{-- Money range --}}
-                  <div class="sub-section">
-                      <h6>{{__('Taglio d\'investimenti')}}</h6>
-                      <div class="form-contrtol">
-                        @foreach ($moneyranges as $moneyrange)
-                          <div>
-                            <input type="radio" id="moneyrange-{{$moneyrange->id}}" name="moneyrange_id" value="{{$moneyrange->id}}"
-                            {{-- {{old('moneyrange_id',$moneyrange->id)?'checked':''}} --}}
-                            {{$moneyrange->id==$user->moneyrange_id?'checked':''}}
-                            {{!$user->moneyrange_id && $moneyrange->id==1?'checked':''}} required>
-                            <label for="moneyrange-{{$moneyrange->id}}">{{$moneyrange->range}}</label>
-                          </div>
-                        @endforeach
-                      </div>
-                      @error ('moneyrange')
-                          <div class="alert alert-danger">
-                              {{__($message)}}
-                          </div>
-                      @enderror
-                  </div>
-                  {{-- Startup Number --}}
-                  <div class="sub-section">
-                      <h6>Numero di startup supportate</h6>
-                      <input type="number" name="startup_n" class="form-control" value="{{ old('startup_n',$user->startup_n)}}" min="0" placeholder="">
-                      @error ('startup_n')
-                          <div class="alert alert-danger">
-                              {{__($message)}}
-                          </div>
-                      @enderror
-                  </div>
-                  <div class="last-sub-section">
-                      <h6>Indirizzo*</h6>
-                      <div class="row">
-                          {{-- <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                              <label>Nazione</label>
-                              <select class="form-control" name="country_id" required @change="getRegionsByCountry()" v-model="country_id_selected">
-                                  @foreach ($countries as $country)
-                                      <option value="{{$country->id}}"
+                    @if ($user->userTypes->contains(2))
+                        {{-- Money range --}}
+                        <div class="sub-section">
+                            <h6>{{__('Taglio d\'investimenti')}}</h6>
+                            <div class="form-contrtol">
+                              @foreach ($moneyranges as $moneyrange)
+                                <div>
+                                  <input type="radio" id="moneyrange-{{$moneyrange->id}}" name="moneyrange_id" value="{{$moneyrange->id}}"
+                                  {{-- {{old('moneyrange_id',$moneyrange->id)?'checked':''}} --}}
+                                  {{$moneyrange->id==$user->moneyrange_id?'checked':''}}
+                                  {{!$user->moneyrange_id && $moneyrange->id==1?'checked':''}} required>
+                                  <label for="moneyrange-{{$moneyrange->id}}">{{$moneyrange->range}}</label>
+                                </div>
+                              @endforeach
+                            </div>
+                            @error ('moneyrange')
+                                <div class="alert alert-danger">
+                                    {{__($message)}}
+                                </div>
+                            @enderror
+                        </div>
+                        {{-- Startup Number --}}
+                        <div class="sub-section">
+                            <h6>Numero di startup supportate</h6>
+                            <input type="number" name="startup_n" class="form-control" value="{{ old('startup_n',$user->startup_n)}}" min="0" placeholder="">
+                            @error ('startup_n')
+                                <div class="alert alert-danger">
+                                    {{__($message)}}
+                                </div>
+                            @enderror
+                        </div>
+                    @endif
+                    <div class="last-sub-section">
+                        <h6>Indirizzo*</h6>
+                        <div class="row">
+                            {{-- <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <label>Nazione</label>
+                                <select class="form-control" name="country_id" required @change="getRegionsByCountry()" v-model="country_id_selected">
+                                    @foreach ($countries as $country)
+                                        <option value="{{$country->id}}"
                                         @if($user->country_id)
                                         {{$country->id == $user->country_id ? 'selected=selected' : '' }}
                                         @endif
                                         >
                                         {{$country->name}}
-                                      </option>
-                                  @endforeach
-                              </select>
-                          </div> --}}
-                          <input type="hidden" name="country_id" value="1">
-                          <div v-if="regions.length>1" class="col-sm-12 col-md-6 col-lg-6 col-xl-6" v-cloak>
-                              <label>Regione</label>
-                              <select class="form-control" name="region_id" v-model="region_id_selected">
-                                  <option value="">Non specificata</option>
-                                  <option v-for="region in regions" :value="region.id">
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div> --}}
+                            <input type="hidden" name="country_id" value="1">
+                            <div v-if="regions.length>1" class="col-sm-12 col-md-6 col-lg-6 col-xl-6" v-cloak>
+                                <label>Regione</label>
+                                <select class="form-control" name="region_id" v-model="region_id_selected">
+                                    <option value="">Non specificata</option>
+                                    <option v-for="region in regions" :value="region.id">
                                         @{{region.name}}
-                                  </option>
-                              </select>
-                          </div>
-                          <div v-else class="">
-                            <input type="hidden" name="region_id" value="">
-                          </div>
-                          <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                              <label>Città</label>
-                              <input type="text" name="municipality" class="form-control" value="{{ old('municipality',$user->municipality)}}" required>
-                          </div>
-                      </div>
-                  </div>
-                  <button type="submit" class="button-style button-color">
-                      {{__('Save Changes')}}
-                  </button>
+                                    </option>
+                                </select>
+                            </div>
+                            <div v-else class="">
+                                <input type="hidden" name="region_id" value="">
+                            </div>
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <label>Città</label>
+                                <input type="text" name="municipality" class="form-control" value="{{ old('municipality',$user->municipality)}}" required>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="button-style button-color">
+                        {{__('Save Changes')}}
+                    </button>
               </form>
             </div>
         </div>

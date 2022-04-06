@@ -15,7 +15,7 @@
     <div id="page-show">
         <div :class="alert?'d-alert active-alert':'d-alert deactive-alert'" v-cloak>
             <div class="item-cont alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                <div class="item-style">
+                <div class="item-style-visible">
                     <button type="button" name="button" class="edit-top-right button-color-gray" @click="alert=false">
                         <i class="fas fa-times"></i>
                     </button>
@@ -43,7 +43,7 @@
                 <div class="profile row">
                     {{-- Immagine --}}
                     <div class="profile-image col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                        <div class="img-cont medium-img position-relative">
+                        <div class="img-cont big-img position-relative">
                         @if($page->image)
                           <img src="{{ asset("storage/" . $page->image) }}" alt="" class="">
                         @endif
@@ -61,10 +61,10 @@
                             <a v-if="is_my_page" class="button-color-gray" href="{{route('admin.pages.settings', $page->id)}}">
                                 <i class="fas fa-cogs"></i>
                             </a>
-                            @if($page->pagetype_id==1 && $page->incorporated)
-                              <p>Costituita</p>
-                            @endif
                         </h2>
+                        <div class="text-capitalize">
+                            {{$page->pagetype->name_it}}
+                        </div>
                         <div class="address">
                             <span>{{$page->region_id?$page->region->name:''}}</span>
                             <span>{{$page->region_id && $page->municipality?',':''}}</span>
@@ -81,11 +81,55 @@
                             {{-- <a href="{{route('admin.chats.createChat',[$page->id,'page'])}}" class="button-style button-color-blue" type="button" name="button" v-cloak>
                                 <span>Messaggio</span>
                             </a> --}}
-                            <button class="button-style button-color-blue" type="button" name="button" @click="switchAccounts()">
-                                <span>Messaggio</span>
-                            </button>
+                            @if(!$is_my_page)
+                                <button class="button-style button-color-blue" type="button" name="button" @click="switchAccounts()">
+                                    <span>Messaggio</span>
+                                </button>
+                            @endif
                         </div>
                     </div>
+                </div>
+                <div class="">
+
+                    @switch($page->pagetype_id)
+                        @case(1){{-- Startup --}}
+                        @if($page->incorporated)
+                          <p>Costituita</p>
+                        @endif
+                            <div class="">
+                                MVP:
+                                @if(!$page->type_bool_1)
+                                    <span>No</span>
+                                @elseif($page->type_bool_1)
+                                    <span>Si</span>
+                                @endif
+                            </div>
+                        @break
+                        @case(2)
+
+                        @break
+                        @case(3){{-- Incubatore --}}
+                            <div class="">
+                                Tipologia:
+                                @if(!$page->type_bool_1)
+                                    <span>Privato</span>
+                                @elseif($page->type_bool_1)
+                                    <span>Pubblico</span>
+                                @endif
+                            </div>
+                            <div class="">
+                                Servizi erogati:
+                                @if(!$page->type_int_1)
+                                    <span>Fisici</span>
+                                @elseif($page->type_int_1==1)
+                                    <span>Online</span>
+                                @elseif($page->type_int_1==2)
+                                    <span>Ibridi</span>
+                                @endif
+                            </div>
+                        @break
+                    @endswitch
+
                 </div>
                 @if($is_my_page || count($page->sectors)>0)
                 <div class="sub-section">
@@ -147,101 +191,95 @@
                     @endif
                 </div>
                 @endif
-                @if($is_my_page || count($page->give_page_services)>0 || count($page->have_page_services)>0)
-                <div id="services" class="sub-section row">
-                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                        <h6>{{__('Offro')}}</h6>
-                        @if($is_my_page || count($page->give_page_services)>0)
-                        <div class="services">
-                        <label>{{__('Servizo di')}}:
-                          <a v-if="is_my_page" href="{{route('admin.give-page-services.edit',$page->id)}}" class="button-color-gray">
-                              <i class="fas fa-pencil-alt"></i>
-                          </a>
-                        </label>
-                        @foreach ($page->give_page_services as $service)
-                            <p class="mb-1">{{$service->name}}</p>
-                        @endforeach
-                        </div>
-                      @endif
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                        @if($is_my_page || count($page->have_page_services)>0)
-                        <h6>{{__('Cerco')}}</h6>
-                        <div class="services">
-                            <label>{{__('Servizo di')}}:
-                                <a v-if="is_my_page" href="{{route('admin.have-page-services.edit',$page->id)}}" class="button-color-gray">
+                {{-- posso accedere ai servizi solo se la pagina è: startup o azienda --}}
+                @if (in_array ($page->pagetype_id, array(1, 2)))
+                    @if($is_my_page || count($page->give_page_services)>0 || count($page->have_page_services)>0)
+                    <div id="services" class="sub-section row">
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <h6>{{__('Offro')}}
+                                <a v-if="is_my_page" href="{{route('admin.give-page-services.edit',$page->id)}}" class="button-color-gray">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
-                            </label>
-                            @foreach ($page->have_page_services as $service)
+                            </h6>
+                            @if($is_my_page || count($page->give_page_services)>0)
+                            <div class="services">
+                            <label>{{__('Servizo di')}}:</label>
+                            @foreach ($page->give_page_services as $service)
                                 <p class="mb-1">{{$service->name}}</p>
-                            @endforeach
-                            @if($page->pagetype_id==1)
-                            <div class="pages">
-                                <label>{{__('Aziende')}}:
-                                    <a v-if="is_my_page" href="{{route('admin.have-page-pagetypes.edit',$page->id)}}" class="button-color-gray">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </a>
-                                </label>
-                                @foreach ($page->have_page_pagetypes as $pagetype)
-                                    <p class="mb-1">{{$pagetype->name}}</p>
-                                @endforeach
-                            </div>
-                            <div class="users">
-                              <label>{{__('Persone')}}:
-                                  <a v-if="is_my_page" href="{{route('admin.have-page-usertypes.edit',$page->id)}}" class="button-color-gray">
-                                      <i class="fas fa-pencil-alt"></i>
-                                  </a>
-                              </label>
-                            @foreach ($page->have_page_usertypes as $usertype)
-                                <p class="mb-1">{{$usertype->name}}</p>
-                                @if($usertype->id == 1 && $page->have_page_cofounders)
-                                  <ul>
-                                    @foreach ($page->have_page_cofounders as $skill)
-                                      <li>{{$skill->name}}</li>
-
-                                    @endforeach
-                                  </ul>
-                                @endif
                             @endforeach
                             </div>
                           @endif
                         </div>
-                        @endif
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            @if($is_my_page || count($page->have_page_services)>0)
+                            <h6>{{__('Cerco')}}
+                                <a v-if="is_my_page" href="{{route('admin.have-page-services.edit',$page->id)}}" class="button-color-gray">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                            </h6>
+                            @if($page->pagetype_id==1)
+                                <div class="pages">
+                                    @foreach ($page->have_page_pagetypes as $pagetype)
+                                        <p class="mb-1">{{$pagetype->name_it}}</p>
+                                    @endforeach
+                                </div>
+                                <div class="users">
+                                @foreach ($page->have_page_usertypes as $usertype)
+                                    <p class="mb-1">{{$usertype->name_it}}</p>
+                                    @if($usertype->id == 1 && $page->have_page_cofounders)
+                                      <ul>
+                                        @foreach ($page->have_page_cofounders as $skill)
+                                          <li>{{$skill->name}}</li>
+                                        @endforeach
+                                      </ul>
+                                    @endif
+                                @endforeach
+                                </div>
+                            @endif
+                            <div class="services">
+                                <label>{{__('Servizo di')}}:</label>
+                                @foreach ($page->have_page_services as $service)
+                                    <p class="mb-1">{{$service->name}}</p>
+                                @endforeach
+                            </div>
+                            @endif
+                        </div>
                     </div>
-                </div>
+                    @endif
                 @endif
             </div>
         </div>
         @if($page->pagetype_id==1)
-        <div class="item-cont" id="lifecycle">
-            <div class="item-style">
-              <h3>{{__('Life cycle')}}
-                  <div v-if="is_my_page" class="info">
-                      <button aria-label="{{__('Specify the life cycle\'s stage of your startup')}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
-                      <i class="fas fa-info-circle"></i>
-                  </div>
-              </h3>
-              <a href="{{route('admin.lifecycles.edit',$page->id)}}" class="button-color-gray edit-top-right">
-                  <i class="fas fa-pencil-alt"></i>
-              </a>
-              @if($page->lifecycle_id)
-              <div class="cicle-container">
-                  @foreach ($lifecycles as $lifecycle)
-                    <div class="pre-seed cicle-item">
-                        <div :class="{{$lifecycle->id}}<={{$page->lifecycle_id}}?
-                        'circle c-active':'circle'">
-                            <span>{{$lifecycle->name}}</span>
-                        </div>
-                        <span v-if="{{$lifecycle->id}}<{{count($lifecycles)}}"
-                          :class="{{$lifecycle->id}}<{{$page->lifecycle_id}}?'n-active net':'net'">
-                        </span>
+            @if($page->lifecycle_id || $is_my_page)
+                <div class="item-cont" id="lifecycle">
+                    <div class="item-style">
+                      <h3>{{__('Life cycle')}}
+                          <div v-if="is_my_page" class="info">
+                              <button aria-label="{{__('Specify the life cycle\'s stage of your startup')}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
+                              <i class="fas fa-info-circle"></i>
+                          </div>
+                      </h3>
+                      <a href="{{route('admin.have-page-services.edit',$page->id)}}" class="button-color-gray edit-top-right">
+                          <i class="fas fa-pencil-alt"></i>
+                      </a>
+                      @if($page->lifecycle_id)
+                      <div class="cicle-container">
+                          @foreach ($lifecycles as $lifecycle)
+                            <div class="pre-seed cicle-item">
+                                <div :class="{{$lifecycle->id}}<={{$page->lifecycle_id}}?
+                                'circle c-active':'circle'">
+                                    <span>{{$lifecycle->name}}</span>
+                                </div>
+                                <span v-if="{{$lifecycle->id}}<{{count($lifecycles)}}"
+                                  :class="{{$lifecycle->id}}<{{$page->lifecycle_id}}?'n-active net':'net'">
+                                </span>
+                            </div>
+                          @endforeach
+                      </div>
+                      @endif
                     </div>
-                  @endforeach
-              </div>
-              @endif
-            </div>
-        </div>
+                </div>
+            @endif
         @endif
         <div class="item-cont" v-if="is_my_page || team_members.length>0">
             <div class="item-style">

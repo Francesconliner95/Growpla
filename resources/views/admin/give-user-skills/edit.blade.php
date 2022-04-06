@@ -17,7 +17,11 @@
                     @csrf
                     @method('PUT')
                     <div class="form-group">
-                      <h6>Inserisci competenze per cui una startup dovrebbe sceglierti</h6>
+                        @if ($user->usertypes->contains(1))
+                            <h6>Inserisci competenze per cui una startup dovrebbe sceglierti</h6>
+                        @else
+                            <h6>Inserisci competenze</h6>
+                        @endif
                     </div>
                     <div v-for="(skill,i) in skills" class="d-inline-block border-style" v-cloak>
                       <input type="hidden" name="skills[]" :value="skill.name">

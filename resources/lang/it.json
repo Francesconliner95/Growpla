@@ -389,6 +389,11 @@
     "Company name":"Nome Azienda",
     "You are a":"Sei un",
     "When filling in, please enter truthful information. Your profile will be quality checked by the admins":"In fase di compilazione ti preghiamo di inserire informazioni veritiere. Il tuo profilo verrà sottoposto a controllo di qualità da parte degli admin.",
+    "Verify Your Email Address":"Verifica il tuo indirizzo mail",
+    "Before proceeding, please check your email for a verification link.":"Controlla la mail nella tua casella di posta e premi sul link di verifica.",
+    "If you did not receive the email":"Se non hai ricevuto l'e-mail",
+    "click here to request another":"clicca qui per inviarne un'altra",
+    "A fresh verification link has been sent to your email address.":"Un nuovo link di verifica è stato inviato al tuo indirizzo email.",
 
     "HOME":"HOME",
     "These credentials do not match our records.":"Queste credenziali non corrispondono a nessun utente",

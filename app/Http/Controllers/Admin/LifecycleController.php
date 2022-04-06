@@ -37,8 +37,7 @@ class LifecycleController extends Controller
             'lifecycles' => Lifecycle::all(),
             'pagetypes' => Pagetype::where('hidden',null)->get(),
             'usertypes' => Usertype::where('hidden',null)->get(),
-            'services' => Service::where('pagetype_id',$page->pagetype_id)
-                          ->where('hidden',null)->get(),
+            'services' => Service::where('hidden',null)->get(),
             'skills' => $page->have_page_cofounders,
         ];
 
@@ -58,8 +57,6 @@ class LifecycleController extends Controller
         $user = Auth::user();
 
         if($page->users->contains($user)){
-
-
           if($page->lifecycle_id != $request->lifecycle){
 
             $page->lifecycle_id = $request->lifecycle;

@@ -288,13 +288,13 @@ class MainController extends Controller
                     }
                 }
             }else{
-                foreach ($pages_input as $page) {
-                    $page_sectors = $page->sectors;
+                foreach ($users_input as $user) {
+                    $user_sectors = $user->sectors;
                     $always_exist = true;
                     foreach ($sectors as $sector_id) {
                         $sector_exist = false;
-                        foreach ($page_sectors as $page_sector) {
-                            if($page_sector->id==$sector_id){
+                        foreach ($user_sectors as $user_sector) {
+                            if($user_sector->id==$sector_id){
                                 $sector_exist = true;
                             }
                         }
@@ -303,7 +303,46 @@ class MainController extends Controller
                         }
                     }
                     if($always_exist){
-                        array_push($pages_output,$page);
+                        array_push($users_output,$page);
+                    }
+                }
+            }
+            return $users_output;
+        }
+
+        function filterUserByServices($users_input,$services,$service_or_and_toggle){
+
+            $users_output = [];
+            //dd($service_or_and_toggle);
+            if (!$service_or_and_toggle) {
+                foreach ($users_input as $user) {
+                    $user_services = $user->give_user_services;
+                    foreach ($user_services as $user_service) {
+                        foreach ($services as $service_id) {
+                            if($user_service->id==$service_id){
+                                array_push($users_output,$user);
+                            }
+                        }
+                    }
+                }
+            }else{
+
+                foreach ($users_input as $user) {
+                    $user_services = $user->give_user_services;
+                    $always_exist = true;
+                    foreach ($services as $service_id) {
+                        $service_exist = false;
+                        foreach ($user_services as $user_service) {
+                            if($user_service->id==$service_id){
+                                $service_exist = true;
+                            }
+                        }
+                        if(!$service_exist){
+                            $always_exist = false;
+                        }
+                    }
+                    if($always_exist){
+                        array_push($users_output,$user);
                     }
                 }
             }
@@ -406,6 +445,11 @@ class MainController extends Controller
           if($sectors){
               $users_input = $users;
               $users = filterUserBySectors($users_input,$sectors,$sectors_toggle);
+          }
+
+          if($services_id){
+              $users_input = $users;
+              $users = filterUserByServices($users_input,$services_id,$service_or_and_toggle);
           }
 
           //dd($users);

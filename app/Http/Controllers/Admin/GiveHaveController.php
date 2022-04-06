@@ -68,9 +68,9 @@ class GiveHaveController extends Controller
         ]);
 
         $api_or_route = $request->api_or_route;
-        
+
         $offers = [];
-        array_push($offers,...GiveUserSkill::select('id','user_id','skill_id')->get());
+        // array_push($offers,...GiveUserSkill::select('id','user_id','skill_id')->get());
         array_push($offers,...GivePageService::select('id','page_id','service_id')
         ->get());
         array_push($offers,...GiveUserService::select('id','user_id','service_id')

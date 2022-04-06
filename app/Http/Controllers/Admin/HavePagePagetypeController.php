@@ -21,15 +21,19 @@ class HavePagePagetypeController extends Controller
 
     public function edit($page_id)
     {
+        $page = Page::find($page_id);
+        $user = Auth::user();
+        if (in_array ($page->pagetype_id, array(1))
+        && $user->pages->contains($page)) {
+            $data = [
+                'page' => $page,
+                'pagetypes' => Pagetype::where('hidden',null)->get(),
+            ];
 
-        $data = [
-            'page' => Page::find($page_id),
-            'pagetypes' => Pagetype::where('hidden',null)->get(),
-        ];
+            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
-        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
-
-        return view('admin.have-page-pagetypes.edit', $data);
+            return view('admin.have-page-pagetypes.edit', $data);
+        }abort(404);
     }
 
     public function update(Request $request, $page_id)

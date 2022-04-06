@@ -9,7 +9,7 @@
         <div class="item-cont h-100">
             <div class="item-style h-100">
                 <h1>{{__('Notifications')}}</h1>
-                <div class="not-cont">
+                <div class="not-cont custom-scrollbar">
                     <a v-for="notification in notifications"
                     :href="notification.notification_type.url + notification.parameter"
                     :class="notification.read?'not-item':'not-item active'" v-cloak>

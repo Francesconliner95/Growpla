@@ -22,6 +22,7 @@ use App\GiveUserService;
 use App\Region;
 use App\Country;
 use App\Collaboration;
+use App\Notification;
 
 class UserController extends Controller
 {
@@ -47,6 +48,11 @@ class UserController extends Controller
                 return redirect()->route('admin.users.create');
             break;
             case 3:
+                $my_user->tutorial = 4;
+                $my_user->update();
+                return redirect()->route('admin.users.sectors',$my_user->id);
+            break;
+            case 4:
                 $my_user->tutorial = null;
                 $my_user->update();
                 return redirect()->route('admin.users.edit',$my_user->id);
@@ -286,25 +292,33 @@ class UserController extends Controller
 
     public function addAdmin(Request $request){
 
-      $request->validate([
-          'user_id' => 'required|integer',
-          'page_id' => 'required|integer',
-      ]);
+        $request->validate([
+            'user_id' => 'required|integer',
+            'page_id' => 'required|integer',
+        ]);
 
-      $user_id = $request->user_id;
-      $page_id = $request->page_id;
+        $user_id = $request->user_id;
+        $page_id = $request->page_id;
 
-      $page = Page::find($page_id);
+        $page = Page::find($page_id);
 
-      //controllo se sono il propietario della pagina
-      if($page->users->contains(Auth::user())){
-
-        //aggiungo un nuovo amministratore
-        $user = User::find($user_id);
-        $page->users()->attach($user);
-
-      }
-
+        //controllo se sono il propietario della pagina
+        if($page->users->contains(Auth::user())){
+            //aggiungo un nuovo amministratore
+            $user = User::find($user_id);
+            $page->users()->attach($user);
+            if(!$user->pagetypes->contains($page->pagetype)){
+                $user->pagetypes->attach($page->pagetype);
+            }
+            //NOTIFICATIONS
+            $new_notf = new Notification();
+            $new_notf->user_id = $user->id;
+            $new_notf->notification_type_id = 16;
+            $new_notf->ref_user_id = Auth::user()->id;
+            $new_notf->ref_to_page_id = $page->id;
+            $new_notf->parameter = $page->id;
+            $new_notf->save();
+        }
     }
 
     public function getAdmin(Request $request){
@@ -357,6 +371,14 @@ class UserController extends Controller
           //rimuovo l' amministratore
           $user = User::find($user_id);
           $page->users()->detach($user);
+          //NOTIFICATIONS
+          $new_notf = new Notification();
+          $new_notf->user_id = $user->id;
+          $new_notf->notification_type_id = 17;
+          $new_notf->ref_user_id = Auth::user()->id;
+          $new_notf->ref_to_page_id = $page->id;
+          $new_notf->parameter = $page->id;
+          $new_notf->save();
         }else{
           $message = 'Sei l\'unico admin';
         }

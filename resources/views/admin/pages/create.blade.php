@@ -8,11 +8,11 @@
     <div id="page-create">
         <div class="item-cont">
             <div class="item-style">
-              <h2>Nome Pagina</h2>
+                <h2>Nome {{$pagetype->name_it}}</h2>
               <form method="post" action="{{route('admin.pages.store')}}">
                 @csrf
                 <div class="pb-3">
-                  <input type="hidden" name="pagetype_id" value="{{$pagetype_id}}">
+                  <input type="hidden" name="pagetype_id" value="{{$pagetype->id}}">
                   <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="" minlength="3" maxlength="70" autocomplete="name" required>
                   @error('name')
                       <span class="alert alert-danger">

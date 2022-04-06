@@ -23,15 +23,19 @@ class HavePageUsertypeController extends Controller
     public function edit($page_id)
     {
         $page = Page::find($page_id);
-        $data = [
-            'page' => $page,
-            'usertypes' => Usertype::where('hidden',null)->get(),
-            'skills' => $page->have_page_cofounders,
-        ];
+        $user = Auth::user();
+        if (in_array ($page->pagetype_id, array(1))
+        && $user->pages->contains($page)) {
+            $data = [
+                'page' => $page,
+                'usertypes' => Usertype::where('hidden',null)->get(),
+                'skills' => $page->have_page_cofounders,
+            ];
 
-        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
-        return view('admin.have-page-usertypes.edit', $data);
+            return view('admin.have-page-usertypes.edit', $data);
+        }abort(404);
     }
 
     public function update(Request $request, $page_id)

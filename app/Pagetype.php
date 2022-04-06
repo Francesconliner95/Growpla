@@ -17,4 +17,12 @@ class Pagetype extends Model
   public function have_page_pagetypes(){
   return $this->belongsToMany('App\Page','have_page_pagetypes','pagetype_id','page_id');
   }
+
+    public function have_services(){
+    return $this->belongsToMany('App\Service','have_pagetype_services','pagetype_id','service_id');
+    }
+
+    public function give_services(){
+    return $this->belongsToMany('App\Service','give_pagetype_services','pagetype_id','service_id');
+    }
 }

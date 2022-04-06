@@ -23,14 +23,20 @@ class GivePageServiceController extends Controller
     public function edit($page_id)
     {
         $page = Page::find($page_id);
-        $data = [
-            'page' => $page,
-            'services' => $page->give_page_services,
-        ];
+        $user = Auth::user();
+        if (in_array ($page->pagetype_id, array(1, 2))
+        && $user->pages->contains($page)) {
+            $data = [
+                'page' => $page,
+                'services' => $page->give_page_services,
+                'recommended_services' => $page->pagetype->give_services,
+            ];
+            //dd($page->pagetype->give_services);
 
-        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
-        return view('admin.give-page-services.edit', $data);
+            return view('admin.give-page-services.edit', $data);
+        }abort(404);
     }
 
     public function update(Request $request, $page_id)
@@ -48,21 +54,24 @@ class GivePageServiceController extends Controller
       if($user->pages->contains($page)){
 
 
-          $services = $request->services;
-          $services_id = [];
-          foreach ($services as $service_name) {
-              $exist = Service::where('name',$service_name)->first();
-              if($exist){
-                  array_push($services_id, $exist->id);
-              }else{
-                  if($service_name){
-                    $new_service = new Service();
-                    $new_service->name = Str::lower($service_name);
-                    $new_service->save();
-                    array_push($services_id, $new_service->id);
-                  }
-              }
-          }
+        $services = $request->services;
+        $services_id = [];
+        if($services){
+            foreach ($services as $service_name) {
+                $exist = Service::where('name',$service_name)->first();
+                if($exist){
+                    array_push($services_id, $exist->id);
+                }else{
+                    if($service_name){
+                      $new_service = new Service();
+                      $new_service->name = Str::lower($service_name);
+                      $new_service->save();
+                      array_push($services_id, $new_service->id);
+                    }
+                }
+            }
+        }
+
 
           //dd($page->give_page_services->contains($services_id)->detached);
 

@@ -27,6 +27,7 @@ class GiveUserServiceController extends Controller
           $data = [
               'user' => $user,
               'services' => $user->give_user_services,
+              'recommended_services' => Service::where('hidden',null)->get(),
           ];
 
           app()->setLocale(Language::find(Auth::user()->language_id)->lang);

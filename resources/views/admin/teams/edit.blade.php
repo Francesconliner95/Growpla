@@ -10,7 +10,7 @@
     <div id="team-edit">
         <div :class="delete_alert?'d-alert active-alert':'d-alert deactive-alert'" v-cloak>
             <div class="item-cont alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                <div class="item-style">
+                <div class="item-style-visible">
                     <button type="button" name="button" class="edit-top-right button-color-gray" @click="alertCancel()">
                         <i class="fas fa-times"></i>
                     </button>
@@ -68,12 +68,14 @@
                               </div>
                           @enderror
                           <div :class="users_found.length>0?'found':'found d-none'" v-cloak>
-                              <p class="item" v-for="user_found in users_found"
-                              >
-                                <img v-if="user_found.image" :src="'/storage/' + user_found.image" alt="">
-                                @{{user_found.name}} @{{user_found.surname}}
-                                <button type="button" name="button" @click="addUser(user_found)">{{__('Add')}}</button>
-                              </p>
+                                <div class="item" v-for="user_found in users_found"
+                                >
+                                    <div class="img-cont mini-img">
+                                      <img v-if="user_found.image" :src="'/storage/' + user_found.image" alt="">
+                                    </div>
+                                    @{{user_found.name}} @{{user_found.surname}}
+                                    <button type="button" name="button" class="button-style button-color" @click="addUser(user_found)">{{__('Add')}}</button>
+                                </div>
                           </div>
                       </div>
                     </div>

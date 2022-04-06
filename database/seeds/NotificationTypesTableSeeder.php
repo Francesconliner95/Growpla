@@ -66,12 +66,12 @@ class NotificationTypesTableSeeder extends Seeder
             [ //collaborazione ad utente
                 'message'=> '/',
                 'message_it'=> 'ti ha aggiunto alle sue collaborazioni',
-                'url' => '/admin/collaborations/index/',
+                'url' => '/admin/collaborations/my/',
             ],
             [ //collaborazione ad una mia pagina
                 'message'=> '/',
                 'message_it'=> 'ha aggiunto alle sue collaborazioni la tua pagina',
-                'url' => '/admin/collaborations/index/',
+                'url' => '/admin/collaborations/my/',
             ],
             [//conferma collaborazione ad utente
                 'message'=> '/',
@@ -86,6 +86,21 @@ class NotificationTypesTableSeeder extends Seeder
             [
                 'message'=> '/',
                 'message_it'=> 'Un investitore ha guardato il tuo profilo',
+                'url' => '/admin/pages/',
+            ],
+            [
+                'message'=> '/',
+                'message_it'=> 'ha iniziato a seguire la tua pagina',
+                'url' => '/admin/users/',
+            ],
+            [
+                'message'=> '/',
+                'message_it'=> 'ti ha nominato admin della pagina',
+                'url' => '/admin/pages/',
+            ],
+            [
+                'message'=> '/',
+                'message_it'=> 'ti ha rimosso come admin della pagina',
                 'url' => '/admin/pages/',
             ],
         ];

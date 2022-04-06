@@ -154,6 +154,8 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     ->name('addCollaboration');
     Route::get('/loadCollaborationsInfo', 'CollaborationController@loadCollaborationsInfo')
     ->name('loadCollaborationsInfo');
+    Route::get('/latestCollaborations', 'CollaborationController@latestCollaborations')
+    ->name('latestCollaborations');
 
     //CHATS
     Route::resource('/chats', 'ChatController');

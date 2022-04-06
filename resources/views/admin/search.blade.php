@@ -80,7 +80,7 @@
                         </div>
 
                         {{-- cofounder --}}
-                        <div v-if="usertypes_id.includes(1)
+                        {{-- <div v-if="usertypes_id.includes(1)
                         || need_selected.type==1 && need_selected.id==1" class="search-style">
                             <div class="">
                                 <h6 v-if="need_selected.id==1" for="" class="d-block">Cerco startup che hanno bisogno di profili che dispongono di</h6>
@@ -108,7 +108,7 @@
                                   @{{skill_found.name}}
                               </a>
                             </div>
-                        </div>
+                        </div> --}}
                         {{-- investitori --}}
                         <div v-if="investors_selected" class="search-style">
                             <h6>Quale?</h6>
@@ -127,11 +127,14 @@
                         </div>
                         {{-- servizi --}}
                         <div v-if="services_selected" class="search-style">
-                            <h6 for="" class="d-block">Cerco profili che</h6>
-                            <input type="radio" name="serviceToggle" value="false" v-model="serviceToggle" id="have-service" class="w-auto h-auto" :checked="!serviceToggle">
-                            <label for="have-service">offrono</label>
-                            <input type="radio" name="serviceToggle" value="true" v-model="serviceToggle" id="give-service" class="w-auto h-auto" :checked="serviceToggle">
-                            <label for="give-service">cercano</label>
+                            <h6 v-if="usertypes_id.includes(1)" for="" class="d-block">Cerco profili che offrono</h6>
+                            <h6 v-else for="" class="d-block">Cerco profili che</h6>
+                            <div v-if="!usertypes_id.includes(1)">
+                                <input type="radio" name="serviceToggle" value="false" v-model="serviceToggle" id="have-service" class="w-auto h-auto" :checked="!serviceToggle">
+                                <label for="have-service">offrono</label>
+                                <input type="radio" name="serviceToggle" value="true" v-model="serviceToggle" id="give-service" class="w-auto h-auto" :checked="serviceToggle">
+                                <label for="give-service">cercano</label>
+                            </div>
                         </div>
                         <div v-if="services_selected" class="search-style">
                             <input type="radio" name="serviceOrAndToggle" value="false" v-model="serviceOrAndToggle" id="one-service" class="w-auto h-auto" :checked="!serviceOrAndToggle">
@@ -140,23 +143,46 @@
                             <label for="many-service">tutti i seguenti</label>
                         </div>
                         <div v-if="services_selected || need_selected.type==3" class="search-style">
-                            <h6 v-if="need_selected.type==3" for="">Startup che cercano servizio di:</h6>
-                            <div v-for="(service,i) in services" class="" v-cloak>
-                              <input type="hidden" name="services[]" :value="service.name">
-                              <label for="">@{{service.name}}
-                                <i class="fas fa-trash-alt" @click="removeService(i)"></i>
-                              </label>
-                            </div>
-                            <input type="text" name="name" value="" placeholder="Nome servizio" v-model="service_name" @keyup.enter="searchService()" v-on:input="searchService()" maxlength="70" class="form-control" autocomplete="off">
-                            @error ('service_name')
-                                <div class="alert alert-danger">
-                                    {{__($message)}}
+                            {{-- <div class="">
+                                <input type="text" name="name" value="" placeholder="Nome servizio" v-model="service_name" @keyup.enter="searchService()" v-on:input="searchService()" maxlength="70" class="form-control" autocomplete="off">
+                                @error ('service_name')
+                                    <div class="alert alert-danger">
+                                        {{__($message)}}
+                                    </div>
+                                @enderror
+                                <div :class="services_found.length>0?'found':'found d-none'" v-cloak>
+                                    <a class="item" v-for="service_found in services_found" @click="addService(service_found)">
+                                        @{{service_found.name}}
+                                    </a>
                                 </div>
-                            @enderror
-                            <div :class="services_found.length>0?'found':'found d-none'" v-cloak>
-                              <a class="item" v-for="service_found in services_found" @click="addService(service_found)">
-                                  @{{service_found.name}}
-                              </a>
+                            </div>                             --}}
+                            <div class="search-style">
+                                <h6>Seleziona uno o piu servizi</h6>
+                                <div class="row from-group pl-1 pr-1">
+                                    <div class="col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1">
+                                        <select class="form-control" name="" @change="changeMainService()" v-model="main_service_selected">
+                                            <option v-for="main_service in main_services" :value="main_service.id">@{{main_service.name}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1">
+                                        <select class="form-control" name=""
+                                        v-model="sub_service_selected">
+                                            <option v-for="sub_service in sub_services_show" :value="sub_service.id">@{{sub_service.name}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-1">
+                                        <button type="button" name="button" @click="addServiceSelected(sub_service_selected)" class="w-100 button-style button-color-blue">Aggiungi</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="">
+                                <h6 v-if="need_selected.type==3" for="">Startup che cercano servizio di:</h6>
+                                <div v-for="(service,i) in services" class="border-style" v-cloak>
+                                  <input type="hidden" name="services[]" :value="service.name">
+                                  <label for="">@{{service.name}}
+                                    <i class="fas fa-trash-alt" @click="removeService(i)"></i>
+                                  </label>
+                                </div>
                             </div>
                         </div>
                         {{-- settori --}}
@@ -243,7 +269,7 @@
             </div>
         </div>
         <div class="container">
-            <h4>Ricerca rapida</h4>
+            <h4 class="font-weight-bold text-center">Ricerca rapida</h4>
             <div class="rapid-search row d-flex justify-content-around pt-3 pb-5">
                 <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2 p-1">
                     <form class="" method="POST" action="{{ route('admin.found') }}">
@@ -284,56 +310,156 @@
             </div>
         </div>
     </div>
-    <div v-if="needs.length>0" class="container pt-3 pb-5" v-cloak>
-        <h4>Necessità</h4>
-        <div class="row">
-            <div v-for="need in needs" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
-                <div class=" img-cont medium-img">
-                    <img v-if="need.image" :src="'/storage/' + need.image" alt="">
+    {{-- SLIDER ESEMPIO --}}
+    {{-- <div class="container">
+        <div class="main-multi-slider">
+            <div class="multi-slider-cont" id="multi-slider-cont-1">
+                <div class="multi-slider-item col-sm-11 col-md-7 col-lg-5 col-xl-3">
+                    <span>Slide 1</span>
                 </div>
-                <div class="">
-                    <strong class="text-capitalize">
-                        @{{need.user_or_page? need.name +' ' +need.surname : need.name}}
-                    </strong>
-                    <span>@{{need.service_id?'cerca servizio di':'cerca'}}</span>
-                    <strong class="text-capitalize">
-                        @{{need.need}}
-                    </strong>
+                <div class="multi-slider-item col-sm-11 col-md-7 col-lg-5 col-xl-3">
+                    <span>Slide 2</span>
                 </div>
-                <a :href="need.user_or_page?'/admin/users/'+ need.id : '/admin/pages/'+ need.id" class="button-style button-color">Visita profilo</a>
+                <div class="multi-slider-item col-sm-11 col-md-7 col-lg-5 col-xl-3">
+                    <span>Slide 3</span>
+                </div>
+                <div class="multi-slider-item col-sm-11 col-md-7 col-lg-5 col-xl-3">
+                    <span>Slide 4</span>
+                </div>
+                <div class="multi-slider-item col-sm-11 col-md-7 col-lg-5 col-xl-3">
+                    <span>Slide 5</span>
+                </div>
+                <div class="multi-slider-item col-sm-11 col-md-7 col-lg-5 col-xl-3">
+                    <span>Slide 6</span>
+                </div>
             </div>
+            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left" v-cloak>
+                <i class="fas fa-caret-left"></i>
+            </button>
+            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right" v-cloak>
+                <i class="fas fa-caret-right"></i>
+            </button>
         </div>
-        <a href="{{route('admin.needs.getAllHave')}}">Mostra altro</a>
-    </div>
-    <div class="container pt-3 pb-5">
-        <h4>Offerte</h4>
-        <div class="row">
-            <div v-for="offer in offers" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center" v-cloak>
-                <div class=" img-cont medium-img">
-                    <img v-if="offer.image" :src="'/storage/' + offer.image" alt="">
+    </div> --}}
+    <div v-if="offers.length>0" class="container pt-3 pb-3" v-cloak>
+        <h4 class="font-weight-bold">Offerte</h4>
+        <div class="main-multi-slider">
+            <div class="multi-slider-cont" id="multi-slider-cont-1">
+                <div v-for="offer in offers" class="multi-slider-item col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                    <div class=" d-flex justify-content-center align-items-center h-100">
+                        <div class="card-style card-color-green">
+                            <div class="pb-4">
+                                <div class=" img-cont mini-img">
+                                    <img v-if="offer.image" :src="'/storage/' + offer.image" alt="">
+                                </div>
+                                <p class="text-capitalize text-dark">
+                                    @{{offer.user_or_page? offer.name +' ' +offer.surname : offer.name}}
+                                </p>
+                                {{-- <span>@{{offer.service_id?'cerca servizio di':'cerca'}}</span> --}}
+                                <p class="text-capitalize">
+                                    @{{offer.need}}
+                                </p>
+                            </div>
+                            <div class="text-center font-weight-normal">
+                                <a :href="offer.user_or_page?'/admin/users/'+ offer.id : '/admin/pages/'+ offer.id" class="button-style button-color-blue">Visita profilo</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="">
-                    <strong class="text-capitalize">
-                        @{{offer.user_or_page? offer.name +' ' +offer.surname : offer.name}}
-                    </strong>
-                    <span>offre servizio di</span>
-                    <strong class="text-capitalize">
-                        @{{offer.need}}
-                    </strong>
-                </div>
-                <a :href="offer.user_or_page?'/admin/users/'+ offer.id : '/admin/pages/'+ offer.id" class="button-style button-color">Visita profilo</a>
             </div>
+            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left" v-cloak>
+                <i class="fas fa-caret-left"></i>
+            </button>
+            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right" v-cloak>
+                <i class="fas fa-caret-right"></i>
+            </button>
         </div>
-        <a href="{{route('admin.offers.getAllGive')}}">Mostra altro</a>
+        <div class="text-center">
+            <a href="{{route('admin.offers.getAllGive')}}" class="font-weight-bold text-dark">
+                Scopri tutte le offerte >
+            </a>
+        </div>
     </div>
-    <div class="container pt-3 pb-5">
+    <div v-if="needs.length>0" class="container pt-3 pb-3" v-cloak>
+        <h4 class="font-weight-bold">Necessità</h4>
+        <div class="main-multi-slider">
+            <div class="multi-slider-cont" id="multi-slider-cont-2">
+                <div v-for="need in needs" class="multi-slider-item col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                    <div class=" d-flex justify-content-center align-items-center h-100">
+                        <div class="card-style card-color-blue">
+                            <div class="pb-4">
+                                <div class=" img-cont mini-img">
+                                    <img v-if="need.image" :src="'/storage/' + need.image" alt="">
+                                </div>
+                                <p class="text-capitalize text-dark">
+                                    @{{need.user_or_page? need.name +' ' +need.surname : need.name}}
+                                </p>
+                                {{-- <span>@{{need.service_id?'cerca servizio di':'cerca'}}</span> --}}
+                                <p class="text-capitalize">
+                                    @{{need.need}}
+                                </p>
+                            </div>
+                            <div class="text-center font-weight-normal">
+                                <a :href="need.user_or_page?'/admin/users/'+ need.id : '/admin/pages/'+ need.id" class="button-style button-color-blue">Visita profilo</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(2,'left')" class="slider-left" v-cloak>
+                <i class="fas fa-caret-left"></i>
+            </button>
+            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right" v-cloak>
+                <i class="fas fa-caret-right"></i>
+            </button>
+        </div>
+        <div class="text-center">
+            <a href="{{route('admin.needs.getAllHave')}}" class="font-weight-bold text-dark">
+                Scopri tutte le richieste >
+            </a>
+        </div>
+    </div>
+    <div v-if="collaborations.length>0" class="container pt-3 pb-5" v-cloak>
         <h4>Collaborazioni</h4>
+        <div class="row">
+            <div v-for="collaboration in collaborations" class="col-sm-12 col-md-6 col-lg-6 col-xl-6" v-cloak>
+                <div class="row">
+                    <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 text-center">
+                        <a :href="collaboration.account_1.user_or_page?'/admin/users/'+ collaboration.account_1.id : '/admin/pages/'+ collaboration.account_1.id">
+                            <div class="">
+                                <div class="img-cont medium-img">
+                                    <img v-if="collaboration.account_1.image" :src="'/storage/' + collaboration.account_1.image" alt="">
+                                </div>
+                            </div>
+                            <strong class="text-capitalize d-block">
+                                @{{collaboration.account_1.user_or_page? collaboration.account_1.name +' ' +collaboration.account_1.surname : collaboration.account_1.name}}
+                            </strong>
+                        </a>
+                    </div>
+                    <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 d-flex justify-content-center align-items-center">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 text-center">
+                        <a :href="collaboration.account_2.user_or_page?'/admin/users/'+ collaboration.account_2.id : '/admin/pages/'+ collaboration.account_2.id">
+                            <div class="">
+                                <div class="img-cont medium-img">
+                                    <img v-if="collaboration.account_2.image" :src="'/storage/' + collaboration.account_2.image" alt="">
+                                </div>
+                            </div>
+                            <strong class="text-capitalize d-block">
+                                @{{collaboration.account_2.user_or_page? collaboration.account_2.name +' ' +collaboration.account_2.surname : collaboration.account_2.name}}
+                            </strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <a href="{{route('admin.collaborations.index')}}">Mostra altro</a>
     </div>
     <div v-if="mostViewedAccounts.length>0" class="container pt-3 pb-5" v-cloak>
         <h4>I più popolari</h4>
         <div class="row">
-            <div v-for="account in mostViewedAccounts" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
+            <a v-for="account in mostViewedAccounts" :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
                 <div class="">
                     <div class=" img-cont medium-img">
                         <img v-if="account.image" :src="'/storage/' + account.image" alt="">
@@ -342,14 +468,14 @@
                 <div class="">
                     <span class="text-capitalize font-weight-bold">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</span>
                 </div>
-                <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="button-style button-color">Visita profilo</a>
-            </div>
+                {{-- <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="button-style button-color">Visita profilo</a> --}}
+            </a>
         </div>
     </div>
     <div v-if="myLatestViews.length>0" class="container pt-3 pb-5" v-cloak>
         <h4>Visti di recente</h4>
         <div class="row">
-            <div v-for="account in myLatestViews" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
+            <a v-for="account in myLatestViews" :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
                 <div class="">
                     <div class=" img-cont medium-img">
                         <img v-if="account.image" :src="'/storage/' + account.image" alt="">
@@ -363,9 +489,9 @@
                           <span>@{{sector.name}}</span>
                         </div>
                     </div>
-                    <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="button-style button-color">Visita profilo</a>
+                    {{-- <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="button-style button-color">Visita profilo</a> --}}
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </div>

@@ -20,7 +20,7 @@ class FollowController extends Controller
         ->leftjoin('users','users.id','=','follows.user_following_id')
         ->leftjoin('pages','pages.id','=','follows.page_following_id')
         ->select('users.id as user_id', 'users.name as user_name',
-        'pages.id as page_id','pages.name as page_name')
+        'users.surname as user_surname','pages.id as page_id','pages.name as page_name')
         ->get();
 
         // dd($following);
@@ -38,51 +38,53 @@ class FollowController extends Controller
             'follow_type' => 'required|integer',
             'follow_id' => 'required|integer',
         ]);
-
-        function Notification($users,$type_id,$ref_user_id,$ref_page_id){
-            foreach ($users as $user) {
-                $new_notf = new Notification();
-                $new_notf->user_id = $user->id;
-                $new_notf->notification_type_id = $type_id;
-                $new_notf->ref_user_id = $ref_user_id;
-                $new_notf->ref_page_id = $ref_page_id;
-                $new_notf->save();
-            }
-        }
-
+        $user = Auth::user();
         switch ($request->follow_type) {
-          case 1:
-              $following = User::find($request->follow_id);
+            case 1:
+                $following = User::find($request->follow_id);
+                $exist = Auth::user()->user_following->contains($following);
 
-              $exist = Auth::user()->user_following->contains($following);
+                if($exist){
+                    Auth::user()->user_following()->detach($following);
+                    $following_toggle = false;
+                }else{
+                    Auth::user()->user_following()->attach($following);
+                    $following_toggle = true;
+                    $new_notf = new Notification();
+                    $new_notf->user_id = $following->id;
+                    $new_notf->notification_type_id = 2;
+                    $new_notf->ref_user_id = $user->id;
+                    $new_notf->parameter = $user->id;
+                    $new_notf->save();
+                }
+            break;
+            case 2:
+                $following = Page::find($request->follow_id);
 
-              if($exist){
-                Auth::user()->user_following()->detach($following);
-                $following_toggle = false;
-              }else{
-                Auth::user()->user_following()->attach($following);
-                $following_toggle = true;
-                Notification([$following],2,$following->id,null);
-              }
-          break;
-          case 2:
-              $following = Page::find($request->follow_id);
+                $exist = Auth::user()->page_following->contains($following);
 
-              $exist = Auth::user()->page_following->contains($following);
+                if($exist){
+                    Auth::user()->page_following()->detach($following);
+                    $following_toggle = false;
+                }else{
+                    Auth::user()->page_following()->attach($following);
+                    $following_toggle = true;
+                    $page_admins = $following->users;
+                    foreach ($page_admins as $admin) {
+                        $new_notf = new Notification();
+                        $new_notf->user_id = $admin->id;
+                        $new_notf->notification_type_id = 15;
+                        $new_notf->ref_user_id = $user->id;
+                        $new_notf->ref_to_page_id = $following->id;
+                        $new_notf->parameter = $user->id;
+                        $new_notf->save();
+                    }
+                }
+            break;
 
-              if($exist){
-                Auth::user()->page_following()->detach($following);
-                $following_toggle = false;
-              }else{
-                Auth::user()->page_following()->attach($following);
-                $following_toggle = true;
-                Notification($following->users,2,null,$following->id);
-              }
-          break;
-
-          default:
-            // code...
-          break;
+            default:
+                // code...
+            break;
         }
 
         return response()->json([

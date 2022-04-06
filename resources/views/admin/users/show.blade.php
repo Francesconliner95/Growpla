@@ -12,7 +12,7 @@
     <div id="user-show">
         <div :class="alert?'d-alert active-alert':'d-alert deactive-alert'" v-cloak>
             <div class="item-cont alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                <div class="item-style">
+                <div class="item-style-visible">
                     <button type="button" name="button" class="edit-top-right button-color-gray" @click="alert=false">
                         <i class="fas fa-times"></i>
                     </button>
@@ -40,7 +40,7 @@
                 <div class="profile row">
                     {{-- Immagine --}}
                     <div class="profile-image col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                        <div class="img-cont medium-img position-relative">
+                        <div class="img-cont big-img position-relative">
                         @if($user->image)
                           <img src="{{ asset("storage/" . $user->image) }}" alt="" class="">
                         @endif
@@ -56,6 +56,18 @@
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
                         </h2>
+                        <div class="">
+                            @foreach ($user->usertypes as $key => $usertype)
+                                @if(in_array ($usertype->id, array(1, 2)))
+                                    <span class="text-capitalize">
+                                        {{$usertype->name_it}}
+                                    </span>
+                                    @if($usertype->id!=2){{-- inserisco l'ultimo id cosi da non ar comparire la barra --}}
+                                        <span>|</span>
+                                    @endif
+                                @endif
+                            @endforeach
+                        </div>
                         <div class="address">
                             <span>{{$user->region_id?$user->region->name:''}}</span>
                             <span>{{$user->region_id && $user->municipality?',':''}}</span>
@@ -73,9 +85,11 @@
                             {{-- <a href="{{route('admin.chats.createChat',[$user->id,'user'])}}" class="button-style button-color-blue" type="button" name="button" v-cloak>
                                 <span>Messaggio</span>
                             </a> --}}
+                            @if(!$is_my_user)
                             <button class="button-style button-color-blue" type="button" name="button" @click="switchAccounts()">
                                 <span>Messaggio</span>
                             </button>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -160,7 +174,7 @@
                   @endif
                 @endif
                 {{-- ASPIRANTE CO-FOUNDER --}}
-                @if($user->usertypes->contains(1))
+                {{-- @if($user->usertypes->contains(1)) --}}
                     @if($is_my_user || count($user->give_user_skills)>0)
                     <div class="sub-section">
                       <h6>{{__('Competenze')}}
@@ -174,7 +188,7 @@
 
                     </div>
                     @endif
-                @endif
+                {{-- @endif --}}
                 {{-- SERVIZI --}}
                 @if($is_my_user || count($user->give_user_services)>0 || count($user->have_user_services)>0)
                 <div id="services" class="sub-section row">
@@ -299,38 +313,40 @@
             </div>
         </div>
         @foreach ($pageTypes as $pageType)
-          @if($user->pageTypes->contains($pageType->id))
-              <div class="item-cont">
-                  <div class="item-style">
-                    <h3 class="text-capitalize">{{__($pageType->name_it)}}</h3>
-                    <div class="row">
-                      @foreach ($user->pages->where('pagetype_id',$pageType->id) as $page)
-                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3  p-1">
-                            <div class="page-list">
-                                <a href="{{ route('admin.pages.show', ['page'=> $page->id]) }}" class="">
-                                  <div class="img-cont mini-img">
-                                  @if($page->image)
-                                    <img src="{{ asset("storage/" . $page->image) }}" alt="" class="">
-                                  @endif
+            @if($user->pageTypes->contains($pageType->id))
+                @if (count($user->pages->where('pagetype_id',$pageType->id))>0 || $is_my_user)
+                    <div class="item-cont">
+                        <div class="item-style">
+                          <h3 class="text-capitalize">{{__($pageType->name_it)}}</h3>
+                          <div class="row">
+                            @foreach ($user->pages->where('pagetype_id',$pageType->id) as $page)
+                              <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3  p-1">
+                                  <div class="page-list">
+                                      <a href="{{ route('admin.pages.show', ['page'=> $page->id]) }}" class="">
+                                        <div class="img-cont mini-img">
+                                        @if($page->image)
+                                          <img src="{{ asset("storage/" . $page->image) }}" alt="" class="">
+                                        @endif
+                                        </div>
+                                        <span>{{$page->name}}</span>
+                                      </a>
                                   </div>
-                                  <span>{{$page->name}}</span>
-                                </a>
+                              </div>
+                            @endforeach
+                            @if($is_my_user)
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 p-1">
+                              <div class="page-list">
+                                  <a class="" href="{{ route('admin.pages.newPage', ['pagetype_id'=> $pageType->id]) }}">
+                                    <i class="fas fa-plus"></i>
+                                  </a>
+                              </div>
                             </div>
+                            @endif
+                          </div>
                         </div>
-                      @endforeach
-                      @if($is_my_user)
-                      <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 p-1">
-                        <div class="page-list">
-                            <a class="" href="{{ route('admin.pages.newPage', ['pagetype_id'=> $pageType->id]) }}">
-                              <i class="fas fa-plus"></i>
-                            </a>
-                        </div>
-                      </div>
-                      @endif
                     </div>
-                  </div>
-              </div>
-          @endif
+                @endif
+            @endif
         @endforeach
     </div>
 </div>

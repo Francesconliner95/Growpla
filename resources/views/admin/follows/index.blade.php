@@ -17,18 +17,18 @@
                         <i class="fas fa-user-check"></i>
                     </h1>
                 </div>
-                <p v-if="followed.length<1">Nessun seguito</p>
-                <div v-for="following in followed" class="follow-item sub-item-cont">
+                <p v-if="followed.length<1" v-cloak>Nessun seguito</p>
+                <div v-for="following in followed" class="sub-item-cont text-capitalize" v-cloak>
                     <div v-if="following.user_id" class="">
-                      <a :href="'/admin/users/' + following.user_id" class="sub-item-style">
-                          @{{following.user_name}}
+                      <a :href="'/admin/users/' + following.user_id" class="">
+                          @{{following.user_name}} @{{following.user_surname}}
                       </a>
                       <button type="button" name="button" class="button-style button-color" @click="toggleFollow(following.user_id,1)">
                           <i class="fas fa-user-times"></i>
                       </button>
                     </div>
                     <div v-else class="">
-                      <a :href="'/admin/pages/' + following.page_id" class="sub-item-style">
+                      <a :href="'/admin/pages/' + following.page_id" class="">
                           @{{following.page_name}}
                       </a>
                       <button type="button" name="button" class="button-style button-color" @click="toggleFollow(following.page_id,2)">

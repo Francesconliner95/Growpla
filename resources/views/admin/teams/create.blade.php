@@ -49,12 +49,13 @@
                               </div>
                           @enderror
                           <div :class="users_found.length>0?'found':'found d-none'" v-cloak>
-                              <p class="item" v-for="user_found in users_found"
-                              >
-                                <img v-if="user_found.image" :src="'/storage/' + user_found.image" alt="">
+                            <div class="item" v-for="user_found in users_found">
+                                <div class="img-cont mini-img">
+                                    <img v-if="user_found.image" :src="'/storage/' + user_found.image" alt="">
+                                </div>
                                 @{{user_found.name}} @{{user_found.surname}}
-                                <button type="button" name="button" @click="addUser(user_found)">{{__('Add')}}</button>
-                              </p>
+                                <button type="button" name="button" class="button-style button-color" @click="addUser(user_found)">{{__('Add')}}</button>
+                            </div>
                           </div>
                       </div>
                     </div>

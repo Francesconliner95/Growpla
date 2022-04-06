@@ -36,7 +36,7 @@ class PageController extends Controller
     public function newPage($pagetype_id){
 
       $data = [
-        'pagetype_id' => $pagetype_id,
+        'pagetype' => Pagetype::find($pagetype_id),
       ];
       app()->setLocale(Language::find(Auth::user()->language_id)->lang);
       return view('admin.pages.create', $data);
@@ -120,7 +120,7 @@ class PageController extends Controller
         if(Auth::user()->pagetypes->contains($page->pagetype_id)){
 
             $data = $request->all();
-            if($data['remove_pitch'] && $page->pitch){
+            if(array_key_exists('pitch',$data) && $data['remove_pitch'] && $page->pitch){
                 $old_pitch_name = $page->pitch;
                 if($old_pitch_name){
                     Storage::delete($old_pitch_name);

@@ -104,7 +104,7 @@ class ChatController extends Controller
                 $page_id = 'user';
             }else {
                 $new_chat->sender_page_id = $page_selected_id;
-                $page_id = $user->page_selected_id;
+                $page_id = $page_selected_id;
             }
             if($recipient_user_or_page=='user'){
                 $new_chat->recipient_user_id = $recipient_id;
@@ -113,6 +113,7 @@ class ChatController extends Controller
                 $new_chat->recipient_page_id = $recipient_id;
             }
             $new_chat->save();
+
             // return redirect()->route('admin.chats.show',[$new_chat->id,$page_id]);
             return response()->json([
                 'success' => true,

@@ -74507,7 +74507,19 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   data: {
     my_user_chats: my_user_chats,
     my_pages_chats: my_pages_chats,
-    lang: lang
+    lang: lang,
+    //MESSAGES
+    chat_id: '',
+    my_user_id: '',
+    your_user_id: '',
+    my_page_id: '',
+    your_page_id: '',
+    displayed_name: '',
+    message_text: '',
+    messages: [],
+    messages_qty: 0,
+    first_scroll: false,
+    is_mobile: false
   },
   methods: {
     // getChats(){
@@ -74529,28 +74541,160 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       }
 
       return object;
+    },
+    pressChat: function pressChat(account, chat) {
+      console.log(account);
+      console.log(chat);
+      this.my_user_id = '';
+      this.your_user_id = '';
+      this.my_page_id = '';
+      this.your_page_id = '';
+      this.chat_id = chat.id;
+
+      if (account.user_chats) {
+        this.my_user_id = account.id;
+      }
+
+      if (account.page_chats) {
+        this.my_page_id = account.id;
+      }
+
+      if (chat.user_id) {
+        this.your_user_id = chat.user_id;
+        this.displayed_name = chat.name + ' ' + chat.surname;
+      }
+
+      if (chat.page_id) {
+        this.your_page_id = chat.page_id;
+        this.displayed_name = chat.name;
+      }
+
+      console.log(this.my_user_id, this.my_page_id, this.your_user_id, this.your_page_id);
+      console.log(this.my_user_id);
+      console.log(this.my_page_id);
+      console.log(this.your_user_id);
+      console.log(this.your_page_id);
+
+      if (window.innerWidth >= 768) {
+        console.log('stai');
+      } else {
+        console.log('esci');
+
+        if (this.my_page_id) {
+          window.location = '/admin/chats/show/' + chat.id + '/' + this.my_page_id;
+        } else {
+          window.location = '/admin/chats/show/' + chat.id + '/' + 'user';
+        }
+      }
+
+      this.getMessages();
+    },
+    sendMessage: function sendMessage() {
+      var _this = this;
+
+      if (this.message_text) {
+        var message_text = this.message_text;
+        this.message_text = '';
+        axios__WEBPACK_IMPORTED_MODULE_1___default()({
+          method: 'post',
+          url: '/admin/newMessage',
+          data: {
+            chat_id: this.chat_id,
+            my_user_id: this.my_user_id,
+            my_page_id: this.my_page_id,
+            message_text: message_text
+          }
+        }).then(function (response) {
+          _this.first_scroll = false;
+
+          _this.getMessages();
+        });
+      }
+    },
+    getMessages: function getMessages() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getMessages', {
+        params: {
+          chat_id: this.chat_id,
+          my_user_id: this.my_user_id,
+          my_page_id: this.my_page_id,
+          messages_qty: this.messages_qty
+        }
+      }).then(function (response) {
+        _this2.messages = response.data.results.messages; //console.log(this.messages);
+
+        if (!_this2.first_scroll) {
+          _this2.first_scroll = true;
+
+          _this2.scroll();
+        }
+      });
+    },
+    scroll: function scroll() {
+      setTimeout(function () {
+        var elem = document.getElementById('scroll-messages');
+        elem.scrollTop = elem.scrollHeight; //console.log('scroll');
+      }, 100);
+    },
+    getDate: function getDate(created_at) {
+      var date = new Date(created_at);
+      var hours = date.getHours();
+
+      if (hours < 10) {
+        hours = '0' + hours.toString();
+      }
+
+      var minutes = date.getMinutes();
+
+      if (minutes < 10) {
+        minutes = '0' + minutes.toString();
+      }
+
+      var day = String(date.getDate()).padStart(2, '0');
+      var month = date.getMonth() + 1;
+      var year = date.getFullYear();
+      var output = hours + ':' + minutes + ' ' + day + '/' + month + '/' + year;
+      return output;
+    },
+    checkMobile: function checkMobile() {
+      if (window.innerWidth >= 768) {
+        if (this.is_mobile) {
+          this.is_mobile = false;
+        }
+      } else {
+        if (!this.is_mobile) {
+          this.is_mobile = true;
+        }
+      }
     }
   },
   mounted: function mounted() {
-    var _this = this;
+    var _this3 = this;
+
+    //check if is mobile
+    this.checkMobile();
+    window.addEventListener('resize', function (event) {
+      _this3.checkMobile();
+    }, true);
 
     if (this.my_user_chats) {
       this.my_user_chats = JSON.parse(this.my_user_chats.replace(/&quot;/g, '"'));
       this.my_user_chats.user_chats = this.orderByUpdatedAt(this.my_user_chats.user_chats);
     }
 
-    console.log(this.my_user_chats);
-
     if (this.my_pages_chats) {
       this.my_pages_chats = JSON.parse(this.my_pages_chats.replace(/&quot;/g, '"'));
       this.my_pages_chats.forEach(function (page, i) {
-        page.page_chats = _this.orderByUpdatedAt(page.page_chats);
+        page.page_chats = _this3.orderByUpdatedAt(page.page_chats);
       });
-    } //  console.log(this.my_pages_chats);
-    // if(performance.navigation.type == 2){
-    //    this.getChats();
-    // }
+    }
 
+    setInterval(function () {
+      if (_this3.chat_id && _this3.my_user_id && _this3.my_page_id) {
+        _this3.getMessages();
+      }
+    }, 10000);
   }
 });
 
@@ -74795,8 +74939,6 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     loadNeedInfo: function loadNeedInfo(new_collaborations) {
       var _this = this;
 
-      console.log(new_collaborations);
-
       if (new_collaborations) {
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/loadCollaborationsInfo', {
           params: {
@@ -74806,8 +74948,6 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           var _this$collaborations_;
 
           (_this$collaborations_ = _this.collaborations_show).push.apply(_this$collaborations_, _toConsumableArray(response.data.results.collaborations));
-
-          console.log(_this.collaborations_show);
         });
       }
     },
@@ -75014,6 +75154,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         var sender_user_or_page = 'page';
       }
 
+      console.log(collaboration.id);
       axios__WEBPACK_IMPORTED_MODULE_1___default()({
         method: 'post',
         url: '/admin/collaborations',
@@ -75021,7 +75162,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           sender_id: sender_id,
           sender_user_or_page: sender_user_or_page,
           recipient_id: recipient_id,
-          recipient_user_or_page: recipient_user_or_page
+          recipient_user_or_page: recipient_user_or_page,
+          old_collaboration_id: collaboration.id
         }
       }).then(function (response) {
         _this5.getCollaborations();
@@ -77956,6 +78098,11 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     services: [],
     service_name: '',
     services_found: '',
+    main_services: [],
+    sub_services: [],
+    sub_services_show: [],
+    main_service_selected: '',
+    sub_service_selected: '',
     need_selected: '',
     serviceToggle: false,
     //false=cerco true=offro
@@ -77966,7 +78113,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     sector_selected: '',
     lifecycle_id_selected: '',
     sectors: []
-  }, _defineProperty(_data, "sector_selected", ''), _defineProperty(_data, "sectorToggle", false), _defineProperty(_data, "myLatestViews", []), _defineProperty(_data, "mostViewedAccounts", []), _defineProperty(_data, "needs", []), _defineProperty(_data, "offers", []), _data),
+  }, _defineProperty(_data, "sector_selected", ''), _defineProperty(_data, "sectorToggle", false), _defineProperty(_data, "myLatestViews", []), _defineProperty(_data, "mostViewedAccounts", []), _defineProperty(_data, "needs", []), _defineProperty(_data, "offers", []), _defineProperty(_data, "collaborations", []), _defineProperty(_data, "interval", false), _defineProperty(_data, "is_mobile", false), _data),
   methods: {
     search_type_f: function search_type_f() {
       if (!this.search_type) {
@@ -77994,7 +78141,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           this.usertypes_id = [1];
           this.pagetypes_id = [];
           this.investors_selected = false;
-          this.services_selected = false;
+          this.services_selected = true;
           break;
 
         case '3':
@@ -78128,8 +78275,39 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           this.services_selected = false;
       }
     },
-    searchService: function searchService() {
+    getAllServices: function getAllServices() {
       var _this3 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getAllServices', {}).then(function (response) {
+        _this3.main_services = response.data.results.main_services;
+        _this3.sub_services = response.data.results.sub_services;
+        _this3.main_service_selected = _this3.main_services[0].id;
+
+        _this3.changeMainService();
+      });
+    },
+    changeMainService: function changeMainService() {
+      var _this4 = this;
+
+      this.sub_services_show = [];
+      this.sub_services.forEach(function (sub_service, i) {
+        if (sub_service.main_service_id == _this4.main_service_selected) {
+          _this4.sub_services_show.push(sub_service);
+        }
+      });
+      this.sub_service_selected = this.sub_services_show[0].id;
+    },
+    addServiceSelected: function addServiceSelected(service_id) {
+      var _this5 = this;
+
+      this.sub_services_show.forEach(function (sub_service, i) {
+        if (sub_service.id == service_id) {
+          _this5.addService(sub_service);
+        }
+      });
+    },
+    searchService: function searchService() {
+      var _this6 = this;
 
       if (this.service_name) {
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchService', {
@@ -78137,10 +78315,10 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
             service_name: this.service_name
           }
         }).then(function (response) {
-          _this3.services_found = response.data.results.services;
+          _this6.services_found = response.data.results.services;
 
-          if (!_this3.service_name) {
-            _this3.services_found = '';
+          if (!_this6.service_name) {
+            _this6.services_found = '';
           }
         });
       } else {
@@ -78172,12 +78350,12 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       this.services.splice(i, 1);
     },
     addSector: function addSector() {
-      var _this4 = this;
+      var _this7 = this;
 
       if (this.sector_selected) {
         var exist = false;
         this.sectors.forEach(function (sector, i) {
-          if (sector.id == _this4.sector_selected.id) {
+          if (sector.id == _this7.sector_selected.id) {
             exist = true;
           }
         });
@@ -78207,7 +78385,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       return d.toUTCString();
     },
     getLastHave: function getLastHave() {
-      var _this5 = this;
+      var _this8 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/needs', {
         params: {
@@ -78226,7 +78404,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           }
         }
 
-        needs = needs.slice(0, 4);
+        needs = needs.slice(0, 8);
 
         if (needs) {
           axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/loadNeedInfo', {
@@ -78234,15 +78412,15 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
               needs: needs
             }
           }).then(function (response) {
-            var _this5$needs;
+            var _this8$needs;
 
-            (_this5$needs = _this5.needs).push.apply(_this5$needs, _toConsumableArray(response.data.results.needs));
+            (_this8$needs = _this8.needs).push.apply(_this8$needs, _toConsumableArray(response.data.results.needs));
           });
         }
       });
     },
     getLastOffer: function getLastOffer() {
-      var _this6 = this;
+      var _this9 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/offers', {
         params: {
@@ -78261,8 +78439,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           }
         }
 
-        offers = offers.slice(0, 4);
-        console.log(offers);
+        offers = offers.slice(0, 8);
 
         if (offers) {
           axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/loadNeedInfo', {
@@ -78270,22 +78447,22 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
               needs: offers
             }
           }).then(function (response) {
-            var _this6$offers;
+            var _this9$offers;
 
-            (_this6$offers = _this6.offers).push.apply(_this6$offers, _toConsumableArray(response.data.results.needs));
+            (_this9$offers = _this9.offers).push.apply(_this9$offers, _toConsumableArray(response.data.results.needs));
           });
         }
       });
     },
     myLatestViews_f: function myLatestViews_f() {
-      var _this7 = this;
+      var _this10 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/myLatestViews', {}).then(function (response) {
-        _this7.myLatestViews = response.data.results.accounts;
+        _this10.myLatestViews = response.data.results.accounts;
       });
     },
     mostViewedAccounts_f: function mostViewedAccounts_f() {
-      var _this8 = this;
+      var _this11 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/mostViewedAccounts', {}).then(function (response) {
         var accounts = response.data.results.accounts;
@@ -78300,16 +78477,83 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           }
         }
 
-        _this8.mostViewedAccounts = accounts.slice(0, 4);
+        _this11.mostViewedAccounts = accounts.slice(0, 4);
       });
+    },
+    latestCollaborations: function latestCollaborations() {
+      var _this12 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/latestCollaborations', {}).then(function (response) {
+        _this12.collaborations = response.data.results.collaborations;
+      });
+    },
+    scrollLeft: function scrollLeft(slider_id) {
+      var content = document.getElementById('multi-slider-cont-' + slider_id);
+      var content_scroll_width = content.scrollWidth;
+      var content_scoll_left = content.scrollLeft;
+      content_scoll_left -= 10;
+
+      if (content_scoll_left <= 0) {
+        content_scoll_left = 0;
+      }
+
+      content.scrollLeft = content_scoll_left;
+    },
+    scrollRight: function scrollRight(slider_id) {
+      var content = document.getElementById('multi-slider-cont-' + slider_id);
+      var content_scroll_width = content.scrollWidth;
+      var content_scoll_left = content.scrollLeft;
+      content_scoll_left += 10;
+
+      if (content_scoll_left >= content_scroll_width) {
+        content_scoll_left = content_scroll_width;
+      }
+
+      content.scrollLeft = content_scoll_left;
+    },
+    start: function start(slider_id, direction) {
+      var _this13 = this;
+
+      if (!this.interval) {
+        this.interval = setInterval(function () {
+          if (direction == 'right') {
+            _this13.scrollRight(slider_id);
+          } else {
+            _this13.scrollLeft(slider_id);
+          }
+        }, 10);
+      }
+    },
+    stop: function stop(slider_id, direction) {
+      clearInterval(this.interval);
+      this.interval = false;
+    },
+    checkMobile: function checkMobile() {// if(window.innerWidth>=768){
+      //     if(this.is_mobile){
+      //         this.is_mobile = false;
+      //     }
+      // }else{
+      //     if(!this.is_mobile){
+      //         this.is_mobile = true;
+      //     }
+      // }
     }
   },
   mounted: function mounted() {
+    var _this14 = this;
+
     this.getLastHave();
     this.getLastOffer();
     this.getRegionsByCountry();
     this.myLatestViews_f();
     this.mostViewedAccounts_f();
+    this.getAllServices();
+    this.latestCollaborations(); //check if is mobile
+
+    this.checkMobile();
+    window.addEventListener('resize', function (event) {
+      _this14.checkMobile();
+    }, true);
 
     if (!this.getCookie("tecCookie")) {
       document.cookie = "tecCookie" + "=" + "accept" + ";" + "expires=" + this.dateUTC() + ";path=/";
@@ -78368,8 +78612,31 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#service-edit',
   data: {
     services: services,
+    r_services: r_services,
+    //ONLY STARTUP
+    lifecycles: lifecycles,
+    lifecycle_id: lifecycle_id,
+    skills: skills,
+    //END ONLY STARTUP
+    r_services_show: [],
     service_name: '',
-    services_found: ''
+    services_found: '',
+    main_services: [],
+    sub_services: [],
+    sub_services_show: [],
+    main_service_selected: '',
+    sub_service_selected: '',
+    //ONLY STARTUP
+    show_services: false,
+    lifecycle_selected: '1',
+    usertype_selected: '',
+    cofounders: '',
+    userRecommended: [],
+    pageRecommended: [],
+    serviceRecommended: [],
+    skill_name: '',
+    skills_found: '' //END ONLY STARTUP
+
   },
   methods: {
     searchService: function searchService() {
@@ -78401,12 +78668,14 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
       if (!exist) {
         var new_service = {
+          "id": service_found.id,
           "name": service_found.name,
           "pivot": {
             "service_id": service_found.id
           }
         };
         this.services.push(new_service);
+        this.removeRservice(new_service);
       }
 
       this.services_found = '';
@@ -78424,27 +78693,281 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
       if (!exist && this.service_name) {
         var new_service = {
+          "id": service_found.id,
           "name": this.service_name // "pivot":{
           //   "service_id": service_found.id,
           // },
 
         };
         this.services.push(new_service);
+        this.removeRservice(new_service);
       }
 
       this.services_found = '';
       this.service_name = '';
     },
     removeService: function removeService(i) {
+      var service = this.services[i];
       this.services.splice(i, 1);
-    }
+      this.addRservice(service);
+    },
+    removeRservice: function removeRservice(service) {
+      var _this3 = this;
+
+      this.r_services_show.forEach(function (r_service, i) {
+        if (r_service.id == service.id) {
+          _this3.r_services_show.splice(i, 1);
+        }
+      });
+    },
+    addRservice: function addRservice(service) {
+      this.r_services_show.push(service);
+    },
+    serviceExist: function serviceExist(r_service) {
+      var not_exist = true;
+      this.services.forEach(function (service, i) {
+        if (service.id == r_service.id) {
+          not_exist = false;
+        }
+      });
+      return not_exist;
+    },
+    getAllServices: function getAllServices() {
+      var _this4 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getAllServices', {}).then(function (response) {
+        _this4.main_services = response.data.results.main_services;
+        _this4.sub_services = response.data.results.sub_services;
+        _this4.main_service_selected = _this4.main_services[0].id;
+
+        _this4.changeMainService();
+      });
+    },
+    changeMainService: function changeMainService() {
+      var _this5 = this;
+
+      this.sub_services_show = [];
+      this.sub_services.forEach(function (sub_service, i) {
+        if (sub_service.main_service_id == _this5.main_service_selected) {
+          _this5.sub_services_show.push(sub_service);
+        }
+      });
+      this.sub_service_selected = this.sub_services_show[0].id;
+    },
+    addServiceSelected: function addServiceSelected(service_id) {
+      var _this6 = this;
+
+      console.log(service_id);
+      console.log(this.sub_services_show);
+      this.sub_services_show.forEach(function (sub_service, i) {
+        if (sub_service.id == service_id) {
+          _this6.addService(sub_service);
+        }
+      });
+    },
+    //ONLY STARTUP
+    recommended: function recommended() {
+      console.log('qui');
+
+      switch (this.lifecycle_selected) {
+        case 1:
+          this.userRecommended = [1];
+          this.pageRecommended = [3];
+          this.serviceRecommended = [31, 32, 33, 34, 35, 37];
+          break;
+
+        case 2:
+          this.userRecommended = [2];
+          this.pageRecommended = [3];
+          this.serviceRecommended = [31, 32, 35, 37];
+          break;
+
+        case 3:
+          this.userRecommended = [];
+          this.pageRecommended = [3];
+          this.serviceRecommended = [32, 35, 37];
+          break;
+
+        case 4:
+          this.userRecommended = [];
+          this.pageRecommended = [5];
+          this.serviceRecommended = [32, 37];
+          break;
+
+        case 5:
+          this.userRecommended = [];
+          this.pageRecommended = [5, 8];
+          this.serviceRecommended = [32, 37];
+          break;
+
+        case 6:
+          this.userRecommended = [];
+          this.pageRecommended = [];
+          this.serviceRecommended = [32, 37];
+          break;
+
+        case 7:
+          this.userRecommended = [];
+          this.pageRecommended = [];
+          this.serviceRecommended = [30];
+          break;
+
+        default:
+      }
+    },
+    searchSkill: function searchSkill() {
+      var _this7 = this;
+
+      if (this.skill_name) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchSkill', {
+          params: {
+            skill_name: this.skill_name
+          }
+        }).then(function (response) {
+          _this7.skills_found = response.data.results.skills;
+
+          if (!_this7.skill_name) {
+            _this7.skills_found = '';
+          }
+        });
+      } else {
+        this.skills_found = '';
+      }
+    },
+    addSkill: function addSkill(skill_found) {
+      var exist = false;
+      this.skills.forEach(function (skill, i) {
+        if (skill.pivot.skill_id == skill_found.id) {
+          exist = true;
+        }
+      });
+
+      if (!exist) {
+        var new_skill = {
+          "name": skill_found.name,
+          "pivot": {
+            "skill_id": skill_found.id
+          }
+        };
+        this.skills.push(new_skill);
+      }
+
+      this.skills_found = '';
+      this.skill_name = '';
+    },
+    addManualSkill: function addManualSkill() {
+      var _this8 = this;
+
+      var exist = false;
+      this.skills.forEach(function (skill, i) {
+        if (skill.name == _this8.skill_name) {
+          exist = true;
+        }
+      });
+
+      if (!exist && this.skill_name) {
+        var new_skill = {
+          "name": this.skill_name // "pivot":{
+          //   "skill_id": skill_found.id,
+          // },
+
+        };
+        this.skills.push(new_skill);
+      }
+
+      this.skills_found = '';
+      this.skill_name = '';
+    },
+    removeSkill: function removeSkill(i) {
+      this.skills.splice(i, 1);
+    },
+    serviceToggle: function serviceToggle(service) {
+      var _this9 = this;
+
+      if (document.getElementById('s-' + service.id).checked) {
+        document.getElementById('s-' + service.id).checked = false;
+        document.getElementById('s-' + service.id + '-b').classList.remove("active");
+        this.services.forEach(function (service_i, i) {
+          if (service_i.id == service.id) {
+            _this9.removeService(i);
+          }
+        });
+      } else {
+        document.getElementById('s-' + service.id).checked = true;
+        document.getElementById('s-' + service.id + '-b').classList.add("active");
+        this.addService(service);
+      }
+    },
+    isChecked: function isChecked(id) {
+      if (document.getElementById(id).checked) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    checkboxToggle: function checkboxToggle(id) {
+      if (document.getElementById(id).checked) {
+        document.getElementById(id).checked = false;
+        document.getElementById(id + '-b').classList.remove("active");
+      } else {
+        document.getElementById(id).checked = true;
+        document.getElementById(id + '-b').classList.add("active");
+      }
+
+      if (id == "u-1") {
+        this.usertype_selected = !this.usertype_selected;
+      }
+    },
+    radioToggle: function radioToggle(id) {
+      var elems = document.querySelectorAll(".lifecycle-item.active");
+      [].forEach.call(elems, function (el) {
+        el.classList.remove("active");
+      });
+      document.getElementById('l-' + id).checked = true;
+      document.getElementById('l-' + id + '-b').classList.add("active");
+      this.lifecycle_selected = id;
+      this.recommended();
+    } //END ONLY STARTUP
+
   },
   created: function created() {
+    var _this10 = this;
+
     if (this.services) {
       this.services = JSON.parse(this.services.replace(/&quot;/g, '"'));
     }
+
+    if (this.r_services) {
+      this.r_services = JSON.parse(this.r_services.replace(/&quot;/g, '"'));
+      this.r_services.forEach(function (r_service, i) {
+        if (_this10.serviceExist(r_service) && !r_service.hidden) {
+          _this10.r_services_show.push(r_service);
+        }
+      });
+    } //ONLY STARTUP
+
+
+    if (this.skills) {
+      this.skills = JSON.parse(this.skills.replace(/&quot;/g, '"'));
+    } //END ONLY STARTUP
+
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {
+    this.getAllServices(); //ONLY STARTUP
+
+    if (this.lifecycle_id) {
+      this.lifecycle_id = parseInt(this.lifecycle_id);
+      this.lifecycle_selected = this.lifecycle_id ? this.lifecycle_id : 1;
+      this.radioToggle(this.lifecycle_selected);
+    }
+
+    if (this.lifecycles) {
+      if (document.getElementById('u-1').checked) {
+        this.usertype_selected = true;
+      }
+    } //END ONLY STARTUP
+
+  }
 });
 
 /***/ }),
@@ -79547,10 +80070,10 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     checkboxToggle: function checkboxToggle(id) {
       if (document.getElementById(id).checked) {
         document.getElementById(id).checked = false;
-        document.getElementById(id + '-b').classList.remove("button-active-multichoise");
+        document.getElementById(id + '-b').classList.remove("active");
       } else {
         document.getElementById(id).checked = true;
-        document.getElementById(id + '-b').classList.add("button-active-multichoise");
+        document.getElementById(id + '-b').classList.add("active");
       }
     }
   },
