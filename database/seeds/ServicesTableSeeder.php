@@ -247,7 +247,7 @@ class ServicesTableSeeder extends Seeder
                 'hidden'=>null,
             ],
             [
-                'name'=>'Analisi di Mercato & Business Plan',
+                'name'=>'Analisi di Mercato e Business Plan',
                 'description'=> null,
                 'main_service_id'=> 5,
                 'hidden'=>null,
@@ -259,7 +259,7 @@ class ServicesTableSeeder extends Seeder
                 'hidden'=>null,
             ],
             [
-                'name'=>'Compilazione Bandi & Finanza Agevolata',
+                'name'=>'Compilazione Bandi e Finanza Agevolata',
                 'description'=> null,
                 'main_service_id'=> 5,
                 'hidden'=>null,

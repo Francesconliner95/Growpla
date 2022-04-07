@@ -93,11 +93,15 @@ class UserController extends Controller
       $user = Auth::user();
 
       if(array_key_exists('usertypes', $data)){
-        $user->usertypes()->sync($data['usertypes']);
+          $user->usertypes()->sync($data['usertypes']);
+      }else{
+          $user->usertypes()->sync([]);
       }
 
       if(array_key_exists('pagetypes', $data)){
-        $user->pagetypes()->sync($data['pagetypes']);
+          $user->pagetypes()->sync($data['pagetypes']);
+      }else{
+          $user->pagetypes()->sync([]);
       }
 
       if(Auth::user()->tutorial>=2){

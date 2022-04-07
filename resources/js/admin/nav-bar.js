@@ -90,7 +90,8 @@ var create = new Vue({
 
 var im_in_index = document.getElementById("search");
 if(im_in_index){
-    document.getElementById("nav-bar").style.backgroundColor = "rgb(194,214,215)";
+    document.getElementById("nav-bar").style.backgroundColor = "transparent";
+    // document.getElementById("nav-bar").style.backgroundColor = "rgb(194,214,215)";
     document.getElementById("nav-bar").style.boxShadow = "none";
     window.onscroll = function() {scrollFunction()};
 }
@@ -101,7 +102,8 @@ function scrollFunction() {
     document.getElementById("nav-bar").style.boxShadow = "0 0.125rem 0.25rem rgb(0 0 0 / 8%)";
     document.getElementById("nav-bar").style.transition = ".2s";
     } else {
-    document.getElementById("nav-bar").style.backgroundColor = "rgb(194,214,215)";
+    // document.getElementById("nav-bar").style.backgroundColor = "rgb(194,214,215)";
+    document.getElementById("nav-bar").style.backgroundColor = "transparent";
     document.getElementById("nav-bar").style.boxShadow = "none";
     }
 }

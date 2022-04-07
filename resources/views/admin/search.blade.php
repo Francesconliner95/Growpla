@@ -310,6 +310,9 @@
             </div>
         </div>
     </div>
+    <div class="end-background">
+
+    </div>
     {{-- SLIDER ESEMPIO --}}
     {{-- <div class="container">
         <div class="main-multi-slider">
@@ -419,42 +422,62 @@
             </a>
         </div>
     </div>
-    <div v-if="collaborations.length>0" class="container pt-3 pb-5" v-cloak>
-        <h4>Collaborazioni</h4>
-        <div class="row">
-            <div v-for="collaboration in collaborations" class="col-sm-12 col-md-6 col-lg-6 col-xl-6" v-cloak>
-                <div class="row">
-                    <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 text-center">
-                        <a :href="collaboration.account_1.user_or_page?'/admin/users/'+ collaboration.account_1.id : '/admin/pages/'+ collaboration.account_1.id">
-                            <div class="">
-                                <div class="img-cont medium-img">
-                                    <img v-if="collaboration.account_1.image" :src="'/storage/' + collaboration.account_1.image" alt="">
+    <div v-if="collaborations.length>0" class="container pt-3 pb-3" v-cloak>
+        <h4 class="font-weight-bold">Collaborazioni</h4>
+        <div class="main-multi-slider">
+            <div class="multi-slider-cont" id="multi-slider-cont-3">
+                <div v-for="collaboration in collaborations" class="multi-slider-item col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                    <div class="d-flex justify-content-center align-items-center h-100">
+                        <div class="card-collaboration row">
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 text-center coll-item">
+                                <div class="">
+                                    <div class="img-cont medium-img">
+                                        <img v-if="collaboration.account_1.image" :src="'/storage/' + collaboration.account_1.image" alt="">
+                                    </div>
+                                </div>
+                                <div class="coll-info">
+                                    <strong class="text-capitalize">
+                                        @{{collaboration.account_1.user_or_page? collaboration.account_1.name +' ' +collaboration.account_1.surname : collaboration.account_1.name}}
+                                    </strong>
+                                    <a :href="collaboration.account_1.user_or_page?'/admin/users/'+ collaboration.account_1.id : '/admin/pages/'+ collaboration.account_1.id" class="button-style button-color">
+                                        Visita profilo
+                                    </a>
                                 </div>
                             </div>
-                            <strong class="text-capitalize d-block">
-                                @{{collaboration.account_1.user_or_page? collaboration.account_1.name +' ' +collaboration.account_1.surname : collaboration.account_1.name}}
-                            </strong>
-                        </a>
-                    </div>
-                    <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 d-flex justify-content-center align-items-center">
-                        <i class="fas fa-exchange-alt"></i>
-                    </div>
-                    <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 text-center">
-                        <a :href="collaboration.account_2.user_or_page?'/admin/users/'+ collaboration.account_2.id : '/admin/pages/'+ collaboration.account_2.id">
-                            <div class="">
-                                <div class="img-cont medium-img">
-                                    <img v-if="collaboration.account_2.image" :src="'/storage/' + collaboration.account_2.image" alt="">
+                            <div class="link">
+                                <i class="fas fa-link"></i>
+                            </div>
+                            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 text-center coll-item">
+                                <div class="">
+                                    <div class="img-cont medium-img">
+                                        <img v-if="collaboration.account_2.image" :src="'/storage/' + collaboration.account_2.image" alt="">
+                                    </div>
+                                </div>
+                                <div class="coll-info">
+                                    <strong class="text-capitalize">
+                                        @{{collaboration.account_2.user_or_page? collaboration.account_2.name +' ' +collaboration.account_2.surname : collaboration.account_2.name}}
+                                    </strong>
+                                    <a :href="collaboration.account_2.user_or_page?'/admin/users/'+ collaboration.account_2.id : '/admin/pages/'+ collaboration.account_2.id" class="button-style button-color">
+                                        Visita profilo
+                                    </a>
                                 </div>
                             </div>
-                            <strong class="text-capitalize d-block">
-                                @{{collaboration.account_2.user_or_page? collaboration.account_2.name +' ' +collaboration.account_2.surname : collaboration.account_2.name}}
-                            </strong>
-                        </a>
+                        </div>
                     </div>
                 </div>
             </div>
+            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(3,'left')" @mouseleave="stop(3,'left')" @mouseup="stop(3,'left')" class="slider-left" v-cloak>
+                <i class="fas fa-caret-left"></i>
+            </button>
+            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(3,'right')" @mouseleave="stop(3,'right')" @mouseup="stop(3,'right')"class="slider-right" v-cloak>
+                <i class="fas fa-caret-right"></i>
+            </button>
         </div>
-        <a href="{{route('admin.collaborations.index')}}">Mostra altro</a>
+        <div class="text-center">
+            <a href="{{route('admin.collaborations.index')}}" class="font-weight-bold text-dark">
+                Scopri tutte le collaborazioni >
+            </a>
+        </div>
     </div>
     <div v-if="mostViewedAccounts.length>0" class="container pt-3 pb-5" v-cloak>
         <h4>I più popolari</h4>

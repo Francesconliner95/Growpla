@@ -338,7 +338,7 @@ ul>p{
 .img-cont{
     display: inline-block;
     border-radius: 50%;
-    background-color: white;
+    background-color: $default_green_deactivate;
     border: 2px solid $default_green;
     position: relative;
     img{
@@ -1396,6 +1396,7 @@ ul>p{
         .multi-slider-item{
             height: 100%;
             display: inline-block;
+            white-space: normal;
             //background-color: lightblue;
         }
     }
@@ -1407,6 +1408,7 @@ ul>p{
         width: 25px;
         border: none;
         font-size: 20px;
+        z-index: 10;
     }
     .slider-left{
         left: 0px;
@@ -1428,9 +1430,33 @@ ul>p{
     font-weight: bold;
     width: 180px;
     height: 215px;
-    white-space: normal;
     p{
         height: 22px;
+    }
+}
+
+.card-collaboration{
+    position: relative;
+    .coll-item{
+        .coll-info{
+            display: block;
+            visibility: hidden;
+            strong{
+                display: inline-block;
+                height: 25px;
+            }
+        }
+        &:hover .coll-info{
+            visibility: visible;
+        }
+    }
+    .link{
+        position: absolute;
+        top: 35%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        font-size: 80px;
+        z-index: 5;
     }
 }
 
