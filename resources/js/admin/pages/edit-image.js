@@ -17,6 +17,7 @@ var create = new Vue({
         y: 0,
         width: 300,
         height: 300,
+        delete: false;
     },
     methods: {
 
@@ -51,7 +52,7 @@ var create = new Vue({
         removePageImage(){
 
             axios({
-                method: 'put',
+                method: 'delete',
                 url: '/admin/removePageImage',
                 data: {
                   page_id: this.page_id,

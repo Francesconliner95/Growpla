@@ -11,6 +11,7 @@ use Image;
 use App\Language;
 use App\User;
 use App\Page;
+use App\Usertype;
 
 class ImageController extends Controller
 {
@@ -48,13 +49,22 @@ class ImageController extends Controller
         $width = $request->width;
         $height = $request->height;
 
+        $default_images = [
+            'users_images/default-utente.svg',
+            'users_images/default-business-angel.svg',
+            'pages_images/default-startup.svg',
+            'pages_images/default-azienda.svg',
+            'pages_images/default-incubatore.svg',
+            'pages_images/default-associazione.svg',
+        ];
+
         if(array_key_exists('image', $data)){
 
             //SE CARICO UNA NUOVA IMMAGINE
             $old_image_name = $user->image;
 
             //se la vecchia immagine è diversa da quella di default
-            if ($old_image_name) {
+            if ($old_image_name && !in_array($old_image_name,$default_images)) {
                 //elimino la vecchia immagine
                 Storage::delete($old_image_name);
             }
@@ -69,19 +79,28 @@ class ImageController extends Controller
             $user->image = $image_path;
         }elseif($width && $height){
             //SE HO MODIFICATO L'IMMAGINE ESISTENTE
-            $image_path = $user->image;
+            if(!in_array($user->image,$default_images)){
+                $image_path = $user->image;
 
-            $filename = rand().time();
-            $ext = pathinfo($image_path, PATHINFO_EXTENSION);
-            $new_path = 'users_images/'.$filename.'.'.$ext;
-            Storage::move($image_path, $new_path);
+                $filename = rand().time();
+                $ext = pathinfo($image_path, PATHINFO_EXTENSION);
+                $new_path = 'users_images/'.$filename.'.'.$ext;
+                Storage::move($image_path, $new_path);
 
-            $img = Image::make('storage/'.$new_path)
-                        ->crop($data['width'],$data['height'], $data['x'],$data['y'])
-                        ->resize(300,300)/*risoluzione*/
-                        ->save('./storage/'.$new_path, 100 /*Qualita*/);
-            $user->image = $new_path;
+                $img = Image::make('storage/'.$new_path)
+                            ->crop($data['width'],$data['height'], $data['x'],$data['y'])
+                            ->resize(300,300)/*risoluzione*/
+                            ->save('./storage/'.$new_path, 100 /*Qualita*/);
+                $user->image = $new_path;
+            }
+        }
 
+        if(!$user->image){
+            if($user->usertypes->contains(Usertype::find(2))){
+                $user->image = 'users_images/default-business-angel.svg';
+            }else{
+                $user->image = 'users_images/default-utente.svg';
+            }
         }
 
         $user->update();
@@ -92,12 +111,27 @@ class ImageController extends Controller
 
     public function removeUserImage()
     {
-            $user = Auth::user();
+        $user = Auth::user();
 
+        $default_images = [
+            'users_images/default-utente.svg',
+            'users_images/default-business-angel.svg',
+            'pages_images/default-startup.svg',
+            'pages_images/default-azienda.svg',
+            'pages_images/default-incubatore.svg',
+            'pages_images/default-associazione.svg',
+        ];
+
+        if(!in_array($user->image,$default_images)){
             Storage::delete($user->image);
-            $user->image = null;
 
+            if($user->usertypes->contains(Usertype::find(2))){
+                $user->image = 'users_images/default-business-angel.svg';
+            }else{
+                $user->image = 'users_images/default-utente.svg';
+            }
             $user->update();
+        }
 
     }
 
@@ -139,6 +173,15 @@ class ImageController extends Controller
         $height = $request->height;
         $page =  Page::find($request->page_id);
 
+        $default_images = [
+            'users_images/default-utente.svg',
+            'users_images/default-business-angel.svg',
+            'pages_images/default-startup.svg',
+            'pages_images/default-azienda.svg',
+            'pages_images/default-incubatore.svg',
+            'pages_images/default-associazione.svg',
+        ];
+
         if($page->users->contains(Auth::user())){
 
           if(array_key_exists('image', $data)){
@@ -147,7 +190,7 @@ class ImageController extends Controller
               $old_image_name = $page->image;
 
               //se la vecchia immagine è diversa da quella di default
-              if ($old_image_name) {
+              if ($old_image_name && !in_array($old_image_name,$default_images)) {
                   //elimino la vecchia immagine
                   Storage::delete($old_image_name);
               }
@@ -162,19 +205,21 @@ class ImageController extends Controller
               $page->image = $image_path;
           }elseif($width && $height){
               //SE HO MODIFICATO L'IMMAGINE ESISTENTE
-              $image_path = $page->image;
+              if(!in_array($old_image_name,$default_images)){
 
-              $filename = rand().time();
-              $ext = pathinfo($image_path, PATHINFO_EXTENSION);
-              $new_path = 'pages_images/'.$filename.'.'.$ext;
-              Storage::move($image_path, $new_path);
+                $image_path = $page->image;
 
-              $img = Image::make('storage/'.$new_path)
-                          ->crop($data['width'],$data['height'], $data['x'],$data['y'])
-                          ->resize(300,300)/*risoluzione*/
-                          ->save('./storage/'.$new_path, 100 /*Qualita*/);
-              $page->image = $new_path;
+                $filename = rand().time();
+                $ext = pathinfo($image_path, PATHINFO_EXTENSION);
+                $new_path = 'pages_images/'.$filename.'.'.$ext;
+                Storage::move($image_path, $new_path);
 
+                $img = Image::make('storage/'.$new_path)
+                            ->crop($data['width'],$data['height'], $data['x'],$data['y'])
+                            ->resize(300,300)/*risoluzione*/
+                            ->save('./storage/'.$new_path, 100 /*Qualita*/);
+                $page->image = $new_path;
+              }
           }
 
           $page->update();
@@ -192,15 +237,58 @@ class ImageController extends Controller
             ]);
 
             $page = Page::find($request->page_id);
+            $user = Auth::user();
 
-              if($page->users->contains(Auth::user())){
+            $default_images = [
+                'users_images/default-utente.svg',
+                'users_images/default-business-angel.svg',
+                'pages_images/default-startup.svg',
+                'pages_images/default-azienda.svg',
+                'pages_images/default-incubatore.svg',
+                'pages_images/default-associazione.svg',
+            ];
 
-              $user = Auth::user();
+            if($page->users->contains($user) &&
+            !in_array($page->image,$default_images)){
 
-              Storage::delete($page->image);
-              $page->image = null;
+                Storage::delete($page->image);
 
-              $page->update();
+                switch ($page->pagetype_id) {
+                  case 1:
+                      $page->image = 'pages_images/default-startup.svg';
+                  break;
+                  case 2:
+                      $page->image = 'pages_images/default-azienda.svg';
+                  break;
+                  case 3:
+                      $page->image = 'pages_images/default-incubatore.svg';
+                  break;
+                  case 4:
+                      $page->image = 'pages_images/default-azienda.svg';
+                  break;
+                  case 5:
+                      $page->image = 'pages_images/default-azienda.svg';
+                  break;
+                  case 6:
+                      $page->image = 'pages_images/default-azienda.svg';
+                  break;
+                  case 7:
+                      $page->image = 'pages_images/default-associazione.svg';
+                  break;
+                  case 8:
+                      $page->image = 'pages_images/default-azienda.svg';
+                  break;
+                  case 9:
+                      $page->image = 'pages_images/default-azienda.svg';
+                  break;
+                  default:
+                    // code...
+                    break;
+                }
+
+                $page->update();
+
+                return redirect()->route('admin.pages.show', ['page'=> $page->id]);
 
             }abort(404);
 

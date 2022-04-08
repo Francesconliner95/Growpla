@@ -32,12 +32,42 @@ class HavePageServiceController extends Controller
     {
         $page = Page::find($page_id);
         $user = Auth::user();
+        $recommended_services = [];
+        if($page->pagetype_id==1){
+            switch ($page->lifecycle_id) {
+                case 1:
+                    $serviceRecommended = [39,40,41,42,43,44];
+                break;
+                case 2:
+                    $serviceRecommended = [39,40,43,44];
+                break;
+                case 3:
+                    $serviceRecommended = [40,43,44];
+                break;
+                case 4:
+                    $serviceRecommended = [40,44];
+                break;
+                case 5:
+                    $serviceRecommended = [40,44];
+                break;
+                case 6:
+                    $serviceRecommended = [40,44];
+                break;
+                case 7:
+                    $serviceRecommended = [38];
+                break;
+                default:
+            }
+            $recommended_services = Service::find($serviceRecommended);
+        }else{
+            $recommended_services = $page->pagetype->have_services;
+        }
         if (in_array ($page->pagetype_id, array(1,2))
         && $user->pages->contains($page)) {
             $data = [
                 'page' => $page,
                 'services' => $page->have_page_services,
-                'recommended_services' => $page->pagetype->have_services,
+                'recommended_services' => $recommended_services,
                 'lifecycles' => Lifecycle::all(),
                 'pagetypes' => Pagetype::where('hidden',null)->get(),
                 'usertypes' => Usertype::where('hidden',null)->get(),
@@ -107,35 +137,18 @@ class HavePageServiceController extends Controller
                 $data = $request->all();
                 $user = Auth::user();
 
-                if($page->lifecycle_id != $request->lifecycle){
+                //Necessità tipo di utente
+                if(array_key_exists('usertypes', $data)){
+                    $page->have_page_usertypes()->sync($data['usertypes']);
+                }else{
+                    $page->have_page_usertypes()->sync([]);
+                }
 
-                    $page->lifecycle_id = $request->lifecycle;
-                    $page->update();
-                    //Notification
-                    $followers = $page->page_follower;
-                        foreach ($followers as $follower) {
-                            $new_notf = new Notification();
-                            $new_notf->user_id = $follower->id;
-                            $new_notf->notification_type_id = 1;
-                            $new_notf->ref_user_id = null;
-                            $new_notf->ref_page_id = $page->id;
-                            $new_notf->parameter = $page->id.'/#lifecycle';
-                            $new_notf->save();
-                        }
-                    }
-
-                    //Necessità tipo di utente
-                    if(array_key_exists('usertypes', $data)){
-                        $page->have_page_usertypes()->sync($data['usertypes']);
-                    }else{
-                        $page->have_page_usertypes()->sync([]);
-                    }
-
-                    if(array_key_exists('pagetypes', $data)){
-                        $page->have_page_pagetypes()->sync($data['pagetypes']);
-                    }else{
-                        $page->have_page_pagetypes()->sync([]);
-                    }
+                if(array_key_exists('pagetypes', $data)){
+                    $page->have_page_pagetypes()->sync($data['pagetypes']);
+                }else{
+                  $page->have_page_pagetypes()->sync([]);
+                }
 
                     $skills = $request->skills;
                     //se è stata slezionata la voce aspirante-cofounder

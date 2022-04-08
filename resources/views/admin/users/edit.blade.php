@@ -29,7 +29,7 @@
                       <div class="row">
                           <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                               <h6>{{__('Name')}}*</h6>
-                              <input type="text" class="text-capitalize form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name',$user->name) }}" minlength="3" maxlength="70" required autocomplete="name" required>
+                              <input type="text" class="text-capitalize form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name',$user->name) }}" minlength="3" maxlength="70" required>
                               @error('name')
                                   <span class="alert alert-danger">
                                       {{__($message)}}
@@ -38,7 +38,7 @@
                           </div>
                           <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                               <h6>{{__('Surname')}}*</h6>
-                              <input type="text" class="text-capitalize form-control @error('surname') is-invalid @enderror" name="surname" value="{{ old('surname',$user->surname) }}" minlength="3" maxlength="70" required autocomplete="surname" required>
+                              <input type="text" class="text-capitalize form-control @error('surname') is-invalid @enderror" name="surname" value="{{ old('surname',$user->surname) }}" minlength="3" maxlength="70" required>
                               @error('surname')
                                   <span class="alert alert-danger">
                                       {{__($message)}}
@@ -48,8 +48,8 @@
                       </div>
                   </div>
                   <div class="sub-section">
-                      <h6>Sommario*</h6>
-                      <textarea name="summary" rows="2" cols="80" class="form-control" placeholder="Descrivi brevente cio che fai"  minlength="50" maxlength="250" required>{{ $user->summary }}</textarea>
+                      <h6>Sommario</h6>
+                      <textarea name="summary" rows="2" cols="80" class="form-control" placeholder="Descrivi brevente cio che fai"  minlength="50" maxlength="250">{{ $user->summary }}</textarea>
                       @error ('summary')
                           <div class="alert alert-danger">
                               {{__($message)}}
@@ -107,39 +107,7 @@
                               {{__($message)}}
                           </div>
                       @enderror
-                  </div>
-                    @if ($user->userTypes->contains(2))
-                        {{-- Money range --}}
-                        <div class="sub-section">
-                            <h6>{{__('Taglio d\'investimenti')}}</h6>
-                            <div class="form-contrtol">
-                              @foreach ($moneyranges as $moneyrange)
-                                <div>
-                                  <input type="radio" id="moneyrange-{{$moneyrange->id}}" name="moneyrange_id" value="{{$moneyrange->id}}"
-                                  {{-- {{old('moneyrange_id',$moneyrange->id)?'checked':''}} --}}
-                                  {{$moneyrange->id==$user->moneyrange_id?'checked':''}}
-                                  {{!$user->moneyrange_id && $moneyrange->id==1?'checked':''}} required>
-                                  <label for="moneyrange-{{$moneyrange->id}}">{{$moneyrange->range}}</label>
-                                </div>
-                              @endforeach
-                            </div>
-                            @error ('moneyrange')
-                                <div class="alert alert-danger">
-                                    {{__($message)}}
-                                </div>
-                            @enderror
-                        </div>
-                        {{-- Startup Number --}}
-                        <div class="sub-section">
-                            <h6>Numero di startup supportate</h6>
-                            <input type="number" name="startup_n" class="form-control" value="{{ old('startup_n',$user->startup_n)}}" min="0" placeholder="">
-                            @error ('startup_n')
-                                <div class="alert alert-danger">
-                                    {{__($message)}}
-                                </div>
-                            @enderror
-                        </div>
-                    @endif
+                  </div>                    
                     <div class="last-sub-section">
                         <h6>Indirizzo*</h6>
                         <div class="row">

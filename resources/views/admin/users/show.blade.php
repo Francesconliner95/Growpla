@@ -55,6 +55,9 @@
                             <a v-if="is_my_user" class="button-style-circle button-color-gray" href="{{route('admin.users.edit', $user->id)}}">
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
+                            <a class="button-style-circle button-color-gray" href="{{route('admin.users.create')}}">
+                                <i class="fas fa-cog"></i>
+                            </a>
                         </h2>
                         <div class="">
                             @foreach ($user->usertypes as $key => $usertype)
@@ -93,7 +96,7 @@
                         </div>
                     </div>
                 </div>
-                @if($is_my_user || count($user->sectors)>0)
+                {{-- @if($is_my_user || count($user->sectors)>0)
                 <div class="sub-section">
                   <h6>{{__('Sector')}}
                       <a  v-if="is_my_user" class="button-style-circle button-color-gray" href="{{route('admin.users.sectors', $user->id)}}">
@@ -106,7 +109,7 @@
                     @endforeach
                   </div>
                 </div>
-                @endif
+                @endif --}}
                 @if($user->summary)
                 <div class="sub-section">
                     <h6>Sommario</h6>
@@ -152,20 +155,24 @@
                 @endif
                 {{-- BUSINESS ANGEL --}}
                 @if($user->usertypes->contains(2))
-                  @if($user->startup_n || $user->moneyrange_id)
+                  @if($is_my_user || $user->startup_n || $user->moneyrange_id)
                   <div class="sub-section">
+                      <a v-if="is_my_user" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.users.businessAngel')}}">
+                          <i class="fas fa-pencil-alt"></i>
+                      </a>
                       <div class="row justify-content-center">
-                          @if($user->startup_n)
+                          @if($is_my_user || $user->startup_n)
                           <div class="text-center col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                              <h6>Quantità di progetti finanziati</h6>
+                              <h6>Quantità di progetti finanziati
+                              </h6>
                               <h3 class="font-weight-bold">{{$user->startup_n}}</h3>
                           </div>
                           @endif
-                          @if($user->moneyrange_id)
+                          @if($is_my_user || $user->moneyrange_id)
                           <div class="text-center col-sm-12 col-md-6 col-lg-6 col-xl-6">
                               <h6>Taglio d'investimenti</h6>
                               <h3 class="font-weight-bold">
-                                {{$user->moneyrange->range}} {{$user->currency->symbol}}
+                                {{$user->moneyrange_id?$user->moneyrange->range:''}} {{$user->currency->symbol}}
                               </h3>
                           </div>
                           @endif
@@ -173,22 +180,6 @@
                   </div>
                   @endif
                 @endif
-                {{-- ASPIRANTE CO-FOUNDER --}}
-                {{-- @if($user->usertypes->contains(1)) --}}
-                    @if($is_my_user || count($user->give_user_skills)>0)
-                    <div class="sub-section">
-                      <h6>{{__('Competenze')}}
-                        <a v-if="is_my_user" href="{{route('admin.give_user_skills.edit',$user->id)}}" class="button-style-circle button-color-gray">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
-                      </h6>
-                      @foreach ($user->give_user_skills as $skill)
-                          <p>{{$skill->name}}</p>
-                      @endforeach
-
-                    </div>
-                    @endif
-                {{-- @endif --}}
                 {{-- SERVIZI --}}
                 @if($is_my_user || count($user->give_user_services)>0 || count($user->have_user_services)>0)
                 <div id="services" class="sub-section row">
@@ -223,6 +214,22 @@
                   </div>
                 </div>
                 @endif
+                {{-- ASPIRANTE CO-FOUNDER --}}
+                {{-- @if($user->usertypes->contains(1)) --}}
+                    @if($is_my_user || count($user->give_user_skills)>0)
+                    <div class="sub-section">
+                      <h6>{{__('Competenze')}}
+                        <a v-if="is_my_user" href="{{route('admin.give_user_skills.edit',$user->id)}}" class="button-style-circle button-color-gray">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+                      </h6>
+                      @foreach ($user->give_user_skills as $skill)
+                          <p>{{$skill->name}}</p>
+                      @endforeach
+
+                    </div>
+                    @endif
+                {{-- @endif --}}
                 {{-- DIPENDENTE --}}
                 @if($user->usertypes->contains(4))
                   @if($is_my_user || count($user->companies)>0)

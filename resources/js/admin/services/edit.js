@@ -9,6 +9,7 @@ axios.defaults.headers.common = {
 var create = new Vue({
     el: '#service-edit',
     data: {
+        pagetype_id,
         services,
         r_services,
         //ONLY STARTUP
@@ -140,7 +141,7 @@ var create = new Vue({
             }).then((response) => {
                 this.main_services = response.data.results.main_services;
                 this.sub_services = response.data.results.sub_services;
-                this.main_service_selected = this.main_services[0].id;
+                // this.main_service_selected = this.main_services[0].id;
                 this.changeMainService();
             });
         },
@@ -152,12 +153,11 @@ var create = new Vue({
                     this.sub_services_show.push(sub_service);
                 }
             });
-            this.sub_service_selected = this.sub_services_show[0].id;
+            this.sub_service_selected = "";
+            // this.sub_service_selected = this.sub_services_show[0].id;
         },
 
         addServiceSelected(service_id){
-            console.log(service_id);
-            console.log(this.sub_services_show);
             this.sub_services_show.forEach((sub_service, i) => {
                 if(sub_service.id==service_id){
                     this.addService(sub_service);
@@ -205,7 +205,6 @@ var create = new Vue({
                 break;
                 default:
             }
-            console.log(this.serviceRecommended);
         },
 
         searchSkill(){
@@ -314,17 +313,17 @@ var create = new Vue({
                 this.usertype_selected=!this.usertype_selected;
             }
         },
-        radioToggle(id){
-            var elems = document.querySelectorAll(".lifecycle-item.active");
-            [].forEach.call(elems, function(el) {
-                el.classList.remove("active");
-            });
-
-            document.getElementById('l-' + id).checked = true;
-            document.getElementById('l-' + id + '-b').classList.add("active");
-            this.lifecycle_selected = id;
-            this.recommended();
-        }
+        // radioToggle(id){
+        //     var elems = document.querySelectorAll(".lifecycle-item.active");
+        //     [].forEach.call(elems, function(el) {
+        //         el.classList.remove("active");
+        //     });
+        //
+        //     document.getElementById('l-' + id).checked = true;
+        //     document.getElementById('l-' + id + '-b').classList.add("active");
+        //     this.lifecycle_selected = id;
+        //     this.recommended();
+        // }
         //END ONLY STARTUP
     },
     created() {
@@ -352,9 +351,10 @@ var create = new Vue({
         if(this.lifecycle_id){
             this.lifecycle_id = parseInt(this.lifecycle_id);
             this.lifecycle_selected = this.lifecycle_id?this.lifecycle_id:1;
-            this.radioToggle(this.lifecycle_selected);
+            // this.radioToggle(this.lifecycle_selected);
+            this.recommended();
         }
-        if(this.lifecycles){
+        if(this.lifecycles  && this.pagetype_id==1){
             if(document.getElementById('u-1').checked) {
                 this.usertype_selected=true;
             }

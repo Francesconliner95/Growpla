@@ -85,6 +85,7 @@ class RegisterController extends Controller
             'email' => Str::lower($data['email']),
             'password' => Hash::make($data['password']),
             'language_id' => 2/*$data['language_id']*/,
+            'image' => 'users_images/default-utente.svg'
         ]);
     }
 }

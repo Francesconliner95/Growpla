@@ -42,8 +42,11 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::get('users/{user_id}/settings', 'UserController@settings')->name('users.settings');
     Route::get('users/{user_id}/sectors', 'UserController@sectors')->name('users.sectors');
     Route::put('users/{user_id}/storesectors', 'UserController@storesectors')->name('users.storesectors');
+    Route::get('/businessAngel', 'UserController@businessAngel')
+    ->name('users.businessAngel');
     Route::get('getMyAccounts', 'UserController@getMyAccounts')->name('getMyAccounts');
     Route::put('setPageSelected', 'UserController@setPageSelected')->name('setPageSelected');
+
 
     //admin.users.settings
 
@@ -57,11 +60,11 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::get('/editUserImage', 'ImageController@editUserImage')->name('images.editUserImage');
     Route::put('/updateUserImage', 'ImageController@updateUserImage')
     ->name('images.updateUserImage');
-    Route::put('/removeUserImage', 'ImageController@removeUserImage')->name('removeUserImage');
+    Route::delete('/removeUserImage', 'ImageController@removeUserImage')->name('removeUserImage');
     Route::get('/editPageImage/{page_id}', 'ImageController@editPageImage')->name('images.editPageImage');
     Route::put('/updatePageImage', 'ImageController@updatePageImage')
     ->name('images.updatePageImage');
-    Route::put('/removePageImage', 'ImageController@removePageImage')->name('removePageImage');
+    Route::delete('/removePageImage', 'ImageController@removePageImage')->name('removePageImage');
 
     //GiveUserSkills
     Route::resource('/give_user_skills', 'GiveUserSkillController');

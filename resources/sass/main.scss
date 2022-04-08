@@ -105,17 +105,20 @@ ul>p{
 }
 
 .first-sub-section{
+    position: relative;
     border-top: 2px solid $hover_gray;
     border-bottom: 2px solid $hover_gray;
     padding: 20px 0;
 }
 
 .sub-section{
+    position: relative;
     border-bottom: 2px solid $hover_gray;
     padding: 20px 0;
 }
 
 .last-sub-section{
+    position: relative;
     padding: 20px 0;
 }
 
@@ -334,7 +337,20 @@ ul>p{
     }
 }
 
+select,
+select option {
+  color: #000000;
+}
 
+select:invalid,
+select option[value=""] {
+  color: #999999;
+}
+
+/*Added for browser compatibility*/
+[hidden] {
+  display: none;
+}
 .img-cont{
     display: inline-block;
     border-radius: 50%;
@@ -452,13 +468,24 @@ ul>p{
     }
 }
 
-.button-color-blue{
-    border: 2px solid $blue;
-    background-color: $blue;
+.button-color-green{
+    border: 2px solid $green_3;
+    background-color: $green_3;
     color: white;
     &:hover{
         transition: 0.2s;
-        color: $blue;
+        color: $green_3;
+        background-color: transparent;
+    }
+}
+
+.button-color-blue{
+    border: 2px solid $blue_3;
+    background-color: $blue_3;
+    color: white;
+    &:hover{
+        transition: 0.2s;
+        color: $blue_3;
         background-color: transparent;
     }
 }
@@ -814,6 +841,7 @@ ul>p{
     position: absolute;
     top: 20px;
     right: 20px;
+    z-index: 5;
 }
 .edit-top-right-small{
     position: absolute;
@@ -1408,47 +1436,71 @@ ul>p{
         width: 25px;
         border: none;
         font-size: 20px;
-        z-index: 10;
+        z-index: 5;
+        border-radius: 0px !important;
+        background: rgba(255,255,255,.4);
     }
     .slider-left{
         left: 0px;
-        background: rgba(255,255,255,.7);
         // background: rgb(255,255,255);
         // background: linear-gradient(90deg, rgba(255,255,255,.8), rgba(255,255,255,.25), rgba(255,255,255,0));
     }
     .slider-right{
         right: 0px;
-        background: rgba(255,255,255,.7);
         // background: rgb(255,255,255);
         // background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.25), rgba(255,255,255,.8));
     }
 }
 
 .card-style{
-    padding: 10px;
+    padding: 15px;
     border-radius: 5px;
     font-weight: bold;
-    width: 180px;
-    height: 215px;
-    p{
-        height: 22px;
+    width: 220px;
+    height: 245px;
+    .top{
+        height: 85%;
+        .name{
+            height: 30px;
+        }
+        .service{
+            height: 30px;
+            font-size: 16px;
+        }
+    }
+    .button{
+        height: 15%;
     }
 }
 
 .card-collaboration{
     position: relative;
+    border: 2px solid $green_3;
+    border-radius: 15px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    &:hover{
+        border: none;
+    }
+    &:hover .coll-item .coll-info{
+        // opacity: 1;
+        display: block;
+    }
     .coll-item{
         .coll-info{
-            display: block;
-            visibility: hidden;
+            display: none;
+            transition: 0.4s;
             strong{
                 display: inline-block;
-                height: 25px;
+                height: 35px;
             }
         }
-        &:hover .coll-info{
-            visibility: visible;
-        }
+        // &:hover .coll-info{
+        //     opacity: 1;
+        // }
+        // &:hover .card-collaboration{
+        //     border: none;
+        // }
     }
     .link{
         position: absolute;
@@ -1461,12 +1513,12 @@ ul>p{
 }
 
 .card-color-green{
-    background-color: lightgreen;
-    color: green;
+    background-color: $green_1;
+    color: $green_3;
 }
 
 .card-color-blue{
-    background-color: lightblue;
+    background-color: $blue_1;
     color: $blue_3;
 }
 

@@ -76387,141 +76387,48 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     lang: lang,
     lifecycles: lifecycles,
     lifecycle_id: lifecycle_id,
-    skills: skills,
-    show_services: false,
-    lifecycle_selected: '1',
-    cofounders: '',
-    userRecommended: [],
-    pageRecommended: [],
-    serviceRecommended: [],
-    skill_name: '',
-    skills_found: ''
+    lifecycle_selected: '1'
   },
   methods: {
-    recommended: function recommended() {
-      console.log(this.lifecycle_selected);
-
-      switch (this.lifecycle_selected) {
-        case '1':
-          this.userRecommended = [1];
-          this.pageRecommended = [3];
-          this.serviceRecommended = [2, 3, 4, 5, 6, 8];
-          break;
-
-        case '2':
-          this.userRecommended = [2];
-          this.pageRecommended = [3];
-          this.serviceRecommended = [2, 4, 6, 8];
-          break;
-
-        case '3':
-          this.userRecommended = [];
-          this.pageRecommended = [3];
-          this.serviceRecommended = [2, 6, 8];
-          break;
-
-        case '4':
-          this.userRecommended = [];
-          this.pageRecommended = [5];
-          this.serviceRecommended = [2, 8];
-          break;
-
-        case '5':
-          this.userRecommended = [];
-          this.pageRecommended = [5, 8];
-          this.serviceRecommended = [2, 8];
-          break;
-
-        case '6':
-          this.userRecommended = [];
-          this.pageRecommended = [];
-          this.serviceRecommended = [2, 8];
-          break;
-
-        case '7':
-          this.userRecommended = [];
-          this.pageRecommended = [];
-          this.serviceRecommended = [1];
-          break;
-
-        default:
-      }
-    },
-    searchSkill: function searchSkill() {
-      var _this = this;
-
-      if (this.skill_name) {
-        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchSkill', {
-          params: {
-            skill_name: this.skill_name
-          }
-        }).then(function (response) {
-          _this.skills_found = response.data.results.skills;
-
-          if (!_this.skill_name) {
-            _this.skills_found = '';
-          }
-        });
+    isChecked: function isChecked(id) {
+      if (document.getElementById(id).checked) {
+        return true;
       } else {
-        this.skills_found = '';
+        return false;
       }
     },
-    addSkill: function addSkill(skill_found) {
-      var exist = false;
-      this.skills.forEach(function (skill, i) {
-        if (skill.pivot.skill_id == skill_found.id) {
-          exist = true;
-        }
+    checkboxToggle: function checkboxToggle(id) {
+      if (document.getElementById(id).checked) {
+        document.getElementById(id).checked = false;
+        document.getElementById(id + '-b').classList.remove("active");
+      } else {
+        document.getElementById(id).checked = true;
+        document.getElementById(id + '-b').classList.add("active");
+      }
+
+      if (id == "u-1") {
+        this.usertype_selected = !this.usertype_selected;
+      }
+    },
+    radioToggle: function radioToggle(id) {
+      var elems = document.querySelectorAll(".lifecycle-item.active");
+      [].forEach.call(elems, function (el) {
+        el.classList.remove("active");
       });
-
-      if (!exist) {
-        var new_skill = {
-          "name": skill_found.name,
-          "pivot": {
-            "skill_id": skill_found.id
-          }
-        };
-        this.skills.push(new_skill);
-      }
-
-      this.skills_found = '';
-      this.skill_name = '';
-    },
-    addManualSkill: function addManualSkill() {
-      var _this2 = this;
-
-      var exist = false;
-      this.skills.forEach(function (skill, i) {
-        if (skill.name == _this2.skill_name) {
-          exist = true;
-        }
-      });
-
-      if (!exist && this.skill_name) {
-        var new_skill = {
-          "name": this.skill_name // "pivot":{
-          //   "skill_id": skill_found.id,
-          // },
-
-        };
-        this.skills.push(new_skill);
-      }
-
-      this.skills_found = '';
-      this.skill_name = '';
-    },
-    removeSkill: function removeSkill(i) {
-      this.skills.splice(i, 1);
+      document.getElementById('l-' + id).checked = true;
+      document.getElementById('l-' + id + '-b').classList.add("active");
+      this.lifecycle_selected = id;
     }
   },
-  created: function created() {
-    if (this.skills) {
-      this.skills = JSON.parse(this.skills.replace(/&quot;/g, '"'));
-    }
-  },
+  created: function created() {},
   mounted: function mounted() {
-    this.lifecycle_selected = this.lifecycle_id ? this.lifecycle_id : '1';
-    this.recommended();
+    this.lifecycle_selected = this.lifecycle_id ? this.lifecycle_id : '1'; //ONLY STARTUP
+
+    if (this.lifecycle_id) {
+      this.lifecycle_id = parseInt(this.lifecycle_id);
+      this.lifecycle_selected = this.lifecycle_id ? this.lifecycle_id : 1;
+      this.radioToggle(this.lifecycle_selected);
+    }
   }
 });
 
@@ -77337,194 +77244,9 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   !*** ./resources/js/admin/pages/edit-image.js ***!
   \************************************************/
 /*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! croppr */ "./node_modules/croppr/dist/croppr.js");
-/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(croppr__WEBPACK_IMPORTED_MODULE_2__);
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
-  'X-Requested-With': 'XMLHttpRequest',
-  'X-CSRF-TOKEN': window.csrf_token
-};
-var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  el: '#edit-page-image',
-  data: {
-    page_id: page_id,
-    image: image,
-    image_src: '/storage/' + image,
-    x: 0,
-    y: 0,
-    width: 300,
-    height: 300
-  },
-  methods: {
-    createCrop: function createCrop() {
-      var _this = this;
-
-      var croppr = new croppr__WEBPACK_IMPORTED_MODULE_2___default.a('#croppr', {
-        // options
-        aspectRatio: 1,
-        // maxSize: [300, 300, 'px'],
-        startSize: [100, 100, '%'],
-        onCropEnd: function onCropEnd(value) {
-          // console.log(value.x, value.y, value.width, value.height);
-          // console.log(croppr.getValue());
-          _this.x = value.x;
-          _this.y = value.y;
-          _this.width = value.width;
-          _this.height = value.height; //console.log(this.x,this.y,this.width,this.height);
-        }
-      });
-      this.x = croppr.getValue().x;
-      this.y = croppr.getValue().y;
-      this.width = croppr.getValue().width;
-      this.height = croppr.getValue().height;
-
-      if (!this.y) {
-        this.y = 0;
-      }
-
-      if (!this.height) {
-        this.height = 0;
-      }
-    },
-    removePageImage: function removePageImage() {
-      var _this2 = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_1___default()({
-        method: 'put',
-        url: '/admin/removePageImage',
-        data: {
-          page_id: this.page_id
-        }
-      }).then(function (response) {
-        window.location.href = '/admin/pages/' + _this2.page_id;
-      });
-    },
-    newFile: function newFile() {
-      var _this3 = this;
-
-      var _imgInp$files = _slicedToArray(imgInp.files, 1),
-          file = _imgInp$files[0];
-
-      if (file) {
-        //CREO IL NUOVO src
-        this.image_src = URL.createObjectURL(file); //DISTRUGGI VECCHIA IMMAGINE
-
-        var myNode = document.getElementById("copper-main");
-        myNode.innerHTML = ''; //CREA NUOVA IMMAGINE
-
-        var img = document.createElement("img");
-        img.src = this.image_src;
-        img.id = "croppr";
-        document.getElementById('copper-main').appendChild(img); //CREA IL NUOVO CROPPER
-
-        img.onload = function () {
-          _this3.createCrop();
-        };
-      }
-    },
-    updateThumbnail: function updateThumbnail(dropZoneElement, file) {
-      this.newFile();
-      var thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
-
-      if (dropZoneElement.querySelector(".drop-zone__prompt")) {
-        dropZoneElement.querySelector(".drop-zone__prompt").remove();
-      } //add file in drop-area
-
-
-      if (!thumbnailElement) {
-        thumbnailElement = document.createElement("div");
-        thumbnailElement.classList.add("drop-zone__thumb");
-        dropZoneElement.appendChild(thumbnailElement);
-        var imgTag = document.createElement("img");
-        thumbnailElement.appendChild(imgTag);
-      } else {
-        dropZoneElement.removeChild(thumbnailElement);
-        thumbnailElement = document.createElement("div");
-        thumbnailElement.classList.add("drop-zone__thumb");
-        dropZoneElement.appendChild(thumbnailElement);
-        var imgTag = document.createElement("img");
-        thumbnailElement.appendChild(imgTag);
-      } //show file name
-
-
-      thumbnailElement.dataset.label = file.name; //show image
-
-      if (file.type.startsWith("image/")) {
-        var reader = new FileReader();
-        reader.readAsDataURL(file);
-
-        reader.onload = function () {
-          imgTag.src = reader.result;
-        };
-      } else {
-        imgTag.src = null;
-      }
-    } //END DRAG & DROP
-
-  },
-  mounted: function mounted() {
-    var _this4 = this;
-
-    if (this.image) {
-      this.createCrop();
-    } //DRAG & DROP
-
-
-    document.querySelectorAll(".drop-zone__input").forEach(function (inputElement) {
-      var dropZoneElement = inputElement.closest(".drop-zone");
-      dropZoneElement.addEventListener("click", function (e) {
-        inputElement.click();
-      });
-      dropZoneElement.addEventListener("change", function (e) {
-        if (inputElement.files.length) {
-          _this4.updateThumbnail(dropZoneElement, inputElement.files[0]);
-        }
-      });
-      dropZoneElement.addEventListener("dragover", function (e) {
-        e.preventDefault();
-        dropZoneElement.classList.add("drop-zone--over");
-      });
-      ["dragleave", "dragend"].forEach(function (type) {
-        dropZoneElement.addEventListener(type, function (e) {
-          dropZoneElement.classList.remove('drop-zone--over');
-        });
-      });
-      dropZoneElement.addEventListener("drop", function (e) {
-        e.preventDefault();
-
-        if (e.dataTransfer.files.length) {
-          inputElement.files = e.dataTransfer.files; //console.log(inputElement.files);
-
-          _this4.updateThumbnail(dropZoneElement, e.dataTransfer.files[0]);
-        }
-
-        dropZoneElement.classList.remove("drop-zone--over");
-      });
-    });
-  }
-});
+throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: C:\\MAMP\\htdocs\\growpla\\resources\\js\\admin\\pages\\edit-image.js: Unexpected token, expected \",\" (20:21)\n\n\u001b[0m \u001b[90m 18 |\u001b[39m         width\u001b[33m:\u001b[39m \u001b[35m300\u001b[39m\u001b[33m,\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 19 |\u001b[39m         height\u001b[33m:\u001b[39m \u001b[35m300\u001b[39m\u001b[33m,\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 20 |\u001b[39m         \u001b[36mdelete\u001b[39m\u001b[33m:\u001b[39m \u001b[36mfalse\u001b[39m\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 21 |\u001b[39m     }\u001b[33m,\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 22 |\u001b[39m     methods\u001b[33m:\u001b[39m {\u001b[0m\n\u001b[0m \u001b[90m 23 |\u001b[39m\u001b[0m\n    at Parser._raise (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:796:17)\n    at Parser.raiseWithData (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:789:17)\n    at Parser.raise (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:750:17)\n    at Parser.unexpected (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:3257:16)\n    at Parser.expect (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:3231:28)\n    at Parser.parseObjectLike (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:11954:14)\n    at Parser.parseExprAtom (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:11441:23)\n    at Parser.parseExprSubscripts (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:11090:23)\n    at Parser.parseUpdate (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:11070:21)\n    at Parser.parseMaybeUnary (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:11048:23)\n    at Parser.parseExprOps (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:10891:23)\n    at Parser.parseMaybeConditional (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:10865:23)\n    at Parser.parseMaybeAssign (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:10823:21)\n    at C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:10785:39\n    at Parser.allowInAnd (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:12604:12)\n    at Parser.parseMaybeAssignAllowIn (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:10785:17)\n    at Parser.parseObjectProperty (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:12124:101)\n    at Parser.parseObjPropValue (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:12149:100)\n    at Parser.parsePropertyDefinition (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:12073:10)\n    at Parser.parseObjectLike (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:11962:25)\n    at Parser.parseExprAtom (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:11441:23)\n    at Parser.parseExprSubscripts (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:11090:23)\n    at Parser.parseUpdate (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:11070:21)\n    at Parser.parseMaybeUnary (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:11048:23)\n    at Parser.parseExprOps (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:10891:23)\n    at Parser.parseMaybeConditional (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:10865:23)\n    at Parser.parseMaybeAssign (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:10823:21)\n    at C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:10785:39\n    at Parser.allowInAnd (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:12604:12)\n    at Parser.parseMaybeAssignAllowIn (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:10785:17)\n    at Parser.parseExprListItem (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:12341:18)\n    at Parser.parseExprList (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:12311:22)\n    at Parser.parseNewArguments (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:11889:25)\n    at Parser.parseNew (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:11883:10)\n    at Parser.parseNewOrNewTarget (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:11869:17)\n    at Parser.parseExprAtom (C:\\MAMP\\htdocs\\growpla\\node_modules\\@babel\\parser\\lib\\index.js:11456:21)");
 
 /***/ }),
 
@@ -78357,8 +78079,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getAllServices', {}).then(function (response) {
         _this3.main_services = response.data.results.main_services;
-        _this3.sub_services = response.data.results.sub_services;
-        _this3.main_service_selected = _this3.main_services[0].id;
+        _this3.sub_services = response.data.results.sub_services; // this.main_service_selected = this.main_services[0].id;
 
         _this3.changeMainService();
       });
@@ -78372,7 +78093,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           _this4.sub_services_show.push(sub_service);
         }
       });
-      this.sub_service_selected = this.sub_services_show[0].id;
+      this.sub_service_selected = ""; // this.sub_service_selected = this.sub_services_show[0].id;
     },
     addServiceSelected: function addServiceSelected(service_id) {
       var _this5 = this;
@@ -78688,6 +78409,7 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#service-edit',
   data: {
+    pagetype_id: pagetype_id,
     services: services,
     r_services: r_services,
     //ONLY STARTUP
@@ -78814,8 +78536,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getAllServices', {}).then(function (response) {
         _this4.main_services = response.data.results.main_services;
-        _this4.sub_services = response.data.results.sub_services;
-        _this4.main_service_selected = _this4.main_services[0].id;
+        _this4.sub_services = response.data.results.sub_services; // this.main_service_selected = this.main_services[0].id;
 
         _this4.changeMainService();
       });
@@ -78829,13 +78550,11 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           _this5.sub_services_show.push(sub_service);
         }
       });
-      this.sub_service_selected = this.sub_services_show[0].id;
+      this.sub_service_selected = ""; // this.sub_service_selected = this.sub_services_show[0].id;
     },
     addServiceSelected: function addServiceSelected(service_id) {
       var _this6 = this;
 
-      console.log(service_id);
-      console.log(this.sub_services_show);
       this.sub_services_show.forEach(function (sub_service, i) {
         if (sub_service.id == service_id) {
           _this6.addService(sub_service);
@@ -78889,8 +78608,6 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
         default:
       }
-
-      console.log(this.serviceRecommended);
     },
     searchSkill: function searchSkill() {
       var _this7 = this;
@@ -78994,17 +78711,18 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       if (id == "u-1") {
         this.usertype_selected = !this.usertype_selected;
       }
-    },
-    radioToggle: function radioToggle(id) {
-      var elems = document.querySelectorAll(".lifecycle-item.active");
-      [].forEach.call(elems, function (el) {
-        el.classList.remove("active");
-      });
-      document.getElementById('l-' + id).checked = true;
-      document.getElementById('l-' + id + '-b').classList.add("active");
-      this.lifecycle_selected = id;
-      this.recommended();
-    } //END ONLY STARTUP
+    } // radioToggle(id){
+    //     var elems = document.querySelectorAll(".lifecycle-item.active");
+    //     [].forEach.call(elems, function(el) {
+    //         el.classList.remove("active");
+    //     });
+    //
+    //     document.getElementById('l-' + id).checked = true;
+    //     document.getElementById('l-' + id + '-b').classList.add("active");
+    //     this.lifecycle_selected = id;
+    //     this.recommended();
+    // }
+    //END ONLY STARTUP
 
   },
   created: function created() {
@@ -79034,11 +78752,12 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
     if (this.lifecycle_id) {
       this.lifecycle_id = parseInt(this.lifecycle_id);
-      this.lifecycle_selected = this.lifecycle_id ? this.lifecycle_id : 1;
-      this.radioToggle(this.lifecycle_selected);
+      this.lifecycle_selected = this.lifecycle_id ? this.lifecycle_id : 1; // this.radioToggle(this.lifecycle_selected);
+
+      this.recommended();
     }
 
-    if (this.lifecycles) {
+    if (this.lifecycles && this.pagetype_id == 1) {
       if (document.getElementById('u-1').checked) {
         this.usertype_selected = true;
       }
@@ -80243,7 +79962,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default()({
-        method: 'put',
+        method: 'delete',
         url: '/admin/removeUserImage'
       }).then(function (response) {
         window.location.href = '/admin/users/' + _this2.user_id;

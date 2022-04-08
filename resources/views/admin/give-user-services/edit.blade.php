@@ -4,6 +4,7 @@
 <script type="text/javascript">
     window.csrf_token = "{{ csrf_token() }}";
     user = "{{$user}}";
+    pagetype_id = "";
     services = "{{$services}}";
     r_services = "{{$recommended_services}}";
     lifecycles = "";
@@ -17,14 +18,14 @@
                 <div class="header">
                     <h2>Servizi offerti</h2>
                 </div>
-                <h6>Seleziona servizi che intendi offrire in piattaforma</h6>
+                {{-- <h6>Seleziona servizi che intendi offrire in piattaforma</h6>
                 <div class="">
                     <button v-for="(r_service,i) in r_services_show"
                     class="d-inline-block border-style" type="button" name="button"
                     @click="addService(r_service)" :id="r_service.id+'-button'">
                         @{{r_service.name}}
                     </button>
-                </div>
+                </div> --}}
                 <form method="POST" action="{{ route('admin.give-user-services.update',$user->id) }}">
                     @csrf
                     @method('PUT')
@@ -47,31 +48,33 @@
                           </a>
                         </div>
                     </div> --}}
+                    <div v-if="services.length>0" class="form-group" v-cloak>
+                        <h6>Servizi che offro</h6>
+                        <div v-for="(service,i) in services" class="d-inline-block border-style" v-cloak>
+                          <input type="hidden" name="services[]" :value="service.name">
+                          <span for="">@{{service.name}}
+                            <i class="fas fa-trash-alt" @click="removeService(i)"></i>
+                          </span>
+                        </div>
+                    </div>
                     <div v-show="main_services.length>0" class="pt-3" v-cloak>
-                        <h6>Aggiungi un servizio specifico</h6>
+                        <h6>Aggiungi un servizio</h6>
                         <div class="from-group row pr-3 pl-3">
                             <div class="col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1">
                                 <select class="form-control" name="" @change="changeMainService()" v-model="main_service_selected">
+                                    <option value="">Specifica settore</option>
                                     <option v-for="main_service in main_services" :value="main_service.id">@{{main_service.name}}</option>
                                 </select>
                             </div>
-                            <div class="col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1">
+                            <div v-if="main_service_selected" class="col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1">
                                 <select class="form-control" name=""
                                 v-model="sub_service_selected">
+                                    <option value="">Specifica sottocategoria</option>
                                     <option v-for="sub_service in sub_services_show" :value="sub_service.id">@{{sub_service.name}}</option>
                                 </select>
                             </div>
-                            <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-1">
+                            <div v-if="sub_service_selected" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-1">
                                 <button type="button" name="button" @click="addServiceSelected(sub_service_selected)" class="w-100 button-style button-color-blue">Aggiungi</button>
-                            </div>
-                        </div>
-                        <div v-if="services.length>0" class="form-group">
-                            <h6>Servizi che offro</h6>
-                            <div v-for="(service,i) in services" class="d-inline-block border-style" v-cloak>
-                              <input type="hidden" name="services[]" :value="service.name">
-                              <span for="">@{{service.name}}
-                                <i class="fas fa-trash-alt" @click="removeService(i)"></i>
-                              </span>
                             </div>
                         </div>
                     </div>

@@ -43,7 +43,7 @@ class UserController extends Controller
         //dd($my_user->tutorial);
         switch($my_user->tutorial){
             case 2:
-                $my_user->tutorial = 3;
+                $my_user->tutorial = 4;//4 al posto di 3 per saltare i settori
                 $my_user->update();
                 return redirect()->route('admin.users.create');
             break;
@@ -62,6 +62,18 @@ class UserController extends Controller
             break;
         }
 
+    }
+
+    public function businessAngel(){
+        $user = Auth::user();
+        if($user->usertypes->contains(2)){
+            $data = [
+                'user' => $user,
+                'moneyranges' => Moneyrange::all(),
+            ];
+            app()->setLocale(Language::find($user->language_id)->lang);
+            return view('admin.users.business-angel', $data);
+        }abort(404);
     }
 
     public function create(){
@@ -103,6 +115,19 @@ class UserController extends Controller
       }else{
           $user->pagetypes()->sync([]);
       }
+      //dd(0);
+      if(array_key_exists('usertypes', $data) && in_array(2,$data['usertypes'])){
+          if($user->image=='users_images/default-utente.svg'){
+              $user->image = 'users_images/default-business-angel.svg';
+              $user->update();
+          }
+      }
+      if(!array_key_exists('usertypes', $data) || !in_array(2,$data['usertypes'])){
+          if($user->image == 'users_images/default-business-angel.svg'){
+              $user->image = 'users_images/default-utente.svg';
+              $user->update();
+          }
+      }
 
       if(Auth::user()->tutorial>=2){
           return redirect()->route('admin.users.tutorial');
@@ -135,7 +160,7 @@ class UserController extends Controller
       $request->validate([
           'name' => 'required|string|min:3|max:70',
           'surname' => 'required|string|min:3|max:70',
-          'summary' => 'required|min:50|max:250',
+          'summary' => 'nullable|min:50|max:250',
           'description' => 'nullable|min:50|max:1000',
           'website' => 'nullable|max:255',
           'linkedin'=> 'nullable|max:255',
@@ -151,7 +176,8 @@ class UserController extends Controller
       $user = Auth::user();
 
       if($user->id == $id){
-          if($data['remove_cv'] && $user->cv){
+          if(array_key_exists('remove_cv',$data)
+          && $data['remove_cv'] && $user->cv){
               $old_cv_name = $user->cv;
               if($old_cv_name){
                   Storage::delete($old_cv_name);

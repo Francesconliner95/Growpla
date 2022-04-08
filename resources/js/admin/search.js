@@ -214,7 +214,7 @@ var create = new Vue({
             }).then((response) => {
                 this.main_services = response.data.results.main_services;
                 this.sub_services = response.data.results.sub_services;
-                this.main_service_selected = this.main_services[0].id;
+                // this.main_service_selected = this.main_services[0].id;
                 this.changeMainService();
             });
         },
@@ -226,7 +226,8 @@ var create = new Vue({
                     this.sub_services_show.push(sub_service);
                 }
             });
-            this.sub_service_selected = this.sub_services_show[0].id;
+            this.sub_service_selected = "";
+            // this.sub_service_selected = this.sub_services_show[0].id;
         },
 
         addServiceSelected(service_id){

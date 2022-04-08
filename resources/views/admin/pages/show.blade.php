@@ -58,8 +58,8 @@
                             <a v-if="is_my_page" class="button-style-circle button-color-gray" href="{{route('admin.pages.edit', $page->id)}}">
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
-                            <a v-if="is_my_page" class="button-color-gray" href="{{route('admin.pages.settings', $page->id)}}">
-                                <i class="fas fa-cogs"></i>
+                            <a v-if="is_my_page" class="button-style-circle button-color-gray" href="{{route('admin.pages.settings', $page->id)}}">
+                                <i class="fas fa-cog"></i>
                             </a>
                         </h2>
                         <div class="text-capitalize">
@@ -150,6 +150,36 @@
                     <h6>Sommario</h6>
                     <p class="description">{{$page->summary}}</p>
                 </div>
+                @endif
+                @if($page->pagetype_id==1)
+                    @if($page->lifecycle_id || $is_my_page)
+                        <div class="sub-section" id="lifecycle">
+                            <h6>{{__('Life cycle')}}
+                                <div v-if="is_my_page" class="info">
+                                    <button aria-label="{{__('Specify the life cycle\'s stage of your startup')}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                            </h6>
+                            <a href="{{route('admin.lifecycles.edit',$page->id)}}" class="button-color-gray edit-top-right">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+                            {{-- @if($page->lifecycle_id) --}}
+                            <div class="cicle-container">
+                                @foreach ($lifecycles as $lifecycle)
+                                  <div class="pre-seed cicle-item">
+                                      <div :class="{{$lifecycle->id}}<={{$page->lifecycle_id?$page->lifecycle_id:0}}?
+                                      'circle c-active':'circle'">
+                                          <span>{{$lifecycle->name}}</span>
+                                      </div>
+                                      <span v-if="{{$lifecycle->id}}<{{count($lifecycles)}}"
+                                        :class="{{$lifecycle->id}}<{{$page->lifecycle_id?$page->lifecycle_id:0}}?'n-active net':'net'">
+                                      </span>
+                                  </div>
+                                @endforeach
+                            </div>
+                            {{-- @endif --}}
+                        </div>
+                    @endif
                 @endif
                 @if($page->description)
                 <div class="sub-section">
@@ -249,38 +279,6 @@
                 @endif
             </div>
         </div>
-        @if($page->pagetype_id==1)
-            @if($page->lifecycle_id || $is_my_page)
-                <div class="item-cont" id="lifecycle">
-                    <div class="item-style">
-                      <h3>{{__('Life cycle')}}
-                          <div v-if="is_my_page" class="info">
-                              <button aria-label="{{__('Specify the life cycle\'s stage of your startup')}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
-                              <i class="fas fa-info-circle"></i>
-                          </div>
-                      </h3>
-                      <a href="{{route('admin.have-page-services.edit',$page->id)}}" class="button-color-gray edit-top-right">
-                          <i class="fas fa-pencil-alt"></i>
-                      </a>
-                      @if($page->lifecycle_id)
-                      <div class="cicle-container">
-                          @foreach ($lifecycles as $lifecycle)
-                            <div class="pre-seed cicle-item">
-                                <div :class="{{$lifecycle->id}}<={{$page->lifecycle_id}}?
-                                'circle c-active':'circle'">
-                                    <span>{{$lifecycle->name}}</span>
-                                </div>
-                                <span v-if="{{$lifecycle->id}}<{{count($lifecycles)}}"
-                                  :class="{{$lifecycle->id}}<{{$page->lifecycle_id}}?'n-active net':'net'">
-                                </span>
-                            </div>
-                          @endforeach
-                      </div>
-                      @endif
-                    </div>
-                </div>
-            @endif
-        @endif
         <div class="item-cont" v-if="is_my_page || team_members.length>0">
             <div class="item-style">
                 <h3>Team

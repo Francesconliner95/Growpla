@@ -7,18 +7,20 @@
 </script>
 <div id="search">
     @if(Auth::user()->tutorial)
-    <div class="container">
-        <h3 class="section-title">
-            <b></b>
-            <span>{{ __('Welcome to Growpla!') }}
-             </span>
-            <b></b>
-        </h3>
-        <p class="text-center m-0">
-            {{ __('To complete your registration click here') }}
-        </p>
-        <div class="create-profile">
-            <a class="item col-sm-12 col-md-6 col-lg-6 col-xl-6" href="{{ route('admin.users.tutorial') }}">{{__('Start')}}</a>
+    <div class="bg-white">
+        <div class="container pb-5">
+            <h3 class="section-title">
+                <b></b>
+                <span>{{ __('Welcome to Growpla!') }}
+                 </span>
+                <b></b>
+            </h3>
+            <p class="text-center m-0">
+                {{ __('To complete your registration click here') }}
+            </p>
+            <div class="create-profile">
+                <a class="item col-sm-12 col-md-6 col-lg-6 col-xl-6" href="{{ route('admin.users.tutorial') }}">{{__('Start')}}</a>
+            </div>
         </div>
     </div>
     @endif
@@ -161,16 +163,18 @@
                                 <div class="row from-group pl-1 pr-1">
                                     <div class="col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1">
                                         <select class="form-control" name="" @change="changeMainService()" v-model="main_service_selected">
+                                            <option value="">Specifica settore</option>
                                             <option v-for="main_service in main_services" :value="main_service.id">@{{main_service.name}}</option>
                                         </select>
                                     </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1">
+                                    <div v-if="main_service_selected" class="col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1">
                                         <select class="form-control" name=""
                                         v-model="sub_service_selected">
+                                            <option value="">Specifica sottocategoria</option>
                                             <option v-for="sub_service in sub_services_show" :value="sub_service.id">@{{sub_service.name}}</option>
                                         </select>
                                     </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-1">
+                                    <div v-if="sub_service_selected" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-1">
                                         <button type="button" name="button" @click="addServiceSelected(sub_service_selected)" class="w-100 button-style button-color-blue">Aggiungi</button>
                                     </div>
                                 </div>
@@ -275,14 +279,14 @@
                     <form class="" method="POST" action="{{ route('admin.found') }}">
                         @csrf
                         <input type="hidden" name="pagetypes_id[]" value="1">
-                        <button class="button-style button-color  w-100 h-100" type="submit" name="button">Startup</button>
+                        <button class="button-style button-color-green  w-100 h-100" type="submit" name="button">Startup</button>
                     </form>
                 </div>
                 <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2 p-1">
                     <form class="" method="POST" action="{{ route('admin.found') }}">
                         @csrf
                         <input type="hidden" name="pagetypes_id[]" value="3">
-                        <button class="button-style button-color  w-100 h-100" type="submit" name="button">Incubatori/Acceleratori</button>
+                        <button class="button-style button-color-green  w-100 h-100" type="submit" name="button">Incubatori/Acceleratori</button>
                     </form>
                 </div>
                 <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2 p-1">
@@ -291,20 +295,20 @@
                         <input type="hidden" name="usertypes_id[]" value="2">
                         <input type="hidden" name="pagetypes_id[]" value="5">
                         <input type="hidden" name="pagetypes_id[]" value="8">
-                        <button class="button-style button-color  w-100 h-100" type="submit" name="button">Investitori</button>
+                        <button class="button-style button-color-green  w-100 h-100" type="submit" name="button">Investitori</button>
                     </form>
                 </div>
                 <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2 p-1">
                     <form class="" method="POST" action="{{ route('admin.found') }}">
                         @csrf
                         <input type="hidden" name="usertypes_id[]" value="1">
-                        <button class="button-style button-color  w-100 h-100" type="submit" name="button">Aspiranti Co-founder</button>
+                        <button class="button-style button-color-green  w-100 h-100" type="submit" name="button">Aspiranti Co-founder</button>
                     </form>
                 </div>
                 <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2 p-1">
                     <form class="" method="POST" action="{{ route('admin.found') }}">
                         @csrf
-                        <button class="button-style button-color w-100 h-100" type="submit" name="button">Servizi</button>
+                        <button class="button-style button-color-green w-100 h-100" type="submit" name="button">Servizi</button>
                     </form>
                 </div>
             </div>
@@ -351,19 +355,19 @@
                 <div v-for="offer in offers" class="multi-slider-item col-sm-12 col-md-6 col-lg-3 col-xl-3">
                     <div class=" d-flex justify-content-center align-items-center h-100">
                         <div class="card-style card-color-green">
-                            <div class="pb-4">
+                            <div class="top pb-4">
                                 <div class=" img-cont mini-img">
                                     <img v-if="offer.image" :src="'/storage/' + offer.image" alt="">
                                 </div>
-                                <p class="text-capitalize text-dark">
+                                <p class="name text-capitalize text-dark">
                                     @{{offer.user_or_page? offer.name +' ' +offer.surname : offer.name}}
                                 </p>
                                 {{-- <span>@{{offer.service_id?'cerca servizio di':'cerca'}}</span> --}}
-                                <p class="text-capitalize">
+                                <p class="service text-capitalize">
                                     @{{offer.need}}
                                 </p>
                             </div>
-                            <div class="text-center font-weight-normal">
+                            <div class="button text-center font-weight-normal">
                                 <a :href="offer.user_or_page?'/admin/users/'+ offer.id : '/admin/pages/'+ offer.id" class="button-style button-color-blue">Visita profilo</a>
                             </div>
                         </div>
@@ -390,19 +394,19 @@
                 <div v-for="need in needs" class="multi-slider-item col-sm-12 col-md-6 col-lg-3 col-xl-3">
                     <div class=" d-flex justify-content-center align-items-center h-100">
                         <div class="card-style card-color-blue">
-                            <div class="pb-4">
+                            <div class="top pb-4">
                                 <div class=" img-cont mini-img">
                                     <img v-if="need.image" :src="'/storage/' + need.image" alt="">
                                 </div>
-                                <p class="text-capitalize text-dark">
+                                <p class="name text-capitalize text-dark">
                                     @{{need.user_or_page? need.name +' ' +need.surname : need.name}}
                                 </p>
                                 {{-- <span>@{{need.service_id?'cerca servizio di':'cerca'}}</span> --}}
-                                <p class="text-capitalize">
+                                <p class="service text-capitalize">
                                     @{{need.need}}
                                 </p>
                             </div>
-                            <div class="text-center font-weight-normal">
+                            <div class="bottom text-center font-weight-normal">
                                 <a :href="need.user_or_page?'/admin/users/'+ need.id : '/admin/pages/'+ need.id" class="button-style button-color-blue">Visita profilo</a>
                             </div>
                         </div>
@@ -439,7 +443,7 @@
                                     <strong class="text-capitalize">
                                         @{{collaboration.account_1.user_or_page? collaboration.account_1.name +' ' +collaboration.account_1.surname : collaboration.account_1.name}}
                                     </strong>
-                                    <a :href="collaboration.account_1.user_or_page?'/admin/users/'+ collaboration.account_1.id : '/admin/pages/'+ collaboration.account_1.id" class="button-style button-color">
+                                    <a :href="collaboration.account_1.user_or_page?'/admin/users/'+ collaboration.account_1.id : '/admin/pages/'+ collaboration.account_1.id" class="button-style button-color-green">
                                         Visita profilo
                                     </a>
                                 </div>
@@ -457,7 +461,7 @@
                                     <strong class="text-capitalize">
                                         @{{collaboration.account_2.user_or_page? collaboration.account_2.name +' ' +collaboration.account_2.surname : collaboration.account_2.name}}
                                     </strong>
-                                    <a :href="collaboration.account_2.user_or_page?'/admin/users/'+ collaboration.account_2.id : '/admin/pages/'+ collaboration.account_2.id" class="button-style button-color">
+                                    <a :href="collaboration.account_2.user_or_page?'/admin/users/'+ collaboration.account_2.id : '/admin/pages/'+ collaboration.account_2.id" class="button-style button-color-blue">
                                         Visita profilo
                                     </a>
                                 </div>
@@ -480,7 +484,7 @@
         </div>
     </div>
     <div v-if="mostViewedAccounts.length>0" class="container pt-3 pb-5" v-cloak>
-        <h4>I più popolari</h4>
+        <h4 class="font-weight-bold">I più popolari</h4>
         <div class="row">
             <a v-for="account in mostViewedAccounts" :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
                 <div class="">
@@ -496,7 +500,7 @@
         </div>
     </div>
     <div v-if="myLatestViews.length>0" class="container pt-3 pb-5" v-cloak>
-        <h4>Visti di recente</h4>
+        <h4 class="font-weight-bold">Visti di recente</h4>
         <div class="row">
             <a v-for="account in myLatestViews" :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
                 <div class="">

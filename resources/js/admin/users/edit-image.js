@@ -50,7 +50,7 @@ var create = new Vue({
 
         removeUserImage(){
             axios({
-                method: 'put',
+                method: 'delete',
                 url: '/admin/removeUserImage',
             }).then(response => {
                 window.location.href = '/admin/users/'+ this.user_id;
