@@ -122,10 +122,11 @@ ul>p{
     padding: 20px 0;
 }
 
-.mini-txt{
-    color: $default_green;
-    font-size: 12px;
-    font-weight: bold;
+.gray-cont{
+    background-color: $light_gray;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 15px;
 }
 
 .scale{
@@ -219,13 +220,17 @@ ul>p{
 .info{
     position: relative;
     display: inline-block;
-    opacity: .5;
-    color: $default_green;
-    &:hover{
-        cursor: pointer;
-        opacity: 1;
-        .info-message,.info-message-long{
-            visibility: visible;
+    button{
+        border: none;
+        color: $green_3 !important;
+        border-radius: 50% !important;
+        opacity: .5;
+        &:hover{
+            cursor: pointer;
+            opacity: 1;
+            .info-message,.info-message-long{
+                visibility: visible;
+            }
         }
     }
     .info-message{
@@ -235,7 +240,7 @@ ul>p{
         bottom: 35px;
         left: 50%;
         transform: translateX(-50%);
-        background-color: $default_green;
+        background-color: $green_3;
         border-radius: 10px;
         opacity: .9;
         padding: 10px;
@@ -305,15 +310,18 @@ ul>p{
 
 .link-cont{
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     .link-item{
         width: 100px;
         text-align: center;
         a{
+            transition: .4s;
             &:hover{
                 text-decoration: none;
                 opacity: 0.8;
-                transform: scale(1.1);
+                i{
+                    transform: scale(1.2);
+                }
             }
             i{
                 font-size: 30px;
@@ -323,7 +331,7 @@ ul>p{
             }
         }
         .website{
-            color: $default_green;
+            color: $green_3;
         }
         .linkedin{
             color: #3490dc;
@@ -354,8 +362,8 @@ select option[value=""] {
 .img-cont{
     display: inline-block;
     border-radius: 50%;
-    background-color: $default_green_deactivate;
-    border: 2px solid $default_green;
+    background-color: $green_2;
+    border: 2px solid $green_2;
     position: relative;
     img{
         position: absolute;
@@ -367,9 +375,13 @@ select option[value=""] {
         border-radius: 50%;
     }
 }
+.img-cont-blue{
+    background-color: $blue_2 !important;
+    border: 2px solid $blue_2 !important;
+}
 .micro-img{
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
 }
 .mini-img{
     width: 50px;
@@ -401,12 +413,17 @@ select option[value=""] {
     }
 }
 
+
+.mini-txt{
+    font-size: 12px;
+}
+
 .txt-green{
-    color:$default_green;
+    color:$green_3;
 }
 
 .txt-blue{
-    color: $blue;
+    color: $blue_3;
 }
 
 .txt-orange{
@@ -418,7 +435,6 @@ select option[value=""] {
 }
 
 //BUTTON
-
 
 
 .multichoise-b{
@@ -542,13 +558,38 @@ select option[value=""] {
 }
 
 .border-style{
-  display: inline-block;
-  padding: 3px 10px 2px 10px;
-  border-radius: 0.20rem;
-  color: gray;
-  border: 2px solid gray;
-  margin-right: 3px;
-  margin-bottom: 3px;
+    display: inline-block;
+    padding: 3px 10px 2px 10px;
+    border-radius: 10px;
+    color: black;
+    border: none;
+    margin-right: 3px;
+    margin-bottom: 3px;
+}
+
+.border-style-green{
+    padding: 10px;
+    border-radius: 20px;
+    border: 3px solid $green_3;
+}
+
+.bubble{
+    background-color: $green_1;
+    border-radius: 0px 20px 20px 20px;
+    padding: 10px;
+    position: relative;
+    &::after {
+        content: "";
+        // background-color: black;
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        left: -10px;
+        top: 0px;
+        border-style: solid;
+        border-width: 0 10px 10px 0;
+        border-color: transparent $green_1 transparent transparent;
+    }
 }
 
 .button-style{
@@ -839,8 +880,8 @@ select option[value=""] {
 
 .edit-top-right{
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 10px;
+    right: 10px;
     z-index: 5;
 }
 .edit-top-right-small{
@@ -897,11 +938,11 @@ select option[value=""] {
 
         color: black;
         position: relative;
-        .edit-top-right{
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
+        // .edit-top-right{
+        //     position: absolute;
+        //     top: 20px;
+        //     right: 20px;
+        // }
         .edit-top-right-vert{
             position: absolute;
             top: 5px;
@@ -1409,6 +1450,10 @@ select option[value=""] {
     }
 }
 
+.multi-slider-cont.mini{
+    height: 100px !important;
+}
+
 .main-multi-slider{
     position: relative;
     .multi-slider-cont{
@@ -1449,6 +1494,30 @@ select option[value=""] {
         right: 0px;
         // background: rgb(255,255,255);
         // background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.25), rgba(255,255,255,.8));
+    }
+}
+
+.card-style-mini{
+    width: 220px;
+    height: 100%;
+    padding: 15px;
+    border-radius: 5px;
+    position: relative;
+    .text-cont{
+        display: inline-block;
+        width: 100%;
+        // height: 100%;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        // white-space: nowrap;
+        font-weight: bold;
+        font-size: 16px;
+        position: absolute;
+        padding: 5px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
     }
 }
 
@@ -1504,11 +1573,14 @@ select option[value=""] {
     }
     .link{
         position: absolute;
-        top: 35%;
+        top: 65px;
         left: 50%;
         transform: translate(-50%,-50%);
         font-size: 80px;
         z-index: 5;
+        img{
+            width: 100px;
+        }
     }
 }
 

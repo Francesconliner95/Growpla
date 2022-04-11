@@ -12,6 +12,7 @@ use App\Language;
 use App\User;
 use App\Page;
 use App\Usertype;
+use App\Pagetype;
 
 class ImageController extends Controller
 {
@@ -27,6 +28,7 @@ class ImageController extends Controller
         $data = [
             'user_id' => $user->id,
             'image' => $user->image,
+            'default_images' => Usertype::pluck('image')->toArray(),
         ];
 
         //dd($user->image);
@@ -49,14 +51,7 @@ class ImageController extends Controller
         $width = $request->width;
         $height = $request->height;
 
-        $default_images = [
-            'users_images/default-utente.svg',
-            'users_images/default-business-angel.svg',
-            'pages_images/default-startup.svg',
-            'pages_images/default-azienda.svg',
-            'pages_images/default-incubatore.svg',
-            'pages_images/default-associazione.svg',
-        ];
+        $default_images = Usertype::pluck('image')->toArray();
 
         if(array_key_exists('image', $data)){
 
@@ -113,14 +108,7 @@ class ImageController extends Controller
     {
         $user = Auth::user();
 
-        $default_images = [
-            'users_images/default-utente.svg',
-            'users_images/default-business-angel.svg',
-            'pages_images/default-startup.svg',
-            'pages_images/default-azienda.svg',
-            'pages_images/default-incubatore.svg',
-            'pages_images/default-associazione.svg',
-        ];
+        $default_images = Usertype::pluck('image')->toArray();
 
         if(!in_array($user->image,$default_images)){
             Storage::delete($user->image);
@@ -138,14 +126,15 @@ class ImageController extends Controller
     public function editPageImage($id){
 
         $page = Page::find($id);
+        $user = Auth::user();
 
-        if($page->users->contains(Auth::user())){
-          $user = Auth::user();
+        if($page->users->contains($user)){
           //dd($user->page);
 
           $data = [
               'page_id' => $page->id,
               'image' => $page->image,
+              'default_images' => Pagetype::pluck('image')->toArray(),
           ];
 
           //dd($user->image);
@@ -164,8 +153,6 @@ class ImageController extends Controller
             'image' => 'nullable|mimes:jpeg,png,jpg,gif,swg|max:6144',
         ]);
 
-
-
         $data = $request->all();
 
         $user = Auth::user();
@@ -173,14 +160,7 @@ class ImageController extends Controller
         $height = $request->height;
         $page =  Page::find($request->page_id);
 
-        $default_images = [
-            'users_images/default-utente.svg',
-            'users_images/default-business-angel.svg',
-            'pages_images/default-startup.svg',
-            'pages_images/default-azienda.svg',
-            'pages_images/default-incubatore.svg',
-            'pages_images/default-associazione.svg',
-        ];
+        $default_images = Pagetype::pluck('image')->toArray();
 
         if($page->users->contains(Auth::user())){
 
@@ -230,63 +210,23 @@ class ImageController extends Controller
 
     }
 
-    public function removePageImage(Request $request)
+    public function removePageImage($page_id)
     {
-            $request->validate([
-                'page_id' => 'required|integer',
-            ]);
-
-            $page = Page::find($request->page_id);
+            // $request->validate([
+            //     'page_id' => 'required|integer',
+            // ]);
+            $page = Page::find($page_id);
             $user = Auth::user();
 
-            $default_images = [
-                'users_images/default-utente.svg',
-                'users_images/default-business-angel.svg',
-                'pages_images/default-startup.svg',
-                'pages_images/default-azienda.svg',
-                'pages_images/default-incubatore.svg',
-                'pages_images/default-associazione.svg',
-            ];
+            $default_images = Pagetype::pluck('image')->toArray();
 
-            if($page->users->contains($user) &&
-            !in_array($page->image,$default_images)){
+            if($page->users->contains($user)){
 
-                Storage::delete($page->image);
-
-                switch ($page->pagetype_id) {
-                  case 1:
-                      $page->image = 'pages_images/default-startup.svg';
-                  break;
-                  case 2:
-                      $page->image = 'pages_images/default-azienda.svg';
-                  break;
-                  case 3:
-                      $page->image = 'pages_images/default-incubatore.svg';
-                  break;
-                  case 4:
-                      $page->image = 'pages_images/default-azienda.svg';
-                  break;
-                  case 5:
-                      $page->image = 'pages_images/default-azienda.svg';
-                  break;
-                  case 6:
-                      $page->image = 'pages_images/default-azienda.svg';
-                  break;
-                  case 7:
-                      $page->image = 'pages_images/default-associazione.svg';
-                  break;
-                  case 8:
-                      $page->image = 'pages_images/default-azienda.svg';
-                  break;
-                  case 9:
-                      $page->image = 'pages_images/default-azienda.svg';
-                  break;
-                  default:
-                    // code...
-                    break;
+                if(!in_array($page->image,$default_images)){
+                    Storage::delete($page->image);
+                    $page->image = Pagetype::find($page->pagetype_id)->image;
+                    $page->update();
                 }
-
-                $page->update();
 
                 return redirect()->route('admin.pages.show', ['page'=> $page->id]);
 

@@ -66,51 +66,19 @@ class PageController extends Controller
           $counter++;
           $slug_exist = Page::where('slug', $slug)->first();
       }
-      //END SLUG
+        //END SLUG
 
-      $new_page = new Page();
-      $new_page->pagetype_id = $request->pagetype_id;
-      $new_page->name = Str::lower($request->name);
-      $new_page->slug = $slug;
-      switch ($request->pagetype_id) {
-        case 1:
-            $new_page->image = 'pages_images/default-startup.svg';
-        break;
-        case 2:
-            $new_page->image = 'pages_images/default-azienda.svg';
-        break;
-        case 3:
-            $new_page->image = 'pages_images/default-incubatore.svg';
-        break;
-        case 4:
-            $new_page->image = 'pages_images/default-azienda.svg';
-        break;
-        case 5:
-            $new_page->image = 'pages_images/default-azienda.svg';
-        break;
-        case 6:
-            $new_page->image = 'pages_images/default-azienda.svg';
-        break;
-        case 7:
-            $new_page->image = 'pages_images/default-associazione.svg';
-        break;
-        case 8:
-            $new_page->image = 'pages_images/default-azienda.svg';
-        break;
-        case 9:
-            $new_page->image = 'pages_images/default-azienda.svg';
-        break;
-        default:
-          // code...
-          break;
-      }
+        $new_page = new Page();
+        $new_page->pagetype_id = $request->pagetype_id;
+        $new_page->name = Str::lower($request->name);
+        $new_page->slug = $slug;
+        $new_page->image = Pagetype::find($request->pagetype_id)->image;
+        $new_page->save();
 
-      $new_page->save();
+        $user = Auth::user();
+        $new_page->users()->attach($user);
 
-      $user = Auth::user();
-      $new_page->users()->attach($user);
-
-      return redirect()->route('admin.pages.edit', ['page'=> $new_page->id]);
+        return redirect()->route('admin.pages.edit', ['page'=> $new_page->id]);
 
     }
 

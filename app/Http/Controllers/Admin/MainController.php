@@ -20,6 +20,8 @@ use App\GivePageService;
 use App\GiveUserService;
 use App\HavePageService;
 use App\HaveUserService;
+use App\HavePagePagetype;
+use App\HavePageUsertype;
 use App\Service;
 
 class MainController extends Controller
@@ -662,43 +664,66 @@ class MainController extends Controller
 
         //dd($data);
 
+        // $account_info = Page::where('id',5)
+        //                     ->select('id','name','image','summary','pagetype_id')
+        //                     ->first();
+        // $account_info['user_or_page'] = false;
+        // $account_info['sectors'] = $account_info->sectors;
+        // $account_info['give'] = $account_info->give_page_services;
+        // $have_services = $account_info->have_page_services;
+        // if($account_info->pagetype_id==1){
+        //     $have_pagetypes = $account_info->have_page_pagetypes;
+        //     $have_usertypes = $account_info->have_page_usertypes;
+        // }
+        // $have = array(...$have_services,...$have_pagetypes,...$have_usertypes);
+        // dd($have);
+
         return view('admin.found', $data);
 
   }
 
-  public function loadInfo(Request $request){
+    public function loadInfo(Request $request){
 
-    $request->validate([
-        'accounts' => 'required',
-    ]);
+        $request->validate([
+            'accounts' => 'required',
+        ]);
 
-    $_accounts = $request->accounts;
-    $accounts_info = [];
-    foreach ($_accounts as $_account) {
-        $account = json_decode($_account);
-        if($account->user_or_page){
-            $account_info = User::where('id',$account->id)
-                                ->select('id','name','surname','image','summary')
-                                ->first();
-            $account_info['user_or_page'] = true;
-            $account_info['sectors'] = $account_info->sectors;
-        }else{
-            $account_info = Page::where('id',$account->id)
-                                ->select('id','name','image','summary')
-                                ->first();
-            $account_info['user_or_page'] = false;
-            $account_info['sectors'] = $account_info->sectors;
+        $_accounts = $request->accounts;
+        $accounts_info = [];
+        foreach ($_accounts as $_account) {
+            $account = json_decode($_account);
+            if($account->user_or_page){
+                $account_info = User::where('id',$account->id)
+                ->select('id','name','surname','image','summary')
+                ->first();
+                $account_info['user_or_page'] = true;
+                $account_info['sectors'] = $account_info->sectors;
+                $account_info['give'] = $account_info->give_user_services;
+                $account_info['have'] = $account_info->have_user_services;
+            }else{
+                $account_info = Page::where('id',$account->id)
+                ->select('id','name','image','summary',/*'pagetype_id'*/)
+                ->first();
+                $account_info['user_or_page'] = false;
+                $account_info['sectors'] = $account_info->sectors;
+                $account_info['give'] = $account_info->give_page_services;
+                $have_services = $account_info->have_page_services;
+                // if(array_key_exists($account_info['pagetype_id']) && $account_info->pagetype_id==1){
+                    $have_pagetypes = $account_info->have_page_pagetypes;
+                    $have_usertypes = $account_info->have_page_usertypes;
+                // }
+                $account_info['have'] = array(...$have_pagetypes,...$have_usertypes,...$have_services);
+            }
+            array_push($accounts_info,$account_info);
         }
-        array_push($accounts_info,$account_info);
+
+        return response()->json([
+            'success' => true,
+            'results' => [
+                'accounts' => $accounts_info,
+            ]
+        ]);
+
     }
-
-    return response()->json([
-        'success' => true,
-        'results' => [
-            'accounts' => $accounts_info,
-        ]
-    ]);
-
-  }
 
 }

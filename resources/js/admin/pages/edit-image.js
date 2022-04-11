@@ -12,12 +12,12 @@ var create = new Vue({
     data: {
         page_id,
         image,
+        default_images,
         image_src: '/storage/' + image,
         x: 0,
         y: 0,
         width: 300,
         height: 300,
-        delete: false;
     },
     methods: {
 
@@ -49,18 +49,8 @@ var create = new Vue({
             }
         },
 
-        removePageImage(){
-
-            axios({
-                method: 'delete',
-                url: '/admin/removePageImage',
-                data: {
-                  page_id: this.page_id,
-                }
-            }).then(response => {
-                window.location.href = '/admin/pages/'+ this.page_id;
-            });
-
+        submitForm(){
+            document.getElementById("myForm").submit();
         },
 
         newFile(){
@@ -132,7 +122,7 @@ var create = new Vue({
     },
     mounted() {
 
-        if(this.image){
+        if(this.image && !this.default_images.includes(this.image)){
             this.createCrop();
         }
 

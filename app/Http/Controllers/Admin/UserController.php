@@ -177,7 +177,7 @@ class UserController extends Controller
 
       if($user->id == $id){
           if(array_key_exists('remove_cv',$data)
-          && $data['remove_cv'] && $user->cv){
+          && $data['remove_cv']=='true' && $user->cv){
               $old_cv_name = $user->cv;
               if($old_cv_name){
                   Storage::delete($old_cv_name);

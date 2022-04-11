@@ -39,88 +39,96 @@
                             @endforeach
                         </div> --}}
 
-                        <div class="needs">
+                        <div class="needs pb-2">
                             <h6>Cosa stai cercando?</h6>
-                            <div class="row d-flex justify-content-center">
-                                @foreach ($usertypes as $usertype)
-                                    @if($usertype->id==1 || $usertype->id==2)
-                                        <div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-                                          <button type="button" name="button" :class="isChecked('u-{{$usertype->id}}')?
-                                          'active multichoise-b button-style multichoise-blue w-100 tool-tip-b':
-                                          'multichoise-b button-style multichoise-blue w-100 tool-tip-b'" @click="checkboxToggle('u-{{$usertype->id}}')" id="u-{{$usertype->id}}-b" v-cloak>
-                                          @if($errors->any())
-                                            <input id="u-{{$usertype->id}}" class="d-none" type="checkbox" name="usertypes[]" value="{{$usertype->id}}"
-                                            {{ in_array($usertype->id, old('usertypes', [])) ? 'checked=checked' : ''}}>
-                                          @else
-                                            <input id="u-{{$usertype->id}}" class="d-none" type="checkbox" name="usertypes[]" value="{{$usertype->id}}"
-                                            {{$page->have_page_usertypes->contains($usertype)?'checked=checked':''}}>
-                                          @endif
-                                            <span class="m-0 text-capitalize" for="u-{{$usertype->name}}">{{$usertype->name_it}}</span>
-                                            <span v-if="userRecommended.includes({{$usertype->id}})">
-                                                <i class="fas fa-star"></i>
-                                            </span>
-                                            @if($usertype->description_it)
-                                            <div class="tool-tip">
-                                                {{$usertype->description_it}}
-                                            </div>
-                                            @endif
-                                          </button>
-                                        </div>
-                                    @endif
-                                @endforeach
-                                @foreach ($pagetypes as $pagetype)
-                                    @if($pagetype->id==3 || $pagetype->id==5 || $pagetype->id==6 || $pagetype->id==8)
-                                    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-2">
-                                        <button type="button" name="button" :class="isChecked('p-{{$pagetype->id}}')?
-                                        'active multichoise-b button-style multichoise-blue w-100 tool-tip-b':
-                                        'multichoise-b button-style multichoise-blue w-100 tool-tip-b'" @click="checkboxToggle('p-{{$pagetype->id}}')" id="p-{{$pagetype->id}}-b" v-cloak>
-                                        @if($errors->any())
-                                            <input id="u-{{$pagetype->id}}" class="d-none" type="checkbox" name="pagetypes[]"   value="{{$pagetype->id}}"
-                                            {{ in_array($pagetype->id, old('pagetypes', [])) ? 'checked=checked' : ''}}>
-                                        @else
-                                            <input id="p-{{$pagetype->id}}" class="d-none" type="checkbox" name="pagetypes[]" value="{{$pagetype->id}}"
-                                            @click="pagetypeCheck({{$pagetype->id}})"
-                                            {{$page->have_page_pagetypes->contains($pagetype)?'checked=checked':''}}>
-                                        @endif
-                                            <span class="m-0 text-capitalize" for="u-{{$pagetype->name}}">{{$pagetype->name_it}}</span>
-                                            <span v-if="pageRecommended.includes({{$pagetype->id}})">
-                                                <i class="fas fa-star"></i>
-                                            </span>
-                                            @if($pagetype->description_it)
+                            <div class="row">
+                                <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                                    @foreach ($usertypes as $usertype)
+                                        @if($usertype->id==1 || $usertype->id==2)
+                                            <div class="w-100 pb-2">
+                                              <button type="button" name="button" :class="isChecked('u-{{$usertype->id}}')?
+                                              'active multichoise-b button-style multichoise-blue w-100 tool-tip-b':
+                                              'multichoise-b button-style multichoise-blue w-100 tool-tip-b'" @click="checkboxToggle('u-{{$usertype->id}}')" id="u-{{$usertype->id}}-b" v-cloak>
+                                              @if($errors->any())
+                                                <input id="u-{{$usertype->id}}" class="d-none" type="checkbox" name="usertypes[]" value="{{$usertype->id}}"
+                                                {{ in_array($usertype->id, old('usertypes', [])) ? 'checked=checked' : ''}}>
+                                              @else
+                                                <input id="u-{{$usertype->id}}" class="d-none" type="checkbox" name="usertypes[]" value="{{$usertype->id}}"
+                                                {{$page->have_page_usertypes->contains($usertype)?'checked=checked':''}}>
+                                              @endif
+                                                <span class="m-0 text-capitalize" for="u-{{$usertype->name}}">{{$usertype->name_it}}</span>
+                                                <span v-if="userRecommended.includes({{$usertype->id}})">
+                                                    <i class="fas fa-star"></i>
+                                                </span>
+                                                @if($usertype->description_it)
                                                 <div class="tool-tip">
-                                                    {{$pagetype->description_it}}
+                                                    {{$usertype->description_it}}
                                                 </div>
+                                                @endif
+                                              </button>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                    @foreach ($pagetypes as $pagetype)
+                                        @if($pagetype->id==3 || $pagetype->id==5 || $pagetype->id==6 || $pagetype->id==8)
+                                        <div class="w-100 pb-2">
+                                            <button type="button" name="button" :class="isChecked('p-{{$pagetype->id}}')?
+                                            'active multichoise-b button-style multichoise-blue w-100 tool-tip-b':
+                                            'multichoise-b button-style multichoise-blue w-100 tool-tip-b'" @click="checkboxToggle('p-{{$pagetype->id}}')" id="p-{{$pagetype->id}}-b" v-cloak>
+                                            @if($errors->any())
+                                                <input id="u-{{$pagetype->id}}" class="d-none" type="checkbox" name="pagetypes[]"   value="{{$pagetype->id}}"
+                                                {{ in_array($pagetype->id, old('pagetypes', [])) ? 'checked=checked' : ''}}>
+                                            @else
+                                                <input id="p-{{$pagetype->id}}" class="d-none" type="checkbox" name="pagetypes[]" value="{{$pagetype->id}}"
+                                                @click="pagetypeCheck({{$pagetype->id}})"
+                                                {{$page->have_page_pagetypes->contains($pagetype)?'checked=checked':''}}>
                                             @endif
-                                        </button>
+                                                <span class="m-0 text-capitalize" for="u-{{$pagetype->name}}">{{$pagetype->name_it}}</span>
+                                                <span v-if="pageRecommended.includes({{$pagetype->id}})">
+                                                    <i class="fas fa-star"></i>
+                                                </span>
+                                                @if($pagetype->description_it)
+                                                    <div class="tool-tip">
+                                                        {{$pagetype->description_it}}
+                                                    </div>
+                                                @endif
+                                            </button>
+                                        </div>
+                                        @endif
+                                    @endforeach
+                                </div>
+                                <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9">
+                                    <div v-if="usertype_selected==1" class="bubble pt-2">
+                                        <h6>Specifica le competenze che gli aspiranti co-founder devono possedere</h6>
+                                        <div v-for="(skill,i) in skills" class="border-style" v-cloak>
+                                            <input type="hidden" name="skills[]" :value="skill.name">
+                                            <span>@{{skill.name}}
+                                                <i class="fas fa-trash-alt" @click="removeSkill(i)"></i>
+                                            </span>
+                                        </div>
+                                        <div class="search row">
+                                            <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9">
+                                                <input type="text" name="name" value="" placeholder="Nome competenza" v-model="skill_name" @keyup.enter="searchSkill()" v-on:input="searchSkill()" maxlength="70" class="form-control " autocomplete="off">
+                                                @error ('skill_name')
+                                                    <div class="alert alert-danger">
+                                                        {{__($message)}}
+                                                    </div>
+                                                @enderror
+                                                <div :class="skills_found.length>0?'found':'found d-none'" v-cloak>
+                                                  <a class="item" v-for="skill_found in skills_found" @click="addSkill(skill_found)">
+                                                      @{{skill_found.name}}
+                                                  </a>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                                                <button type="button" name="button" @click="addManualSkill()" class="button-style button-color">Aggiungi</button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    @endif
-                                @endforeach
-                            </div>
-                            <div class="pt-2 pb-2">
-                                <i class="fas fa-star"></i>
-                                <span>Consigliato per la tua fase</span>
-                            </div>
-                        </div>
-                        <div v-if="usertype_selected==1" class="pt-2">
-                            <h6>Specifica le competenze che gli aspiranti co-founder devono possedere</h6>
-                            <div v-for="(skill,i) in skills" class="" v-cloak>
-                              <input type="hidden" name="skills[]" :value="skill.name">
-                              <label for="">@{{skill.name}}
-                                <i class="fas fa-trash-alt" @click="removeSkill(i)"></i>
-                              </label>
-                            </div>
-                            <div class="search">
-                                <input type="text" name="name" value="" placeholder="Nome competenza" v-model="skill_name" @keyup.enter="searchSkill()" v-on:input="searchSkill()" maxlength="70" class="form-control" autocomplete="off">
-                                @error ('skill_name')
-                                    <div class="alert alert-danger">
-                                        {{__($message)}}
+                                    <div class="pt-2 pb-2">
+                                        <i class="fas fa-star"></i>
+                                        <span>Consigliato per la tua fase</span>
                                     </div>
-                                @enderror
-                                <button type="button" name="button" @click="addManualSkill()" class="button-style button-color">Aggiungi</button>
-                                <div :class="skills_found.length>0?'found':'found d-none'" v-cloak>
-                                  <a class="item" v-for="skill_found in skills_found" @click="addSkill(skill_found)">
-                                      @{{skill_found.name}}
-                                  </a>
                                 </div>
                             </div>
                         </div>

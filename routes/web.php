@@ -64,8 +64,7 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::get('/editPageImage/{page_id}', 'ImageController@editPageImage')->name('images.editPageImage');
     Route::put('/updatePageImage', 'ImageController@updatePageImage')
     ->name('images.updatePageImage');
-    Route::delete('/removePageImage', 'ImageController@removePageImage')->name('removePageImage');
-
+    Route::delete('/removePageImage/{page_id}', 'ImageController@removePageImage')->name('images.removePageImage');
     //GiveUserSkills
     Route::resource('/give_user_skills', 'GiveUserSkillController');
 

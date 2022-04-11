@@ -74,7 +74,12 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="date_of_birth" class="col-md-4 col-form-label text-md-right">Data di nascita</label>
+                        <label for="date_of_birth" class="col-md-4 col-form-label text-md-right">Data di nascita
+                            <div class="info">
+                                <button aria-label="La data di nascita è utile a verificare che tu sia maggiorenne, non sarà visibile agli altri utenti." data-microtip-position="top" data-microtip-size="medium" role="tooltip">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </label>
                         <div class="col-md-6">
                             <input id="date_of_birth" type="date" class="form-control @error('date_of_birth') is-invalid @enderror" name="date_of_birth" value="{{ old('date_of_birth') }}" required autocomplete="date_of_birth" min="1900-01-01" :max="maxbirthdate()">
 

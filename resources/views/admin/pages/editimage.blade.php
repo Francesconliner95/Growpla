@@ -4,6 +4,7 @@
 <script type="text/javascript">
     page_id = "{{$page_id}}";
     image = "{{$image}}";
+    default_images = "{{json_encode($default_images)}}";
     window.csrf_token = "{{ csrf_token() }}"; //token per axios api post/put/delete
 </script>
 <div class="container">
@@ -12,7 +13,7 @@
             <div class="item-style">
                 {{-- Immagine --}}
                 <h6>{{__('Page image')}}</h6>
-                <form runat="server" class="file-cont" ref="editImage" method="POST" enctype="multipart/form-data" action="{{ route('admin.images.updatePageImage',$page_id) }}">
+                <form runat="server" id="myForm" class="file-cont" ref="editImage" method="POST" enctype="multipart/form-data" action="{{ route('admin.images.updatePageImage',$page_id) }}">
                     @csrf
                     @method('PUT')
                     <input type="hidden" name="page_id" value="{{$page_id}}">
@@ -40,11 +41,16 @@
                     <input type="hidden" name="height" v-model="height">
                     <input type="hidden" name="x" v-model="x">
                     <input type="hidden" name="y" v-model="y">
-                    <div class="d-flex justify-content-between align-items-center mt-2">
-                        <button type="submit" name="button" class="button-style button-color">{{__('Save Changes')}}</button>
-                        <button v-if="image" type="button" name="button" class="button-style button-color-red" @click="removePageImage()">{{__('Delete')}}</button>
-                    </div>
                 </form>
+                <div class="d-flex justify-content-between">
+                    <button type="button" name="button" class="button-style button-color" @click="submitForm()">{{__('Save Changes')}}</button>
+                    <form method="post" name=""
+                    action="{{ route('admin.images.removePageImage',$page_id)}}" class="">
+                    @csrf
+                    @method('DELETE')
+                        <button type="submit" name="button" class="button-style button-color-red">{{__('Delete')}}</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

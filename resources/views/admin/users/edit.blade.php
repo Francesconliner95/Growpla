@@ -23,7 +23,7 @@
                 <form method="POST" enctype="multipart/form-data" action="{{ route('admin.users.update', ['user'=> $user->id]) }}">
                   @csrf
                   @method('PUT')
-                  <span class="mini-txt">{{__('Filling in some of the following fields is optional, however a more complete profile has more chance of being viewed by other users')}}</span>
+                  <span class="mini-txt txt-green font-weight-bold">{{__('Filling in some of the following fields is optional, however a more complete profile has more chance of being viewed by other users')}}</span>
                   {{-- NOME --}}
                   <div class="sub-section">
                       <div class="row">
@@ -49,7 +49,7 @@
                   </div>
                   <div class="sub-section">
                       <h6>Sommario</h6>
-                      <textarea name="summary" rows="2" cols="80" class="form-control" placeholder="Descrivi brevente cio che fai"  minlength="50" maxlength="250">{{ $user->summary }}</textarea>
+                      <textarea name="summary" rows="3" cols="80" class="form-control" placeholder="Descrivi brevente ciò che fai"  minlength="50" maxlength="250">{{ $user->summary }}</textarea>
                       @error ('summary')
                           <div class="alert alert-danger">
                               {{__($message)}}
@@ -107,7 +107,7 @@
                               {{__($message)}}
                           </div>
                       @enderror
-                  </div>                    
+                  </div>
                     <div class="last-sub-section">
                         <h6>Indirizzo*</h6>
                         <div class="row">

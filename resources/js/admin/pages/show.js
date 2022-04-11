@@ -18,6 +18,8 @@ var create = new Vue({
         list_user: '',
         list_pages: '',
         alert: false,
+        interval:false,
+        is_mobile: false,
     },
     methods: {
         switchAccounts(){
@@ -105,7 +107,83 @@ var create = new Vue({
                 this.collaborations = response.data.results.collaborations;
                 console.log(this.collaborations);
             });
-        }
+        },
+
+        scrollLeft(slider_id){
+            var content =
+            document.getElementById('multi-slider-cont-' + slider_id);
+            const content_scroll_width = content.scrollWidth;
+            let content_scoll_left = content.scrollLeft;
+            content_scoll_left -= 10;
+            if (content_scoll_left <= 0) {
+                content_scoll_left = 0;
+            }
+            content.scrollLeft = content_scoll_left;
+            this.arrowVisibility(slider_id);
+        },
+
+        scrollRight(slider_id){
+            var content =
+            document.getElementById('multi-slider-cont-' + slider_id);
+            const content_scroll_width = content.scrollWidth;
+            let content_scoll_left = content.scrollLeft;
+            content_scoll_left += 10;
+            if (content_scoll_left >= content_scroll_width) {
+                content_scoll_left = content_scroll_width;
+            }
+            content.scrollLeft = content_scoll_left;
+            this.arrowVisibility(slider_id);
+        },
+
+        start(slider_id,direction){
+            if(!this.interval){
+                this.interval = setInterval(()=>{
+                    if(direction=='right'){
+                        this.scrollRight(slider_id);
+                    }else{
+                        this.scrollLeft(slider_id);
+                    }
+                }, 10);
+            }
+        },
+
+        arrowVisibility(slider_id){
+            var content =
+            document.getElementById('multi-slider-cont-' + slider_id);
+            let content_scroll_width = content.scrollWidth;
+            let content_scoll_left = content.scrollLeft;
+            let content_offset_width = content.offsetWidth;
+            // console.log(content_scroll_width,content_scoll_left,content_offset_width);
+            if(content_offset_width + content_scoll_left >= content_scroll_width){
+                // console.log('nascondi freccia a destra');
+                document.getElementById('button-right-' + slider_id).classList.remove("visible");
+                document.getElementById('button-right-' + slider_id).classList.add("invisible");
+            }else{
+                // console.log('mostra freccia a destra');
+                document.getElementById('button-right-' + slider_id).classList.remove("invisible");
+                document.getElementById('button-right-' + slider_id).classList.add("visible");
+            }
+            if(content_scoll_left<=0){
+                // console.log('nascondi freccia a sinistra');
+                document.getElementById('button-left-' + slider_id).classList.remove("visible");
+                document.getElementById('button-left-' + slider_id).classList.add("invisible");
+            }else{
+                // console.log('mostra freccia a sinistra');
+                document.getElementById('button-left-' + slider_id).classList.remove("invisible");
+                document.getElementById('button-left-' + slider_id).classList.add("visible");
+            }
+        },
+
+        stop(slider_id,direction){
+            clearInterval(this.interval);
+            this.interval = false;
+        },
+
+        delay(slider_id){
+            setTimeout(()=>{
+                this.arrowVisibility(slider_id);
+            }, 1000);
+        },
 
     },
     created(){
@@ -118,6 +196,13 @@ var create = new Vue({
     },
     mounted() {
         this.getCollaborations();
+
+        if(document.getElementById('multi-slider-cont-1')){
+            this.arrowVisibility(1);
+        }
+        if(document.getElementById('multi-slider-cont-2')){
+            this.arrowVisibility(2);
+        }
     },
 
 });

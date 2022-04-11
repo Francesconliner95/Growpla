@@ -374,12 +374,13 @@
                     </div>
                 </div>
             </div>
-            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left" v-cloak>
+            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left" id="button-left-1" v-cloak>
                 <i class="fas fa-caret-left"></i>
             </button>
-            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right" v-cloak>
+            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')" class="slider-right" id="button-right-1" v-cloak>
                 <i class="fas fa-caret-right"></i>
             </button>
+            <span>@{{this.delay(1)}}</span>
         </div>
         <div class="text-center">
             <a href="{{route('admin.offers.getAllGive')}}" class="font-weight-bold text-dark">
@@ -413,12 +414,13 @@
                     </div>
                 </div>
             </div>
-            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(2,'left')" class="slider-left" v-cloak>
+            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(2,'left')" class="slider-left" id="button-left-2" v-cloak>
                 <i class="fas fa-caret-left"></i>
             </button>
-            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right" v-cloak>
+            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right" id="button-right-2" v-cloak>
                 <i class="fas fa-caret-right"></i>
             </button>
+            <span>@{{this.delay(2)}}</span>
         </div>
         <div class="text-center">
             <a href="{{route('admin.needs.getAllHave')}}" class="font-weight-bold text-dark">
@@ -449,11 +451,11 @@
                                 </div>
                             </div>
                             <div class="link">
-                                <i class="fas fa-link"></i>
+                                <img src="/storage/images/link-icon.svg" alt="">
                             </div>
                             <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 text-center coll-item">
                                 <div class="">
-                                    <div class="img-cont medium-img">
+                                    <div class="img-cont img-cont-blue medium-img">
                                         <img v-if="collaboration.account_2.image" :src="'/storage/' + collaboration.account_2.image" alt="">
                                     </div>
                                 </div>
@@ -470,12 +472,13 @@
                     </div>
                 </div>
             </div>
-            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(3,'left')" @mouseleave="stop(3,'left')" @mouseup="stop(3,'left')" class="slider-left" v-cloak>
+            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(3,'left')" @mouseleave="stop(3,'left')" @mouseup="stop(3,'left')" class="slider-left" id="button-left-3" v-cloak>
                 <i class="fas fa-caret-left"></i>
             </button>
-            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(3,'right')" @mouseleave="stop(3,'right')" @mouseup="stop(3,'right')"class="slider-right" v-cloak>
+            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(3,'right')" @mouseleave="stop(3,'right')" @mouseup="stop(3,'right')"class="slider-right" id="button-right-3" v-cloak>
                 <i class="fas fa-caret-right"></i>
             </button>
+            <span>@{{this.delay(3)}}</span>
         </div>
         <div class="text-center">
             <a href="{{route('admin.collaborations.index')}}" class="font-weight-bold text-dark">
@@ -485,7 +488,7 @@
     </div>
     <div v-if="mostViewedAccounts.length>0" class="container pt-3 pb-5" v-cloak>
         <h4 class="font-weight-bold">I più popolari</h4>
-        <div class="row">
+        <div class="row pt-4">
             <a v-for="account in mostViewedAccounts" :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
                 <div class="">
                     <div class=" img-cont medium-img">
@@ -493,15 +496,15 @@
                     </div>
                 </div>
                 <div class="">
-                    <span class="text-capitalize font-weight-bold">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</span>
+                    <span class="text-capitalize font-weight-bold  text-dark">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</span>
                 </div>
                 {{-- <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="button-style button-color">Visita profilo</a> --}}
             </a>
         </div>
     </div>
-    <div v-if="myLatestViews.length>0" class="container pt-3 pb-5" v-cloak>
+    <div v-show="myLatestViews.length>0" class="container pt-3 pb-5" v-cloak>
         <h4 class="font-weight-bold">Visti di recente</h4>
-        <div class="row">
+        <div class="row  pt-4">
             <a v-for="account in myLatestViews" :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
                 <div class="">
                     <div class=" img-cont medium-img">
@@ -509,14 +512,7 @@
                     </div>
                 </div>
                 <div class="">
-                    <span class="text-capitalize font-weight-bold">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</span>
-                    <p>@{{account.summary}}</p>
-                    <div class="">
-                        <div v-for="sector in account.sectors" class="d-inline-block border-style" v-cloak>
-                          <span>@{{sector.name}}</span>
-                        </div>
-                    </div>
-                    {{-- <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="button-style button-color">Visita profilo</a> --}}
+                    <span class="text-capitalize font-weight-bold text-dark">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</span>
                 </div>
             </a>
         </div>

@@ -11,6 +11,8 @@ var create = new Vue({
         lang,
         pages_id,
         users_id,
+        my_user_id,
+        my_pages_id,
         accounts: '',
         accounts_show: [],
         page: 1,
@@ -42,9 +44,41 @@ var create = new Vue({
         sectors: [],
         sector_selected: '',
         sectorToggle: false,
-
+        list_user: '',
+        list_pages: '',
+        alert: false,
+        account_index_selected: '',
     },
     methods: {
+        switchAccounts(i){
+            this.account_index_selected = i;
+            console.log(i);
+            this.alert = true;
+            axios.get('/admin/getMyAccounts',{
+            }).then((response) => {
+                this.list_user = response.data.results.user;
+                this.list_pages = response.data.results.pages;
+            });
+        },
+
+        startChat(page_id){
+            // console.log(page_id);
+            var account_selected = this.accounts_show[this.account_index_selected];
+            // console.log(this.accounts_show[this.account_index_selected]);
+            var user_or_page = account_selected.user_or_page?'user':'page';
+            axios({
+                method: 'post',
+                url: '/admin/createChat',
+                data: {
+                    recipient_id: account_selected.id,
+                    recipient_user_or_page: user_or_page,
+                    page_selected_id: page_id,
+                }
+            }).then(response => {
+                var route = response.data.results.route;
+                window.location.href = route;
+            });
+        },
 
         search_type_f(){
             if(!this.search_type){
@@ -349,6 +383,7 @@ var create = new Vue({
                     }
                 }).then((response) => {
                     this.accounts_show.push(...response.data.results.accounts);
+                    console.log(this.accounts_show);
                 });
             }
         },
@@ -372,7 +407,6 @@ var create = new Vue({
 
     },
     mounted() {
-
         this.getRegionsByCountry();
 
         window.onscroll = ()=>{this.scrollFunction()};

@@ -12,6 +12,7 @@ var create = new Vue({
         lifecycles,
         lifecycle_id,
         lifecycle_selected: '1',
+        description: '',
     },
 
     methods: {
@@ -43,6 +44,7 @@ var create = new Vue({
             document.getElementById('l-' + id).checked = true;
             document.getElementById('l-' + id + '-b').classList.add("active");
             this.lifecycle_selected = id;
+            this.description = this.lifecycles[this.lifecycle_selected-1].description_it;
         }
     },
     created(){

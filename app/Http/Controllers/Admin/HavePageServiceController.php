@@ -57,6 +57,7 @@ class HavePageServiceController extends Controller
                     $serviceRecommended = [38];
                 break;
                 default:
+                $serviceRecommended = [];
             }
             $recommended_services = Service::find($serviceRecommended);
         }else{

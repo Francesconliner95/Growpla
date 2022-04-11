@@ -12,6 +12,7 @@ var create = new Vue({
     data: {
         user_id,
         image,
+        default_images,
         image_src: '/storage/' + image,
         x: 0,
         y: 0,
@@ -128,7 +129,7 @@ var create = new Vue({
     mounted() {
 
 
-        if(this.image){
+        if(this.image && !this.default_images.includes(this.image)){
             this.createCrop();
         }
 
