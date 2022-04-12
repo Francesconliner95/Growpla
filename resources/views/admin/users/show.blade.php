@@ -80,7 +80,7 @@
                             <div class="">
                                 @foreach ($user->usertypes as $key => $usertype)
                                     @if(in_array ($usertype->id, array(1, 2)))
-                                        <div class="mini-img d-inline-block">
+                                        <div class="micro-img d-inline-block">
                                             <img src="{{ asset("storage/" . $usertype->image) }}" alt="">
                                         </div>
                                     @endif
@@ -205,10 +205,10 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left" id="button-left-1" v-cloak>
+                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-1" v-cloak>
                                     <i class="fas fa-caret-left"></i>
                                 </button>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right" id="button-right-1" v-cloak>
+                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right bg-white" id="button-right-1" v-cloak>
                                     <i class="fas fa-caret-right"></i>
                                 </button>
                             </div>
@@ -237,10 +237,10 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(1,'left')" class="slider-left" id="button-left-2" v-cloak>
+                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-2" v-cloak>
                                     <i class="fas fa-caret-left"></i>
                                 </button>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right" id="button-right-2" v-cloak>
+                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right bg-white" id="button-right-2" v-cloak>
                                     <i class="fas fa-caret-right"></i>
                                 </button>
                             </div>
@@ -304,7 +304,7 @@
                                         <div class="">
                                             <div class="img-cont mini-img">
                                                 @if($company->image)
-                                                  <img src="{{ asset("storage/" . $company->page->image) }}" alt="" class="">
+                                                  <img src="{{ asset("storage/" . $company->image) }}" alt="" class="">
                                                 @endif
                                             </div>
                                         </div>

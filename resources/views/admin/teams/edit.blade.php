@@ -5,6 +5,7 @@
     window.csrf_token = "{{ csrf_token() }}";
     team = {!! json_encode($team->toArray()) !!};
     user = "{{$user}}";
+    default_images = "{{json_encode($default_images)}}";
 </script>
 <div class="container">
     <div id="team-edit">
@@ -154,13 +155,14 @@
                             </div>
                         </div>
                       </div>
-
-                      <button type="submit" class="button-style button-color">
-                          {{__('Save Changes')}}
-                      </button>
-                      <button class="button-style button-color-red ml-5" type="button" name="button" @click="alertMenu(1)">
-                          <i class="fas fa-trash-alt mr-1"></i>Elimina
-                      </button>
+                      <div class="d-flex justify-content-between">
+                          <button type="submit" class="button-style button-color">
+                              {{__('Save Changes')}}
+                          </button>
+                          <button class="button-style button-color-red ml-5" type="button" name="button" @click="alertMenu(1)">
+                              <i class="fas fa-trash-alt mr-1"></i>Elimina
+                          </button>
+                      </div>                      
                 </form>
                 <form method="post" name="deleteTeam" action="{{ route('admin.teams.destroy', ['team'=> $team->id])}}" class="invisible">
                 @csrf

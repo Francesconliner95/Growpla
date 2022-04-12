@@ -11,6 +11,7 @@ use App\Page;
 use App\Team;
 use App\User;
 use App\Language;
+use App\Usertype;
 use Image;
 
 class TeamController extends Controller
@@ -89,6 +90,8 @@ class TeamController extends Controller
                               ->resize(300,300)/*risoluzione*/
                               ->save('./storage/'.$image_path, 100 /*Qualita*/);
                   $new_team_team->image = $image_path;
+              }else{
+                  $new_team_team->image = 'users_images/default-utente.svg';
               }
 
               $new_team_team->save();
@@ -112,6 +115,7 @@ class TeamController extends Controller
         $data = [
             'team' => $team,
             'user' => $user,
+            'default_images' => Usertype::pluck('image')->toArray(),
         ];
         app()->setLocale(Language::find(Auth::user()->language_id)->lang);
         return view('admin.teams.edit', $data);
@@ -150,12 +154,13 @@ class TeamController extends Controller
 
             $width = $request->width;
             $height = $request->height;
-
+            $default_images = Usertype::pluck('image')->toArray();
             if(array_key_exists('image', $data)){
                 //SE CARICO UNA NUOVA IMMAGINE
                 $old_image_name = $team->image;
+
                 //se la vecchia immagine è diversa da quella di default
-                if ($old_image_name) {
+                if ($old_image_name && !in_array($old_image_name,$default_images)) {
                     //elimino la vecchia immagine
                     Storage::delete($old_image_name);
                 }
@@ -171,20 +176,22 @@ class TeamController extends Controller
                 $team->image = $image_path;
             }elseif($width && $height){
                 //SE HO MODIFICATO L'IMMAGINE ESISTENTE
-                $image_path = $team->image;
+                if(!in_array($team->image,$default_images)){
 
-                if ($image_path) {
+                    $image_path = $team->image;
+                    if ($image_path) {
+                        $filename = rand().time();
+                        $ext = pathinfo($image_path, PATHINFO_EXTENSION);
+                        $new_path = 'teams_images/'.$filename.'.'.$ext;
+                        Storage::move($image_path, $new_path);
 
-                    $filename = rand().time();
-                    $ext = pathinfo($image_path, PATHINFO_EXTENSION);
-                    $new_path = 'teams_images/'.$filename.'.'.$ext;
-                    Storage::move($image_path, $new_path);
+                        $img = Image::make('storage/'.$new_path)
+                                    ->crop($data['width'],$data['height'], $data['x'],$data['y'])
+                                    ->resize(300,300)/*risoluzione*/
+                                    ->save('./storage/'.$new_path, 100 /*Qualita*/);
+                        $team->image = $new_path;
+                    }
 
-                    $img = Image::make('storage/'.$new_path)
-                                ->crop($data['width'],$data['height'], $data['x'],$data['y'])
-                                ->resize(300,300)/*risoluzione*/
-                                ->save('./storage/'.$new_path, 100 /*Qualita*/);
-                    $team->image = $new_path;
                 }
 
             }
@@ -249,10 +256,12 @@ class TeamController extends Controller
     public function destroy(Team $team)
     {
         $user = Auth::user();
+
         //verifico se è una mia pagina
         if($team->page->users->contains($user)){
 
-            if ($team->image){
+            $default_images = Usertype::pluck('image')->toArray();
+            if ($team->image && !in_array($user->image,$default_images)){
                 Storage::delete($team->image);
             }
 

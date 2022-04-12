@@ -8,7 +8,7 @@
     r_services = "{{$recommended_services}}";
     lifecycles = {!! json_encode($lifecycles->toArray()) !!};
     lifecycle_id = "{{$page->lifecycle_id}}";
-    skills = "{{$skills}}";
+    cofounder_services = "{{$cofounder_services}}";
 </script>
 <div class="container">
     <div id="service-edit">
@@ -99,8 +99,35 @@
                                 </div>
                                 <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9">
                                     <div v-if="usertype_selected==1" class="bubble pt-2">
+                                        <div v-if="cofounder_services.length>0" class="form-group" v-cloak>
+                                            <h6>Servizi di cui necessito</h6>
+                                            <div v-for="(service,i) in cofounder_services" class="d-inline-block border-style bg-white" v-cloak>
+                                              <input type="hidden" name="cofounder_services_id[]" :value="service.id">
+                                              <span for="">@{{service.name}}
+                                                <i class="fas fa-trash-alt" @click="removeCofounderService(i)"></i>
+                                              </span>
+                                            </div>
+                                        </div>
                                         <h6>Specifica le competenze che gli aspiranti co-founder devono possedere</h6>
-                                        <div v-for="(skill,i) in skills" class="border-style" v-cloak>
+                                        <div class="from-group row pr-3 pl-3">
+                                            <div class="col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1">
+                                                <select class="form-control" name="" @change="changeMainCofounderService()" v-model="main_cofounder_service_selected">
+                                                    <option value="">Specifica settore</option>
+                                                    <option v-for="main_cofounder_service in main_cofounder_services" :value="main_cofounder_service.id">@{{main_cofounder_service.name}}</option>
+                                                </select>
+                                            </div>
+                                            <div v-if="main_cofounder_service_selected" class="col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1">
+                                                <select class="form-control" name=""
+                                                v-model="sub_cofounder_service_selected">
+                                                    <option value="">Specifica sottocategoria</option>
+                                                    <option v-for="sub_cofounder_service in sub_cofounder_services_show" :value="sub_cofounder_service.id">@{{sub_cofounder_service.name}}</option>
+                                                </select>
+                                            </div>
+                                            <div v-if="sub_cofounder_service_selected" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-1">
+                                                <button type="button" name="button" @click="addCofounderServiceSelected(sub_cofounder_service_selected)" class="w-100 button-style button-color-blue">Aggiungi</button>
+                                            </div>
+                                        </div>
+                                        {{-- <div v-for="(skill,i) in skills" class="border-style" v-cloak>
                                             <input type="hidden" name="skills[]" :value="skill.name">
                                             <span>@{{skill.name}}
                                                 <i class="fas fa-trash-alt" @click="removeSkill(i)"></i>
@@ -123,7 +150,7 @@
                                             <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
                                                 <button type="button" name="button" @click="addManualSkill()" class="button-style button-color">Aggiungi</button>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     <div class="pt-2 pb-2">
                                         <i class="fas fa-star"></i>

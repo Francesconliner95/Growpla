@@ -17119,6 +17119,15 @@ readers do not read off random characters that represent icons */
   [1] Base Styles
 -------------------------------------------------*/
 
+button {
+  border-radius: 50%;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  color: rgb(10, 184, 159);
+}
+
 [aria-label][role~=tooltip] {
   position: relative;
 }
@@ -17144,16 +17153,18 @@ readers do not read off random characters that represent icons */
 }
 
 [aria-label][role~=tooltip]::after {
-  background: rgba(17, 17, 17, 0.9);
+  background: rgba(10, 184, 159, 0.9);
   border-radius: 4px;
   color: #ffffff;
   content: attr(aria-label);
   font-size: var(--microtip-font-size, 13px);
   font-weight: var(--microtip-font-weight, normal);
   text-transform: var(--microtip-text-transform, none);
+  background-color: rgba(10, 184, 159, 0.9);
   padding: 0.5em 1em;
   white-space: nowrap;
   box-sizing: content-box;
+  line-height: 1.1;
 }
 
 [aria-label][role~=tooltip]:hover::before,
@@ -17169,10 +17180,15 @@ readers do not read off random characters that represent icons */
 -------------------------------------------------*/
 
 [role~=tooltip][data-microtip-position|=top]::before {
-  background: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2236px%22%20height%3D%2212px%22%3E%3Cpath%20fill%3D%22rgba%2817,%2017,%2017,%200.9%29%22%20transform%3D%22rotate%280%29%22%20d%3D%22M2.658,0.000%20C-13.615,0.000%2050.938,0.000%2034.662,0.000%20C28.662,0.000%2023.035,12.002%2018.660,12.002%20C14.285,12.002%208.594,0.000%202.658,0.000%20Z%22/%3E%3C/svg%3E") no-repeat;
+  /* background: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2236px%22%20height%3D%2212px%22%3E%3Cpath%20fill%3D%22rgba%2817,%2017,%2017,%200.9%29%22%20transform%3D%22rotate%280%29%22%20d%3D%22M2.658,0.000%20C-13.615,0.000%2050.938,0.000%2034.662,0.000%20C28.662,0.000%2023.035,12.002%2018.660,12.002%20C14.285,12.002%208.594,0.000%202.658,0.000%20Z%22/%3E%3C/svg%3E") no-repeat;
   height: 6px;
   width: 18px;
-  margin-bottom: 5px;
+  margin-bottom: 5px;*/
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 12px solid rgba(10, 184, 159, 0.9);
 }
 
 [role~=tooltip][data-microtip-position|=top]::after {
@@ -17217,12 +17233,12 @@ readers do not read off random characters that represent icons */
 -------------------------------------------------*/
 
 [role~=tooltip][data-microtip-position=top-right]::after {
-  transform: translate3d(calc(0% - 16px), 0, 0);
+  transform: translate3d(calc(0% + -16px), 0, 0);
   bottom: 100%;
 }
 
 [role~=tooltip][data-microtip-position=top-right]:hover::after {
-  transform: translate3d(calc(0% - 16px), -5px, 0);
+  transform: translate3d(calc(0% + -16px), -5px, 0);
 }
 
 /* ------------------------------------------------
@@ -17280,12 +17296,12 @@ readers do not read off random characters that represent icons */
 -------------------------------------------------*/
 
 [role~=tooltip][data-microtip-position=bottom-right]::after {
-  transform: translate3d(calc(0% - 16px), -10px, 0);
+  transform: translate3d(calc(0% + -16px), -10px, 0);
   top: 100%;
 }
 
 [role~=tooltip][data-microtip-position=bottom-right]:hover::after {
-  transform: translate3d(calc(0% - 16px), 0, 0);
+  transform: translate3d(calc(0% + -16px), 0, 0);
 }
 
 /* ------------------------------------------------
@@ -17364,6 +17380,11 @@ readers do not read off random characters that represent icons */
 [role~=tooltip][data-microtip-size=large]::after {
   white-space: initial;
   width: 260px;
+}
+
+[role~=tooltip][data-microtip-size=extra-large]::after {
+  white-space: initial;
+  width: 300px;
 }
 
 [v-cloak] {
@@ -17734,8 +17755,6 @@ select option[value=""] {
 .img-cont {
   display: inline-block;
   border-radius: 50%;
-  background-color: #80DACD;
-  border: 2px solid #80DACD;
   position: relative;
 }
 
@@ -17748,11 +17767,6 @@ select option[value=""] {
   -o-object-fit: contain;
      object-fit: contain;
   border-radius: 50%;
-}
-
-.img-cont-blue {
-  background-color: #8AD1F1 !important;
-  border: 2px solid #8AD1F1 !important;
 }
 
 .micro-img {
@@ -17941,7 +17955,7 @@ select option[value=""] {
 
 .border-style {
   display: inline-block;
-  padding: 3px 10px 2px 10px;
+  padding: 3px 20px 3px 20px;
   border-radius: 10px;
   color: black;
   border: none;
@@ -17949,10 +17963,26 @@ select option[value=""] {
   margin-bottom: 3px;
 }
 
-.border-style-green {
-  padding: 10px;
-  border-radius: 20px;
-  border: 3px solid #01B59C;
+.border-style i {
+  transition: 0.2s;
+}
+
+.border-style i:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+.bubble-cont {
+  position: relative;
+}
+
+.bubble-cont .bubble {
+  position: absolute;
+  width: 400px;
+  left: calc(100% + 20px);
+  top: 40%;
+  z-index: 5;
+  background-color: #E5F5FC;
 }
 
 .bubble {
@@ -18505,7 +18535,7 @@ select option[value=""] {
   }
 
   100% {
-    transform: translateX(-2240px);
+    transform: translateX(calc(-320px * 7));
   }
 }
 
@@ -18515,7 +18545,7 @@ select option[value=""] {
   }
 
   100% {
-    transform: translateX(-2240px);
+    transform: translateX(calc(-320px * 7));
   }
 }
 
@@ -18550,7 +18580,7 @@ select option[value=""] {
   -webkit-animation: scroll 40s linear infinite;
   animation: scroll 40s linear infinite;
   display: flex;
-  width: 4480px;
+  width: calc(320px * 14);
 }
 
 .slider .paused-slider {
@@ -18813,15 +18843,16 @@ select option[value=""] {
   font-size: 20px;
   z-index: 5;
   border-radius: 0px !important;
-  background: rgba(255, 255, 255, 0.4);
 }
 
 .main-multi-slider .slider-left {
   left: 0px;
+  text-align: left;
 }
 
 .main-multi-slider .slider-right {
   right: 0px;
+  text-align: right;
 }
 
 .card-style-mini {
@@ -19695,7 +19726,7 @@ footer .bottom-footer {
 }
 
 #search .new-subscribers .item-cont .item-style .item .item-txt {
-  width: 215px;
+  width: calc(300px - 85px);
   display: inline-block;
   padding-left: 10px;
   font-size: 13px;
@@ -19871,7 +19902,7 @@ footer .bottom-footer {
 
 #user-show .cicle-container .cicle-item,
 #page-show .cicle-container .cicle-item {
-  height: 14.2857142857%;
+  height: calc(100% / 7);
   width: auto;
   display: flex;
   align-items: center;
@@ -20090,7 +20121,7 @@ footer .bottom-footer {
 
   #user-show .cicle-container .cicle-item,
   #page-show .cicle-container .cicle-item {
-    width: 14.2857142857%;
+    width: calc(100% / 7);
     height: auto;
     display: flex;
     align-items: center;

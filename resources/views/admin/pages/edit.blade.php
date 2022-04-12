@@ -26,7 +26,7 @@
                   {{-- NOME --}}
                   <div class="sub-section">
                       <h6>Nome {{$page->pagetype->name_it}}*</h6>
-                      <input type="text" name="name" class="form-control" value="{{ old('name',$page->name) }}" minlength="3" maxlength="70" autocomplete="nope" required>
+                      <input type="text" name="name" class="form-control" value="{{ old('name',$page->name) }}" minlength="3" maxlength="30" autocomplete="nope" required>
                       @error('name')
                           <span class="alert alert-danger">
                               {{__($message)}}

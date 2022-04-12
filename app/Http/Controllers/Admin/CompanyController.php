@@ -11,6 +11,7 @@ use App\Page;
 use App\Company;
 use App\User;
 use App\Language;
+use App\Pagetype;
 use Image;
 
 class CompanyController extends Controller
@@ -77,6 +78,8 @@ class CompanyController extends Controller
                             ->resize(300,300)/*risoluzione*/
                             ->save('./storage/'.$image_path, 100 /*Qualita*/);
                 $new_company->image = $image_path;
+            }else{
+                $new_company->image = 'pages_images/default-azienda.svg';
             }
 
             $new_company->save();
@@ -98,6 +101,7 @@ class CompanyController extends Controller
         $data = [
             'company' => $company,
             'page' => $page,
+            'default_images' => Pagetype::pluck('image')->toArray(),
         ];
         app()->setLocale(Language::find(Auth::user()->language_id)->lang);
         return view('admin.companies.edit', $data);
@@ -136,12 +140,13 @@ class CompanyController extends Controller
         if($can_update){
             $width = $request->width;
             $height = $request->height;
+            $default_images = Pagetype::pluck('image')->toArray();
 
             if(array_key_exists('image', $data)){
                 //SE CARICO UNA NUOVA IMMAGINE
                 $old_image_name = $company->image;
                 //se la vecchia immagine è diversa da quella di default
-                if ($old_image_name) {
+                if ($old_image_name && !in_array($old_image_name,$default_images)) {
                     //elimino la vecchia immagine
                     Storage::delete($old_image_name);
                 }
@@ -157,20 +162,22 @@ class CompanyController extends Controller
                 $company->image = $image_path;
             }elseif($width && $height){
                 //SE HO MODIFICATO L'IMMAGINE ESISTENTE
-                $image_path = $company->image;
+                if(!in_array($team->image,$default_images)){
+                    $image_path = $company->image;
 
-                if ($image_path) {
+                    if ($image_path) {
 
-                    $filename = rand().time();
-                    $ext = pathinfo($image_path, PATHINFO_EXTENSION);
-                    $new_path = 'companies_images/'.$filename.'.'.$ext;
-                    Storage::move($image_path, $new_path);
+                        $filename = rand().time();
+                        $ext = pathinfo($image_path, PATHINFO_EXTENSION);
+                        $new_path = 'companies_images/'.$filename.'.'.$ext;
+                        Storage::move($image_path, $new_path);
 
-                    $img = Image::make('storage/'.$new_path)
-                                ->crop($data['width'],$data['height'], $data['x'],$data['y'])
-                                ->resize(300,300)/*risoluzione*/
-                                ->save('./storage/'.$new_path, 100 /*Qualita*/);
-                    $company->image = $new_path;
+                        $img = Image::make('storage/'.$new_path)
+                                    ->crop($data['width'],$data['height'], $data['x'],$data['y'])
+                                    ->resize(300,300)/*risoluzione*/
+                                    ->save('./storage/'.$new_path, 100 /*Qualita*/);
+                        $company->image = $new_path;
+                    }
                 }
             }
 
@@ -186,7 +193,8 @@ class CompanyController extends Controller
         $user = Auth::user();
         if($company->user_id == $user->id){
 
-            if ($company->image){
+            $default_images = Pagetype::pluck('image')->toArray();
+            if ($company->image && !in_array($user->image,$default_images)){
                 Storage::delete($company->image);
             }
 

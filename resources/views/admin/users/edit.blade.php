@@ -29,7 +29,7 @@
                       <div class="row">
                           <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                               <h6>{{__('Name')}}*</h6>
-                              <input type="text" class="text-capitalize form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name',$user->name) }}" minlength="3" maxlength="70" required>
+                              <input type="text" class="text-capitalize form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name',$user->name) }}" minlength="3" maxlength="15" required>
                               @error('name')
                                   <span class="alert alert-danger">
                                       {{__($message)}}
@@ -38,7 +38,7 @@
                           </div>
                           <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
                               <h6>{{__('Surname')}}*</h6>
-                              <input type="text" class="text-capitalize form-control @error('surname') is-invalid @enderror" name="surname" value="{{ old('surname',$user->surname) }}" minlength="3" maxlength="70" required>
+                              <input type="text" class="text-capitalize form-control @error('surname') is-invalid @enderror" name="surname" value="{{ old('surname',$user->surname) }}" minlength="3" maxlength="20" required>
                               @error('surname')
                                   <span class="alert alert-danger">
                                       {{__($message)}}

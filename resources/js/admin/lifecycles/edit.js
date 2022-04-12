@@ -11,7 +11,7 @@ var create = new Vue({
         lang,
         lifecycles,
         lifecycle_id,
-        lifecycle_selected: '1',
+        lifecycle_selected: '',
         description: '',
     },
 
@@ -51,11 +51,11 @@ var create = new Vue({
 
     },
     mounted() {
-        this.lifecycle_selected = this.lifecycle_id?this.lifecycle_id:'1';
+        this.lifecycle_selected = this.lifecycle_id?this.lifecycle_id:'';
         //ONLY STARTUP
         if(this.lifecycle_id){
             this.lifecycle_id = parseInt(this.lifecycle_id);
-            this.lifecycle_selected = this.lifecycle_id?this.lifecycle_id:1;
+            this.lifecycle_selected = this.lifecycle_id?this.lifecycle_id:'';
             this.radioToggle(this.lifecycle_selected);
         }
     }

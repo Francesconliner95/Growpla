@@ -10,6 +10,7 @@ var create = new Vue({
     el: '#company-edit',
     data: {
         company,
+        default_images,
         image: '',
         image_src: '',
         x: 0,
@@ -223,7 +224,7 @@ var create = new Vue({
     mounted() {
         window.history.forward();
 
-        if(this.image){
+        if(this.image && !this.default_images.includes(this.image)){
             this.createCrop();
         }
 

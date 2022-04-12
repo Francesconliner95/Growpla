@@ -15,7 +15,8 @@ var create = new Vue({
         //ONLY STARTUP
         lifecycles,
         lifecycle_id,
-        skills,
+        cofounder_services,
+        //skills,
         //END ONLY STARTUP
         r_services_show: [],
         service_name: '',
@@ -25,6 +26,11 @@ var create = new Vue({
         sub_services_show: [],
         main_service_selected: '',
         sub_service_selected: '',
+        main_cofounder_services: [],
+        sub_cofounder_services: [],
+        sub_cofounder_services_show: [],
+        main_cofounder_service_selected: '',
+        sub_cofounder_service_selected: '',
         //ONLY STARTUP
         show_services: false,
         lifecycle_selected: '1',
@@ -33,12 +39,55 @@ var create = new Vue({
         userRecommended: [],
         pageRecommended: [],
         serviceRecommended: [],
-        skill_name: '',
-        skills_found: '',
+        cofounder_service_name: '',
+        cofounsder_services_found: '',
+        // skill_name: '',
+        // skills_found: '',
         //END ONLY STARTUP
 
     },
     methods: {
+        changeMainCofounderService(){
+            this.sub_cofounder_services_show = [];
+            this.sub_cofounder_services.forEach((sub_service, i) => {
+                if(sub_service.main_service_id==this.main_cofounder_service_selected){
+                    this.sub_cofounder_services_show.push(sub_service);
+                }
+            });
+            this.sub_cofounder_service_selected = "";
+            // this.sub_service_selected = this.sub_services_show[0].id;
+        },
+
+        addCofounderServiceSelected(service_id){
+            this.sub_cofounder_services_show.forEach((sub_service, i) => {
+                if(sub_service.id==service_id){
+                    var exist = false;
+                    this.cofounder_services.forEach((service, i) => {
+                        if(service.id==sub_service.id){
+                          exist = true;
+                        }
+                    });
+                    if(!exist){
+                        this.cofounder_services.push(sub_service);
+                        console.log(this.cofounder_services);
+                    }
+                }
+            });
+        },
+
+        // findServiceById(services_array,service_id){
+        //     services_array.forEach((service, i) => {
+        //         if(service.id==service_id){
+        //             return {'object': service, 'position': i};
+        //         }
+        //     });
+        //     return null;
+        // },
+
+        removeCofounderService(i){
+            this.cofounder_services.splice(i, 1);
+        },
+
         searchService(){
             if(this.service_name){
               axios.get('/api/searchService',{
@@ -143,6 +192,10 @@ var create = new Vue({
                 this.sub_services = response.data.results.sub_services;
                 // this.main_service_selected = this.main_services[0].id;
                 this.changeMainService();
+
+                this.main_cofounder_services = response.data.results.main_services;
+                this.sub_cofounder_services = response.data.results.sub_services;
+                this.changeMainCofounderService();
             });
         },
 
@@ -207,75 +260,77 @@ var create = new Vue({
             }
         },
 
-        searchSkill(){
-            if(this.skill_name){
-              axios.get('/api/searchSkill',{
-                  params: {
-                      skill_name: this.skill_name,
-                  }
-              }).then((response) => {
-                  this.skills_found = response.data.results.skills;
-                  if(!this.skill_name){
-                      this.skills_found = '';
-                  }
-              });
-            }else{
-              this.skills_found = '';
-            }
-        },
+        // searchSkill(){
+        //     if(this.skill_name){
+        //       axios.get('/api/searchSkill',{
+        //           params: {
+        //               skill_name: this.skill_name,
+        //           }
+        //       }).then((response) => {
+        //           this.skills_found = response.data.results.skills;
+        //           if(!this.skill_name){
+        //               this.skills_found = '';
+        //           }
+        //       });
+        //     }else{
+        //       this.skills_found = '';
+        //     }
+        // },
+        //
+        // addSkill(skill_found){
+        //
+        //     var exist = false;
+        //     this.skills.forEach((skill, i) => {
+        //         if(skill.pivot.skill_id==skill_found.id){
+        //           exist = true;
+        //         }
+        //     });
+        //
+        //     if(!exist){
+        //
+        //       let new_skill = {
+        //         "name":skill_found.name,
+        //         "pivot":{
+        //           "skill_id": skill_found.id,
+        //         },
+        //       };
+        //
+        //       this.skills.push(new_skill);
+        //     }
+        //
+        //     this.skills_found = '';
+        //     this.skill_name = '';
+        // },
+        //
+        // addManualSkill(){
+        //
+        //     var exist = false;
+        //     this.skills.forEach((skill, i) => {
+        //         if(skill.name==this.skill_name){
+        //           exist = true;
+        //         }
+        //     });
+        //
+        //     if(!exist && this.skill_name){
+        //
+        //       let new_skill = {
+        //         "name":this.skill_name,
+        //         // "pivot":{
+        //         //   "skill_id": skill_found.id,
+        //         // },
+        //       };
+        //       this.skills.push(new_skill);
+        //     }
+        //
+        //     this.skills_found = '';
+        //     this.skill_name = '';
+        // },
+        //
+        // removeSkill(i){
+        //     this.skills.splice(i, 1);
+        // },
 
-        addSkill(skill_found){
 
-            var exist = false;
-            this.skills.forEach((skill, i) => {
-                if(skill.pivot.skill_id==skill_found.id){
-                  exist = true;
-                }
-            });
-
-            if(!exist){
-
-              let new_skill = {
-                "name":skill_found.name,
-                "pivot":{
-                  "skill_id": skill_found.id,
-                },
-              };
-
-              this.skills.push(new_skill);
-            }
-
-            this.skills_found = '';
-            this.skill_name = '';
-        },
-
-        addManualSkill(){
-
-            var exist = false;
-            this.skills.forEach((skill, i) => {
-                if(skill.name==this.skill_name){
-                  exist = true;
-                }
-            });
-
-            if(!exist && this.skill_name){
-
-              let new_skill = {
-                "name":this.skill_name,
-                // "pivot":{
-                //   "skill_id": skill_found.id,
-                // },
-              };
-              this.skills.push(new_skill);
-            }
-
-            this.skills_found = '';
-            this.skill_name = '';
-        },
-
-        removeSkill(i){
-            this.skills.splice(i, 1);
-        },
 
         serviceToggle(service){
 
@@ -339,8 +394,8 @@ var create = new Vue({
             });
         }
         //ONLY STARTUP
-        if(this.skills){
-            this.skills = JSON.parse(this.skills.replace(/&quot;/g,'"'));
+        if(this.cofounder_services){
+            this.cofounder_services = JSON.parse(this.cofounder_services.replace(/&quot;/g,'"'));
         }
         //END ONLY STARTUP
 

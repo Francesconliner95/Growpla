@@ -4,6 +4,7 @@
 <script type="text/javascript">
     window.csrf_token = "{{ csrf_token() }}";
     company = "{{$company->page_id?$company->page:$company}}";
+    default_images = "{{json_encode($default_images)}}";
 </script>
 <div class="container">
     <div id="company-edit">
@@ -66,12 +67,13 @@
                               </div>
                           @enderror
                           <div :class="pages_found.length>0?'found':'found d-none'" v-cloak>
-                              <p class="item" v-for="page_found in pages_found"
-                              >
-                                <img v-if="page_found.image" :src="'/storage/' + page_found.image" alt="">
-                                @{{page_found.name}} @{{page_found.surname}}
-                                <button type="button" name="button" @click="addPage(page_found)">{{__('Add')}}</button>
-                              </p>
+                              <div class="item" v-for="page_found in pages_found">
+                                  <div class="img-cont mini-img">
+                                      <img v-if="page_found.image" :src="'/storage/' + page_found.image" alt="">
+                                  </div>
+                                  @{{page_found.name}} @{{page_found.surname}}
+                                  <button type="button" name="button" class="button-style button-color" @click="addPage(page_found)">{{__('Add')}}</button>
+                              </div>
                           </div>
                       </div>
                     </div>
@@ -128,12 +130,14 @@
                             </div>
                         </div>
                       </div>
-                      <button type="submit" class="button-style button-color">
-                          {{__('Save Changes')}}
-                      </button>
-                      <button class="button-style button-color-red ml-5" type="button" name="button" @click="alertMenu(1)">
-                          <i class="fas fa-trash-alt mr-1"></i>Elimina
-                      </button>
+                      <div class="d-flex justify-content-between">
+                          <button type="submit" class="button-style button-color">
+                              {{__('Save Changes')}}
+                          </button>
+                          <button class="button-style button-color-red ml-5" type="button" name="button" @click="alertMenu(1)">
+                              <i class="fas fa-trash-alt mr-1"></i>Elimina
+                          </button>
+                      </div>
                 </form>
                 <form method="post" name="deleteCompany" action="{{ route('admin.companies.destroy', ['company'=> $company->id])}}" class="p-0 m-0 d-inline-block">
                 @csrf

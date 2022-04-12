@@ -98,7 +98,7 @@
                         <a href="{{ route('home') }}" class="position-relative">
 
                         <a href="{{ route('admin.search') }}" class="position-relative">
-                            <img src="{{ asset("storage/images/logo-fullsize.svg") }}" alt="" class="logo">
+                            <img src="{{ asset("storage/images/logo-fullsize.svg") }}" alt="" id="logo-fullsize" class="logo" style="width:300px;">
                             <span class="beta">BETA</span>
                         </a>
                     </div>

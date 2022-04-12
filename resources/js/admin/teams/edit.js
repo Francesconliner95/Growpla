@@ -11,6 +11,7 @@ var create = new Vue({
     data: {
         team,
         user,
+        default_images,
         image: team.image,
         image_src: '/storage/' + team.image,
         x: 0,
@@ -216,7 +217,7 @@ var create = new Vue({
     mounted() {
         window.history.forward();
 
-        if(this.image){
+        if(this.image && !this.default_images.includes(this.image)){
             this.createCrop();
         }
 

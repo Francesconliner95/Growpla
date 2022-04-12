@@ -9,7 +9,7 @@
     r_services = "{{$recommended_services}}";
     lifecycles = "";
     lifecycle_id = "";
-    skills = "";
+    cofounder_services = "";
 </script>
 <div class="container">
     <div id="service-edit">

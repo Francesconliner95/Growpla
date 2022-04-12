@@ -77,7 +77,7 @@
                                 </div>
                             </div>
                             <div class="">
-                                <div class="mini-img d-inline-block">
+                                <div class="micro-img d-inline-block">
                                     <img src="{{ asset("storage/" . $page->pagetype->image) }}" alt="">
                                 </div>
                                 {{-- {{$page->pagetype->image}} --}}
@@ -89,11 +89,10 @@
                                         </p>
                                     @endif
                                         <div class="d-inline-block pr-2">
-                                            MVP
-                                            @if(!$page->type_bool_1)
-                                                {{-- <span>No</span> --}}
-                                            @elseif($page->type_bool_1)
+
+                                            @if($page->type_bool_1)
                                                 <span>
+                                                    MVP
                                                     <i class="fas fa-check-circle  txt-blue"></i>
                                                 </span>
                                             @endif
@@ -276,7 +275,7 @@
                 @if($is_my_page || count($page->give_page_services)>0 || count($page->have_page_services)>0)
                 <div id="services" class="sub-section">
                     <div class="row">
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5">
                         @if($is_my_page || count($page->give_page_services)>0)
                             <h6>{{__('Offro')}}
                                 <a v-if="is_my_page" href="{{route('admin.give-page-services.edit',$page->id)}}" class="button-style-circle button-color-gray">
@@ -308,7 +307,9 @@
                             @endif
                         @endif
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
+                        </div>
+                        <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5">
                         @if($is_my_page || count($page->have_page_services)>0)
                             <h6>{{__('Cerco')}}
                                 <a v-if="is_my_page" href="{{route('admin.have-page-services.edit',$page->id)}}" class="button-style-circle button-color-gray">
@@ -318,40 +319,47 @@
                             @if(count($page->have_page_services)>0)
                             <div class="main-multi-slider">
                                 <div class="multi-slider-cont mini" id="multi-slider-cont-2">
-                                    @if($page->pagetype_id==1)
-                                        @foreach ($page->have_page_pagetypes as $pagetype)
-                                            <div class="multi-slider-item col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                                <div class=" d-flex justify-content-center align-items-center h-100">
-                                                    <div class="card-style-mini card-color-blue">
-                                                        <div class="text-capitalize text-cont">
-                                                            {{$pagetype->name_it}}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                        @foreach ($page->have_page_usertypes as $usertype)
-                                            <div class="multi-slider-item col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                                <div class=" d-flex justify-content-center align-items-center h-100">
-                                                    <div class="card-style-mini card-color-blue">
-                                                        <div class="text-capitalize text-cont">
-                                                        {{$usertype->name_it}}
-                            @if($usertype->id==1 && $page->have_page_cofounders)
-                            <div>(
-                                @foreach ($page->have_page_cofounders as $i => $skill)
-                                    <span class="mini-txt">{{$skill->name}}
-                                        {{count($page->have_page_cofounders)-1>$i?',':''}}
-                                    </span>
-                                @endforeach
-                                )
+          @if($page->pagetype_id==1){{-- IN CASO SONO UNA STARTUP --}}
+              @foreach ($page->have_page_pagetypes as $pagetype)
+                  <div class="multi-slider-item col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                      <div class=" d-flex justify-content-center align-items-center h-100">
+                          <div class="card-style-mini card-color-blue">
+                              <div class="text-capitalize text-cont">
+                                  {{$pagetype->name_it}}
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              @endforeach
+              @foreach ($page->have_page_usertypes as $usertype)
+                    @if($usertype->id==1 && $page->have_page_cofounders)
+                        @foreach ($page->have_page_cofounders as $i => $service)
+                          <div class="multi-slider-item col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                              <div class="d-flex justify-content-center align-items-center h-100">
+                                  <div class="card-style-mini card-color-blue">
+                                      <div class="text-capitalize text-cont">
+                                      {{$usertype->name_it}}
+                                        <span class="mini-txt">
+                                          {{$service->name}}
+                                        </span>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                        @endforeach
+                    @else
+                        <div class="multi-slider-item col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class=" d-flex justify-content-center align-items-center h-100">
+                                <div class="card-style-mini card-color-blue">
+                                    <div class="text-capitalize text-cont">
+                                    {{$usertype->name_it}}
+                                    </div>
+                                </div>
                             </div>
-                            @endif
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    @endif
+                        </div>
+                      @endif
+                  @endforeach
+              @endif{{--FINE IN CASO SONO UNA STARTUP --}}
                                     @foreach ($page->have_page_services as $service)
                                         <div class="multi-slider-item col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                             <div class=" d-flex justify-content-center align-items-center h-100">
@@ -364,10 +372,10 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(1,'left')" class="slider-left" id="button-left-2" v-cloak>
+                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-2" v-cloak>
                                     <i class="fas fa-caret-left"></i>
                                 </button>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right" id="button-right-2" v-cloak>
+                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right bg-white" id="button-right-2" v-cloak>
                                     <i class="fas fa-caret-right"></i>
                                 </button>
                             </div>
@@ -388,7 +396,7 @@
                     </div>
                 </h3>
                 <div class="row justify-content-center">
-                    <div v-for="member in team_members" class="team-member-cont col-sm-12 col-md-6 col-lg-4 col-xl-4" >
+                    <div v-for="member in team_members" class="team-member-cont col-sm-12 col-md-6 col-lg-4 col-xl-4 mt-2 mb-2">
                         <div class="team-member">
                             <div class="img-cont medium-img">
                                 <img v-if="member.image" :src="'/storage/'+ member.image" alt="">
@@ -402,15 +410,19 @@
                                 <i class="fas fa-user-tie"></i>
                                 @{{member.role}}
                             </span>
-                            <div v-if="is_my_page" class="edit-top-left-small">
-                                <a v-if="member.position!=0" type="button" name="button" class="button-color-gray" @click="changeTeamPosition(member.id,-1)">
-                                    <i  class="fas fa-sort-up"></i>
-                                </a>
-                                <a v-if="member.position<team_members.length-1" type="button" name="button" class="button-color-gray" @click="changeTeamPosition(member.id,1)">
-                                    <i  class="fas fa-sort-down"></i>
-                                </a>
+                            <div v-if="is_my_page" class="edit-top-left-small pl-5">
+                                <div class="">
+                                    <a v-if="member.position!=0" type="button" name="button" class="button-color-gray" @click="changeTeamPosition(member.id,-1)">
+                                        <i  class="fas fa-sort-up"></i>
+                                    </a>
+                                </div>
+                                <div class="">
+                                    <a v-if="member.position<team_members.length-1" type="button" name="button" class="button-color-gray" @click="changeTeamPosition(member.id,1)">
+                                        <i  class="fas fa-sort-down"></i>
+                                    </a>
+                                </div>
                             </div>
-                            <div v-if="is_my_page" class="edit-top-right-vert">
+                            <div v-if="is_my_page" class="edit-top-right-vert pr-5">
                                 <a :href="'/admin/teams/' + member.id +'/edit'" class="button-color-gray">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
@@ -419,8 +431,8 @@
                     </div>
                     <div v-if="team_num>3" class="text-center d-block w-100 pb-2">
                         <a href="javascript:void(0)" @click="teamToggle()" class="mini-txt">
-                            <span v-if="team_members.length<=3">{{__('Show all')}}</span>
-                            <span v-else>{{__('Show less')}}</span>
+                            <span v-if="team_members.length<=3" class="txt-blue font-weight-bold">{{__('Show all')}}</span>
+                            <span v-else class="txt-blue font-weight-bold">{{__('Show less')}}</span>
                         </a>
                     </div>
                     <div v-if="is_my_page" class="d-flex justify-content-center w-100">

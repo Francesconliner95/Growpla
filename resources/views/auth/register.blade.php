@@ -20,8 +20,10 @@
         }
 
         if(!$set_lang){
-            app()->setLocale('en');
-            $language_id = 1;
+            // app()->setLocale('en');
+            // $language_id = 1;
+            app()->setLocale('it');
+            $language_id = 2;
         }
     @endphp
 <div class="container not-log-main-hg">
@@ -48,12 +50,10 @@
                 </div> --}}
                 <form  {{--v-else--}} method="POST" action="{{ route('register') }}" v-cloak>
                     @csrf
-
-
                     <div class="form-group row">
                         <label for="name" class="col-md-4 col-form-label text-md-right">Nome</label>
                         <div class="col-md-6">
-                            <input id="name" type="name" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name">
+                            <input id="name" type="name" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required maxlength="15" autocomplete="first-name">
                             @error('name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -64,7 +64,7 @@
                     <div class="form-group row">
                         <label for="surname" class="col-md-4 col-form-label text-md-right">Cognome</label>
                         <div class="col-md-6">
-                            <input id="surname" type="surname" class="form-control @error('surname') is-invalid @enderror" name="surname" value="{{ old('surname') }}" required autocomplete="surname">
+                            <input id="surname" type="surname" class="form-control @error('surname') is-invalid @enderror" name="surname" value="{{ old('surname') }}" required maxlength="20" autocomplete="family-name">
 
                             @error('surname')
                                 <span class="invalid-feedback" role="alert">
@@ -81,7 +81,7 @@
                             </div>
                         </label>
                         <div class="col-md-6">
-                            <input id="date_of_birth" type="date" class="form-control @error('date_of_birth') is-invalid @enderror" name="date_of_birth" value="{{ old('date_of_birth') }}" required autocomplete="date_of_birth" min="1900-01-01" :max="maxbirthdate()">
+                            <input id="date_of_birth" type="date" class="form-control @error('date_of_birth') is-invalid @enderror" name="date_of_birth" value="{{ old('date_of_birth') }}" required autocomplete="bday" min="1900-01-01" :max="maxbirthdate()">
 
                             @error('date_of_birth')
                                 <span class="invalid-feedback" role="alert">
@@ -126,7 +126,35 @@
                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                         </div>
                     </div>
-
+                    <div class="form-group row">
+                        <div class="col-md-8 offset-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="" id="tc" required>
+                                <label class="form-check-label " for="tc">
+                                    <small>
+                                        {{ __('I accept these') }}
+                                    <a href="{{ route('termsAndConditions') }}">
+                                        {{ __('Terms & Conditions') }}
+                                    </a>
+                                    </small>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-8 offset-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="" id="pp"
+                                required>
+                                <label class="form-check-label" for="pp" >
+                                    <small>
+                                        {{ __('I have read the information on the processing of personal data.') }}
+                                    <a href="{{ route('privacyPolicy') }}">Privacy Policy</a>
+                                    </small>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group row mb-0">
                         <div class="col-md-6 offset-md-4">
                             <button type="submit" class="button-style button-color">
@@ -134,8 +162,6 @@
                             </button>
                         </div>
                     </div>
-
-
                 </form>
             </div>
         </div>

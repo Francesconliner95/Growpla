@@ -64,7 +64,7 @@ class Page extends Model
     }
 
     public function have_page_cofounders(){
-        return $this->belongsToMany('App\Skill','have_page_cofounders','page_id','skill_id')
+        return $this->belongsToMany('App\Service','have_page_cofounders','page_id','service_id')
         ->withPivot('id');
     }
 

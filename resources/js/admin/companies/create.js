@@ -132,7 +132,7 @@ var create = new Vue({
 
     },
     mounted() {
-        window.history.forward();
+      console.log('qua');
 
         if(this.image){
             this.createCrop();

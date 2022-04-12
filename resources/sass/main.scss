@@ -362,8 +362,8 @@ select option[value=""] {
 .img-cont{
     display: inline-block;
     border-radius: 50%;
-    background-color: $green_2;
-    border: 2px solid $green_2;
+    //background-color: $green_2;
+    // border: 2px solid $green_2;
     position: relative;
     img{
         position: absolute;
@@ -376,8 +376,8 @@ select option[value=""] {
     }
 }
 .img-cont-blue{
-    background-color: $blue_2 !important;
-    border: 2px solid $blue_2 !important;
+    //background-color: $blue_2 !important;
+    // border: 2px solid $blue_2 !important;
 }
 .micro-img{
     width: 30px;
@@ -559,20 +559,32 @@ select option[value=""] {
 
 .border-style{
     display: inline-block;
-    padding: 3px 10px 2px 10px;
+    padding: 3px 20px 3px 20px;
     border-radius: 10px;
     color: black;
     border: none;
     margin-right: 3px;
     margin-bottom: 3px;
+    i{
+      transition: .2s;
+      &:hover{
+          cursor: pointer;
+          transform: scale(1.2);
+      }
+    }
 }
 
-.border-style-green{
-    padding: 10px;
-    border-radius: 20px;
-    border: 3px solid $green_3;
+.bubble-cont{
+    position: relative;
+    .bubble{
+        position: absolute;
+        width: 400px;
+        left: calc(100% + 20px);
+        top: 40%;
+        z-index: 5;
+        background-color: $blue_1;
+    }
 }
-
 .bubble{
     background-color: $green_1;
     border-radius: 0px 20px 20px 20px;
@@ -1483,15 +1495,17 @@ select option[value=""] {
         font-size: 20px;
         z-index: 5;
         border-radius: 0px !important;
-        background: rgba(255,255,255,.4);
+        // background: rgba(255,255,255,.4);
     }
     .slider-left{
         left: 0px;
+        text-align: left;
         // background: rgb(255,255,255);
         // background: linear-gradient(90deg, rgba(255,255,255,.8), rgba(255,255,255,.25), rgba(255,255,255,0));
     }
     .slider-right{
         right: 0px;
+        text-align: right;
         // background: rgb(255,255,255);
         // background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.25), rgba(255,255,255,.8));
     }

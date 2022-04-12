@@ -75344,7 +75344,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   mounted: function mounted() {
     var _this4 = this;
 
-    window.history.forward();
+    console.log('qua');
 
     if (this.image) {
       this.createCrop();
@@ -75425,6 +75425,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#company-edit',
   data: {
     company: company,
+    default_images: default_images,
     image: '',
     image_src: '',
     x: 0,
@@ -75645,7 +75646,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
     window.history.forward();
 
-    if (this.image) {
+    if (this.image && !this.default_images.includes(this.image)) {
       this.createCrop();
     } //DRAG & DROP
 
@@ -76345,7 +76346,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     lang: lang,
     lifecycles: lifecycles,
     lifecycle_id: lifecycle_id,
-    lifecycle_selected: '1',
+    lifecycle_selected: '',
     description: ''
   },
   methods: {
@@ -76382,11 +76383,11 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   },
   created: function created() {},
   mounted: function mounted() {
-    this.lifecycle_selected = this.lifecycle_id ? this.lifecycle_id : '1'; //ONLY STARTUP
+    this.lifecycle_selected = this.lifecycle_id ? this.lifecycle_id : ''; //ONLY STARTUP
 
     if (this.lifecycle_id) {
       this.lifecycle_id = parseInt(this.lifecycle_id);
-      this.lifecycle_selected = this.lifecycle_id ? this.lifecycle_id : 1;
+      this.lifecycle_selected = this.lifecycle_id ? this.lifecycle_id : '';
       this.radioToggle(this.lifecycle_selected);
     }
   }
@@ -76496,6 +76497,7 @@ if (im_in_index) {
   document.getElementById("nav-bar").style.backgroundColor = "transparent"; // document.getElementById("nav-bar").style.backgroundColor = "rgb(194,214,215)";
 
   document.getElementById("nav-bar").style.boxShadow = "none";
+  document.getElementById("logo-fullsize").src = "/storage/images/logo-fullsize-white.svg";
 
   window.onscroll = function () {
     scrollFunction();
@@ -76507,10 +76509,12 @@ function scrollFunction() {
     document.getElementById("nav-bar").style.backgroundColor = "white";
     document.getElementById("nav-bar").style.boxShadow = "0 0.125rem 0.25rem rgb(0 0 0 / 8%)";
     document.getElementById("nav-bar").style.transition = ".2s";
+    document.getElementById("logo-fullsize").src = "/storage/images/logo-fullsize.svg";
   } else {
     // document.getElementById("nav-bar").style.backgroundColor = "rgb(194,214,215)";
     document.getElementById("nav-bar").style.backgroundColor = "transparent";
     document.getElementById("nav-bar").style.boxShadow = "none";
+    document.getElementById("logo-fullsize").src = "/storage/images/logo-fullsize-white.svg";
   }
 }
 
@@ -77623,7 +77627,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#page-sectors',
   data: {
     language_id: language_id,
-    sectors: sectors
+    sectors: sectors,
+    display_message: ''
   },
   methods: {
     isChecked: function isChecked(id) {
@@ -77636,10 +77641,17 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     checkboxToggle: function checkboxToggle(id) {
       if (document.getElementById(id).checked) {
         document.getElementById(id).checked = false;
-        document.getElementById(id + '-b').classList.remove("button-active-sector");
-      } else {
+        document.getElementById(id + '-b').classList.remove("active");
+      } else if ($('div.checkbox-group.required :checkbox:checked').length < 3) {
         document.getElementById(id).checked = true;
-        document.getElementById(id + '-b').classList.add("button-active-sector");
+        document.getElementById(id + '-b').classList.add("active");
+      }
+    },
+    submitForm: function submitForm() {
+      if ($('div.checkbox-group.required :checkbox:checked').length > 0) {
+        document.getElementById('page-sectors-form').submit();
+      } else {
+        this.display_message = 'Seleziona almeno una delle precedenti opzioni';
       }
     }
   },
@@ -78683,7 +78695,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     //ONLY STARTUP
     lifecycles: lifecycles,
     lifecycle_id: lifecycle_id,
-    skills: skills,
+    cofounder_services: cofounder_services,
+    //skills,
     //END ONLY STARTUP
     r_services_show: [],
     service_name: '',
@@ -78693,6 +78706,11 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     sub_services_show: [],
     main_service_selected: '',
     sub_service_selected: '',
+    main_cofounder_services: [],
+    sub_cofounder_services: [],
+    sub_cofounder_services_show: [],
+    main_cofounder_service_selected: '',
+    sub_cofounder_service_selected: '',
     //ONLY STARTUP
     show_services: false,
     lifecycle_selected: '1',
@@ -78701,13 +78719,58 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     userRecommended: [],
     pageRecommended: [],
     serviceRecommended: [],
-    skill_name: '',
-    skills_found: '' //END ONLY STARTUP
+    cofounder_service_name: '',
+    cofounsder_services_found: '' // skill_name: '',
+    // skills_found: '',
+    //END ONLY STARTUP
 
   },
   methods: {
-    searchService: function searchService() {
+    changeMainCofounderService: function changeMainCofounderService() {
       var _this = this;
+
+      this.sub_cofounder_services_show = [];
+      this.sub_cofounder_services.forEach(function (sub_service, i) {
+        if (sub_service.main_service_id == _this.main_cofounder_service_selected) {
+          _this.sub_cofounder_services_show.push(sub_service);
+        }
+      });
+      this.sub_cofounder_service_selected = ""; // this.sub_service_selected = this.sub_services_show[0].id;
+    },
+    addCofounderServiceSelected: function addCofounderServiceSelected(service_id) {
+      var _this2 = this;
+
+      this.sub_cofounder_services_show.forEach(function (sub_service, i) {
+        if (sub_service.id == service_id) {
+          var exist = false;
+
+          _this2.cofounder_services.forEach(function (service, i) {
+            if (service.id == sub_service.id) {
+              exist = true;
+            }
+          });
+
+          if (!exist) {
+            _this2.cofounder_services.push(sub_service);
+
+            console.log(_this2.cofounder_services);
+          }
+        }
+      });
+    },
+    // findServiceById(services_array,service_id){
+    //     services_array.forEach((service, i) => {
+    //         if(service.id==service_id){
+    //             return {'object': service, 'position': i};
+    //         }
+    //     });
+    //     return null;
+    // },
+    removeCofounderService: function removeCofounderService(i) {
+      this.cofounder_services.splice(i, 1);
+    },
+    searchService: function searchService() {
+      var _this3 = this;
 
       if (this.service_name) {
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchService', {
@@ -78715,10 +78778,10 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
             service_name: this.service_name
           }
         }).then(function (response) {
-          _this.services_found = response.data.results.services;
+          _this3.services_found = response.data.results.services;
 
-          if (!_this.service_name) {
-            _this.services_found = '';
+          if (!_this3.service_name) {
+            _this3.services_found = '';
           }
         });
       } else {
@@ -78749,11 +78812,11 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       this.service_name = '';
     },
     addManualService: function addManualService() {
-      var _this2 = this;
+      var _this4 = this;
 
       var exist = false;
       this.services.forEach(function (service, i) {
-        if (service.name == _this2.service_name) {
+        if (service.name == _this4.service_name) {
           exist = true;
         }
       });
@@ -78779,11 +78842,11 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       this.addRservice(service);
     },
     removeRservice: function removeRservice(service) {
-      var _this3 = this;
+      var _this5 = this;
 
       this.r_services_show.forEach(function (r_service, i) {
         if (r_service.id == service.id) {
-          _this3.r_services_show.splice(i, 1);
+          _this5.r_services_show.splice(i, 1);
         }
       });
     },
@@ -78800,32 +78863,37 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       return not_exist;
     },
     getAllServices: function getAllServices() {
-      var _this4 = this;
+      var _this6 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getAllServices', {}).then(function (response) {
-        _this4.main_services = response.data.results.main_services;
-        _this4.sub_services = response.data.results.sub_services; // this.main_service_selected = this.main_services[0].id;
+        _this6.main_services = response.data.results.main_services;
+        _this6.sub_services = response.data.results.sub_services; // this.main_service_selected = this.main_services[0].id;
 
-        _this4.changeMainService();
+        _this6.changeMainService();
+
+        _this6.main_cofounder_services = response.data.results.main_services;
+        _this6.sub_cofounder_services = response.data.results.sub_services;
+
+        _this6.changeMainCofounderService();
       });
     },
     changeMainService: function changeMainService() {
-      var _this5 = this;
+      var _this7 = this;
 
       this.sub_services_show = [];
       this.sub_services.forEach(function (sub_service, i) {
-        if (sub_service.main_service_id == _this5.main_service_selected) {
-          _this5.sub_services_show.push(sub_service);
+        if (sub_service.main_service_id == _this7.main_service_selected) {
+          _this7.sub_services_show.push(sub_service);
         }
       });
       this.sub_service_selected = ""; // this.sub_service_selected = this.sub_services_show[0].id;
     },
     addServiceSelected: function addServiceSelected(service_id) {
-      var _this6 = this;
+      var _this8 = this;
 
       this.sub_services_show.forEach(function (sub_service, i) {
         if (sub_service.id == service_id) {
-          _this6.addService(sub_service);
+          _this8.addService(sub_service);
         }
       });
     },
@@ -78877,72 +78945,75 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         default:
       }
     },
-    searchSkill: function searchSkill() {
-      var _this7 = this;
-
-      if (this.skill_name) {
-        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchSkill', {
-          params: {
-            skill_name: this.skill_name
-          }
-        }).then(function (response) {
-          _this7.skills_found = response.data.results.skills;
-
-          if (!_this7.skill_name) {
-            _this7.skills_found = '';
-          }
-        });
-      } else {
-        this.skills_found = '';
-      }
-    },
-    addSkill: function addSkill(skill_found) {
-      var exist = false;
-      this.skills.forEach(function (skill, i) {
-        if (skill.pivot.skill_id == skill_found.id) {
-          exist = true;
-        }
-      });
-
-      if (!exist) {
-        var new_skill = {
-          "name": skill_found.name,
-          "pivot": {
-            "skill_id": skill_found.id
-          }
-        };
-        this.skills.push(new_skill);
-      }
-
-      this.skills_found = '';
-      this.skill_name = '';
-    },
-    addManualSkill: function addManualSkill() {
-      var _this8 = this;
-
-      var exist = false;
-      this.skills.forEach(function (skill, i) {
-        if (skill.name == _this8.skill_name) {
-          exist = true;
-        }
-      });
-
-      if (!exist && this.skill_name) {
-        var new_skill = {
-          "name": this.skill_name // "pivot":{
-          //   "skill_id": skill_found.id,
-          // },
-
-        };
-        this.skills.push(new_skill);
-      }
-
-      this.skills_found = '';
-      this.skill_name = '';
-    },
-    removeSkill: function removeSkill(i) {
-      this.skills.splice(i, 1);
-    },
+    // searchSkill(){
+    //     if(this.skill_name){
+    //       axios.get('/api/searchSkill',{
+    //           params: {
+    //               skill_name: this.skill_name,
+    //           }
+    //       }).then((response) => {
+    //           this.skills_found = response.data.results.skills;
+    //           if(!this.skill_name){
+    //               this.skills_found = '';
+    //           }
+    //       });
+    //     }else{
+    //       this.skills_found = '';
+    //     }
+    // },
+    //
+    // addSkill(skill_found){
+    //
+    //     var exist = false;
+    //     this.skills.forEach((skill, i) => {
+    //         if(skill.pivot.skill_id==skill_found.id){
+    //           exist = true;
+    //         }
+    //     });
+    //
+    //     if(!exist){
+    //
+    //       let new_skill = {
+    //         "name":skill_found.name,
+    //         "pivot":{
+    //           "skill_id": skill_found.id,
+    //         },
+    //       };
+    //
+    //       this.skills.push(new_skill);
+    //     }
+    //
+    //     this.skills_found = '';
+    //     this.skill_name = '';
+    // },
+    //
+    // addManualSkill(){
+    //
+    //     var exist = false;
+    //     this.skills.forEach((skill, i) => {
+    //         if(skill.name==this.skill_name){
+    //           exist = true;
+    //         }
+    //     });
+    //
+    //     if(!exist && this.skill_name){
+    //
+    //       let new_skill = {
+    //         "name":this.skill_name,
+    //         // "pivot":{
+    //         //   "skill_id": skill_found.id,
+    //         // },
+    //       };
+    //       this.skills.push(new_skill);
+    //     }
+    //
+    //     this.skills_found = '';
+    //     this.skill_name = '';
+    // },
+    //
+    // removeSkill(i){
+    //     this.skills.splice(i, 1);
+    // },
     serviceToggle: function serviceToggle(service) {
       var _this9 = this;
 
@@ -79010,8 +79081,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     } //ONLY STARTUP
 
 
-    if (this.skills) {
-      this.skills = JSON.parse(this.skills.replace(/&quot;/g, '"'));
+    if (this.cofounder_services) {
+      this.cofounder_services = JSON.parse(this.cofounder_services.replace(/&quot;/g, '"'));
     } //END ONLY STARTUP
 
   },
@@ -79849,6 +79920,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   data: {
     team: team,
     user: user,
+    default_images: default_images,
     image: team.image,
     image_src: '/storage/' + team.image,
     x: 0,
@@ -80056,7 +80128,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
     window.history.forward();
 
-    if (this.image) {
+    if (this.image && !this.default_images.includes(this.image)) {
       this.createCrop();
     } //DRAG & DROP
 
@@ -80120,8 +80192,9 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#user-create',
   data: {
     language_id: language_id,
-    userTypes: userTypes,
-    pageTypes: pageTypes
+    // userTypes,
+    // pageTypes,
+    display_message: ''
   },
   methods: {
     isChecked: function isChecked(id) {
@@ -80139,11 +80212,21 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         document.getElementById(id).checked = true;
         document.getElementById(id + '-b').classList.add("active");
       }
+
+      this.display_message = '';
+    },
+    submitForm: function submitForm() {
+      if ($('div.checkbox-group.required :checkbox:checked').length > 0) {
+        document.getElementById('user-create-form').submit();
+      } else {
+        this.display_message = 'Seleziona almeno una delle precedenti opzioni';
+      }
     }
   },
-  created: function created() {
-    this.userTypes = JSON.parse(this.userTypes.replace(/&quot;/g, '"'));
-    this.pageTypes = JSON.parse(this.pageTypes.replace(/&quot;/g, '"'));
+  created: function created() {// this.userTypes = JSON.parse(this.userTypes.replace(/&quot;/g,'"'));
+    // this.pageTypes = JSON.parse(this.pageTypes.replace(/&quot;/g,'"'));
+    // console.log(this.userTypes);
+    // console.log(this.pageTypes);
   },
   mounted: function mounted() {}
 });
@@ -81794,8 +81877,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

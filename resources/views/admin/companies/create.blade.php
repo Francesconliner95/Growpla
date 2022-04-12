@@ -47,39 +47,17 @@
                               </div>
                           @enderror
                           <div :class="pages_found.length>0?'found':'found d-none'" v-cloak>
-                              <p class="item" v-for="page_found in pages_found"
-                              >
-                                <img v-if="page_found.image" :src="'/storage/' + page_found.image" alt="">
-                                @{{page_found.name}}
-                                <button type="button" name="button" @click="addPage(page_found)">{{__('Add')}}</button>
-                              </p>
+                            <div class="item" v-for="page_found in pages_found">
+                                <div class="img-cont mini-img">
+                                    <img v-if="page_found.image" :src="'/storage/' + page_found.image" alt="">
+                                </div>
+                                @{{page_found.name}} @{{page_found.surname}}
+                                <button type="button" name="button" class="button-style button-color" @click="addPage(page_found)">{{__('Add')}}</button>
+                            </div>
                           </div>
                       </div>
                     </div>
                     <div v-else class="">
-                      <h6>{{__('Image')}}</h6>
-                      {{-- Immagine --}}
-                      <div class="edit-image-drag-drop dd-cropper row">
-                          <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-1">
-                              <div class="drop-zone">
-                                  <span class="drop-zone__prompt">{{__('Drop file here or click to upload')}}
-                                      <span class="mini-txt d-block">{{__('Supported formats')}} .jpeg-.png .jpg .gif .swg max:6Mb</span>
-                                  </span>
-                                  <input ref="mainImage" type="file" class="form-control-file drop-zone__input" name="image" accept="image/*" id="imgInp" >
-                                  @error ('image')
-                                      <div class="alert alert-danger">
-                                          {{__($message)}}
-                                      </div>
-                                  @enderror
-                              </div>
-                          </div>
-                          <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-1">
-                              <div class="cropper  c-circle" id="copper-main">
-                                  <img v-if="image"
-                                  {{--@load="createCrop()"--}} :src="image_src" id="croppr"/>
-                              </div>
-                          </div>
-                      </div>
                       <input type="hidden" name="width" v-model="width">
                       <input type="hidden" name="height" v-model="height">
                       <input type="hidden" name="x" v-model="x">
@@ -103,6 +81,30 @@
                               </div>
                           @enderror
                       </div>
+                    </div>
+
+                    {{-- Immagine --}}
+                    <h6>{{__('Image')}}</h6>
+                    <div v-show="!registered_company" class="edit-image-drag-drop dd-cropper row">
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-1">
+                            <div class="drop-zone">
+                                <span class="drop-zone__prompt">{{__('Drop file here or click to upload')}}
+                                    <span class="mini-txt d-block">{{__('Supported formats')}} .jpeg-.png .jpg .gif .swg max:6Mb</span>
+                                </span>
+                                <input ref="mainImage" type="file" class="form-control-file drop-zone__input" name="image" accept="image/*" id="imgInp" >
+                                @error ('image')
+                                    <div class="alert alert-danger">
+                                        {{__($message)}}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-1">
+                            <div class="cropper  c-circle" id="copper-main">
+                                <img v-if="image"
+                                {{--@load="createCrop()"--}} :src="image_src" id="croppr"/>
+                            </div>
+                        </div>
                     </div>
 
                     <button type="submit" class="button-style button-color">

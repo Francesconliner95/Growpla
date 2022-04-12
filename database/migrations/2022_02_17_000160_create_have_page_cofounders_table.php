@@ -17,10 +17,10 @@ class CreateHavePageCofoundersTable extends Migration
             $table->id();
             $table->unsignedbigInteger('page_id');
             $table->foreign('page_id')->references('id')->on('pages')->onDelete('cascade');
-            $table->unsignedbigInteger('skill_id');
-            $table->foreign('skill_id')->references('id')->on('skills')->onDelete('cascade');
+            $table->unsignedbigInteger('service_id');
+            $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
 
-            $table->unique(['page_id', 'skill_id']);
+            $table->unique(['page_id', 'service_id']);
 
             $table->timestamps();
         });

@@ -20,8 +20,10 @@
         }
 
         if(!$set_lang){
-            app()->setLocale('en');
-            $language_id = 1;
+            // app()->setLocale('en');
+            // $language_id = 1;
+            app()->setLocale('it');
+            $language_id = 2;
         }
     @endphp
 <div class="container not-log-main-hg">

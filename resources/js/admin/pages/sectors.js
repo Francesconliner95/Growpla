@@ -10,6 +10,7 @@ var create = new Vue({
     data: {
       language_id,
       sectors,
+      display_message: '',
     },
     methods: {
       isChecked(id){
@@ -20,21 +21,26 @@ var create = new Vue({
         }
       },
       checkboxToggle(id){
-        if(document.getElementById(id).checked){
-          document.getElementById(id).checked = false;
-          document.getElementById(id+'-b').classList.remove("button-active-sector");
-        }else{
-          document.getElementById(id).checked = true;
-          document.getElementById(id+'-b').classList.add("button-active-sector");
-        }
-      }
-
+          if(document.getElementById(id).checked){
+              document.getElementById(id).checked = false;
+              document.getElementById(id+'-b').classList.remove("active");
+          }else if($('div.checkbox-group.required :checkbox:checked').length<3){
+              document.getElementById(id).checked = true;
+              document.getElementById(id+'-b').classList.add("active");
+          }
+      },
+      submitForm(){
+          if($('div.checkbox-group.required :checkbox:checked').length>0){
+              document.getElementById('page-sectors-form').submit();
+          }else{
+              this.display_message = 'Seleziona almeno una delle precedenti opzioni';
+          }
+      },
     },
     created(){
       this.sectors = JSON.parse(this.sectors.replace(/&quot;/g,'"'));
     },
     mounted() {
-
 
     }
 

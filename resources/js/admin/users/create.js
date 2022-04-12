@@ -9,8 +9,9 @@ var create = new Vue({
     el: '#user-create',
     data: {
       language_id,
-      userTypes,
-      pageTypes,
+      // userTypes,
+      // pageTypes,
+      display_message: '',
     },
     methods: {
       isChecked(id){
@@ -28,15 +29,26 @@ var create = new Vue({
           document.getElementById(id).checked = true;
           document.getElementById(id+'-b').classList.add("active");
         }
-      }
+        this.display_message = '';
+      },
+
+      submitForm(){
+        if($('div.checkbox-group.required :checkbox:checked').length>0){
+            document.getElementById('user-create-form').submit();
+        }else{
+            this.display_message = 'Seleziona almeno una delle precedenti opzioni';
+        }
+
+      },
 
     },
     created(){
-      this.userTypes = JSON.parse(this.userTypes.replace(/&quot;/g,'"'));
-      this.pageTypes = JSON.parse(this.pageTypes.replace(/&quot;/g,'"'));
+      // this.userTypes = JSON.parse(this.userTypes.replace(/&quot;/g,'"'));
+      // this.pageTypes = JSON.parse(this.pageTypes.replace(/&quot;/g,'"'));
+      // console.log(this.userTypes);
+      // console.log(this.pageTypes);
     },
     mounted() {
-
 
     }
 

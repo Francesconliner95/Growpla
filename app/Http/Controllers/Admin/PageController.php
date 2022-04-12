@@ -163,11 +163,11 @@ class PageController extends Controller
                         ->get();
         foreach ($team_members as $team_member) {
           if($team_member->user_id){
-            $user = User::find($team_member->user_id);
-            $team_member['name'] = $user->name;
-            $team_member['surname'] = $user->surname;
-            $team_member['image'] = $user->image;
-            $team_member['linkedin'] = $user->linkedin;
+            $user_team = User::find($team_member->user_id);
+            $team_member['name'] = $user_team->name;
+            $team_member['surname'] = $user_team->surname;
+            $team_member['image'] = $user_team->image;
+            $team_member['linkedin'] = $user_team->linkedin;
           }
         }
 
