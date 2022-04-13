@@ -77,8 +77,11 @@
                                 </div>
                             </div>
                             <div class="">
-                                <div class="micro-img d-inline-block">
-                                    <img src="{{ asset("storage/" . $page->pagetype->image) }}" alt="">
+                                <div class="d-inline-block">
+                                    <button aria-label="{{$page->pagetype->name_it}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
+                                    <div class="micro-img d-inline-block">
+                                        <img src="{{ asset("storage/" . $page->pagetype->image) }}" alt="">
+                                    </div>
                                 </div>
                                 {{-- {{$page->pagetype->image}} --}}
                                 @switch($page->pagetype_id)
@@ -339,7 +342,7 @@
                                   <div class="card-style-mini card-color-blue">
                                       <div class="text-capitalize text-cont">
                                       {{$usertype->name_it}}
-                                        <span class="mini-txt">
+                                        <span class="mini-txt text-dark">
                                           {{$service->name}}
                                         </span>
                                       </div>

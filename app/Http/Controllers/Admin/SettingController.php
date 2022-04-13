@@ -48,7 +48,7 @@ class SettingController extends Controller
             app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
             $data = [
-                'account' => $account,
+                'user' => $account,
                 'accountTypes' => $accountTypes,
                 'startupStates' => $startupStates,
                 'filter_messages' => $filter_messages,

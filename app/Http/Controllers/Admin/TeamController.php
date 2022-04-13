@@ -13,6 +13,7 @@ use App\User;
 use App\Language;
 use App\Usertype;
 use Image;
+use App\Notification;
 
 class TeamController extends Controller
 {
@@ -44,9 +45,9 @@ class TeamController extends Controller
         $page = Page::find($page_id);
 
         $can_create = false;
-
+        // dd($request);
         if($request->registered_team==0){
-            //pagina non iscritta
+            //utente non iscritto
             if($request->user_id){
                 $already_exist = Team::where('page_id',$page_id)
                                 ->where('user_id',$request->user_id)
@@ -56,7 +57,7 @@ class TeamController extends Controller
                 }
             }
         }else{
-            //pagina iscritta
+            //utente iscritto
             if($request->name && $request->surname){
                 $can_create = true;
             }
@@ -73,6 +74,7 @@ class TeamController extends Controller
           }else{
               $new_last_position = 0;
           }
+
 
           if($page->users->contains(Auth::user()) && $team_number<50){
 
@@ -95,8 +97,17 @@ class TeamController extends Controller
               }
 
               $new_team_team->save();
+              if($request->user_id){
+                  //NOTIFICATIONS
+                  $new_notf = new Notification();
+                  $new_notf->user_id = $request->user_id;
+                  $new_notf->notification_type_id = 18;
+                  $new_notf->ref_user_id = Auth::user()->id;
+                  $new_notf->ref_to_page_id = $page->id;
+                  $new_notf->parameter = $page->id;
+                  $new_notf->save();
+              }
           }
-
         }
 
         return redirect()->route('admin.pages.show', ['page' => $page_id]);
@@ -126,6 +137,8 @@ class TeamController extends Controller
         $request->validate([
           'role'=> 'required|max:255',
         ]);
+
+        $old_user_id = $team->user_id;
 
         $data = $request->all();
 
@@ -197,6 +210,18 @@ class TeamController extends Controller
             }
             $data['image'] = $team->image;
             $team->update($data);
+            if($request->user_id){
+                if ($request->user_id!=$old_user_id) {
+                    //NOTIFICATIONS
+                    $new_notf = new Notification();
+                    $new_notf->user_id = $request->user_id;
+                    $new_notf->notification_type_id = 18;
+                    $new_notf->ref_user_id = Auth::user()->id;
+                    $new_notf->ref_to_page_id = $page->id;
+                    $new_notf->parameter = $page->id;
+                    $new_notf->save();
+                }
+            }
         }
 
         return redirect()->route('admin.pages.show', ['page' => $page->id]);

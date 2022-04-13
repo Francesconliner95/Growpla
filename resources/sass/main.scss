@@ -400,6 +400,20 @@ select option[value=""] {
     height: 300px;
 }
 
+.r-90r{
+  transition: .2s;
+  transform: rotate(90deg);
+}
+
+.r-90l{
+  transition: .2s;
+  transform: rotate(-90deg);
+}
+
+.r-180{
+  transform: rotate(90deg);
+}
+
 .tag{
     background-color: lightblue;
     display: inline-block;

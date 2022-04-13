@@ -65,7 +65,6 @@
                         <label for="surname" class="col-md-4 col-form-label text-md-right">Cognome</label>
                         <div class="col-md-6">
                             <input id="surname" type="surname" class="form-control @error('surname') is-invalid @enderror" name="surname" value="{{ old('surname') }}" required maxlength="20" autocomplete="family-name">
-
                             @error('surname')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

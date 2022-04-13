@@ -16,7 +16,9 @@
             <div class="item-style h-100" v-cloak>
                 <div class="header">
                     <h4 class="">
-                        <a href="{{$your_user_id?route('admin.users.show',$your_user_id):route('admin.pages.show',$your_page_id)}}" class="text-capitalize txt-green">{{$displayed_name}}</a>
+                        <a href="{{$your_user_id?route('admin.users.show',$your_user_id):route('admin.pages.show',$your_page_id)}}" class="text-capitalize txt-green">
+                            {{$displayed_name}}
+                        </a>
                     </h4>
                     <h1>
                         <i class="fas fa-comment"></i>

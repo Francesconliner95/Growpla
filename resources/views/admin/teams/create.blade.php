@@ -59,7 +59,7 @@
                           </div>
                       </div>
                     </div>
-                    <div v-else class="">                      
+                    <div v-else class="" v-cloak>
                       <input type="hidden" name="width" v-model="width">
                       <input type="hidden" name="height" v-model="height">
                       <input type="hidden" name="x" v-model="x">
@@ -107,25 +107,27 @@
                     </div>
 
                     {{-- Immagine --}}
-                    <h6>{{__('Image')}}</h6>
-                    <div v-show="!registered_team" class="edit-image-drag-drop dd-cropper row">
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-1">
-                            <div class="drop-zone">
-                                <span class="drop-zone__prompt">{{__('Drop file here or click to upload')}}
-                                    <span class="mini-txt d-block">{{__('Supported formats')}} .jpeg-.png .jpg .gif .swg max:6Mb</span>
-                                </span>
-                                <input ref="mainImage" type="file" class="form-control-file drop-zone__input" name="image" accept="image/*" id="imgInp" >
-                                @error ('image')
-                                    <div class="alert alert-danger">
-                                        {{__($message)}}
-                                    </div>
-                                @enderror
+                    <div v-show="!registered_team" class="" v-cloak>
+                        <h6>{{__('Image')}}</h6>
+                        <div  class="edit-image-drag-drop dd-cropper row">
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-1">
+                                <div class="drop-zone">
+                                    <span class="drop-zone__prompt">{{__('Drop file here or click to upload')}}
+                                        <span class="mini-txt d-block">{{__('Supported formats')}} .jpeg-.png .jpg .gif .swg max:6Mb</span>
+                                    </span>
+                                    <input ref="mainImage" type="file" class="form-control-file drop-zone__input" name="image" accept="image/*" id="imgInp" >
+                                    @error ('image')
+                                        <div class="alert alert-danger">
+                                            {{__($message)}}
+                                        </div>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-1">
-                            <div class="cropper  c-circle" id="copper-main">
-                                <img v-if="image"
-                                {{--@load="createCrop()"--}} :src="image_src" id="croppr"/>
+                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-1">
+                                <div class="cropper  c-circle" id="copper-main">
+                                    <img v-if="image"
+                                    {{--@load="createCrop()"--}} :src="image_src" id="croppr"/>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -58,6 +58,10 @@ if (document.getElementById('user-sectors')) {
     require('./admin/users/sectors.js');
 }
 
+if (document.getElementById('user-settings')) {
+    require('./admin/users/settings.js');
+}
+
 //PAGES
 if (document.getElementById('page-edit')) {
     require('./admin/pages/edit.js');

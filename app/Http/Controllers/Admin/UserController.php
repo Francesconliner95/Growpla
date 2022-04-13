@@ -320,6 +320,27 @@ class UserController extends Controller
 
     }
 
+    public function destroy(User $user){
+
+        //dd('qua');
+        if(Auth::user()->id == $user->id){
+
+            $pages = $user->pages;
+
+            foreach ($pages as $page) {
+                if(count($page->users)<=1){
+                    $page->delete();
+                }
+            }
+
+            $user->delete();
+
+            return redirect()->route('home');
+
+        }abort(404);
+
+    }
+
     public function addAdmin(Request $request){
 
         $request->validate([

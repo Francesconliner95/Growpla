@@ -187,7 +187,6 @@ class ChatController extends Controller
                       ->merge($from_my_user_to_page)
                       ->merge($from_user_to_my_user)
                       ->merge($from_page_to_my_user);
-
         foreach ($user_chats as $user_chat) {
             $user_chat['message_not_read'] = message_not_read($user_chat,$user->id,'user');
         }

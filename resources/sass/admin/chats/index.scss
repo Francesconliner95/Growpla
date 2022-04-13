@@ -1,45 +1,49 @@
 #chat-index{
-    //height: calc(100vh - 215px);
+    height: calc(100vh - 287px);
     .chat-cont{
         //min-height: 93%;
-        //height: calc(100% - 50px);
-        background-color: $hover_gray;
+        height: 100%;
+        background-color: $blue_1;
         border-radius: 20px;
         margin-top: 10px;
-        padding: 15px;
-        .chat-item{
-            display: block;
-            display: flex;
-            justify-content: space-between;
-            background-color: white;
-            border-radius: 10px;
-            padding: 8px 20px;
-            margin-bottom: 7px;
-            color: black;
-            font-size: 17px;
-            position: relative;
-            .mini-txt{
-                padding-right: 20px;
+        padding: 10px;
+        .account{
+            border-bottom: 2px solid $gray_1;
+            padding: 10px 0;
+            .notread{
+              width: 10px;
+              height: 10px;
+              display: inline-block;
+              border-radius: 5px;
+              background-color: $green_3;
             }
-            &:hover{
-                text-decoration: none;
-                transition: .2s;
-                transform: scale(1.01);
-                background-color: $default_green;
-                .mini-txt{
+            .chat-item{
+                padding: 10px 20px;
+                margin-bottom: 7px;
+                color: black;
+                font-size: 17px;
+                position: relative;
+                display: inline-block;
+                width: 100%;
+                &:hover{
+                    text-decoration: none;
+                    transition: .2s;
+                    background-color: $blue_2;
+                    color: white;
+                    cursor: pointer;
+                    .mini-txt{
+                        color: white;
+                    }
+                }
+                .not{
+                    min-width: 20px;
+                    display: inline-block;
+                    border-radius: 10px;
+                    background-color: $green_3;
+                    text-align: center;
+                    font-size: 12px;
                     color: white;
                 }
-            }
-            .not{
-                min-width: 30px;
-                position: absolute;
-                display: inline-block;
-                border-radius: 10px;
-                background-color: orange;
-                text-align: center;
-                color: white;
-                top: -5px;
-                right: -5px;
             }
         }
     }

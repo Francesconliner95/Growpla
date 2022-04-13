@@ -185,11 +185,11 @@
                                     <i class="fas fa-exchange-alt"></i>
                                     Cambia account
                                 </a> --}}
-                                {{-- <a class="dropdown-item"
+                                <a class="dropdown-item"
                                 href="{{route('admin.users.settings',Auth::user()->id)}}">
                                     <i class="fas fa-cog"></i>
                                     Impostazioni
-                                </a> --}}
+                                </a>
                                 <a class="dropdown-item"
                                 href="{{ route('logout') }}"
                                    onclick="event.preventDefault();

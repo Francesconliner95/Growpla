@@ -215,7 +215,7 @@ var create = new Vue({
       }
     },
     mounted() {
-        window.history.forward();
+        //window.history.forward();
 
         if(this.image && !this.default_images.includes(this.image)){
             this.createCrop();

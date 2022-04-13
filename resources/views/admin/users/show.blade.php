@@ -25,12 +25,14 @@
                             </div>
                             @{{list_user.name + ' ' + list_user.surname}}
                         </a>
-                        <a v-for="page in list_pages" href="#" @click="startChat(page.id)" class="d-block" v-cloak>
-                            <div class="img-cont mini-img">
-                                <img v-if="page.image" :src="'/storage/'+page.image" alt="">
-                            </div>
-                            @{{page.name}}
-                        </a>
+                        <div v-if="list_pages.length>0" class=""  v-cloak>
+                            <a v-for="page in list_pages" href="#" @click="startChat(page.id)" class="d-block">
+                                <div class="img-cont mini-img">
+                                    <img v-if="page.image" :src="'/storage/'+page.image" alt="">
+                                </div>
+                                @{{page.name}}
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -79,6 +81,7 @@
                             </div>
                             <div class="">
                                 @foreach ($user->usertypes as $key => $usertype)
+                                    <button aria-label="{{$usertype->name_it}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
                                     @if(in_array ($usertype->id, array(1, 2)))
                                         <div class="micro-img d-inline-block">
                                             <img src="{{ asset("storage/" . $usertype->image) }}" alt="">

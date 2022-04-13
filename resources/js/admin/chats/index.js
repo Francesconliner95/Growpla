@@ -25,7 +25,6 @@ var create = new Vue({
     },
 
     methods: {
-
         // getChats(){
         //     axios.get('/admin/getChats',{
         //
@@ -33,6 +32,37 @@ var create = new Vue({
         //         this.chats = response.data.results.chats;
         //     });
         // },
+
+        selectAccount(i,user_or_page){
+            console.log(this.my_user_chats);
+            // var elements = document.getElementsByClassName('chat-item');
+            // for (var j = 0; j < elements.length; j++) {
+            //     elements[j].classList.add("d-none");
+            // }
+
+            if(user_or_page){
+                if(document.getElementById('chat-item-0').classList.contains('d-none')){
+                    document.getElementById('chat-item-0').classList.remove("d-none");
+                    document.getElementById('arrow-0').classList.remove("r-90r");
+                    document.getElementById('arrow-0').classList.add("r-90l");
+                }else{
+                    document.getElementById('chat-item-0').classList.add("d-none");
+                    document.getElementById('arrow-0').classList.remove("r-90l");
+                    document.getElementById('arrow-0').classList.add("r-90r");
+                }
+            }else{
+                if(document.getElementById('chat-item-'+(i+1)).classList.contains('d-none')){
+                    document.getElementById('chat-item-'+(i+1)).classList.remove("d-none");
+                    document.getElementById('arrow-'+(i+1)).classList.remove("r-90r");
+                    document.getElementById('arrow-'+(i+1)).classList.add("r-90l");
+                }else{
+                    document.getElementById('chat-item-'+(i+1)).classList.add("d-none");
+                    document.getElementById('arrow-'+(i+1)).classList.remove("r-90l");
+                    document.getElementById('arrow-'+(i+1)).classList.add("r-90r");
+                }
+            }
+        },
+
         orderByUpdatedAt(object){
             for (var i=0; i < object.length; i++) {
                 for (var j=0; j < object.length-1; j++) {
@@ -174,12 +204,23 @@ var create = new Vue({
 
         if(this.my_user_chats){
             this.my_user_chats = JSON.parse(this.my_user_chats.replace(/&quot;/g,'"'));
+            this.my_user_chats['show'] = false;
             this.my_user_chats.user_chats = this.orderByUpdatedAt(this.my_user_chats.user_chats);
+            this.my_user_chats['all_mnr'] = 0;
+            console.log(this.my_user_chats);
+            this.my_user_chats.user_chats.forEach((chat, i) => {
+                this.my_user_chats['all_mnr'] = this.my_user_chats['all_mnr'] + chat['message_not_read'];
+            });
         }
         if(this.my_pages_chats){
             this.my_pages_chats = JSON.parse(this.my_pages_chats.replace(/&quot;/g,'"'));
             this.my_pages_chats.forEach((page, i) => {
                 page.page_chats = this.orderByUpdatedAt(page.page_chats);
+                page['show'] = false;
+                page['all_mnr'] = 0;
+                page.page_chats.forEach((chat, i) => {
+                    page['all_mnr'] = page['all_mnr'] + chat['message_not_read'];
+                });
             });
         }
 

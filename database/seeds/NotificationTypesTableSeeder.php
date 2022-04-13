@@ -70,7 +70,7 @@ class NotificationTypesTableSeeder extends Seeder
             ],
             [ //collaborazione ad una mia pagina
                 'message'=> '/',
-                'message_it'=> 'ha aggiunto alle sue collaborazioni la tua pagina',
+                'message_it'=> 'ha aggiunto alle sue collaborazioni',
                 'url' => '/admin/collaborations/my/',
             ],
             [//conferma collaborazione ad utente
@@ -90,17 +90,22 @@ class NotificationTypesTableSeeder extends Seeder
             ],
             [
                 'message'=> '/',
-                'message_it'=> 'ha iniziato a seguire la tua pagina',
+                'message_it'=> 'ha iniziato a seguire',
                 'url' => '/admin/users/',
             ],
             [
                 'message'=> '/',
-                'message_it'=> 'ti ha nominato admin della pagina',
+                'message_it'=> 'ti ha nominato admin di',
                 'url' => '/admin/pages/',
             ],
             [
                 'message'=> '/',
-                'message_it'=> 'ti ha rimosso come admin della pagina',
+                'message_it'=> 'ti ha rimosso come admin di',
+                'url' => '/admin/pages/',
+            ],
+            [
+                'message'=> '/',
+                'message_it'=> 'ti ha aggiunto come membro del team di',
                 'url' => '/admin/pages/',
             ],
         ];

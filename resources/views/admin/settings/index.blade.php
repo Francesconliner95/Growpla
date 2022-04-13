@@ -3,7 +3,7 @@
 @section('content')
 <script type="text/javascript">
     window.csrf_token = "{{ csrf_token() }}";
-    account = {!! json_encode($account->toArray()) !!};
+    user = {!! json_encode($user->toArray()) !!};
     accountTypes = {!! json_encode($accountTypes->toArray()) !!};
     startupStates = {!! json_encode($startupStates->toArray()) !!};
     filter_messages = {!! json_encode($filter_messages->toArray()) !!};

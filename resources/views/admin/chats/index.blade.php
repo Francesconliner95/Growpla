@@ -13,35 +13,58 @@
             <div class="item-style h-100">
                 <div class="header">
                     <h2>{{__('Chats')}}</h2>
-                    <h4 v-if="!is_mobile" class="">
+                    <h4 v-if="!is_mobile" class="text-dark">
                         <a :href="your_user_id?
                         '/admin/users/' + your_user_id
                         :'/admin/pages/' + your_page_id"
-                        class="text-capitalize txt-green" v-cloak>@{{displayed_name}}</a>
+                        class="text-capitalize text-dark font-weight-bold" v-cloak>@{{displayed_name}}</a>
+                        <i class="fas fa-comment"></i>
                     </h4>
-                    <i class="fas fa-comments"></i>
                 </div>
-                <div class="row">
+                <div class="row" style="height: 85%;">
                     <div class="chat-cont custom-scrollbar col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                        <h6 class="text-capitalize" v-cloak>@{{my_user_chats.name}} @{{my_user_chats.surname}}</h6>
-                        <p v-if="!my_user_chats.user_chats" v-cloak>{{__('No conversation started, to start one press message go to the account concerned')}}</p>
-                        <a v-else v-for="chat in my_user_chats.user_chats"
-                         {{-- :href="'/admin/chats/show/' + chat.id + '/' + 'user'" --}}
-                        @click="pressChat(my_user_chats,chat)"
-                          class="chat-item" v-cloak>
-                            <span class="text-capitalize">@{{chat.user_id?chat.name + ' '+ chat.surname : chat.name}}</span>
-                            <span v-if="chat.message_not_read" class="not">@{{chat.message_not_read}}</span>
-                        </a>
-                        <div v-for="page in my_pages_chats" class="" v-cloak>
-                            <div v-show="page.page_chats!=''" class="">
-                                <h6 class="text-capitalize">@{{page.name}}</h6>
-                                <a v-for="chat in page.page_chats" @click="pressChat(page,chat)"
-                                {{-- :href="'/admin/chats/show/' + chat.id + '/' + page.id"  --}}
-                                class="chat-item">
-                                    <span class="text-capitalize">@{{chat.user_id?chat.name + ' '+ chat.surname : chat.name}}</span>
-                                    <span v-if="chat.message_not_read" class="not">@{{chat.message_not_read}}</span>
-                                </a>
-                            </div>
+                        <div class="account">
+                            <button class="text-dark d-flex justify-content-between align-items-center w-100 pb-2" @click="selectAccount(0,true)" v-cloak>
+                              <div>
+                                  <span class="text-capitalize font-weight-bold">
+                                      @{{my_user_chats.name}}    @{{my_user_chats.surname}}
+                                  </span>
+                                  <span v-if="my_user_chats.all_mnr" class="d-block mini-txt pl-2">Hai @{{my_user_chats.all_mnr}} @{{my_user_chats.all_mnr<=1?'messaggo non letto':'messagginon letti'}}
+                                      <span class="notread"></span>
+                                  </span>
+                              </div>
+                              <div class="img-cont micro-img">
+                                  <img src="/storage/images/arrows-black-icon.svg" id="arrow-0" class="p-2 r-90r" alt="">
+                              </div>
+                            </button>
+                            <a v-for="chat in my_user_chats.user_chats"
+                            @click="pressChat(my_user_chats,chat)"
+                              class="chat-item d-none" id="chat-item-0" v-cloak>
+                                <span class="text-capitalize">@{{chat.user_id?chat.name + ' '+ chat.surname : chat.name}}</span>
+                                <span v-if="chat.message_not_read" class="not">@{{chat.message_not_read}}</span>
+                            </a>
+                        </div>
+                        <div v-for="(page,i) in my_pages_chats"
+                        v-show="page.page_chats!=''" class="account" v-cloak>
+                            <button class="text-capitalize font-weight-bold text-dark d-flex justify-content-between align-items-center w-100 pb-2" @click="selectAccount(i,false)">
+                              <div>
+                                  <span class="text-capitalize font-weight-bold">
+                                      @{{page.name}}
+                                  </span>
+                                  <span v-if="page.all_mnr" class="d-block mini-txt pl-2">Hai @{{page.all_mnr}} @{{page.all_mnr<=1?'messaggo non letto':'messagginon letti'}}
+                                      <span class="notread"></span>
+                                  </span>
+                              </div>
+                              <div class="img-cont micro-img">
+                                  <img src="/storage/images/arrows-black-icon.svg" :id="'arrow-'+(i+1)" class="p-2 r-90r" alt="">
+                              </div>
+                            </button>
+                            <a v-for="chat in page.page_chats" @click="pressChat(page,chat)"
+                            {{-- :href="'/admin/chats/show/' + chat.id + '/' + page.id"  --}}
+                            class="chat-item  d-none" :id="'chat-item-'+(i+1)">
+                                <span class="text-capitalize">@{{chat.user_id?chat.name + ' '+ chat.surname : chat.name}}</span>
+                                <span v-if="chat.message_not_read" class="not">@{{chat.message_not_read}}</span>
+                            </a>
                         </div>
                     </div>
                     <div v-if="!is_mobile" class="col-sm-12 col-md-9 col-lg-9 col-xl-9" v-cloak>
@@ -70,3 +93,4 @@
     </div>
 </div>
 @endsection
+{{-- <p v-if="!my_user_chats.user_chats" v-cloak>{{__('No conversation started, to start one press message go to the account concerned')}}</p> --}}
