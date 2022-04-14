@@ -82,6 +82,11 @@
                         {{__('Save')}}
                     </button>
                 </form>
+                <div class="text-right">
+                    <a href="{{ route('admin.supports.switch') }}" class="font-weight-bold mini-txt txt-green">
+                        Suggerisci altri servizi
+                    </a>
+                </div>
             </div>
         </div>
     </div>

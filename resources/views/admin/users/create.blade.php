@@ -66,7 +66,7 @@
                 </div>
                 <h6 class="pb-2">Seleziona una o più delle seguenti alternative</h6>
                 <button type="button" name="button" class="button-style button-color-blue" @click="submitForm()">Salva</button>
-              </form>
+              </form>              
             </div>
         </div>
     </div>

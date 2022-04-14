@@ -26,10 +26,10 @@
                         <div class="account">
                             <button class="text-dark d-flex justify-content-between align-items-center w-100 pb-2" @click="selectAccount(0,true)" v-cloak>
                               <div>
-                                  <span class="text-capitalize font-weight-bold">
+                                  <span class="text-capitalize font-weight-bold w-100 d-inline-block">
                                       @{{my_user_chats.name}}    @{{my_user_chats.surname}}
                                   </span>
-                                  <span v-if="my_user_chats.all_mnr" class="d-block mini-txt pl-2">Hai @{{my_user_chats.all_mnr}} @{{my_user_chats.all_mnr<=1?'messaggo non letto':'messagginon letti'}}
+                                  <span v-if="my_user_chats.all_mnr" class="d-block mini-txt">Hai @{{my_user_chats.all_mnr}} @{{my_user_chats.all_mnr<=1?'messaggo non letto':'messaggi non letti'}}
                                       <span class="notread"></span>
                                   </span>
                               </div>
@@ -38,29 +38,28 @@
                               </div>
                             </button>
                             <a v-for="chat in my_user_chats.user_chats"
-                            @click="pressChat(my_user_chats,chat)"
-                              class="chat-item d-none" id="chat-item-0" v-cloak>
+                            @click="pressChat(my_user_chats,chat,'chat-item-0')"
+                              class="active chat-item d-none" id="chat-item-0" v-cloak>
                                 <span class="text-capitalize">@{{chat.user_id?chat.name + ' '+ chat.surname : chat.name}}</span>
                                 <span v-if="chat.message_not_read" class="not">@{{chat.message_not_read}}</span>
                             </a>
                         </div>
                         <div v-for="(page,i) in my_pages_chats"
                         v-show="page.page_chats!=''" class="account" v-cloak>
-                            <button class="text-capitalize font-weight-bold text-dark d-flex justify-content-between align-items-center w-100 pb-2" @click="selectAccount(i,false)">
-                              <div>
-                                  <span class="text-capitalize font-weight-bold">
-                                      @{{page.name}}
-                                  </span>
-                                  <span v-if="page.all_mnr" class="d-block mini-txt pl-2">Hai @{{page.all_mnr}} @{{page.all_mnr<=1?'messaggo non letto':'messagginon letti'}}
-                                      <span class="notread"></span>
-                                  </span>
-                              </div>
-                              <div class="img-cont micro-img">
-                                  <img src="/storage/images/arrows-black-icon.svg" :id="'arrow-'+(i+1)" class="p-2 r-90r" alt="">
-                              </div>
+                            <button class="font-weight-bold text-dark d-flex justify-content-between align-items-center w-100 pb-2" @click="selectAccount(i,false)">
+                                <div>
+                                    <span class="text-capitalize font-weight-bold text-left w-100 d-inline-block">
+                                        @{{page.name}}
+                                    </span>
+                                    <span v-if="page.all_mnr" class="d-block mini-txt">Hai @{{page.all_mnr}} @{{page.all_mnr<=1?'messaggo non letto':'messaggi non letti'}}
+                                        <span class="notread"></span>
+                                    </span>
+                                </div>
+                                <div class="img-cont micro-img">
+                                    <img src="/storage/images/arrows-black-icon.svg" :id="'arrow-'+(i+1)" class="p-2 r-90r" alt="">
+                                </div>
                             </button>
-                            <a v-for="chat in page.page_chats" @click="pressChat(page,chat)"
-                            {{-- :href="'/admin/chats/show/' + chat.id + '/' + page.id"  --}}
+                            <a v-for="chat in page.page_chats" @click="pressChat(page,chat,'chat-item-'+(i+1))"
                             class="chat-item  d-none" :id="'chat-item-'+(i+1)">
                                 <span class="text-capitalize">@{{chat.user_id?chat.name + ' '+ chat.surname : chat.name}}</span>
                                 <span v-if="chat.message_not_read" class="not">@{{chat.message_not_read}}</span>

@@ -45,7 +45,7 @@
                     </a>
                     <div class="row">
                         {{-- Immagine --}}
-                        <div class="profile-image col-sm-12 col-md-12 col-lg-3 col-xl-3 text-center">
+                        <div class="profile-image col-sm-12 col-md-12 col-lg-2 col-xl-2 text-center">
                             <div class="img-cont big-img position-relative">
                                 @if($user->image)
                                   <img src="{{ asset("storage/" . $user->image) }}" alt="" class="">
@@ -55,56 +55,105 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-12 col-lg-9 col-xl-9">
+                        <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
                             <div class="row">
-                                <h2 class="text-capitalize col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                <h2 class="text-capitalize col-sm-12 col-md-6 col-lg-6 col-xl-6 m-0 d-flex justify-content-start align-items-center">
                                     {{$user->name}} {{$user->surname}}
                                     <a class="button-style-circle button-color-gray" href="{{route('admin.users.create')}}">
                                         <i class="fas fa-cog"></i>
                                     </a>
                                 </h2>
-                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <a v-if="is_my_user" class="button-style button-color-green" href="{{route('admin.follows.index')}}">
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 text-center">
+                                    <a v-if="is_my_user" class="button-style button-color-green m-1" href="{{route('admin.follows.index')}}">
                                         {{count(Auth::user()->user_following)
                                         +count(Auth::user()->page_following)}} Seguiti
                                     </a>
-                                    <button v-if="!is_my_user" :class="following?'button-style button-color-orange':'button-style button-color'" type="button" name="button" @click="toggleFollow({{$user->id}})" v-cloak>
+                                    <button v-if="!is_my_user" :class="following?'button-style button-color-orangem r-1':'button-style button-color m-1'" type="button" name="button" @click="toggleFollow({{$user->id}})" v-cloak>
                                         <span v-if="following">{{__('Following')}}</span>
                                         <span v-else>{{__('Follow')}}</span>
                                     </button>
                                     @if(!$is_my_user)
-                                    <button class="button-style button-color-blue" type="button" name="button" @click="switchAccounts()">
+                                    <button class="button-style button-color-blue m-1" type="button" name="button" @click="switchAccounts()">
                                         <span>Messaggio</span>
                                     </button>
                                     @endif
                                 </div>
-                            </div>
-                            <div class="">
-                                @foreach ($user->usertypes as $key => $usertype)
-                                    <button aria-label="{{$usertype->name_it}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
-                                    @if(in_array ($usertype->id, array(1, 2)))
-                                        <div class="micro-img d-inline-block">
-                                            <img src="{{ asset("storage/" . $usertype->image) }}" alt="">
-                                        </div>
-                                    @endif
-                                    {{-- @if(in_array ($usertype->id, array(1, 2)))
-                                        <span class="text-capitalize font-weight-bold">
-                                            {{$usertype->name_it}}
-                                        </span>
-                                        @if($usertype->id!=2)
-                                            <span>|</span>
-                                        @endif
-                                    @endif --}}
-                                @endforeach
                             </div>
                             <div class="address">
                                 <span>{{$user->region_id?$user->region->name:''}}</span>
                                 <span>{{$user->region_id && $user->municipality?',':''}}</span>
                                 <span>{{$user->municipality}}</span>
                             </div>
+                            <div class="d-flex justify-content-start align-items-center">
+                                @foreach ($user->usertypes as $key => $usertype)
+                                    @if(in_array ($usertype->id, array(1, 2)))
+                                        <div class="d-inline-block">
+                                            <button aria-label="{{$usertype->name_it}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
+                                            <div class="micro-img d-inline-block m-1">
+                                                <img src="{{ asset("storage/" . $usertype->image) }}" alt="">
+                                            </div>
+                                        </div>
+                                    @endif
+                                    {{-- DIPENDENTE --}}
+                                    @if($usertype->id==4)
+                                      @if(count($user->companies)<=0)
+                                        <div class="d-inline-block">
+                                            <button aria-label="{{$usertype->name_it}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
+                                            <div class="micro-img d-inline-block m-1">
+                                                <img src="{{ asset("storage/" . $usertype->image) }}" alt="">
+                                            </div>
+                                        </div>
+                                        @if($is_my_user)
+                                            <a href="{{route('admin.companies.create')}}" class="text-dark text-center">
+                                                <i class="fas fa-plus"></i>
+                                                <span>Aggiungi azienda per cui sei dipendente</span>
+                                            </a>
+                                        @endif
+                                      @else
+                                          @foreach ($user->companies as $company)
+                                                @if($company->page_id)
+                                                    <div class="d-inline-block">
+                                                            <button aria-label="dipendente di {{$company->page->name}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
+                                                            <a href="{{route('admin.pages.show', $company->page->id)}}" class="d-inline-block">
+                                                                <div class="img-cont micro-img m-1">
+                                                                  @if($company->page->image)
+                                                                    <img src="{{ asset("storage/" . $company->page->image) }}" alt="" class="">
+                                                                  @endif
+                                                                </div>
+                                                            </a>
+                                                        {{-- @if($company->page->linkedin)
+                                                          <a class="linkedin" href="{{$company->page->linkedin}}" target="_blank" rel="noopener noreferrer">
+                                                              <i class="fab fa-linkedin"></i>
+                                                          </a>
+                                                        @endif --}}
+                                                    </div>
+                                              @else
+                                                  <div class="d-inline-block">
+                                                      <button aria-label="dipendente di {{$company->name}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
+                                                      <div class="img-cont micro-img">
+                                                          @if($company->image)
+                                                            <img src="{{ asset("storage/" . $company->image) }}" alt="" class="">
+                                                          @endif
+                                                      </div>
+                                                  </div>
+                                              @endif
+                                              <a v-if="is_my_user" href="{{route('admin.companies.edit', $company->id)}}" class="button-style-circle button-color-gray">
+                                                  <i class="fas fa-pencil-alt"></i>
+                                              </a>
+                                          @endforeach
+                                      @endif
+                                      @if($is_my_user && count($user->companies)<0)
+                                          <a href="{{route('admin.companies.create')}}" class="text-dark text-center">
+                                              <i class="fas fa-plus"></i>
+                                              <span>Aggiungi azienda per cui lavori</span>
+                                          </a>
+                                      @endif
+                                    @endif
+                                @endforeach
+                            </div>
                             @if($user->summary)
-                            <div class="pt-3">
-                                <p class="description">{{$user->summary}}</p>
+                            <div class="pt-2">
+                                <p class="description m-0">{{$user->summary}}</p>
                             </div>
                             @endif
                         </div>
@@ -131,7 +180,7 @@
                 <div class="sub-section link-cont">
                     @if($user->linkedin)
                     <div class="link-item">
-                        <a class="linkedin" href="{{$user->linkedin}}" target="_blank" rel="noopener noreferrer">
+                        <a class="txt-blue" href="{{$user->linkedin}}" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-linkedin"></i>
                             <span>LinkedIn</span>
                         </a>
@@ -139,7 +188,7 @@
                     @endif
                     @if($user->website)
                     <div class="link-item">
-                        <a class="website" href="{{$user->website}}" target="_blank" rel="noopener noreferrer">
+                        <a class="txt-green" href="{{$user->website}}" target="_blank" rel="noopener noreferrer">
                             <i class="fas fa-globe-americas"></i>
                             <span>{{__('Website')}}</span>
                         </a>
@@ -147,7 +196,7 @@
                     @endif
                     @if ($user->cv)
                     <div class="link-item">
-                        <a class="cv" href="#" @click="open('{{$user->cv}}')">
+                        <a class="txt-blue" href="#" @click="open('{{$user->cv}}')">
                             <i class="fas fa-address-card"></i>
                             <span>CV</span>
                         </a>
@@ -185,14 +234,17 @@
                 {{-- SERVIZI --}}
                 @if($is_my_user || count($user->give_user_services)>0 || count($user->have_user_services)>0)
                 <div id="services" class="sub-section">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                    <div class="row pb-2 justify-content-between">
+                        <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5">
                         @if($is_my_user || count($user->give_user_services)>0)
-                            <h6>{{__('Offro')}}
+                            <h4 class="txt-green font-weight-bold pb-3  d-flex justify-content-start align-items-center">
+                                <span class="mr-1">
+                                  {{__('Offro')}}
+                                </span>
                                 <a v-if="is_my_user" href="{{route('admin.give-user-services.edit',$user->id)}}" class="button-style-circle button-color-gray">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
-                            </h6>
+                            </h4>
                             @if(count($user->give_user_services)>0)
                             <div class="main-multi-slider">
                                 <div class="multi-slider-cont mini" id="multi-slider-cont-1">
@@ -209,22 +261,27 @@
                                     @endforeach
                                 </div>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-1" v-cloak>
-                                    <i class="fas fa-caret-left"></i>
+                                    <span class="arrow-black r-180"></span>
+                                    {{-- <i class="fas fa-caret-left"></i> --}}
                                 </button>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right bg-white" id="button-right-1" v-cloak>
-                                    <i class="fas fa-caret-right"></i>
+                                    {{-- <i class="fas fa-caret-right"></i> --}}
+                                    <span class="arrow-black"></span>
                                 </button>
                             </div>
                             @endif
                         @endif
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5">
                         @if($is_my_user || count($user->have_user_services)>0)
-                            <h6>{{__('Cerco')}}
+                            <h4 class="txt-blue font-weight-bold pb-3 d-flex justify-content-start align-items-center">
+                                <span class="mr-1">
+                                    {{__('Cerco')}}
+                                </span>
                                 <a v-if="is_my_user" href="{{route('admin.have-user-services.edit',$user->id)}}" class="button-style-circle button-color-gray">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
-                            </h6>
+                            </h4>
                             @if(count($user->have_user_services)>0)
                             <div class="main-multi-slider">
                                 <div class="multi-slider-cont mini" id="multi-slider-cont-2">
@@ -241,10 +298,12 @@
                                     @endforeach
                                 </div>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-2" v-cloak>
-                                    <i class="fas fa-caret-left"></i>
+                                    {{-- <i class="fas fa-caret-left"></i> --}}
+                                    <span class="arrow-black  r-180"></span>
                                 </button>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right bg-white" id="button-right-2" v-cloak>
-                                    <i class="fas fa-caret-right"></i>
+                                    {{-- <i class="fas fa-caret-right"></i> --}}
+                                    <span class="arrow-black"></span>
                                 </button>
                             </div>
                             @endif
@@ -263,9 +322,8 @@
                         </a>
                       </h6>
                       @foreach ($user->give_user_skills as $skill)
-                          <p>{{$skill->name}}</p>
+                        <span class="border-style bg-green-1">{{$skill->name}}</span>
                       @endforeach
-
                     </div>
                     @endif
                 {{-- @endif --}}
@@ -275,101 +333,40 @@
                   <p class="description">{{$user->description}}</p>
                 </div>
                 @endif
-                {{-- DIPENDENTE --}}
-                @if($user->usertypes->contains(4))
-                  @if($is_my_user || count($user->companies)>0)
-                  <div class="sub-section">
-                      <h6>Aziende per cui lavoro</h6>
-                      <div class="row pt-3">
-                          @foreach ($user->companies as $company)
-                          <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                                @if($company->page_id)
-                                    <div class="text-center">
-                                        <div class="">
-                                            <div class="img-cont mini-img">
-                                              @if($company->page->image)
-                                                <img src="{{ asset("storage/" . $company->page->image) }}" alt="" class="">
-                                              @endif
-                                            </div>
-                                        </div>
-                                        <p class="text-dark">
-                                            {{$company->page->name}}
-                                            @if($company->page->linkedin)
-                                              <a class="linkedin" href="{{$company->page->linkedin}}" target="_blank" rel="noopener noreferrer">
-                                                  <i class="fab fa-linkedin"></i>
-                                              </a>
-                                            @endif
-                                        </p>
-                                        <a href="{{route('admin.pages.show', $company->page->id)}}" class="button-style button-color-green">Visita profilo</a>
-                                    </div>
-                              @else
-                                    <div class="text-center">
-                                        <div class="">
-                                            <div class="img-cont mini-img">
-                                                @if($company->image)
-                                                  <img src="{{ asset("storage/" . $company->image) }}" alt="" class="">
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <p class="text-dark">
-                                            {{$company->name}}
-                                            @if($company->linkedin)
-                                                <a class="linkedin" href="{{$company->linkedin}}" target="_blank" rel="noopener noreferrer">
-                                                    <i class="fab fa-linkedin"></i>
-                                                </a>
-                                            @endif
-                                        </p>
-                                    </div>
-                              @endif
-                              <a v-if="is_my_user" href="{{route('admin.companies.edit', $company->id)}}" class="edit-top-right button-style-circle button-color-gray">
-                                  <i class="fas fa-pencil-alt"></i>
-                              </a>
-                          </div>
-                          @endforeach
-                      </div>
-                        <div v-if="is_my_user" class="d-flex justify-content-center w-100">
-                            <a href="{{route('admin.companies.create')}}" class="text-dark text-center">
-                                <i class="fas fa-plus"></i>
-                                <p>Aggiungi azienda per cui lavori</p>
-                            </a>
-                        </div>
-                  </div>
-                  @endif
-                @endif
             </div>
         </div>
         <div class="sub-section">
             @foreach ($pageTypes  as $key => $pageType)
                 @if($user->pageTypes->contains($pageType->id))
                     @if (count($user->pages->where('pagetype_id',$pageType->id))>0 || $is_my_user)
-                        <div class="gray-cont">
-                            <h3 class="text-capitalize d-flex align-items-center">
-                                <div class="img-cont mini-img">
-                                    <img src="{{ asset("storage/" . $pageType->image) }}" alt="" class="">
-                                </div>
-                                <span class="pl-2">{{__($pageType->name_it)}}</span>
-                            </h3>
-                            <div class="main-multi-slider">
-                                <div class="multi-slider-cont mini" id="multi-slider-cont-{{$key+3}}">
+                        <div class="gray-cont position-relative">
+                            <div class="edit-top-left">
+                              <button aria-label="{{__($pageType->name_it)}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
+                              <div class="img-cont mini-img">
+                                  <img src="{{ asset("storage/" . $pageType->image) }}" alt="" class="">
+                              </div>
+                            </div>
+                            <div class="main-multi-slider d-flex justify-content-center">
+                                <div class="multi-slider-cont mini w-75" id="multi-slider-cont-{{$key+3}}">
                                     @foreach ($user->pages->where('pagetype_id',$pageType->id)  as $page)
-                                        <div class="multi-slider-item col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <div class="multi-slider-item col-sm-12 col-md-6 col-lg-4 col-xl-4">
                                             <div class="d-flex justify-content-center align-items-center h-100">
                                                 <div class="card-style-mini">
                                                     <a href="{{ route('admin.pages.show', ['page'=> $page->id]) }}" class="">
                                                         <div class="text-cont">
-                                                            <div class="img-cont mini-img">
+                                                            <div class="img-cont small-img">
                                                                 @if($page->image)
                                                                 <img src="{{ asset("storage/" . $page->image) }}" alt="" class="">
                                                                 @endif
                                                             </div>
-                                                            <span class="d-block text-dark">{{$page->name}}</span>
+                                                            <span class="d-block text-dark text-truncate">{{$page->name}}</span>
                                                         </div>
                                                     </a>
                                                 </div>
                                             </div>
                                         </div>
                                     @endforeach
-                                        <div class="multi-slider-item col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                                        <div class="multi-slider-item col-sm-12 col-md-6 col-lg-4 col-xl-4">
                                             <div class="d-flex justify-content-center align-items-center h-100">
                                                 <div class="card-style-mini">
                                                     <a class="" href="{{ route('admin.pages.newPage', ['pagetype_id'=> $pageType->id]) }}">
@@ -382,10 +379,12 @@
                                         </div>
                                 </div>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start({{$key+3}},'left')" @mouseleave="stop({{$key+3}},'left')" @mouseup="stop({{$key+3}},'left')" class="slider-left" id="button-left-{{$key+3}}" v-cloak>
-                                    <i class="fas fa-caret-left"></i>
+                                    {{-- <i class="fas fa-caret-left"></i> --}}
+                                    <span class="arrow-black r-180"></span>
                                 </button>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start({{$key+3}},'right')" @mouseleave="stop({{$key+3}},'right')" @mouseup="stop({{$key+3}},'right')"class="slider-right" id="button-right-{{$key+3}}" v-cloak>
-                                    <i class="fas fa-caret-right"></i>
+                                    {{-- <i class="fas fa-caret-right"></i> --}}
+                                    <span class="arrow-black"></span>
                                 </button>
                             </div>
                         </div>
@@ -443,10 +442,12 @@
                         </div>
                     </div>
                     <button v-if="!is_mobile" type="button" name="button" @mousedown="start(20,'left')" @mouseleave="stop(20,'left')" @mouseup="stop(20,'left')" class="slider-left" id="button-left-20" v-cloak>
-                        <i class="fas fa-caret-left"></i>
+                        <span class="arrow-black r-180"></span>
+                        {{-- <i class="fas fa-caret-left"></i> --}}
                     </button>
                     <button v-if="!is_mobile" type="button" name="button" @mousedown="start(20,'right')" @mouseleave="stop(20,'right')" @mouseup="stop(20,'right')"class="slider-right" id="button-right-20" v-cloak>
-                        <i class="fas fa-caret-right"></i>
+                        {{-- <i class="fas fa-caret-right"></i> --}}
+                        <span class="arrow-black"></span>
                     </button>
                     <span>@{{this.delay(20)}}</span>
                 </div>

@@ -193,15 +193,15 @@ class CompanyController extends Controller
         $user = Auth::user();
         if($company->user_id == $user->id){
 
-            $default_images = Pagetype::pluck('image')->toArray();
-            if ($company->image && !in_array($user->image,$default_images)){
-                Storage::delete($company->image);
+            if(!$company->page_id){
+                $default_images = Pagetype::pluck('image')->toArray();
+                if ($company->image && !in_array($company->image,$default_images)){
+                    Storage::delete($company->image);
+                }
             }
-
             $company->delete();
 
             return redirect()->route('admin.users.show', ['user' => $user->id]);
-        }
-
+        }abort(404);
     }
 }

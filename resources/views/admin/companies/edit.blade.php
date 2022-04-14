@@ -95,7 +95,7 @@
                               </div>
                           @enderror
                       </div>
-                      <div class="form-group">
+                      {{-- <div class="form-group">
                           <h6>Linkedin</h6>
                           <input type="text" name="linkedin" class="form-control" maxlength="255" value="{{ old('linkedin',$company->linkedin)}}">
                           @error ('linkedin')
@@ -103,7 +103,7 @@
                                   {{__($message)}}
                               </div>
                           @enderror
-                      </div>
+                      </div> --}}
                     </div>
                       <div v-show="!registered_company" class="">
                         <h6>{{__('Image')}}</h6>

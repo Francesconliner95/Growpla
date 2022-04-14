@@ -38,6 +38,11 @@
                 </div>
                 <button type="button" name="button" class="button-style button-color-blue" @click="submitForm()">Salva</button>
               </form>
+              <div class="text-right">
+                  <a href="{{ route('admin.supports.switch') }}" class="font-weight-bold mini-txt txt-green">
+                      Suggerisci altri settori
+                  </a>
+              </div>
             </div>
         </div>
     </div>

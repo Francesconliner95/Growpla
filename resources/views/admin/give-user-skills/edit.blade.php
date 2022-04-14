@@ -32,14 +32,14 @@
                     <div  class="search">
                         <div class="row">
                             <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10">
-                                <input type="text" name="name" value="" placeholder="Nome competenza" v-model="skill_name" @keyup.enter="searchSkill()" v-on:input="searchSkill()" maxlength="70" class="form-control" autocomplete="off">
+                                <input type="text" name="name" value="" placeholder="Nome competenza" v-model="skill_name" @keyup.enter="searchSkill()" v-on:input="searchSkill()" maxlength="25" class="form-control" autocomplete="off">
                                 @error ('skill_name')
                                     <div class="alert alert-danger">
                                         {{__($message)}}
                                     </div>
                                 @enderror
                             </div>
-                            <button type="button" name="button" @click="addManualSkill()" class="button-style button-color-blue col-sm-2 col-md-2 col-lg-2 col-xl-2">Conferma</button>
+                            <button type="button" name="button" @click="addManualSkill()" class="button-style button-color-blue col-sm-2 col-md-2 col-lg-2 col-xl-2">Aggiungi</button>
                         </div>
                         <div :class="skills_found.length>0?'found':'found d-none'" v-cloak>
                           <a class="item" v-for="skill_found in skills_found" @click="addSkill(skill_found)">

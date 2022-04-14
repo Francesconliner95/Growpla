@@ -17506,7 +17506,7 @@ ul > p {
 .sub-section {
   position: relative;
   border-bottom: 2px solid #f0f0f0;
-  padding: 20px 0;
+  padding: 30px 0;
 }
 
 .last-sub-section {
@@ -17517,12 +17517,17 @@ ul > p {
 .gray-cont {
   background-color: #F3F5F9;
   padding: 20px;
+  padding-top: 40px;
   border-radius: 10px;
   margin-bottom: 15px;
 }
 
+.scale {
+  transition: 0.2s;
+}
+
 .scale:hover {
-  transform: scale(1.01);
+  transform: scale(1.1);
 }
 
 .cookie-consent {
@@ -17719,23 +17724,6 @@ ul > p {
   display: block;
 }
 
-.link-cont .link-item .website {
-  color: #01B59C;
-}
-
-.link-cont .link-item .linkedin {
-  color: #3490dc;
-}
-
-.link-cont .link-item .pitch,
-.link-cont .link-item .curriculum_vitae {
-  color: orange;
-}
-
-.link-cont .link-item .roadmap {
-  color: red;
-}
-
 select,
 select option {
   color: #000000;
@@ -17779,14 +17767,19 @@ select option[value=""] {
   height: 50px;
 }
 
+.small-img {
+  width: 75px;
+  height: 75px;
+}
+
 .medium-img {
   width: 100px;
   height: 100px;
 }
 
 .big-img {
-  width: 150px;
-  height: 150px;
+  width: 140px;
+  height: 140px;
 }
 
 .max-img {
@@ -17805,7 +17798,7 @@ select option[value=""] {
 }
 
 .r-180 {
-  transform: rotate(90deg);
+  transform: rotate(180deg);
 }
 
 .tag {
@@ -17822,6 +17815,22 @@ select option[value=""] {
 
 .mini-txt {
   font-size: 12px;
+}
+
+.bg-green-1 {
+  background-color: #E5F7F5;
+}
+
+.bg-green-2 {
+  background-color: #80DACD;
+}
+
+.bg-blue-1 {
+  background-color: #E5F5FC;
+}
+
+.bg-blue-2 {
+  background-color: #8AD1F1;
 }
 
 .txt-green {
@@ -17974,7 +17983,7 @@ select option[value=""] {
   color: black;
   border: none;
   margin-right: 3px;
-  margin-bottom: 3px;
+  margin-bottom: 8px;
 }
 
 .border-style i {
@@ -18820,7 +18829,7 @@ select option[value=""] {
 }
 
 .multi-slider-cont.mini {
-  height: 100px !important;
+  height: 110px !important;
 }
 
 .main-multi-slider {
@@ -18869,11 +18878,35 @@ select option[value=""] {
   text-align: right;
 }
 
+.arrow-black {
+  background-image: url(/images/arrows-black-icon.svg?e0e51661d7998cacf0bc36c5dee60ce1);
+  width: 15px;
+  height: 15px;
+  background-size: contain;
+  display: inline-block;
+}
+
+.arrow-green {
+  background-image: url(/images/arrows-green-icon.svg?7428f8ec02056a6e402aa4f0b37707db);
+  width: 15px;
+  height: 15px;
+  background-size: contain;
+  display: inline-block;
+}
+
+.arrow-blue {
+  background-image: url(/images/arrows-blue-icon.svg?27a66ffb3013c446eb9a1b082f4f20bb);
+  width: 15px;
+  height: 15px;
+  background-size: contain;
+  display: inline-block;
+}
+
 .card-style-mini {
   width: 220px;
   height: 100%;
   padding: 15px;
-  border-radius: 5px;
+  border-radius: 10px;
   position: relative;
 }
 
@@ -18953,7 +18986,7 @@ select option[value=""] {
 }
 
 .card-collaboration .link img {
-  width: 100px;
+  width: 65px;
 }
 
 .card-color-green {
@@ -20357,6 +20390,11 @@ footer .bottom-footer {
   background-color: #01B59C;
   text-align: center;
   font-size: 12px;
+  color: white;
+}
+
+#chat-index .chat-cont .account .active {
+  background-color: #8AD1F1;
   color: white;
 }
 

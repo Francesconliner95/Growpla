@@ -359,7 +359,7 @@
                                 <div class=" img-cont mini-img">
                                     <img v-if="offer.image" :src="'/storage/' + offer.image" alt="">
                                 </div>
-                                <p class="name text-capitalize text-dark">
+                                <p class="name text-capitalize text-dark text-truncate">
                                     @{{offer.user_or_page? offer.name +' ' +offer.surname : offer.name}}
                                 </p>
                                 {{-- <span>@{{offer.service_id?'cerca servizio di':'cerca'}}</span> --}}
@@ -375,10 +375,10 @@
                 </div>
             </div>
             <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left" id="button-left-1" v-cloak>
-                <i class="fas fa-caret-left"></i>
+                <span class="arrow-black r-180"></span>
             </button>
             <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')" class="slider-right" id="button-right-1" v-cloak>
-                <i class="fas fa-caret-right"></i>
+                <span class="arrow-black"></span>
             </button>
             <span>@{{this.delay(1)}}</span>
         </div>
@@ -399,7 +399,7 @@
                                 <div class=" img-cont mini-img">
                                     <img v-if="need.image" :src="'/storage/' + need.image" alt="">
                                 </div>
-                                <p class="name text-capitalize text-dark">
+                                <p class="name text-capitalize text-dark text-truncate">
                                     @{{need.user_or_page? need.name +' ' +need.surname : need.name}}
                                 </p>
                                 {{-- <span>@{{need.service_id?'cerca servizio di':'cerca'}}</span> --}}
@@ -415,10 +415,10 @@
                 </div>
             </div>
             <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(2,'left')" class="slider-left" id="button-left-2" v-cloak>
-                <i class="fas fa-caret-left"></i>
+                <span class="arrow-black r-180"></span>
             </button>
             <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right" id="button-right-2" v-cloak>
-                <i class="fas fa-caret-right"></i>
+                <span class="arrow-black"></span>
             </button>
             <span>@{{this.delay(2)}}</span>
         </div>
@@ -442,7 +442,7 @@
                                     </div>
                                 </div>
                                 <div class="coll-info">
-                                    <strong class="text-capitalize">
+                                    <strong class="text-capitalize text-truncate">
                                         @{{collaboration.account_1.user_or_page? collaboration.account_1.name +' ' +collaboration.account_1.surname : collaboration.account_1.name}}
                                     </strong>
                                     <a :href="collaboration.account_1.user_or_page?'/admin/users/'+ collaboration.account_1.id : '/admin/pages/'+ collaboration.account_1.id" class="button-style button-color-green">
@@ -460,7 +460,7 @@
                                     </div>
                                 </div>
                                 <div class="coll-info">
-                                    <strong class="text-capitalize">
+                                    <strong class="text-capitalize text-truncate">
                                         @{{collaboration.account_2.user_or_page? collaboration.account_2.name +' ' +collaboration.account_2.surname : collaboration.account_2.name}}
                                     </strong>
                                     <a :href="collaboration.account_2.user_or_page?'/admin/users/'+ collaboration.account_2.id : '/admin/pages/'+ collaboration.account_2.id" class="button-style button-color-blue">
@@ -473,10 +473,10 @@
                 </div>
             </div>
             <button v-if="!is_mobile" type="button" name="button" @mousedown="start(3,'left')" @mouseleave="stop(3,'left')" @mouseup="stop(3,'left')" class="slider-left" id="button-left-3" v-cloak>
-                <i class="fas fa-caret-left"></i>
+                <span class="arrow-black r-180"></span>
             </button>
             <button v-if="!is_mobile" type="button" name="button" @mousedown="start(3,'right')" @mouseleave="stop(3,'right')" @mouseup="stop(3,'right')"class="slider-right" id="button-right-3" v-cloak>
-                <i class="fas fa-caret-right"></i>
+                <span class="arrow-black"></span>
             </button>
             <span>@{{this.delay(3)}}</span>
         </div>
@@ -491,12 +491,12 @@
         <div class="row pt-4">
             <a v-for="account in mostViewedAccounts" :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
                 <div class="">
-                    <div class=" img-cont medium-img">
+                    <div class="img-cont medium-img scale">
                         <img v-if="account.image" :src="'/storage/' + account.image" alt="">
                     </div>
                 </div>
                 <div class="">
-                    <span class="text-capitalize font-weight-bold  text-dark">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</span>
+                    <span class="text-capitalize font-weight-bold  text-dark text-truncate">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</span>
                 </div>
                 {{-- <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="button-style button-color">Visita profilo</a> --}}
             </a>
@@ -507,12 +507,12 @@
         <div class="row  pt-4">
             <a v-for="account in myLatestViews" :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
                 <div class="">
-                    <div class=" img-cont medium-img">
+                    <div class="img-cont medium-img scale">
                         <img v-if="account.image" :src="'/storage/' + account.image" alt="">
                     </div>
                 </div>
                 <div class="">
-                    <span class="text-capitalize font-weight-bold text-dark">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</span>
+                    <span class="text-capitalize font-weight-bold text-dark text-truncate">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</span>
                 </div>
             </a>
         </div>

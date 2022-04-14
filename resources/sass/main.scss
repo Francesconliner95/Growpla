@@ -114,7 +114,8 @@ ul>p{
 .sub-section{
     position: relative;
     border-bottom: 2px solid $hover_gray;
-    padding: 20px 0;
+    // padding: 20px 0;
+    padding: 30px 0;
 }
 
 .last-sub-section{
@@ -125,13 +126,15 @@ ul>p{
 .gray-cont{
     background-color: $light_gray;
     padding: 20px;
+    padding-top: 40px;
     border-radius: 10px;
     margin-bottom: 15px;
 }
 
 .scale{
+    transition: .2s;
     &:hover{
-        transform: scale(1.01);
+        transform: scale(1.1);
     }
 }
 
@@ -330,18 +333,6 @@ ul>p{
                 display: block;
             }
         }
-        .website{
-            color: $green_3;
-        }
-        .linkedin{
-            color: #3490dc;
-        }
-        .pitch,.curriculum_vitae{
-            color: orange;
-        }
-        .roadmap{
-            color: red;
-        }
     }
 }
 
@@ -387,13 +378,17 @@ select option[value=""] {
     width: 50px;
     height: 50px;
 }
+.small-img{
+    width: 75px;
+    height: 75px;
+}
 .medium-img{
     width: 100px;
     height: 100px;
 }
 .big-img{
-    width: 150px;
-    height: 150px;
+    width: 140px;
+    height: 140px;
 }
 .max-img{
     width: 300px;
@@ -411,7 +406,7 @@ select option[value=""] {
 }
 
 .r-180{
-  transform: rotate(90deg);
+  transform: rotate(180deg);
 }
 
 .tag{
@@ -430,6 +425,22 @@ select option[value=""] {
 
 .mini-txt{
     font-size: 12px;
+}
+
+.bg-green-1{
+    background-color: $green_1;
+}
+
+.bg-green-2{
+    background-color: $green_2;
+}
+
+.bg-blue-1{
+    background-color: $blue_1;
+}
+
+.bg-blue-2{
+    background-color: $blue_2;
 }
 
 .txt-green{
@@ -578,7 +589,7 @@ select option[value=""] {
     color: black;
     border: none;
     margin-right: 3px;
-    margin-bottom: 3px;
+    margin-bottom: 8px;
     i{
       transition: .2s;
       &:hover{
@@ -1477,7 +1488,7 @@ select option[value=""] {
 }
 
 .multi-slider-cont.mini{
-    height: 100px !important;
+    height: 110px !important;
 }
 
 .main-multi-slider{
@@ -1525,11 +1536,33 @@ select option[value=""] {
     }
 }
 
+.arrow-black{
+    background-image: url('../../public/storage/images/arrows-black-icon.svg');
+    width: 15px;
+    height: 15px;
+    background-size: contain;
+    display:inline-block;
+}
+.arrow-green{
+    background-image: url('../../public/storage/images/arrows-green-icon.svg');
+    width: 15px;
+    height: 15px;
+    background-size: contain;
+    display:inline-block;
+}
+.arrow-blue{
+    background-image: url('../../public/storage/images/arrows-blue-icon.svg');
+    width: 15px;
+    height: 15px;
+    background-size: contain;
+    display:inline-block;
+}
+
 .card-style-mini{
     width: 220px;
     height: 100%;
     padding: 15px;
-    border-radius: 5px;
+    border-radius: 10px;
     position: relative;
     .text-cont{
         display: inline-block;
@@ -1607,7 +1640,7 @@ select option[value=""] {
         font-size: 80px;
         z-index: 5;
         img{
-            width: 100px;
+            width: 65px;
         }
     }
 }

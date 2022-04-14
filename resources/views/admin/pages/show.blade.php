@@ -46,7 +46,7 @@
                     </a>
                     <div class="row">
                         {{-- Immagine --}}
-                        <div class="profile-image col-sm-12 col-md-12 col-lg-3 col-xl-3 text-center">
+                        <div class="profile-image col-sm-12 col-md-12 col-lg-2 col-xl-2 text-center">
                             <div class="img-cont big-img position-relative">
                                 @if($page->image)
                                   <img src="{{ asset("storage/" . $page->image) }}" alt="" class="">
@@ -56,7 +56,7 @@
                                  </a>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-12 col-lg-9 col-xl-9">
+                        <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
                             <div class="row">
                                 <h2 class="text-capitalize col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                     {{$page->name}}
@@ -244,34 +244,33 @@
                 || $page->linkedin
                 || $page->pitch)
                 <div class="sub-section link-cont">
-                    {{-- SitoWeb --}}
-                    @if($page->website)
-                    <div class="link-item">
-                        <a class="website" href="{{$page->website}}" target="_blank" rel="noopener noreferrer">
-                            <i class="fas fa-globe-americas"></i>
-                            <span>{{__('Website')}}</span>
-                        </a>
-                    </div>
-                    @endif
 
                     {{-- Linkedin --}}
                     @if($page->linkedin)
                     <div class="link-item">
-                        <a class="linkedin" href="{{$page->linkedin}}" target="_blank" rel="noopener noreferrer">
+                        <a class="txt-blue" href="{{$page->linkedin}}" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-linkedin"></i>
                             <span>LinkedIn</span>
                         </a>
                     </div>
                     @endif
-
+                    {{-- SitoWeb --}}
+                    @if($page->website)
+                    <div class="link-item">
+                        <a class="txt-green" href="{{$page->website}}" target="_blank" rel="noopener noreferrer">
+                            <i class="fas fa-globe-americas"></i>
+                            <span>{{__('Website')}}</span>
+                        </a>
+                    </div>
+                    @endif
                     @if ($page->pitch)
                     <div class="link-item">
-                        <a class="pitch" href="#" @click="open(page.pitch)">
+                        <a class="txt-blue" href="#" @click="open(page.pitch)">
                             <i class="fas fa-address-card"></i>
                             <span>Pitch</span>
                         </a>
                     </div>
-                    @endif
+                    @endif                    
                 </div>
                 @endif
                 {{-- posso accedere ai servizi solo se la pagina è: startup o azienda --}}
@@ -280,11 +279,14 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5">
                         @if($is_my_page || count($page->give_page_services)>0)
-                            <h6>{{__('Offro')}}
+                            <h4 class="txt-green font-weight-bold pb-3  d-flex justify-content-start align-items-center">
+                              <span class="mr-1">
+                                {{__('Offro')}}
+                              </span>
                                 <a v-if="is_my_page" href="{{route('admin.give-page-services.edit',$page->id)}}" class="button-style-circle button-color-gray">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
-                            </h6>
+                            </h4>
                             @if(count($page->give_page_services)>0)
                             <div class="main-multi-slider">
                                 <div class="multi-slider-cont mini" id="multi-slider-cont-1">
@@ -300,11 +302,13 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left" id="button-left-1" v-cloak>
-                                    <i class="fas fa-caret-left"></i>
+                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-1" v-cloak>
+                                    {{-- <i class="fas fa-caret-left"></i> --}}
+                                    <span class="arrow-black r-180"></span>
                                 </button>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right" id="button-right-1" v-cloak>
-                                    <i class="fas fa-caret-right"></i>
+                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right bg-white" id="button-right-1" v-cloak>
+                                    {{-- <i class="fas fa-caret-right"></i> --}}
+                                    <span class="arrow-black"></span>
                                 </button>
                             </div>
                             @endif
@@ -314,11 +318,14 @@
                         </div>
                         <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5">
                         @if($is_my_page || count($page->have_page_services)>0)
-                            <h6>{{__('Cerco')}}
-                                <a v-if="is_my_page" href="{{route('admin.have-page-services.edit',$page->id)}}" class="button-style-circle button-color-gray">
-                                    <i class="fas fa-pencil-alt"></i>
-                                </a>
-                            </h6>
+                          <h4 class="txt-blue font-weight-bold pb-3  d-flex justify-content-start align-items-center">
+                              <span class="mr-1">
+                                  {{__('Cerco')}}
+                              </span>
+                              <a v-if="is_my_page" href="{{route('admin.have-page-services.edit',$page->id)}}" class="button-style-circle button-color-gray">
+                                  <i class="fas fa-pencil-alt"></i>
+                              </a>
+                          </h4>
                             @if(count($page->have_page_services)>0)
                             <div class="main-multi-slider">
                                 <div class="multi-slider-cont mini" id="multi-slider-cont-2">
@@ -376,10 +383,13 @@
                                     @endforeach
                                 </div>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-2" v-cloak>
-                                    <i class="fas fa-caret-left"></i>
+                                    <span></span>
+                                    <span class="arrow-black r-180"></span>
+                                    {{-- <i class="fas fa-caret-left"></i> --}}
                                 </button>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right bg-white" id="button-right-2" v-cloak>
-                                    <i class="fas fa-caret-right"></i>
+                                    {{-- <i class="fas fa-caret-right"></i> --}}
+                                    <span class="arrow-black"></span>
                                 </button>
                             </div>
                             @endif
@@ -434,8 +444,11 @@
                     </div>
                     <div v-if="team_num>3" class="text-center d-block w-100 pb-2">
                         <a href="javascript:void(0)" @click="teamToggle()" class="mini-txt">
-                            <span v-if="team_members.length<=3" class="txt-blue font-weight-bold">{{__('Show all')}}</span>
-                            <span v-else class="txt-blue font-weight-bold">{{__('Show less')}}</span>
+                            {{-- <span v-if="team_members.length<=3" class="txt-blue font-weight-bold">{{__('Show all')}}
+                            </span> --}}
+                            <span v-if="team_members.length<=3" class="arrow-black r-90r"></span>
+                            {{-- <span v-else class="txt-blue font-weight-bold">{{__('Show less')}}</span> --}}
+                            <span v-else class="arrow-black r-90l"></span>
                         </a>
                     </div>
                     <div v-if="is_my_page" class="d-flex justify-content-center w-100">
@@ -496,10 +509,12 @@
                         </div>
                     </div>
                     <button v-if="!is_mobile" type="button" name="button" @mousedown="start(20,'left')" @mouseleave="stop(20,'left')" @mouseup="stop(20,'left')" class="slider-left" id="button-left-20" v-cloak>
-                        <i class="fas fa-caret-left"></i>
+                        <span class="arrow-black r-180"></span>
+                        {{-- <i class="fas fa-caret-left"></i> --}}
                     </button>
                     <button v-if="!is_mobile" type="button" name="button" @mousedown="start(20,'right')" @mouseleave="stop(20,'right')" @mouseup="stop(20,'right')"class="slider-right" id="button-right-20" v-cloak>
-                        <i class="fas fa-caret-right"></i>
+                        {{-- <i class="fas fa-caret-right"></i> --}}
+                        <span class="arrow-black"></span>
                     </button>
                     <span>@{{this.delay(20)}}</span>
                 </div>

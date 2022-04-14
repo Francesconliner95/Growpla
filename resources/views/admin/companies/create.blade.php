@@ -9,7 +9,7 @@
         <div class="item-cont">
             <div class="item-style">
                 <div class="header">
-                    <h2>{{__('Add company')}}</h2>
+                    <h4>Aggiungi azienda per cui sei dipendente</h4>
                     <h1>
                         <i class="fas fa-plus-circle"></i>
                     </h1>
@@ -72,7 +72,7 @@
                               </div>
                           @enderror
                       </div>
-                      <div class="form-group">
+                      {{-- <div class="form-group">
                           <h6>Linkedin</h6>
                           <input type="text" name="linkedin" class="form-control" maxlength="255" value="">
                           @error ('linkedin')
@@ -80,7 +80,7 @@
                                   {{__($message)}}
                               </div>
                           @enderror
-                      </div>
+                      </div> --}}
                     </div>
 
                     {{-- Immagine --}}

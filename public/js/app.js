@@ -74519,7 +74519,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     messages: [],
     messages_qty: 0,
     first_scroll: false,
-    is_mobile: false
+    is_mobile: false,
+    chat_selected_id: ''
   },
   methods: {
     // getChats(){
@@ -74530,11 +74531,11 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     //     });
     // },
     selectAccount: function selectAccount(i, user_or_page) {
-      console.log(this.my_user_chats); // var elements = document.getElementsByClassName('chat-item');
+      //console.log(this.my_user_chats);
+      // var elements = document.getElementsByClassName('chat-item');
       // for (var j = 0; j < elements.length; j++) {
       //     elements[j].classList.add("d-none");
       // }
-
       if (user_or_page) {
         if (document.getElementById('chat-item-0').classList.contains('d-none')) {
           document.getElementById('chat-item-0').classList.remove("d-none");
@@ -74570,9 +74571,9 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
       return object;
     },
-    pressChat: function pressChat(account, chat) {
-      console.log(account);
-      console.log(chat);
+    pressChat: function pressChat(account, chat, html_id) {
+      // console.log(account);
+      // console.log(chat);
       this.my_user_id = '';
       this.your_user_id = '';
       this.my_page_id = '';
@@ -74595,19 +74596,25 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       if (chat.page_id) {
         this.your_page_id = chat.page_id;
         this.displayed_name = chat.name;
-      }
+      } // console.log(this.my_user_id,this.my_page_id,this.your_user_id,this.your_page_id);
+      // console.log(this.my_user_id);
+      // console.log(this.my_page_id);
+      // console.log(this.your_user_id);
+      // console.log(this.your_page_id);
 
-      console.log(this.my_user_id, this.my_page_id, this.your_user_id, this.your_page_id);
-      console.log(this.my_user_id);
-      console.log(this.my_page_id);
-      console.log(this.your_user_id);
-      console.log(this.your_page_id);
 
       if (window.innerWidth >= 768) {
-        console.log('stai');
-      } else {
-        console.log('esci');
+        // console.log('stai');
+        this.chat_selected_id = chat.id;
+        var elements = document.getElementsByClassName('chat-item');
 
+        for (var j = 0; j < elements.length; j++) {
+          elements[j].classList.remove("active");
+        }
+
+        document.getElementById(html_id).classList.add('active');
+      } else {
+        // console.log('esci');
         if (this.my_page_id) {
           window.location = '/admin/chats/show/' + chat.id + '/' + this.my_page_id;
         } else {
@@ -74616,6 +74623,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       }
 
       this.getMessages();
+      console.log(this.chat_selected_id);
     },
     sendMessage: function sendMessage() {
       var _this = this;
@@ -74710,8 +74718,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       this.my_user_chats = JSON.parse(this.my_user_chats.replace(/&quot;/g, '"'));
       this.my_user_chats['show'] = false;
       this.my_user_chats.user_chats = this.orderByUpdatedAt(this.my_user_chats.user_chats);
-      this.my_user_chats['all_mnr'] = 0;
-      console.log(this.my_user_chats);
+      this.my_user_chats['all_mnr'] = 0; //console.log(this.my_user_chats);
+
       this.my_user_chats.user_chats.forEach(function (chat, i) {
         _this3.my_user_chats['all_mnr'] = _this3.my_user_chats['all_mnr'] + chat['message_not_read'];
       });
