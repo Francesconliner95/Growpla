@@ -91,7 +91,7 @@
                       {{-- Nome --}}
                       <div class="form-group">
                           <h6>{{__('Name')}}</h6>
-                          <input type="text" name="name" class="form-control" maxlength="70" value="{{ old('name',$team->name)}}" required>
+                          <input type="text" name="name" class="form-control" maxlength="15" value="{{ old('name',$team->name)}}" required>
                           @error ('name')
                               <div class="alert alert-danger">
                                   {{__($message)}}
@@ -100,7 +100,7 @@
                       </div>
                       <div class="form-group">
                           <h6>{{__('Surame')}}</h6>
-                          <input type="text" name="surname" class="form-control" maxlength="70" value="{{ old('surname',$team->surname)}}" required>
+                          <input type="text" name="surname" class="form-control" maxlength="20" value="{{ old('surname',$team->surname)}}" required>
                           @error ('surname')
                               <div class="alert alert-danger">
                                   {{__($message)}}
@@ -122,7 +122,7 @@
                       {{-- Ruolo --}}
                       <div class="form-group">
                           <h6>{{__('Role')}}</h6>
-                          <input type="text" name="role" class="form-control" maxlength="50" value="{{ old('role',$team->role)}}" required>
+                          <input type="text" name="role" class="form-control" maxlength="20" value="{{ old('role',$team->role)}}" required>
                           @error ('role')
                               <div class="alert alert-danger">
                                   {{__($message)}}
@@ -162,7 +162,7 @@
                           <button class="button-style button-color-red ml-5" type="button" name="button" @click="alertMenu(1)">
                               <i class="fas fa-trash-alt mr-1"></i>Elimina
                           </button>
-                      </div>                      
+                      </div>
                 </form>
                 <form method="post" name="deleteTeam" action="{{ route('admin.teams.destroy', ['team'=> $team->id])}}" class="invisible">
                 @csrf

@@ -68,14 +68,14 @@
                             </div>
                             <div v-if="main_service_selected" class="col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1">
                                 <select class="form-control" name=""
-                                v-model="sub_service_selected">
+                                v-model="sub_service_selected" @change="addServiceSelected(sub_service_selected)">
                                     <option value="">Specifica sottocategoria</option>
                                     <option v-for="sub_service in sub_services_show" :value="sub_service.id">@{{sub_service.name}}</option>
                                 </select>
                             </div>
-                            <div v-if="sub_service_selected" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-1">
+                            {{-- <div v-if="sub_service_selected" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-1">
                                 <button type="button" name="button" @click="addServiceSelected(sub_service_selected)" class="w-100 button-style button-color-blue">Aggiungi</button>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <button type="submit" class="button-style button-color">

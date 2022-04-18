@@ -41,10 +41,9 @@
                 </div>
                 <div class="search-main" v-cloak>
                     <div v-if="!search_type" class="search-filter">
-                        <div class="search-style">
-                            <h6>Cosa cerchi?</h6>
+                        <div class="search-style col-sm-12 col-md-12 col-lg-6 col-xl-6 mx-auto">
                             <select class="text-capitalize" name="" v-model="category_selected" @change="change_category()" required>
-                                <option value="">Seleziona un'opzione</option>
+                                <option value="">Cosa cerchi?</option>
                                 <option value="1">{{--$pagetypes[0]->name--}}Startup</option>
                                 <option value="2">{{--$usertypes[0]->name--}}Aspiranti Co-Founder</option>
                                 <option value="3">Incubatore-Acceleratore</option>
@@ -53,202 +52,205 @@
                                 <option value="6">Servizi</option>
                             </select>
                         </div>
-                        {{-- startup --}}
-                        <div v-if="pagetypes_id.includes(1)" class="search-style">
-                            <h6>In quale fase del ciclo di vita?</h6>
-                            <select class="text-capitalize" name="lifecycle_id" v-model="lifecycle_id_selected">
-                                    <option value="">Non specificato</option>
-                                @foreach ($lifecycles as $lifecycle)
-                                    <option class="text-capitalize" value="{{$lifecycle->id}}">{{$lifecycle->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div v-if="pagetypes_id.includes(1)" class="search-style">
-                            <h6>Cerca solo le startup che hanno bisogno di:</h6>
-                            <select class="text-capitalize" name="needs" v-model="need_selected">
-                                <option value="">Non specificato</option>
-                                @foreach ($usertypes as $usertype)
-                                    @if ($usertype->id==1 || $usertype->id==2)
-                                        <option class="text-capitalize" :value="{'type':1, 'id':{{$usertype->id}}}">{{$usertype->name_it}}</option>
-                                    @endif
-                                @endforeach
-                                @foreach ($pagetypes as $pagetype)
-                                    @if ($pagetype->id==3 || $pagetype->id==5 || $pagetype->id==8)
-                                        <option class="text-capitalize" :value="{'type':2, 'id':{{$pagetype->id}}}">{{$pagetype->name_it}}</option>
-                                    @endif
-                                @endforeach
-                                <option class="text-capitalize" :value="{'type':3, 'id':''}">Servizi</option>
-                            </select>
-                        </div>
-
-                        {{-- cofounder --}}
-                        {{-- <div v-if="usertypes_id.includes(1)
-                        || need_selected.type==1 && need_selected.id==1" class="search-style">
-                            <div class="">
-                                <h6 v-if="need_selected.id==1" for="" class="d-block">Cerco startup che hanno bisogno di profili che dispongono di</h6>
-                                <h6 v-else for="" class="d-block">Cerco profili che dispongono di</h6>
-                                <input type="radio" name="skillsToggle" value="false" v-model="skillsToggle" id="one-skill" class="w-auto h-auto" :checked="!skillsToggle">
-                                <label for="one-skill">una delle seguenti competenze</label>
-                                <input type="radio" name="skillsToggle" value="true" v-model="skillsToggle" id="all-skill" class="w-auto h-auto" :checked="skillsToggle">
-                                <label for="all-skill">tutte le seguenti competenze</label>
-                            </div>
-                            <h6>Quali competenze devono possedere?</h6>
-                            <div v-for="(skill,i) in skills" class="" v-cloak>
-                              <input type="hidden" name="skills[]" :value="skill.name">
-                              <label for="">@{{skill.name}}
-                                <i class="fas fa-trash-alt" @click="removeSkill(i)"></i>
-                              </label>
-                            </div>
-                            <input type="text" name="name" value="" placeholder="Nome competenza" v-model="skill_name" @keyup.enter="searchSkill()" v-on:input="searchSkill()" maxlength="70" class="form-control" autocomplete="off">
-                            @error ('skill_name')
+                    </div>
+                    <div v-else class="search-filter">
+                        <div class="search-style col-sm-12 col-md-12 col-lg-6 col-xl-6 mx-auto" v-cloak>
+                            <input type="text" name="name" value="" placeholder="Cerca per nome" v-model="name" @keyup.enter="" v-on:input="" maxlength="70"    class="form-control" autocomplete="off">
+                            @error ('name')
                                 <div class="alert alert-danger">
                                     {{__($message)}}
                                 </div>
                             @enderror
-                            <div :class="skills_found.length>0?'found':'found d-none'" v-cloak>
-                              <a class="item" v-for="skill_found in skills_found" @click="addSkill(skill_found)">
-                                  @{{skill_found.name}}
-                              </a>
+                        </div>
+                    </div>
+                    <div class="filter-cont mt-3 mb-1">
+                        <div class="row d-flex justify-content-center">
+                            {{-- startup --}}
+                            <div v-if="pagetypes_id.includes(1)" class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
+                                <span class="mini-txt font-weight-bold d-block">In quale fase del ciclo di vita?</span>
+                                <select class="text-capitalize" name="lifecycle_id" v-model="lifecycle_id_selected">
+                                        <option value="">Non specificato</option>
+                                    @foreach ($lifecycles as $lifecycle)
+                                        <option class="text-capitalize" value="{{$lifecycle->id}}">{{$lifecycle->name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
-                        </div> --}}
-                        {{-- investitori --}}
-                        <div v-if="investors_selected" class="search-style">
-                            <h6>Quale?</h6>
-                            <select class="text-capitalize" name="" v-model="investor_selected" @change="investorType()">
-                                    <option value="">Tutti</option>
-                                    <option class="text-capitalize" value="1">
-                                      Business Angel{{--$usertypes[1]->name--}}
-                                    </option>
-                                    <option class="text-capitalize" value="2">
-                                      Venture Capital{{--$pagetypes[4]->name--}}
-                                    </option>
-                                    <option class="text-capitalize" value="3">
-                                      Private Equity{{--$pagetypes[7]->name--}}
-                                    </option>
-                            </select>
-                        </div>
-                        {{-- servizi --}}
-                        <div v-if="services_selected" class="search-style">
-                            <h6 v-if="usertypes_id.includes(1)" for="" class="d-block">Cerco profili che offrono</h6>
-                            <h6 v-else for="" class="d-block">Cerco profili che</h6>
-                            <div v-if="!usertypes_id.includes(1)">
-                                <input type="radio" name="serviceToggle" value="false" v-model="serviceToggle" id="have-service" class="w-auto h-auto" :checked="!serviceToggle">
-                                <label for="have-service">offrono</label>
-                                <input type="radio" name="serviceToggle" value="true" v-model="serviceToggle" id="give-service" class="w-auto h-auto" :checked="serviceToggle">
-                                <label for="give-service">cercano</label>
+                            <div v-if="pagetypes_id.includes(1)" class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
+                                <span class="mini-txt font-weight-bold d-block">Cerca solo le startup che hanno bisogno di</span>
+                                <select class="text-capitalize" name="needs" v-model="need_selected">
+                                    <option value="">Non specificato</option>
+                                    @foreach ($usertypes as $usertype)
+                                        @if ($usertype->id==1 || $usertype->id==2)
+                                            <option class="text-capitalize" :value="{'type':1, 'id':{{$usertype->id}}}">{{$usertype->name_it}}</option>
+                                        @endif
+                                    @endforeach
+                                    @foreach ($pagetypes as $pagetype)
+                                        @if ($pagetype->id==3 || $pagetype->id==5 || $pagetype->id==8)
+                                            <option class="text-capitalize" :value="{'type':2, 'id':{{$pagetype->id}}}">{{$pagetype->name_it}}</option>
+                                        @endif
+                                    @endforeach
+                                    <option class="text-capitalize" :value="{'type':3, 'id':''}">Servizi</option>
+                                </select>
                             </div>
-                        </div>
-                        <div v-if="services_selected" class="search-style">
-                            <input type="radio" name="serviceOrAndToggle" value="false" v-model="serviceOrAndToggle" id="one-service" class="w-auto h-auto" :checked="!serviceOrAndToggle">
-                            <label for="one-service">uno dei seguenti servizi</label>
-                            <input type="radio" name="serviceOrAndToggle" value="true" v-model="serviceOrAndToggle" id="many-service" class="w-auto h-auto" :checked="serviceOrAndToggle">
-                            <label for="many-service">tutti i seguenti</label>
-                        </div>
-                        <div v-if="services_selected || need_selected.type==3" class="search-style">
-                            {{-- <div class="">
-                                <input type="text" name="name" value="" placeholder="Nome servizio" v-model="service_name" @keyup.enter="searchService()" v-on:input="searchService()" maxlength="70" class="form-control" autocomplete="off">
-                                @error ('service_name')
+
+                            {{-- cofounder --}}
+                            {{-- <div v-if="usertypes_id.includes(1)
+                            || need_selected.type==1 && need_selected.id==1" class="">
+                                <div class="">
+                                    <span v-if="need_selected.id==1" for="" class="d-block">Cerco startup che hanno bisogno di profili che dispongono di</span>
+                                    <span v-else for="" class="d-block">Cerco profili che dispongono di</span>
+                                    <input type="radio" name="skillsToggle" value="false" v-model="skillsToggle" id="one-skill" class="w-auto h-auto" :checked="!skillsToggle">
+                                    <label for="one-skill">una delle seguenti competenze</label>
+                                    <input type="radio" name="skillsToggle" value="true" v-model="skillsToggle" id="all-skill" class="w-auto h-auto" :checked="skillsToggle">
+                                    <label for="all-skill">tutte le seguenti competenze</label>
+                                </div>
+                                <span>Quali competenze devono possedere?</span>
+                                <div v-for="(skill,i) in skills" class="" v-cloak>
+                                  <input type="hidden" name="skills[]" :value="skill.name">
+                                  <label for="">@{{skill.name}}
+                                    <i class="fas fa-times"></i> @click="removeSkill(i)"></i>
+                                  </label>
+                                </div>
+                                <input type="text" name="name" value="" placeholder="Nome competenza" v-model="skill_name" @keyup.enter="searchSkill()" v-on:input="searchSkill()" maxlength="70" class="form-control" autocomplete="off">
+                                @error ('skill_name')
                                     <div class="alert alert-danger">
                                         {{__($message)}}
                                     </div>
                                 @enderror
-                                <div :class="services_found.length>0?'found':'found d-none'" v-cloak>
-                                    <a class="item" v-for="service_found in services_found" @click="addService(service_found)">
-                                        @{{service_found.name}}
-                                    </a>
+                                <div :class="skills_found.length>0?'found':'found d-none'" v-cloak>
+                                  <a class="item" v-for="skill_found in skills_found" @click="addSkill(skill_found)">
+                                      @{{skill_found.name}}
+                                  </a>
                                 </div>
-                            </div>                             --}}
-                            <div class="search-style">
-                                <h6>Seleziona uno o piu servizi</h6>
-                                <div class="row from-group pl-1 pr-1">
-                                    <div class="col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1">
-                                        <select class="form-control" name="" @change="changeMainService()" v-model="main_service_selected">
-                                            <option value="">Specifica settore</option>
-                                            <option v-for="main_service in main_services" :value="main_service.id">@{{main_service.name}}</option>
-                                        </select>
+                            </div> --}}
+                            {{-- investitori --}}
+                            <div v-if="investors_selected" class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
+                                <span class="mini-txt font-weight-bold d-block">Quale?</span>
+                                <select class="text-capitalize" name="" v-model="investor_selected" @change="investorType()">
+                                        <option value="">Tutti</option>
+                                        <option class="text-capitalize" value="1">
+                                          Business Angel{{--$usertypes[1]->name--}}
+                                        </option>
+                                        <option class="text-capitalize" value="2">
+                                          Venture Capital{{--$pagetypes[4]->name--}}
+                                        </option>
+                                        <option class="text-capitalize" value="3">
+                                          Private Equity{{--$pagetypes[7]->name--}}
+                                        </option>
+                                </select>
+                            </div>
+                            {{-- servizi --}}
+                            <div v-if="services_selected || need_selected.type==3" class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
+                                <div class="">
+                                    <span class="mini-txt font-weight-bold d-block" v-if="usertypes_id.includes(1)" for="" class="d-block">Cerco profili che offrono</span>
+                                    <span class="mini-txt font-weight-bold d-block" v-else-if="need_selected.type==3" for="" class="d-block">Cerco startup che hanno bisogno di</span>
+                                    <span class="mini-txt font-weight-bold d-block" v-else for="" class="d-block">Cerco profili che</span>
+                                </div>
+                                <div v-if="services_selected && !usertypes_id.includes(1)" class="sub-filter-cont mt-1">
+                                    <div class="d-inline-block">
+                                        <input type="radio" name="serviceToggle" value="false" v-model="serviceToggle" id="have-service" class="w-auto h-auto" :checked="!serviceToggle">
+                                        <label for="have-service" class="m-0">offrono</label>
                                     </div>
-                                    <div v-if="main_service_selected" class="col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1">
-                                        <select class="form-control" name=""
-                                        v-model="sub_service_selected">
-                                            <option value="">Specifica sottocategoria</option>
-                                            <option v-for="sub_service in sub_services_show" :value="sub_service.id">@{{sub_service.name}}</option>
-                                        </select>
+                                    <div class="d-inline-block">
+                                        <input type="radio" name="serviceToggle" value="true" v-model="serviceToggle" id="give-service" class="w-auto h-auto" :checked="serviceToggle">
+                                        <label for="give-service" class="m-0">cercano</label>
                                     </div>
-                                    <div v-if="sub_service_selected" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-1">
-                                        <button type="button" name="button" @click="addServiceSelected(sub_service_selected)" class="w-100 button-style button-color-blue">Aggiungi</button>
+                                </div>
+                                <div v-if="services_selected" class="mt-1">
+                                    <div class="d-inline-block">
+                                        <input type="radio" name="serviceOrAndToggle" value="false" v-model="serviceOrAndToggle" id="one-service" class="w-auto h-auto" :checked="!serviceOrAndToggle">
+                                        <label for="one-service" class="m-0">uno dei seguenti servizi</label>
+                                    </div>
+                                    <div class="d-inline-block">
+                                        <input type="radio" name="serviceOrAndToggle" value="true" v-model="serviceOrAndToggle" id="many-service" class="w-auto h-auto" :checked="serviceOrAndToggle">
+                                        <label for="many-service" class="m-0">tutti i seguenti servizi</label>
+                                    </div>
+                                </div>
+                                <div class="mt-1">
+                                    <div v-for="(service,i) in services" class="border-style bg-white" v-cloak>
+                                      <input type="hidden" name="services[]" :value="service.name">
+                                      <label for="" class="m-0">@{{service.name}}
+                                        <i class="fas fa-times"></i>
+                                      </label>
+                                    </div>
+                                </div>
+                                <div class="mt-1">
+                                    <div v-if="services.length<4" class="">
+                                        <span class="mini-txt font-weight-bold d-block">Seleziona uno o piu servizi</span>
+                                        <div class="pl-1 pr-1">
+                                            <div class="">
+                                                <select class="" name="" @change="changeMainService()" v-model="main_service_selected">
+                                                    <option value="">Specifica settore</option>
+                                                    <option v-for="main_service in main_services" :value="main_service.id">@{{main_service.name}}</option>
+                                                </select>
+                                            </div>
+                                            <div v-if="main_service_selected" class="">
+                                                <select class="" name=""
+                                                v-model="sub_service_selected" @change="addServiceSelected(sub_service_selected)">
+                                                    <option value="">Specifica sottocategoria</option>
+                                                    <option v-for="sub_service in sub_services_show" :value="sub_service.id">@{{sub_service.name}}</option>
+                                                </select>
+                                            </div>
+                                            {{-- <div v-if="sub_service_selected" class="">
+                                                <button type="button" name="button" @click="addServiceSelected(sub_service_selected)" class="w-100 button-style button-color-blue">Aggiungi</button>
+                                            </div> --}}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="">
-                                <h6 v-if="need_selected.type==3" for="">Startup che cercano servizio di:</h6>
-                                <div v-for="(service,i) in services" class="border-style" v-cloak>
-                                  <input type="hidden" name="services[]" :value="service.name">
-                                  <label for="">@{{service.name}}
-                                    <i class="fas fa-trash-alt" @click="removeService(i)"></i>
-                                  </label>
+                            {{-- settori --}}
+                            <div v-if="category_selected && category_selected!=6" class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
+                                <div class="">
+                                    <span class="mini-txt font-weight-bold d-block">Cerco profili che includono</span>
+                                    <div class="d-inline-block">
+                                        <input type="radio" name="sectorToggle" value="false" v-model="sectorToggle" id="one-sector" class="" :checked="!sectorToggle">
+                                        <label for="one-sector" class="m-0">uno dei i seguenti settori</label>
+                                    </div>
+                                    <div class="d-inline-block">
+                                        <input type="radio" name="sectorToggle" value="true" v-model="sectorToggle" id="many-sector" class="" :checked="sectorToggle">
+                                        <label for="many-sector" class="m-0">tutti i seguenti settori</label>
+                                    </div>
+                                </div>
+                                <div class="mt-1">
+                                    <span class="mini-txt font-weight-bold d-block" v-if="category_selected==1 || category_selected==2">Settore di appartenenza</span>
+                                    <span class="mini-txt font-weight-bold d-block" v-if="category_selected==3 || category_selected==5">Settore d'interesse</span>
+                                    <span class="mini-txt font-weight-bold d-block" v-if="category_selected==4">Settore d'interesse d'investimento</span>
+                                    <div v-for="(sector,i) in sectors" class="border-style bg-white" v-cloak>
+                                      <label for="" class="m-0">@{{sector.name_it}}
+                                        <i class="fas fa-times"></i>
+                                      </label>
+                                    </div>
+                                    <div v-if="sectors.length<4" class="m-0">
+                                      <select name="sector_id" v-model="sector_selected" class="text-capitalize" @change="addSector()">
+                                              <option value="">Tutti</option>
+                                          @foreach ($sectors as $sector)
+                                              <option class="text-capitalize" :value="{id:{{$sector->id}}, name_it:'{{$sector->name_it}}'}">{{$sector->name_it}}</option>
+                                          @endforeach
+                                      </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        {{-- settori --}}
-                        <div v-if="category_selected && category_selected!=6" class="search-style">
-                            <h6 for="" class="d-block">Cerco profili che</h6>
-                            <input type="radio" name="sectorToggle" value="false" v-model="sectorToggle" id="one-sector" class="w-auto h-auto" :checked="!sectorToggle">
-                            <label for="one-sector">includono uno dei i seguenti settori:</label>
-                            <input type="radio" name="sectorToggle" value="true" v-model="sectorToggle" id="many-sector" class="w-auto h-auto" :checked="sectorToggle">
-                            <label for="many-sector">includono tutti i seguenti settori:</label>
-                        </div>
-                        <div v-if="category_selected && category_selected!=6" class="search-style">
-                            <h6 v-if="category_selected==1 || category_selected==2">Settore di appartenenza:</h6>
-                            <h6 v-if="category_selected==3 || category_selected==5">Settore d'interesse:</h6>
-                            <h6 v-if="category_selected==4">Settore d'interesse d'investimento:</h6>
-                            <div v-for="(sector,i) in sectors" class="" v-cloak>
-                              <label for="">@{{sector.name_it}}
-                                <i class="fas fa-trash-alt" @click="removeSector(i)"></i>
-                              </label>
+                            {{-- <div v-if="pagetypes_id.length>0 || usertypes_id.length>0 || investors_selected  || organizzations_selected" class="">
+                                <span>Dove:</span>
+                                <select class="text-capitalize" name="country_id" v-model="country_id_selected" @change="getRegionsByCountry()">
+                                        <option value="">In tutto il mondo</option>
+                                    @foreach ($countries as $country)
+                                        <option class="text-capitalize" value="{{$country->id}}">{{$country->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div> --}}
+                            <div v-if="category_selected{{--regions.length>1--}}" class="col-sm-12 col-md-12 col-lg-2 col-xl-2" v-cloak>
+                                <span class="mini-txt font-weight-bold d-block">Regione</span>
+                                <select class="text-capitalize" name="region_id" v-model="region_id_selected" required>
+                                    <option value="">Tutte le regioni</option>
+                                    <option v-for="region in regions" :value="region.id"
+                                    :selected="region.id==region_id_selected">@{{region.name}}
+                                    </option>
+                                </select>
                             </div>
-                            <div class="row m-0">
-                              <select name="sector_id" v-model="sector_selected" class="text-capitalize" @change="addSector()">
-                                      <option value="">Tutti</option>
-                                  @foreach ($sectors as $sector)
-                                      <option class="text-capitalize" :value="{id:{{$sector->id}}, name_it:'{{$sector->name_it}}'}">{{$sector->name_it}}</option>
-                                  @endforeach
-                              </select>
-                              {{-- <button v-if="this.sector_selected" class="button-style button-color col-sm-2 col-md-2 col-lg-2 col-xl-2" @click="addSector()">
-                                  Aggiungi
-                              </button> --}}
-                            </div>
-                        </div>
-                        {{-- <div v-if="pagetypes_id.length>0 || usertypes_id.length>0 || investors_selected  || organizzations_selected" class="search-style">
-                            <h6>Dove:</h6>
-                            <select class="text-capitalize" name="country_id" v-model="country_id_selected" @change="getRegionsByCountry()">
-                                    <option value="">In tutto il mondo</option>
-                                @foreach ($countries as $country)
-                                    <option class="text-capitalize" value="{{$country->id}}">{{$country->name}}</option>
-                                @endforeach
-                            </select>
-                        </div> --}}
-                        <div v-if="category_selected{{--regions.length>1--}}" class="search-style" v-cloak>
-                            <h6>Regione:</h6>
-                            <select class="text-capitalize" name="region_id" v-model="region_id_selected" required>
-                                <option value="">Tutte le regioni</option>
-                                <option v-for="region in regions" :value="region.id"
-                                :selected="region.id==region_id_selected">@{{region.name}}
-                                </option>
-                            </select>
                         </div>
                     </div>
-                    <div v-else class="search-filter">
-                      <div class="search-style" v-cloak>
-                          <h6>Cerca per nome</h6>
-                          <input type="text" name="name" value="" placeholder="Inserisci nome qui" v-model="name" @keyup.enter="" v-on:input="" maxlength="70" class="form-control" autocomplete="off">
-                          @error ('name')
-                              <div class="alert alert-danger">
-                                  {{__($message)}}
-                              </div>
-                          @enderror
-                      </div>
-                    </div>
-                    <form v-if="search_type && name || category_selected" class="search-style" method="POST" action="{{ route('admin.found') }}" >
+                    <form v-if="search_type && name || category_selected" class="text-center" method="POST" action="{{ route('admin.found') }}">
                         @csrf
                         <input v-for="usertype_id in usertypes_id" type="hidden" name="usertypes_id[]" :value="usertype_id">
                         <input v-for="pagetype_id in pagetypes_id" type="hidden" name="pagetypes_id[]" :value="pagetype_id">
@@ -267,7 +269,7 @@
                         <input type="hidden" name="sector_id" :value="sector_selected">
                         <input type="hidden" name="country_id" value="1"{{--:value="country_id_selected"--}}>
                         <input type="hidden" name="region_id" :value="region_id_selected">
-                        <button class="button-style button-color w-100" type="submit" name="button">{{__('Search')}}</button>
+                        <button class="button-style button-color mt-2" type="submit" name="button">Ricerca</button>
                     </form>
                 </div>
             </div>

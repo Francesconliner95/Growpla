@@ -154,7 +154,6 @@ class PageController extends Controller
 
     public function show(Page $page){
       $user = Auth::user();
-
       if($page){
         //TEAM
         $team_members = Team::where('page_id', $page->id)

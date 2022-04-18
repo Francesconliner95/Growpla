@@ -21,6 +21,5 @@ class MailMessage extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->view('admin.mails.mail-message-body');
-
     }
 }

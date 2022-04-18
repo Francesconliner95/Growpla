@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UsertypeTableSeeder::class);
         $this->call(SectorsTableSeeder::class);
         $this->call(MainServicesTableSeeder::class);
-        $this->call(ServicesTableSeeder::class);    
+        $this->call(ServicesTableSeeder::class);
         $this->call(HavePagetypeServiceTableSeeder::class);
         $this->call(GivePagetypeServiceTableSeeder::class);
         $this->call(SkillsTableSeeder::class);
@@ -27,5 +27,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RegionsTableSeeder::class);
         $this->call(SupportTypesTableSeeder::class);
         $this->call(NotificationTypesTableSeeder::class);
+        $this->call(IncubatorsTableSeeder::class);
     }
 }

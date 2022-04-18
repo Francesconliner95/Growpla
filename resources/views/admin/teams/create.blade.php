@@ -67,7 +67,7 @@
                       {{-- Nome --}}
                       <div class="form-group">
                           <h6>{{__('Name')}}</h6>
-                          <input type="text" name="name" class="form-control" maxlength="50" value="" required>
+                          <input type="text" name="name" class="form-control" maxlength="15" value="" required>
                           @error ('name')
                               <div class="alert alert-danger">
                                   {{__($message)}}
@@ -76,7 +76,7 @@
                       </div>
                       <div class="form-group">
                           <h6>{{__('Surname')}}</h6>
-                          <input type="text" name="surname" class="form-control" maxlength="50" value="" required>
+                          <input type="text" name="surname" class="form-control" maxlength="20" value="" required>
                           @error ('surname')
                               <div class="alert alert-danger">
                                   {{__($message)}}
@@ -98,7 +98,7 @@
                     {{-- Ruolo --}}
                     <div class="form-group">
                         <h6>{{__('Role')}}</h6>
-                        <input type="text" name="role" class="form-control" maxlength="50" value="" required>
+                        <input type="text" name="role" class="form-control" maxlength="20" value="" required>
                         @error ('role')
                             <div class="alert alert-danger">
                                 {{__($message)}}

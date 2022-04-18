@@ -18,13 +18,13 @@
     }
 
     .cicle-container{
-        height: 800px;
+        height: 200px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-direction: column;
         .cicle-item{
-            height: calc(100% / 7);
+            height: 100%;
             width: auto;
             display: flex;
             align-items: center;
@@ -33,7 +33,7 @@
             .circle{
                 width: 100px;
                 height: 100px;
-                background-color: $hover_gray;
+                background-color: $green_1;
                 border-radius: 50%;
                 position: relative;
                 z-index: 1;
@@ -51,7 +51,7 @@
                 }
             }
             .c-active{
-                background-color: $default_green;
+                background-color: $green_3;
                 span{
                     font-weight: bold;
                     color: white;
@@ -99,27 +99,21 @@
         }
     }
     .team-member-cont{
-        padding: 10px;
+        padding: 30px 70px;
         display: inline-block;
         .team-member{
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            align-items: center;
-            // img{
-            //     margin-top: 5px;
-            //     width: 200px;
-            //     height: 200px;
-            //     border-radius: 50%;
-            //     object-fit: cover;
-            //     background-color: $hover_gray;
-            // }
-            h6{
-                padding: 10px 0;
-                margin: 0;
-                .linkedin{
-                    color: #3490dc;
-                }
+            // background-color: white;
+            // box-shadow: 0px 0px 10px 1px #ccc;
+            // border: 2px solid $green_3;
+            background-color: $light_gray;
+            border-radius: 15px;
+            padding: 25px;
+            position: relative;
+            .name,.role,.show-profile{
+                height: 40px;
+            }
+            .linkedin{
+                color: #3490dc;
             }
         }
     }
@@ -194,7 +188,7 @@
         }
     }
 
-    @media (min-width: 992px){
+    @media (min-width: 768px){
         .profile{
             .profile-header{
                 padding-top: 20px;

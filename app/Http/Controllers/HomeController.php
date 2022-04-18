@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
-use App\Account;
-use App\Cooperation;
-use App\Chat;
 use App\Language;
+use App\Incubator;
+use App\Region;
 
 class HomeController extends Controller
 {
@@ -147,6 +146,21 @@ class HomeController extends Controller
 
         return view('guest.cookie-policy');
 
+    }
+
+    public function incubators()
+    {
+
+        $data = [
+            'incubators' => Incubator::where('hidden',null)
+            ->join('regions','regions.id','=','incubators.region_id')
+            ->select('incubators.*','regions.name as region_name')
+            ->get(),
+            'regions' => Region::all(),
+        ];
+
+        app()->setLocale('it');
+        return view('guest.incubators', $data);
     }
 
 }

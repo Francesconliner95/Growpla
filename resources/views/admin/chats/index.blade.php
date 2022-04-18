@@ -23,7 +23,7 @@
                 </div>
                 <div class="row" style="height: 85%;">
                     <div class="chat-cont custom-scrollbar col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                        <div class="account">
+                        <div v-if="my_user_chats.user_chats && my_user_chats.user_chats.length>0" class="account" v-cloak>
                             <button class="text-dark d-flex justify-content-between align-items-center w-100 pb-2" @click="selectAccount(0,true)" v-cloak>
                               <div>
                                   <span class="text-capitalize font-weight-bold w-100 d-inline-block">

@@ -185,6 +185,18 @@ var create = new Vue({
             }, 1000);
         },
 
+        checkMobile(){
+            if(window.innerWidth>=768){
+                if(this.is_mobile){
+                    this.is_mobile = false;
+                }
+            }else{
+                if(!this.is_mobile){
+                    this.is_mobile = true;
+                }
+            }
+        },
+
     },
     created(){
       this.page = JSON.parse(this.page.replace(/&quot;/g,'"'));
@@ -196,6 +208,10 @@ var create = new Vue({
     },
     mounted() {
         this.getCollaborations();
+        this.checkMobile();
+        window.addEventListener('resize', (event)=> {
+            this.checkMobile();
+        }, true);
 
         if(document.getElementById('multi-slider-cont-1')){
             this.arrowVisibility(1);
@@ -203,6 +219,7 @@ var create = new Vue({
         if(document.getElementById('multi-slider-cont-2')){
             this.arrowVisibility(2);
         }
+
     },
 
 });

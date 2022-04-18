@@ -19,6 +19,7 @@ Route::get('/home','HomeController@index')->name('home');
 Route::get('/termsAndConditions', 'HomeController@termsAndConditions')->name('termsAndConditions');
 Route::get('/privacyPolicy', 'HomeController@privacyPolicy')->name('privacyPolicy');
 Route::get('/cookiePolicy', 'HomeController@cookiePolicy')->name('cookiePolicy');
+Route::get('/incubators', 'HomeController@incubators')->name('incubators');
 
 Auth::routes(['verify' => true]);
 

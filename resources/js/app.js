@@ -18,6 +18,10 @@ if (document.getElementById('register')) {
     require('./guest/register.js');
 }
 
+if (document.getElementById('incubators')) {
+    require('./guest/incubators.js');
+}
+
 ///////SEARCH///////
 
 if (document.getElementById('search')) {

@@ -78090,6 +78090,17 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       setTimeout(function () {
         _this7.arrowVisibility(slider_id);
       }, 1000);
+    },
+    checkMobile: function checkMobile() {
+      if (window.innerWidth >= 768) {
+        if (this.is_mobile) {
+          this.is_mobile = false;
+        }
+      } else {
+        if (!this.is_mobile) {
+          this.is_mobile = true;
+        }
+      }
     }
   },
   created: function created() {
@@ -78101,7 +78112,13 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     }
   },
   mounted: function mounted() {
+    var _this8 = this;
+
     this.getCollaborations();
+    this.checkMobile();
+    window.addEventListener('resize', function (event) {
+      _this8.checkMobile();
+    }, true);
 
     if (document.getElementById('multi-slider-cont-1')) {
       this.arrowVisibility(1);
@@ -81027,6 +81044,10 @@ if (document.getElementById('cookie-policy')) {
 
 if (document.getElementById('register')) {
   __webpack_require__(/*! ./guest/register.js */ "./resources/js/guest/register.js");
+}
+
+if (document.getElementById('incubators')) {
+  __webpack_require__(/*! ./guest/incubators.js */ "./resources/js/guest/incubators.js");
 } ///////SEARCH///////
 
 
@@ -81665,6 +81686,63 @@ document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
 
 /***/ }),
 
+/***/ "./resources/js/guest/incubators.js":
+/*!******************************************!*\
+  !*** ./resources/js/guest/incubators.js ***!
+  \******************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+//window.history.forward();
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#incubators',
+  data: {
+    incubators: incubators,
+    incubators_show: [],
+    region_id: '',
+    region_id_selected: ''
+  },
+  methods: {
+    filterByRegion: function filterByRegion() {
+      var _this = this;
+
+      if (!this.region_id_selected) {
+        this.incubators_show = this.incubators;
+      } else {
+        this.incubators_show = [];
+        this.incubators.forEach(function (incubator, i) {
+          if (incubator.region_id == _this.region_id_selected) {
+            _this.incubators_show.push(incubator);
+          }
+        });
+      }
+    }
+  },
+  created: function created() {
+    if (this.incubators) {
+      this.incubators = JSON.parse(this.incubators.replace(/&quot;/g, '"'));
+    }
+
+    this.incubators_show = this.incubators;
+    console.log(this.incubators_show);
+  },
+  mounted: function mounted() {}
+});
+
+/***/ }),
+
 /***/ "./resources/js/guest/prehome.js":
 /*!***************************************!*\
   !*** ./resources/js/guest/prehome.js ***!
@@ -81963,8 +82041,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

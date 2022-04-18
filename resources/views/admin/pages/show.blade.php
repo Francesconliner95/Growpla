@@ -139,7 +139,7 @@
                                 <p class="description">{{$page->summary}}</p>
                             </div>
                             @endif
-                            <div class="">
+                            <div class="d-flex align-items-center">
                                 @if(count($page->sectors)>0)
                                     @foreach ($page->sectors as $sector)
                                         <span class="border-style bg-white">{{$sector->name_it}}</span>
@@ -217,18 +217,25 @@
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
                             {{-- @if($page->lifecycle_id) --}}
-                            <div class="cicle-container">
+                            <div v-if="!is_mobile" class="cicle-container">
                                 @foreach ($lifecycles as $lifecycle)
                                   <div class="pre-seed cicle-item">
                                       <div :class="{{$lifecycle->id}}<={{$page->lifecycle_id?$page->lifecycle_id:0}}?
                                       'circle c-active':'circle'">
                                           <span>{{$lifecycle->name}}</span>
                                       </div>
-                                      <span v-if="{{$lifecycle->id}}<{{count($lifecycles)}}"
+                                      {{-- <span v-if="{{$lifecycle->id}}<{{count($lifecycles)}}"
                                         :class="{{$lifecycle->id}}<{{$page->lifecycle_id?$page->lifecycle_id:0}}?'n-active net':'net'">
-                                      </span>
+                                      </span> --}}
                                   </div>
                                 @endforeach
+                            </div>
+                            <div v-else class="cicle-container">
+                                <div class="cicle-item">
+                                    <div class="circle c-active">
+                                        <span>{{$page->lifecycle->name}}</span>
+                                    </div>
+                                </div>
                             </div>
                             {{-- @endif --}}
                         </div>
@@ -270,7 +277,7 @@
                             <span>Pitch</span>
                         </a>
                     </div>
-                    @endif                    
+                    @endif
                 </div>
                 @endif
                 {{-- posso accedere ai servizi solo se la pagina è: startup o azienda --}}
@@ -409,33 +416,38 @@
                     </div>
                 </h3>
                 <div class="row justify-content-center">
-                    <div v-for="member in team_members" class="team-member-cont col-sm-12 col-md-6 col-lg-4 col-xl-4 mt-2 mb-2">
+                    <div v-for="member in team_members" class="team-member-cont col-sm-12 col-md-6 col-lg-4 col-xl-4 mt-2 mb-2" v-cloak>
                         <div class="team-member">
-                            <div class="img-cont medium-img">
+                            <div class="img-cont mini-img">
                                 <img v-if="member.image" :src="'/storage/'+ member.image" alt="">
                             </div>
-                            <h6>@{{member.name}} @{{member.surname}}
+                            <h5 class="name text-capitalize txt-blue font-weight-bold mt-2">@{{member.name}} @{{member.surname}}
                                 <a v-if="member.linkedin" class="linkedin" :href="member.linkedin" target="_blank" rel="noopener noreferrer">
                                     <i class="fab fa-linkedin"></i>
                                 </a>
-                            </h6>
-                            <span v-if="member.role">
+                            </h5>
+                            <p v-if="member.role" class="role font-weight-bold">
                                 <i class="fas fa-user-tie"></i>
                                 @{{member.role}}
-                            </span>
-                            <div v-if="is_my_page" class="edit-top-left-small pl-5">
-                                <div class="">
-                                    <a v-if="member.position!=0" type="button" name="button" class="button-color-gray" @click="changeTeamPosition(member.id,-1)">
-                                        <i  class="fas fa-sort-up"></i>
+                            </p>
+                            <div class="show-profile text-center mt-4">
+                                <a v-if="member.user_id" :href="'/admin/users/'+member.user_id" class="button-style button-color-green">Visita profilo</a>                            
+                            </div>
+                            <div v-if="is_my_page" class="edit-center-center-small d-flex justify-content-between w-100">
+                                <div class="d-inline-block" style="margin-left: -30px;">
+                                    <a v-if="member.position!=0 && member.position<team_members.length-1" type="button" name="button" class="button-color-gray" @click="changeTeamPosition(member.id,-1)">
+                                        {{-- <i  class="fas fa-sort-up"></i> --}}
+                                        <i class="fas fa-caret-left"></i>
                                     </a>
                                 </div>
-                                <div class="">
-                                    <a v-if="member.position<team_members.length-1" type="button" name="button" class="button-color-gray" @click="changeTeamPosition(member.id,1)">
-                                        <i  class="fas fa-sort-down"></i>
+                                <div class="d-inline-block" style="margin-right: -30px;">
+                                    <a v-if="member.position<team_members.length-1 && member.position!=0" type="button" name="button" class="button-color-gray" @click="changeTeamPosition(member.id,1)">
+                                        {{-- <i  class="fas fa-sort-down"></i> --}}
+                                        <i class="fas fa-caret-right"></i>
                                     </a>
                                 </div>
                             </div>
-                            <div v-if="is_my_page" class="edit-top-right-vert pr-5">
+                            <div v-if="is_my_page" class="edit-top-right-vert">
                                 <a :href="'/admin/teams/' + member.id +'/edit'" class="button-color-gray">
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
@@ -446,9 +458,9 @@
                         <a href="javascript:void(0)" @click="teamToggle()" class="mini-txt">
                             {{-- <span v-if="team_members.length<=3" class="txt-blue font-weight-bold">{{__('Show all')}}
                             </span> --}}
-                            <span v-if="team_members.length<=3" class="arrow-black r-90r"></span>
+                            <span v-if="team_members.length<=3" class="arrow-black-item r-90r"></span>
                             {{-- <span v-else class="txt-blue font-weight-bold">{{__('Show less')}}</span> --}}
-                            <span v-else class="arrow-black r-90l"></span>
+                            <span v-else class="arrow-black-item r-90l"></span>
                         </a>
                     </div>
                     <div v-if="is_my_page" class="d-flex justify-content-center w-100">

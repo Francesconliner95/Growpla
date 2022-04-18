@@ -27,7 +27,7 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
                             @foreach ($lifecycles as $lifecycle)
-                                <div class="pb-3 w-100 bubble-cont">
+                                <div class="pb-3 w-100">
                                     <button type="button" name="button" :class="isChecked('l-{{$lifecycle->id}}')?
                                     'active multichoise-b button-style multichoise-green w-100 lifecycle-item tool-tip-b':
                                     'multichoise-b button-style multichoise-green w-100 lifecycle-item tool-tip-b'" @click="radioToggle({{$lifecycle->id}})" id="l-{{$lifecycle->id}}-b" v-cloak>
@@ -36,8 +36,10 @@
                                         </span>
                                     </button>
                                     @if($lifecycle->description_it)
-                                    <div v-if="lifecycle_selected=={{$lifecycle->id}}" class="bubble"  v-cloak>
-                                        {{$lifecycle->description_it}}
+                                    <div v-if="lifecycle_selected=={{$lifecycle->id}}" class="bubble-cont" v-cloak>
+                                        <div class="bubble">
+                                            {{$lifecycle->description_it}}
+                                        </div>
                                     </div>
                                     @endif
                                 </div>

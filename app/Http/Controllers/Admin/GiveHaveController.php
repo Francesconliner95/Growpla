@@ -37,12 +37,12 @@ class GiveHaveController extends Controller
         $api_or_route = $request->api_or_route;
 
         $needs = [];
+        array_push($needs,...HaveUserService::select('id','user_id','service_id')->get());
         array_push($needs,...HavePagePagetype::select('id','page_id','pagetype_id')->get());
         array_push($needs,...HavePageUsertype::where('usertype_id','!=',1)
         ->select('id','page_id','usertype_id')->get());
-        array_push($needs,...HavePageCofounder::select('id','page_id','skill_id')->get());
         array_push($needs,...HavePageService::select('id','page_id','service_id')->get());
-        array_push($needs,...HaveUserService::select('id','user_id','service_id')->get());
+        array_push($needs,...HavePageCofounder::select('id','page_id','service_id as cofounder_service_id')->get());
 
         if($api_or_route){
             return response()->json([
@@ -127,9 +127,9 @@ class GiveHaveController extends Controller
                 $need_info['service_id'] = $need['service_id'];
                 $need_info['need'] = Service::find($need['service_id'])->name;
             }
-            if(array_key_exists('skill_id', $need)){
-                $need_info['skill_id'] = $need['skill_id'];
-                $need_info['need'] = Skill::find($need['skill_id'])->name;
+            if(array_key_exists('cofounder_service_id', $need)){
+                $need_info['cofounder_service_id'] = $need['cofounder_service_id'];
+                $need_info['need'] = Service::find($need['cofounder_service_id'])->name;
             }
             array_push($needs_info,$need_info);
         }

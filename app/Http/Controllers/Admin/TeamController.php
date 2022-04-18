@@ -37,7 +37,7 @@ class TeamController extends Controller
     public function storeTeam(Request $request, $page_id)
     {
         $request->validate([
-            'role'=> 'required|max:255',
+            'role'=> 'required|max:25',
         ]);
 
         $data = $request->all();
@@ -52,9 +52,9 @@ class TeamController extends Controller
                 $already_exist = Team::where('page_id',$page_id)
                                 ->where('user_id',$request->user_id)
                                 ->first();
-                if(!$already_exist){
+                // if(!$already_exist){
                     $can_create = true;
-                }
+                // }
             }
         }else{
             //utente iscritto
@@ -135,7 +135,7 @@ class TeamController extends Controller
     public function update(Request $request, Team $team)
     {
         $request->validate([
-          'role'=> 'required|max:255',
+          'role'=> 'required|max:25',
         ]);
 
         $old_user_id = $team->user_id;
@@ -152,9 +152,9 @@ class TeamController extends Controller
                 $already_exist = Team::where('page_id',$page->id)
                                 ->where('user_id',$request->user_id)
                                 ->first();
-                if(!$already_exist){
+                // if(!$already_exist){
                     $can_update = true;
-                }
+                // }
             }
         }else{
             //pagina iscritta

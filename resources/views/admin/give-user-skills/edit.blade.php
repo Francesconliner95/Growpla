@@ -32,7 +32,7 @@
                     <div  class="search">
                         <div class="row">
                             <div class="col-sm-10 col-md-10 col-lg-10 col-xl-10">
-                                <input type="text" name="name" value="" placeholder="Nome competenza" v-model="skill_name" @keyup.enter="searchSkill()" v-on:input="searchSkill()" maxlength="25" class="form-control" autocomplete="off">
+                                <input type="text" name="name" value="" placeholder="Nome competenza" v-model="skill_name" @keyup.enter="addManualSkill()" v-on:input="searchSkill()" maxlength="25" class="form-control" autocomplete="off">
                                 @error ('skill_name')
                                     <div class="alert alert-danger">
                                         {{__($message)}}
