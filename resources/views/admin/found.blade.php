@@ -54,7 +54,7 @@
                                         </span>
                                     </div>
                                     <div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
-                                        <div v-for="sector in account.sectors" class="d-inline-block border-style" v-cloak>
+                                        <div v-for="sector in account.sectors" class="d-inline-block border-style bg-white mini-txt" v-cloak>
                                           <span>@{{sector.name_it}}</span>
                                         </div>
                                     </div>

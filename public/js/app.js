@@ -74536,15 +74536,19 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       // for (var j = 0; j < elements.length; j++) {
       //     elements[j].classList.add("d-none");
       // }
+      console.log(i, user_or_page);
+
       if (user_or_page) {
         if (document.getElementById('chat-item-0').classList.contains('d-none')) {
           document.getElementById('chat-item-0').classList.remove("d-none");
           document.getElementById('arrow-0').classList.remove("r-90r");
           document.getElementById('arrow-0').classList.add("r-90l");
+          console.log(document.getElementById('arrow-0'));
         } else {
           document.getElementById('chat-item-0').classList.add("d-none");
           document.getElementById('arrow-0').classList.remove("r-90l");
           document.getElementById('arrow-0').classList.add("r-90r");
+          console.log(document.getElementById('arrow-0'));
         }
       } else {
         if (document.getElementById('chat-item-' + (i + 1)).classList.contains('d-none')) {
@@ -78444,6 +78448,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     },
     removeService: function removeService(i) {
       this.services.splice(i, 1);
+      console.log('rimuovi' + i);
     },
     addSector: function addSector() {
       var _this7 = this;
@@ -80766,7 +80771,17 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     alert: false,
     confirm_delete_alert: false
   },
-  methods: {},
+  methods: {
+    checkboxToggle: function checkboxToggle(mail_setting_id) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default()({
+        method: 'put',
+        url: '/admin/mailSettingToggle',
+        data: {
+          mail_setting_id: mail_setting_id
+        }
+      }).then(function (response) {});
+    }
+  },
   created: function created() {
     this.user = JSON.parse(this.user.replace(/&quot;/g, '"'));
     console.log(this.user);
@@ -81709,34 +81724,54 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#incubators',
   data: {
-    incubators: incubators,
+    incubators: [],
     incubators_show: [],
     region_id: '',
-    region_id_selected: ''
+    region_id_selected: '',
+    name: ''
   },
   methods: {
-    filterByRegion: function filterByRegion() {
+    searchByName: function searchByName() {
       var _this = this;
+
+      this.region_id_selected = '';
+      this.incubators_show = [];
+
+      if (this.name) {
+        this.incubators.forEach(function (incubator, i) {
+          if (incubator.name.toLowerCase().match(_this.name.toLowerCase())) {
+            _this.incubators_show.push(incubator);
+          }
+        });
+      } else {
+        this.incubators_show = this.incubators;
+      }
+    },
+    filterByRegion: function filterByRegion() {
+      var _this2 = this;
 
       if (!this.region_id_selected) {
         this.incubators_show = this.incubators;
       } else {
         this.incubators_show = [];
         this.incubators.forEach(function (incubator, i) {
-          if (incubator.region_id == _this.region_id_selected) {
-            _this.incubators_show.push(incubator);
+          if (incubator.region_id == _this2.region_id_selected) {
+            _this2.incubators_show.push(incubator);
           }
         });
       }
+    },
+    getAllIncubators: function getAllIncubators() {
+      var _this3 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getAllIncubators', {}).then(function (response) {
+        _this3.incubators = response.data.results.incubators;
+        _this3.incubators_show = _this3.incubators;
+      });
     }
   },
   created: function created() {
-    if (this.incubators) {
-      this.incubators = JSON.parse(this.incubators.replace(/&quot;/g, '"'));
-    }
-
-    this.incubators_show = this.incubators;
-    console.log(this.incubators_show);
+    this.getAllIncubators();
   },
   mounted: function mounted() {}
 });
@@ -82041,8 +82076,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

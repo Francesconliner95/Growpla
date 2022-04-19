@@ -26,14 +26,14 @@
                         <div v-if="my_user_chats.user_chats && my_user_chats.user_chats.length>0" class="account" v-cloak>
                             <button class="text-dark d-flex justify-content-between align-items-center w-100 pb-2" @click="selectAccount(0,true)" v-cloak>
                               <div>
-                                  <span class="text-capitalize font-weight-bold w-100 d-inline-block">
+                                  <span class="text-capitalize font-weight-bold w-100 d-inline-block text-left">
                                       @{{my_user_chats.name}}    @{{my_user_chats.surname}}
                                   </span>
                                   <span v-if="my_user_chats.all_mnr" class="d-block mini-txt">Hai @{{my_user_chats.all_mnr}} @{{my_user_chats.all_mnr<=1?'messaggo non letto':'messaggi non letti'}}
                                       <span class="notread"></span>
                                   </span>
                               </div>
-                              <div class="img-cont micro-img">
+                              <div class="micro-img">
                                   <img src="/storage/images/arrows-black-icon.svg" id="arrow-0" class="p-2 r-90r" alt="">
                               </div>
                             </button>
@@ -48,14 +48,14 @@
                         v-show="page.page_chats!=''" class="account" v-cloak>
                             <button class="font-weight-bold text-dark d-flex justify-content-between align-items-center w-100 pb-2" @click="selectAccount(i,false)">
                                 <div>
-                                    <span class="text-capitalize font-weight-bold text-left w-100 d-inline-block">
+                                    <span class="text-capitalize font-weight-bold text-left w-100 d-inline-block text-left">
                                         @{{page.name}}
                                     </span>
                                     <span v-if="page.all_mnr" class="d-block mini-txt">Hai @{{page.all_mnr}} @{{page.all_mnr<=1?'messaggo non letto':'messaggi non letti'}}
                                         <span class="notread"></span>
                                     </span>
                                 </div>
-                                <div class="img-cont micro-img">
+                                <div class="micro-img">
                                     <img src="/storage/images/arrows-black-icon.svg" :id="'arrow-'+(i+1)" class="p-2 r-90r" alt="">
                                 </div>
                             </button>

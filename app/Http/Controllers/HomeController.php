@@ -152,10 +152,10 @@ class HomeController extends Controller
     {
 
         $data = [
-            'incubators' => Incubator::where('hidden',null)
-            ->join('regions','regions.id','=','incubators.region_id')
-            ->select('incubators.*','regions.name as region_name')
-            ->get(),
+            // 'incubators' => Incubator::where('hidden',null)
+            // ->join('regions','regions.id','=','incubators.region_id')
+            // ->select('incubators.*','regions.name as region_name')
+            // ->orderBy('name')->get(),
             'regions' => Region::all(),
         ];
 

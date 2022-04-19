@@ -47,7 +47,8 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     ->name('users.businessAngel');
     Route::get('getMyAccounts', 'UserController@getMyAccounts')->name('getMyAccounts');
     Route::put('setPageSelected', 'UserController@setPageSelected')->name('setPageSelected');
-
+    Route::put('/mailSettingToggle', 'UserController@mailSettingToggle')
+    ->name('mailSettingToggle');
 
     //admin.users.settings
 

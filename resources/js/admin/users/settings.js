@@ -13,7 +13,16 @@ var create = new Vue({
       confirm_delete_alert: false,
     },
     methods: {
-
+        checkboxToggle(mail_setting_id){
+            axios({
+                method: 'put',
+                url: '/admin/mailSettingToggle',
+                data: {
+                    mail_setting_id: mail_setting_id,
+                }
+            }).then(response => {
+            });
+        },
     },
     created(){
         this.user = JSON.parse(this.user.replace(/&quot;/g,'"'));

@@ -119,6 +119,9 @@ class MainController extends Controller
         if(!$usertypes_id && $pagetypes_id && $pagetypes_id[0]==5){
             $search_type = 'Venture-Capital';
         }
+        if(!$usertypes_id && $pagetypes_id && $pagetypes_id[0]==7){
+            $search_type = 'Organizzazioni ed Associazioni';
+        }
         if(!$usertypes_id && $pagetypes_id && $pagetypes_id[0]==8){
             $search_type = 'Private-Equity';
         }

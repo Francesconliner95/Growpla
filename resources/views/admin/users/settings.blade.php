@@ -51,64 +51,21 @@
                         <i class="fas fa-cog"></i>
                     </h1>
                 </div>
-                {{-- <div class="sub-section">
-                    <h6 class="text-uppercase d-inline-block pr-2">{{__('Language')}}</h6>
-                    <select class="form-control d-inline-block w-auto text-capitalize" name="" @change="changeLang()" v-model="selected_lang">
-                        @foreach ($languages as $language)
-                            <option class="text-capitalize" value="{{$language->id}}"
-                                {{$language->id == old('language_id', Auth::user()->language_id) ? 'selected=selected' : '' }}
-                                >{{$language->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="">
-                  <a class="button-style button-color" href="{{route('admin.users.create')}}">
-                    Modifica account
-                  </a>
-                </div> --}}
-                {{--<div class="sub-section">
-                    <h6 class="text-uppercase">{{__('messages')}}</h6>
-                    <h6>{{__('I want to receive messages from')}}</h6>
-                    <div v-for="accountType in accountTypes" class="form-check">
-                        <input v-if="accountType.id!=1" type="checkbox" name="" :value="accountType.id"
-                        :checked="accountType.checked"
-                        @click="setFilterMessage(accountType.id)">
-                        <label>@{{lang==1?accountType.name_en:accountType.name}}</label>
-                        <div v-if="accountType.id==1" v-for="startupState in startupStates" class="form-check">
-                            <input type="checkbox" name="" :value="startupState.id"
-                            :checked="startupState.checked"
-                            @click="setFilterMessage(accountType.id,startupState.id)"
-                            >
-                            <label>@{{startupState.name}}</label>
+                <div class="sub-section">
+                    <h6>Voglio ricevere mail</h6>
+                    @foreach ($mail_settings as $mail_setting)
+                        <div class="">
+                            {{-- @if($errors->any())
+                              <input type="checkbox" name="mail_settings[]" class="" value="{{$mail_setting->id}}" id="ms-{{$mail_setting->id}}"
+                              {{ in_array($mail_setting->id, old('mail_settings', [])) ? 'checked=checked' : ''}} @click="checkboxToggle({{$mail_setting->id}})">
+                            @else --}}
+                              <input type="checkbox" name="mail_settings[]" class="" value="{{$mail_setting->id}}" id="ms-{{$mail_setting->id}}"
+                              {{!$user->mail_settings->contains($mail_setting)?'checked=checked':''}} @click="checkboxToggle({{$mail_setting->id}})">
+                            {{-- @endif --}}
+                            <label class="pl-2" for="ms-{{$mail_setting->id}}">{{$mail_setting->name_it}}</label>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
-                <div class="sub-section">
-                    <h6 class="text-uppercase">{{__('Notifications')}}</h6>
-                    <h6>{{__('I want to receive notifications if')}}</h6>
-                    <div v-for="filterNotType in filterNotTypes"
-                        class="form-check"
-                        v-show="filterNotType.show">
-                        <input type="checkbox" name="" :value="filterNotType.id"
-                        :checked="filterNotType.checked"
-                        @click="setFilterNotf(filterNotType.id)">
-                        <label v-if="lang==1">@{{filterNotType.name_en}}</label>
-                        <label v-if="lang==2">@{{filterNotType.name_it}}</label>
-                    </div>
-                </div>
-                <div class="sub-section">
-                    <h6 class="text-uppercase">{{__('Mails')}}</h6>
-                    <h6>{{__('I want to receive mail if')}}</h6>
-                    <div v-for="filterType in filterTypes"
-                        class="form-check"
-                        v-show="filterType.show">
-                        <input type="checkbox" name="" :value="filterType.id"
-                        :checked="filterType.checked"
-                        @click="setFilterMail(filterType.id)">
-                        <label v-if="lang==1">@{{filterType.name_en}}</label>
-                        <label v-if="lang==2">@{{filterType.name_it}}</label>
-                    </div>
-                </div>--}}
                 <div v-if="user" class="sub-section pt-3 pb-2" v-cloak>
                     <div class="row">
                         <div class="text-center col-sm-12 col-md-12 col-lg-8 col-xl-8 d-flex justify-content-start align-items-center pb-2">

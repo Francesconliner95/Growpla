@@ -28,5 +28,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SupportTypesTableSeeder::class);
         $this->call(NotificationTypesTableSeeder::class);
         $this->call(IncubatorsTableSeeder::class);
+        $this->call(MailSettingsTableSeeder::class);
     }
 }

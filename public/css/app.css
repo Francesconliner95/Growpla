@@ -17119,6 +17119,15 @@ readers do not read off random characters that represent icons */
   [1] Base Styles
 -------------------------------------------------*/
 
+button {
+  border-radius: 50%;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  color: rgb(10, 184, 159);
+}
+
 [aria-label][role~=tooltip] {
   position: relative;
 }
@@ -17144,16 +17153,18 @@ readers do not read off random characters that represent icons */
 }
 
 [aria-label][role~=tooltip]::after {
-  background: rgba(17, 17, 17, 0.9);
+  background: rgba(10, 184, 159, 0.9);
   border-radius: 4px;
   color: #ffffff;
   content: attr(aria-label);
   font-size: var(--microtip-font-size, 13px);
   font-weight: var(--microtip-font-weight, normal);
   text-transform: var(--microtip-text-transform, none);
+  background-color: rgba(10, 184, 159, 0.9);
   padding: 0.5em 1em;
   white-space: nowrap;
   box-sizing: content-box;
+  line-height: 1.1;
 }
 
 [aria-label][role~=tooltip]:hover::before,
@@ -17169,10 +17180,15 @@ readers do not read off random characters that represent icons */
 -------------------------------------------------*/
 
 [role~=tooltip][data-microtip-position|=top]::before {
-  background: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2236px%22%20height%3D%2212px%22%3E%3Cpath%20fill%3D%22rgba%2817,%2017,%2017,%200.9%29%22%20transform%3D%22rotate%280%29%22%20d%3D%22M2.658,0.000%20C-13.615,0.000%2050.938,0.000%2034.662,0.000%20C28.662,0.000%2023.035,12.002%2018.660,12.002%20C14.285,12.002%208.594,0.000%202.658,0.000%20Z%22/%3E%3C/svg%3E") no-repeat;
+  /* background: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2236px%22%20height%3D%2212px%22%3E%3Cpath%20fill%3D%22rgba%2817,%2017,%2017,%200.9%29%22%20transform%3D%22rotate%280%29%22%20d%3D%22M2.658,0.000%20C-13.615,0.000%2050.938,0.000%2034.662,0.000%20C28.662,0.000%2023.035,12.002%2018.660,12.002%20C14.285,12.002%208.594,0.000%202.658,0.000%20Z%22/%3E%3C/svg%3E") no-repeat;
   height: 6px;
   width: 18px;
-  margin-bottom: 5px;
+  margin-bottom: 5px;*/
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 12px solid rgba(10, 184, 159, 0.9);
 }
 
 [role~=tooltip][data-microtip-position|=top]::after {
@@ -17364,6 +17380,11 @@ readers do not read off random characters that represent icons */
 [role~=tooltip][data-microtip-size=large]::after {
   white-space: initial;
   width: 260px;
+}
+
+[role~=tooltip][data-microtip-size=extra-large]::after {
+  white-space: initial;
+  width: 300px;
 }
 
 [v-cloak] {
@@ -17640,6 +17661,72 @@ ul > p {
   border-radius: 10px;
   border: 2px solid gray;
   background-color: #f0f0f0;
+}
+
+.input-container {
+  display: block;
+  position: relative;
+  padding-left: 20px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.input-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+
+.input-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+
+.input-container input:checked ~ .checkmark {
+  background-color: #01B59C;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+
+.input-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+
+.input-container .checkmark:after {
+  top: 5px;
+  left: 5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: white;
 }
 
 .search {
@@ -18904,9 +18991,12 @@ select option[value=""] {
   height: 15%;
 }
 
+.border-green {
+  border: 2px solid #01B59C;
+}
+
 .card-collaboration {
   position: relative;
-  border: 2px solid #01B59C;
   border-radius: 15px;
   padding-top: 20px;
   padding-bottom: 10px;
@@ -18951,6 +19041,21 @@ select option[value=""] {
 .card-color-blue {
   background-color: #E5F5FC;
   color: #00A1DC;
+}
+
+.r-90l {
+  transition: 0.2s;
+  transform: rotate(-90deg);
+}
+
+.r-90r {
+  transition: 0.2s;
+  transform: rotate(90deg);
+}
+
+.r-180 {
+  transition: 0.2s;
+  transform: rotate(180deg);
 }
 
 @media (min-width: 992px) {
@@ -19396,7 +19501,6 @@ footer .bottom-footer {
   margin-top: -75px;
   padding-top: 75px;
   background-color: white;
-  background-image: url(/images/jumbotron.svg?9a6c0266ccdf310fb8e74f547eeab188);
   background-size: cover;
   height: 870px;
 }

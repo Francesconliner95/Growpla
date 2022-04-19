@@ -65,6 +65,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany('App\Chat','recipient_user_id');
     }
 
+    public function mail_settings(){
+        return $this->belongsToMany('App\MailSetting', 'user_mail_settings', 'user_id', 'mail_setting_id');
+    }
+
     public function give_user_skills(){
         return $this->belongsToMany('App\Skill','give_user_skills','user_id','skill_id')
         ->withPivot('id');

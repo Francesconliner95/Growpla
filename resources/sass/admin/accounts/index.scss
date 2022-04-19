@@ -3,7 +3,7 @@
         margin-top: -75px;
         padding-top: 75px;
         background-color: white;
-        background-image: url('../../../../public/storage/images/jumbotron.svg');
+        // background-image: url('../../../../public/storage/images/jumbotron.svg');
         background-size:  cover;
         height: 870px;
     }
@@ -16,10 +16,15 @@
     // .col-md-12{
     //     padding: 0;
     // }
+
     .search{
         width: 100%;
         min-height: 600px;
         padding: 15px;
+        .search-fixed{
+          // width: 100%;
+          // position: fixed;
+        }
         h1{
             text-align: center;
             padding: 10px;

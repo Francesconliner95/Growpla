@@ -20,7 +20,7 @@ class CollaborationController extends Controller
 
     public function index()
     {
-        $collaborations = Collaboration::where('confirmed',1)
+        $collaborations = Collaboration::query()/*where('confirmed',1)*/
                             ->latest()
                             ->get();
 

@@ -27,6 +27,7 @@ Route::get('/regionsByCountry', 'Api\RegionController@regionsByCountry');
 Route::get('/searchAccount', 'Api\AccountController@searchAccount');
 
 Route::post('/sendEmail', 'Api\HomeController@sendEmail');
+Route::get('/getAllIncubators', 'Api\HomeController@getAllIncubators');
 
 Route::post('/acceptConsentScreen', 'Api\CookieController@acceptConsentScreen');
 

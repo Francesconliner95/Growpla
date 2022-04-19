@@ -282,6 +282,7 @@ var create = new Vue({
 
         removeService(i){
             this.services.splice(i, 1);
+            console.log('rimuovi'+i);
         },
 
         addSector(){

@@ -274,6 +274,68 @@ ul>p{
     background-color: $hover_gray;
 }
 
+//CUSTOM INPUT
+.input-container {
+  display: block;
+  position: relative;
+  padding-left: 20px;
+  // margin-bottom: 12px;
+  cursor: pointer;
+  // font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.input-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+/* On mouse-over, add a grey background color */
+.input-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.input-container input:checked ~ .checkmark {
+  background-color: $green_3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.input-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.input-container .checkmark:after {
+ 	top: 5px;
+	left: 5px;
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background: white;
+}
+
 .search{
     padding: 10px 0px;
     position: relative;
@@ -1570,10 +1632,11 @@ select option[value=""]{
         height: 15%;
     }
 }
-
+.border-green{
+    border: 2px solid $green_3;
+}
 .card-collaboration{
     position: relative;
-    border: 2px solid $green_3;
     border-radius: 15px;
     padding-top: 20px;
     padding-bottom: 10px;
@@ -1621,6 +1684,19 @@ select option[value=""]{
 .card-color-blue{
     background-color: $blue_1;
     color: $blue_3;
+}
+
+.r-90l{
+    transition: .2s;
+    transform: rotate(-90deg);
+}
+.r-90r{
+    transition: .2s;
+    transform: rotate(90deg);
+}
+.r-180{
+    transition: .2s;
+    transform: rotate(180deg);
 }
 
 @media (min-width: 992px){

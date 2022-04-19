@@ -12,7 +12,7 @@
             <div class="item-style">
                 <h3 >Tutte le offerte</h3>
                 <div class="">
-                    <div v-for="offer in offers_show" class="row" v-cloak>
+                    <div v-for="offer in offers_show" class="row gray-cont" v-cloak>
                         <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
                             <div class=" img-cont medium-img">
                                 <img v-if="offer.image" :src="'/storage/' + offer.image" alt="">

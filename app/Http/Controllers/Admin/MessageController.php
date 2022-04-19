@@ -10,10 +10,11 @@ use App\Chat;
 use App\Message;
 use App\User;
 use App\Page;
-use App\FilterMail;
+use App\UserMailSetting;
 use App\Mail\MailMessage;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+
 
 class MessageController extends Controller
 {
@@ -40,52 +41,68 @@ class MessageController extends Controller
 
         function newMessage($chat,$user_or_page,$my_user_id,$my_page_id,$message_text){
 
-          $new_message = new Message();
-          $new_message->chat_id = $chat->id;
+            $new_message = new Message();
+            $new_message->chat_id = $chat->id;
 
-          if($user_or_page == 'user'){
-              $new_message->sender_user_id = $my_user_id;
-              $sender = User::find($my_user_id);
-              $sender['page_id'] = 'user';
-          }elseif($user_or_page == 'page'){
-              $new_message->sender_page_id = $my_page_id;
-              $sender = Page::find($my_page_id);
-              $sender['page_id'] = $sender->id;
-          }
+            if($user_or_page == 'user'){
+                $new_message->sender_user_id = $my_user_id;
+                $sender = User::find($my_user_id);
+                $sender['page_id'] = 'user';
+            }elseif($user_or_page == 'page'){
+                $new_message->sender_page_id = $my_page_id;
+                $sender = Page::find($my_page_id);
+                $sender['page_id'] = $sender->id;
+            }
 
-          if($chat->sender_user_id && $chat->sender_user_id!=$my_user_id){
-              $new_message->recipient_user_id = $chat->sender_user_id;
-              $recipient_email = User::find($chat->sender_user_id)->email;
-          }
-          if($chat->sender_page_id && $chat->sender_page_id!=$my_page_id){
-              $new_message->recipient_page_id = $chat->sender_page_id;
-              $recipient_email = Page::find($chat->sender_page_id)->users->pluck('email');
-          }
-          if($chat->recipient_user_id && $chat->recipient_user_id!=$my_user_id){
-              $new_message->recipient_user_id = $chat->recipient_user_id;
-              $recipient_email = User::find($chat->recipient_user_id)->email;
-          }
-          if($chat->recipient_page_id && $chat->recipient_page_id!=$my_page_id){
-              $new_message->recipient_page_id = $chat->recipient_page_id;
-              $recipient_email = Page::find($chat->recipient_page_id)->users->pluck('email');
-          }
+            if($chat->sender_user_id && $chat->sender_user_id!=$my_user_id){
+                $new_message->recipient_user_id = $chat->sender_user_id;
+                //$recipient_email = User::find($chat->sender_user_id)->email;
+                $recipient_users = [User::find($chat->sender_user_id)];
+            }
+            if($chat->sender_page_id && $chat->sender_page_id!=$my_page_id){
+                $new_message->recipient_page_id = $chat->sender_page_id;
+                //$recipient_email = Page::find($chat->sender_page_id)->users->pluck('email');
+                $recipient_users = Page::find($chat->sender_page_id)->users;
+            }
+            if($chat->recipient_user_id && $chat->recipient_user_id!=$my_user_id){
+                $new_message->recipient_user_id = $chat->recipient_user_id;
+                //$recipient_email = User::find($chat->recipient_user_id)->email;
+                $recipient_users = [User::find($chat->recipient_user_id)];
+            }
+            if($chat->recipient_page_id && $chat->recipient_page_id!=$my_page_id){
+                $new_message->recipient_page_id = $chat->recipient_page_id;
+                //$recipient_email = Page::find($chat->recipient_page_id)->users->pluck('email');
+                $recipient_users = Page::find($chat->recipient_page_id)->users;
+            }
 
-          $new_message->message = $message_text;
-          $new_message->save();
+            $new_message->message = $message_text;
+            $new_message->save();
 
-          $chat->touch();//aggiorna solo updated_at
+            $chat->touch();//aggiorna solo updated_at
 
-          //MAIL
-          $data = [
-              'message' => $message_text,
-              'sender_name' => $sender->page_id=='user'?
-              $sender->name.' '.$sender->surname:$sender->name,
-              'chat_id' => $chat->id,
-              'page_id' => $sender->page_id,
-          ];
-          Mail::to($recipient_email)->queue(new MailMessage($data));
+            //MAIL
+            $data = [
+                'message' => $message_text,
+                'sender_name' => $sender->page_id=='user'?
+                $sender->name.' '.$sender->surname:$sender->name,
+                'chat_id' => $chat->id,
+                'page_id' => $sender->page_id,
+            ];
 
-          return $new_message;
+            $recipient_emails = [];
+            foreach ($recipient_users as $recipient_user) {
+                $exist = UserMailSetting::where('user_id',$recipient_user->id)
+                                         ->where('mail_setting_id',1)
+                                         ->first();
+                if(!$exist){
+                    array_push($recipient_emails,$recipient_user->email);
+                }
+            }
+            if($recipient_emails){
+                Mail::to($recipient_emails)->queue(new MailMessage($data));
+            }
+
+            return $new_message;
         }
 
         if($my_user_id){
@@ -104,7 +121,7 @@ class MessageController extends Controller
         return response()->json([
             'success' => true,
             'results' => [
-                'message' => /*$new_message*/ [],
+                'message' => /*$new_message*/[],
             ]
         ]);
 

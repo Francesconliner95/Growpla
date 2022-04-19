@@ -23,6 +23,8 @@ use App\Region;
 use App\Country;
 use App\Collaboration;
 use App\Notification;
+use App\MailSetting;
+use App\UserMailSetting;
 
 class UserController extends Controller
 {
@@ -310,13 +312,36 @@ class UserController extends Controller
 
       $user = User::find($id);
       $languages = Language::all();
-
       $data = [
         'user' => $user,
         'languages' => $languages,
+        'mail_settings' => MailSetting::all(),
       ];
       app()->setLocale(Language::find(Auth::user()->language_id)->lang);
       return view('admin.users.settings', $data);
+
+    }
+
+    public function mailSettingToggle(Request $request){
+
+        $request->validate([
+            'mail_setting_id' => 'nullable|integer',
+        ]);
+        $mail_setting_id = $request->mail_setting_id;
+        $user = Auth::user();
+
+        $exist = UserMailSetting::where('user_id',$user->id)
+                            ->where('mail_setting_id',$mail_setting_id)
+                            ->first();
+
+        if($exist){
+            $exist->delete();
+        }else{
+            $new_mail_setting = new UserMailSetting();
+            $new_mail_setting->user_id = $user->id;
+            $new_mail_setting->mail_setting_id = $mail_setting_id;
+            $new_mail_setting->save();
+        }
 
     }
 
