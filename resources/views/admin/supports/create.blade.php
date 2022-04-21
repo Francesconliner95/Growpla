@@ -53,7 +53,7 @@
                 <div class="pt-3 pb-3">
                     <h6>{{__('Message')}}</h6>
                     <div class="">
-                        <textarea name="description" rows="5" cols="80" class="col-12"></textarea>
+                        <textarea name="description" rows="5" cols="80" class="form-control"></textarea>
                         @error ('description')
                             <div class="alert alert-danger">
                                 {{__($message)}}

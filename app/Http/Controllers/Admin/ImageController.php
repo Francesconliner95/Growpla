@@ -91,10 +91,40 @@ class ImageController extends Controller
         }
 
         if(!$user->image){
-            if($user->usertypes->contains(Usertype::find(2))){
-                $user->image = 'users_images/default-business-angel.svg';
-            }else{
-                $user->image = 'users_images/default-utente.svg';
+            // dd($user->image);
+            if(in_array($user->image,$default_images)){
+                $user_usertypes = $user->usertypes->pluck('id')->toArray();
+                if(in_array(1,$user_usertypes)){
+                    $user->image = $default_images[0];
+                }
+                //UTENTE
+                if(in_array(7,$user_usertypes)){
+                    $user->image = $default_images[6];
+                }
+                //STUDENTE
+                if(in_array(5,$user_usertypes)){
+                    $user->image = $default_images[4];
+                }
+                //ASPIRANTE COFOUNDER
+                if(in_array(1,$user_usertypes)){
+                    $user->image = $default_images[0];
+                }
+                //DIPENDENTI
+                // if(in_array(4,$user_usertypes)){
+                //     $user->image = $default_images[6];
+                // }
+                // //FREELANCER
+                // if(in_array(3,$user_usertypes)){
+                //     $user->image = $default_images[6];
+                // }
+                // //STARTUPPER
+                // if(in_array(6,$user_usertypes)){
+                //     $user->image = $default_images[6];
+                // }
+                //BUSINESS ANGEL
+                if(in_array(2,$user_usertypes)){
+                    $user->image = $default_images[1];
+                }
             }
         }
 
@@ -111,13 +141,42 @@ class ImageController extends Controller
         $default_images = Usertype::pluck('image')->toArray();
 
         if(!in_array($user->image,$default_images)){
-            Storage::delete($user->image);
 
-            if($user->usertypes->contains(Usertype::find(2))){
-                $user->image = 'users_images/default-business-angel.svg';
-            }else{
-                $user->image = 'users_images/default-utente.svg';
+            Storage::delete($user->image);
+            
+            $user_usertypes = $user->usertypes->pluck('id')->toArray();
+            if(in_array(1,$user_usertypes)){
+                $user->image = $default_images[0];
             }
+            //UTENTE
+            if(in_array(7,$user_usertypes)){
+                $user->image = $default_images[6];
+            }
+            //STUDENTE
+            if(in_array(5,$user_usertypes)){
+                $user->image = $default_images[4];
+            }
+            //ASPIRANTE COFOUNDER
+            if(in_array(1,$user_usertypes)){
+                $user->image = $default_images[0];
+            }
+            //DIPENDENTI
+            // if(in_array(4,$user_usertypes)){
+            //     $user->image = $default_images[6];
+            // }
+            // //FREELANCER
+            // if(in_array(3,$user_usertypes)){
+            //     $user->image = $default_images[6];
+            // }
+            // //STARTUPPER
+            // if(in_array(6,$user_usertypes)){
+            //     $user->image = $default_images[6];
+            // }
+            //BUSINESS ANGEL
+            if(in_array(2,$user_usertypes)){
+                $user->image = $default_images[1];
+            }
+
             $user->update();
         }
 

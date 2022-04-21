@@ -132,7 +132,7 @@
                       </div>
                       <div class="d-flex justify-content-between">
                           <button type="submit" class="button-style button-color">
-                              {{__('Save Changes')}}
+                              Salva
                           </button>
                           <button class="button-style button-color-red ml-5" type="button" name="button" @click="alertMenu(1)">
                               <i class="fas fa-trash-alt mr-1"></i>Elimina

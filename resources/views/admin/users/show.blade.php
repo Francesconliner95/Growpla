@@ -40,7 +40,7 @@
         <div class="item-cont">
             <div class="item-style">
                 <div class="profile">
-                    <a v-if="is_my_user" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.users.edit', $user->id)}}">
+                    <a v-if="is_my_user" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.users.edit', $user->id)}}" v-cloak>
                         <i class="fas fa-pencil-alt"></i>
                     </a>
                     <div class="row">
@@ -50,7 +50,7 @@
                                 @if($user->image)
                                   <img src="{{ asset("storage/" . $user->image) }}" alt="" class="">
                                 @endif
-                                <a v-if="is_my_user" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.images.editUserImage')}}">
+                                <a v-if="is_my_user" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.images.editUserImage')}}" v-cloak>
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
                             </div>
@@ -59,7 +59,7 @@
                             <div class="row">
                                 <h2 class="text-capitalize col-sm-12 col-md-6 col-lg-6 col-xl-6 m-0 d-flex justify-content-start align-items-center">
                                     {{$user->name}} {{$user->surname}}
-                                    <a class="button-style-circle button-color-gray" href="{{route('admin.users.create')}}">
+                                    <a v-if="is_my_user" class="button-style-circle button-color-gray" href="{{route('admin.users.create')}}" v-cloak>
                                         <i class="fas fa-cog"></i>
                                     </a>
                                 </h2>
@@ -261,12 +261,12 @@
                                     @endforeach
                                 </div>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-1" v-cloak>
-                                    <span class="arrow-black r-180"></span>
+                                    <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                                     {{-- <i class="fas fa-caret-left"></i> --}}
                                 </button>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right bg-white" id="button-right-1" v-cloak>
                                     {{-- <i class="fas fa-caret-right"></i> --}}
-                                    <span class="arrow-black"></span>
+                                    <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                                 </button>
                             </div>
                             @endif
@@ -299,11 +299,11 @@
                                 </div>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-2" v-cloak>
                                     {{-- <i class="fas fa-caret-left"></i> --}}
-                                    <span class="arrow-black  r-180"></span>
+                                    <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                                 </button>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right bg-white" id="button-right-2" v-cloak>
                                     {{-- <i class="fas fa-caret-right"></i> --}}
-                                    <span class="arrow-black"></span>
+                                    <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                                 </button>
                             </div>
                             @endif
@@ -339,7 +339,7 @@
             @foreach ($pageTypes  as $key => $pageType)
                 @if($user->pageTypes->contains($pageType->id))
                     @if (count($user->pages->where('pagetype_id',$pageType->id))>0 || $is_my_user)
-                        <div class="gray-cont position-relative">
+                        <div class="gray-cont position-relative pt-5">
                             <div class="edit-top-left">
                               <button aria-label="{{__($pageType->name_it)}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
                               <div class="img-cont mini-img">
@@ -356,7 +356,7 @@
                                                         <div class="text-cont">
                                                             <div class="img-cont small-img">
                                                                 @if($page->image)
-                                                                <img src="{{ asset("storage/" . $page->image) }}" alt="" class="">
+                                                                <img src="{{ asset("storage/" . $page->image) }}" alt="" class="scale">
                                                                 @endif
                                                             </div>
                                                             <span class="d-block text-dark text-truncate">{{$page->name}}</span>
@@ -371,7 +371,7 @@
                                                 <div class="card-style-mini">
                                                     <a class="" href="{{ route('admin.pages.newPage', ['pagetype_id'=> $pageType->id]) }}">
                                                         <div class="text-cont  text-dark">
-                                                            <i class="fas fa-plus"></i>
+                                                            <i class="fas fa-plus scale"></i>
                                                         </div>
                                                     </a>
                                                 </div>
@@ -380,11 +380,11 @@
                                 </div>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start({{$key+3}},'left')" @mouseleave="stop({{$key+3}},'left')" @mouseup="stop({{$key+3}},'left')" class="slider-left" id="button-left-{{$key+3}}" v-cloak>
                                     {{-- <i class="fas fa-caret-left"></i> --}}
-                                    <span class="arrow-black r-180"></span>
+                                    <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                                 </button>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start({{$key+3}},'right')" @mouseleave="stop({{$key+3}},'right')" @mouseup="stop({{$key+3}},'right')"class="slider-right" id="button-right-{{$key+3}}" v-cloak>
                                     {{-- <i class="fas fa-caret-right"></i> --}}
-                                    <span class="arrow-black"></span>
+                                    <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                                 </button>
                             </div>
                         </div>
@@ -415,7 +415,7 @@
                                             <div class="img-cont mini-img">
                                               <img
                                               v-if="collaboration.account.image"
-                                              :src="'/storage/' +collaboration.account.image" alt="" class="">
+                                              :src="'/storage/' +collaboration.account.image" alt="" class="scale">
                                             </div>
                                             <span class="d-block text-dark">
                                                 @{{collaboration.account.name}}
@@ -442,12 +442,13 @@
                         </div>
                     </div>
                     <button v-if="!is_mobile" type="button" name="button" @mousedown="start(20,'left')" @mouseleave="stop(20,'left')" @mouseup="stop(20,'left')" class="slider-left" id="button-left-20" v-cloak>
-                        <span class="arrow-black r-180"></span>
+                        {{-- <span class="arrow-black r-180"></span> --}}
                         {{-- <i class="fas fa-caret-left"></i> --}}
+                        <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                     </button>
                     <button v-if="!is_mobile" type="button" name="button" @mousedown="start(20,'right')" @mouseleave="stop(20,'right')" @mouseup="stop(20,'right')"class="slider-right" id="button-right-20" v-cloak>
                         {{-- <i class="fas fa-caret-right"></i> --}}
-                        <span class="arrow-black"></span>
+                        <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                     </button>
                     <span>@{{this.delay(20)}}</span>
                 </div>

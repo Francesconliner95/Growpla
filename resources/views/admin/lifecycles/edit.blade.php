@@ -48,7 +48,7 @@
                     </div>
                     <div class="text-right">
                         <button type="submit" class="button-style button-color">
-                            {{__('Save Changes')}}
+                            Salva
                         </button>
                     </div>
                 </form>

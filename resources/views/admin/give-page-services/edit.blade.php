@@ -78,7 +78,7 @@
                         </div>
                     </div>
                     <button type="submit" class="button-style button-color">
-                        {{__('Save')}}
+                        Salva
                     </button>
                 </form>
                 <div class="text-right">

@@ -40,7 +40,7 @@
             <div class="item-style">
                 <h3 >Risultati per "<strong>{{$search_type}}</strong>"</h3>
                 <div class="pt-3">
-                    <div v-for="(account,i) in accounts_show" class="p-2" v-cloak>
+                    <div v-if="accounts_show.length>0" v-for="(account,i) in accounts_show" class="p-2" v-cloak>
                         <div class="row gray-cont">
                             <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2  text-center">
                                 <div class=" img-cont medium-img">
@@ -96,6 +96,9 @@
 
                             </div>
                         </div>
+                    </div>
+                    <div v-if="accounts_show.length==0" class="" v-cloak>
+                        <h5>Nessun risultato</h5>
                     </div>
                 </div>
                 {{-- <button v-if="show_prev" type="button" name="button" class="" @click="showAccounts(-1)">Indietro</button>

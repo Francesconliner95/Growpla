@@ -117,18 +117,44 @@ class UserController extends Controller
       }else{
           $user->pagetypes()->sync([]);
       }
-      //dd(0);
-      if(array_key_exists('usertypes', $data) && in_array(2,$data['usertypes'])){
-          if($user->image=='users_images/default-utente.svg'){
-              $user->image = 'users_images/default-business-angel.svg';
-              $user->update();
+
+      $default_images = Usertype::pluck('image')->toArray();
+      // dd($user->image);
+      if(in_array($user->image,$default_images)){
+          $user_usertypes = $user->usertypes->pluck('id')->toArray();
+          if(in_array(1,$user_usertypes)){
+              $user->image = $default_images[0];
           }
-      }
-      if(!array_key_exists('usertypes', $data) || !in_array(2,$data['usertypes'])){
-          if($user->image == 'users_images/default-business-angel.svg'){
-              $user->image = 'users_images/default-utente.svg';
-              $user->update();
+          //UTENTE
+          if(in_array(7,$user_usertypes)){
+              $user->image = $default_images[6];
           }
+          //STUDENTE
+          if(in_array(5,$user_usertypes)){
+              $user->image = $default_images[4];
+          }
+          //ASPIRANTE COFOUNDER
+          if(in_array(1,$user_usertypes)){
+              $user->image = $default_images[0];
+          }
+          //DIPENDENTI
+          // if(in_array(4,$user_usertypes)){
+          //     $user->image = $default_images[6];
+          // }
+          // //FREELANCER
+          // if(in_array(3,$user_usertypes)){
+          //     $user->image = $default_images[6];
+          // }
+          // //STARTUPPER
+          // if(in_array(6,$user_usertypes)){
+          //     $user->image = $default_images[6];
+          // }
+          //BUSINESS ANGEL
+          if(in_array(2,$user_usertypes)){
+              $user->image = $default_images[1];
+          }
+          //dd($user->image);
+          $user->save();
       }
 
       if(Auth::user()->tutorial>=2){

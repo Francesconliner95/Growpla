@@ -59,7 +59,7 @@ class PagetypeTableSeeder extends Seeder
               'name_it'=>'venture capital',
               'description'=>'Venture capital are institutional investors who intervene in a phase in which startups have already registered significant growth rates in turnover, bringing capital and experience in strategy and governance.',
               'description_it'=>'I Venture capital sono investitori istituzionali che intervengono in una fase in cui le startup hanno già fatto registrare tassi di crescita del fatturato rilevanti, apportando capitali ed esperienza in strategia e governance.',
-              'image'=>'pages_images/default-azienda.svg',
+              'image'=>'pages_images/default-venture-capital.svg',
               'hidden' => null,
           ],
           [
@@ -83,7 +83,7 @@ class PagetypeTableSeeder extends Seeder
               'name_it'=>'private equity',
               'description'=>'Private equity funds intervene when the company appears mature and solid from a financial and organizational point of view, limiting itself to providing capital necessary for its expansion.',
               'description_it'=>'I fondi di private equity intervengono quando l’azienda appare matura e solida dal punto di vista finanziario ed organizzativo, limitandosi ad apportare capitali necessari all’espansione della stessa',
-              'image'=>'pages_images/default-azienda.svg',
+              'image'=>'pages_images/default-venture-capital.svg',
               'hidden' => null,
           ],
           [

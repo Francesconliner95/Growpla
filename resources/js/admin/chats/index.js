@@ -40,18 +40,18 @@ var create = new Vue({
             // for (var j = 0; j < elements.length; j++) {
             //     elements[j].classList.add("d-none");
             // }
-            console.log(i,user_or_page,);
+            //console.log(i,user_or_page,);
             if(user_or_page){
                 if(document.getElementById('chat-item-0').classList.contains('d-none')){
                     document.getElementById('chat-item-0').classList.remove("d-none");
                     document.getElementById('arrow-0').classList.remove("r-90r");
                     document.getElementById('arrow-0').classList.add("r-90l");
-                    console.log(document.getElementById('arrow-0'));
+                    //console.log(document.getElementById('arrow-0'));
                 }else{
                     document.getElementById('chat-item-0').classList.add("d-none");
                     document.getElementById('arrow-0').classList.remove("r-90l");
                     document.getElementById('arrow-0').classList.add("r-90r");
-                    console.log(document.getElementById('arrow-0'));
+                    //console.log(document.getElementById('arrow-0'));
                 }
             }else{
                 if(document.getElementById('chat-item-'+(i+1)).classList.contains('d-none')){
@@ -125,7 +125,7 @@ var create = new Vue({
                 }
             }
             this.getMessages();
-            console.log(this.chat_selected_id);
+            //console.log(this.chat_selected_id);
         },
 
         sendMessage(){

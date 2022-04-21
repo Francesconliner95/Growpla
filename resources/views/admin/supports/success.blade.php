@@ -6,7 +6,7 @@
         <div class="item-style">
             <h2>Messaggio inviato correttamente</h2>
             <a class="button-style button-color"
-            href="{{ route('admin.accounts.index') }}">
+            href="{{ route('admin.search') }}">
                 Torna alla Home
             </a>
         </div>

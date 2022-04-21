@@ -48,6 +48,7 @@ var create = new Vue({
         collaborations: [],
         interval:false,
         is_mobile: false,
+        button: false,
     },
     methods: {
         search_type_f(){
@@ -59,9 +60,18 @@ var create = new Vue({
             }
         },
 
+        buttonsToggle(index){
+            if(this.button && this.button==index || !index){
+                this.button = false;
+            }else{
+                this.button = index;
+            }
+        },
+
         change_category(){
             this.need_selected = '';
             this.serviceToggle = false;
+            this.buttonsToggle();
 
             switch (this.category_selected) {
             case '1':
@@ -112,6 +122,10 @@ var create = new Vue({
               this.investors_selected = false;
               this.services_selected = false;
             }
+        },
+
+        submitForm(){
+            document.getElementById('searchForm').submit();
         },
 
         getRegionsByCountry(){

@@ -13,7 +13,7 @@
                 <div class="header">
                     <h2>Competenze</h2>
                 </div>
-                <form method="POST" action="{{ route('admin.give_user_skills.update',$user->id)}}">
+                <form method="POST" action="{{ route('admin.give_user_skills.update',$user->id)}}" id="skillForm">
                     @csrf
                     @method('PUT')
                     <div class="form-group">
@@ -42,13 +42,13 @@
                             <button type="button" name="button" @click="addManualSkill()" class="button-style button-color-blue col-sm-2 col-md-2 col-lg-2 col-xl-2">Aggiungi</button>
                         </div>
                         <div :class="skills_found.length>0?'found':'found d-none'" v-cloak>
-                          <a class="item" v-for="skill_found in skills_found" @click="addSkill(skill_found)">
-                              @{{skill_found.name}}
-                          </a>
+                            <a class="item" v-for="skill_found in skills_found" @click="addSkill(skill_found)">
+                                @{{skill_found.name}}
+                            </a>
                         </div>
                     </div>
                     <button type="submit" class="button-style button-color">
-                        {{__('Save')}}
+                        Salva
                     </button>
                 </form>
             </div>

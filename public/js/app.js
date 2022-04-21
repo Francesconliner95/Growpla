@@ -74536,19 +74536,16 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       // for (var j = 0; j < elements.length; j++) {
       //     elements[j].classList.add("d-none");
       // }
-      console.log(i, user_or_page);
-
+      //console.log(i,user_or_page,);
       if (user_or_page) {
         if (document.getElementById('chat-item-0').classList.contains('d-none')) {
           document.getElementById('chat-item-0').classList.remove("d-none");
           document.getElementById('arrow-0').classList.remove("r-90r");
-          document.getElementById('arrow-0').classList.add("r-90l");
-          console.log(document.getElementById('arrow-0'));
+          document.getElementById('arrow-0').classList.add("r-90l"); //console.log(document.getElementById('arrow-0'));
         } else {
           document.getElementById('chat-item-0').classList.add("d-none");
           document.getElementById('arrow-0').classList.remove("r-90l");
-          document.getElementById('arrow-0').classList.add("r-90r");
-          console.log(document.getElementById('arrow-0'));
+          document.getElementById('arrow-0').classList.add("r-90r"); //console.log(document.getElementById('arrow-0'));
         }
       } else {
         if (document.getElementById('chat-item-' + (i + 1)).classList.contains('d-none')) {
@@ -74626,8 +74623,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         }
       }
 
-      this.getMessages();
-      console.log(this.chat_selected_id);
+      this.getMessages(); //console.log(this.chat_selected_id);
     },
     sendMessage: function sendMessage() {
       var _this = this;
@@ -78214,7 +78210,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     sector_selected: '',
     lifecycle_id_selected: '',
     sectors: []
-  }, _defineProperty(_data, "sector_selected", ''), _defineProperty(_data, "sectorToggle", false), _defineProperty(_data, "myLatestViews", []), _defineProperty(_data, "mostViewedAccounts", []), _defineProperty(_data, "needs", []), _defineProperty(_data, "offers", []), _defineProperty(_data, "collaborations", []), _defineProperty(_data, "interval", false), _defineProperty(_data, "is_mobile", false), _data),
+  }, _defineProperty(_data, "sector_selected", ''), _defineProperty(_data, "sectorToggle", false), _defineProperty(_data, "myLatestViews", []), _defineProperty(_data, "mostViewedAccounts", []), _defineProperty(_data, "needs", []), _defineProperty(_data, "offers", []), _defineProperty(_data, "collaborations", []), _defineProperty(_data, "interval", false), _defineProperty(_data, "is_mobile", false), _defineProperty(_data, "button", false), _data),
   methods: {
     search_type_f: function search_type_f() {
       if (!this.search_type) {
@@ -78224,9 +78220,17 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         this.change_category();
       }
     },
+    buttonsToggle: function buttonsToggle(index) {
+      if (this.button && this.button == index || !index) {
+        this.button = false;
+      } else {
+        this.button = index;
+      }
+    },
     change_category: function change_category() {
       this.need_selected = '';
       this.serviceToggle = false;
+      this.buttonsToggle();
 
       switch (this.category_selected) {
         case '1':
@@ -78283,6 +78287,9 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           this.investors_selected = false;
           this.services_selected = false;
       }
+    },
+    submitForm: function submitForm() {
+      document.getElementById('searchForm').submit();
     },
     getRegionsByCountry: function getRegionsByCountry() {
       var _this = this;
@@ -79535,6 +79542,12 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     }
   },
   mounted: function mounted() {}
+});
+document.addEventListener('keypress', function (e) {
+  if (e.keyCode === 13 || e.which === 13) {
+    e.preventDefault();
+    return false;
+  }
 });
 
 /***/ }),

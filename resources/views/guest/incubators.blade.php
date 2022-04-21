@@ -24,7 +24,7 @@
                       </div>
                   </div>
                   <div class="row">
-                      <div v-for="incubator in incubators_show"
+                      <div v-if="incubators_show.length>0" v-for="incubator in incubators_show"
                       class="col-sm-12 col-md-6 col-lg-4 col-xl-3 text-center p-2" v-cloak>
                           <a v-if="incubator.website" :href="incubator.website" target="_blank" class="d-inline-block">
                               <img :src="'/storage/'+incubator.image" alt="" style="width: 80%; height: 100px; object-fit: contain;">
@@ -35,6 +35,9 @@
                               <a v-if="incubator.page_id" :href="'/admin/pages/'+incubator.page_id" class="button-style button-color-green">Vedi Profilo</a>
                               {{-- <a v-if="incubator.page_id" :href="'/admin/pages/'+incubator.page_id" class="button-style button-color-blue">Messaggio</a> --}}
                           </div>
+                      </div>
+                      <div v-if="incubators_show.length==0" class="w-100" v-cloak>
+                          <h5 class="text-center">Nessun incubatore</h5>
                       </div>
                   </div>
               </div>

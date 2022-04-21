@@ -167,8 +167,20 @@ class SectorsTableSeeder extends Seeder
               'name_it'=>'Servizi finanziari',
           ],
           [
-              'name'=>'Internet services',
-              'name_it'=>'Servizi internet',
+              'name'=>'Digital services',
+              'name_it'=>'Servizi digitali',
+          ],
+          [
+              'name'=>'Web services e social network',
+              'name_it'=>'Servizi web e reti sociali',
+          ],
+          [
+              'name'=>'Marketplace',
+              'name_it'=>'Marketplace',
+          ],
+          [
+              'name'=>'Platform economy',
+              'name_it'=>'Platform economy',
           ],
           [
               'name'=>'Professional services',

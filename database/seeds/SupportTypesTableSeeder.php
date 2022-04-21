@@ -19,6 +19,18 @@ class SupportTypesTableSeeder extends Seeder
 
         $supportTypes = [
             [
+                'name_it'=>'Suggerisci ulteriori servizi',
+                'description_it'=>'',
+                'name'=>'Suggest services',
+                'description'=>'',
+            ],
+            [
+                'name_it'=>'Suggerisci ulteriori settori',
+                'description_it'=>'',
+                'name'=>'Suggest sectors',
+                'description'=>'',
+            ],
+            [
                 'name_it'=>'Collaborazioni',
                 'description_it'=>'',
                 'name'=>'Collaborations',

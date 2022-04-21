@@ -24,7 +24,7 @@
                                     @{{need.user_or_page? need.name +' ' +need.surname : need.name}}
                                 </strong>
                                 <span v-if="need.service_id">cerca servizio di</span>
-                                <span v-else-if="need.cofounder_service_id">cerca aspirante cofounder con competenze di</span>
+                                <span v-else-if="need.cofounder_service_id">cerca aspirante cofounder con competenze in</span>
                                 <span v-else>cerca</span>
                                 <strong class="text-capitalize">
                                     @{{need.need}}

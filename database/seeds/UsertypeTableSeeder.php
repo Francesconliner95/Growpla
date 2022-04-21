@@ -23,7 +23,7 @@ class UsertypeTableSeeder extends Seeder
               'name_it'=>'aspirante co-founder',
               'description'=>'The Co-founder is the person who has resources and / or skills (work or other) that can help the founder in the realization / execution of his business idea.',
               'description_it'=>'Il co-founder è quel soggetto che possiede risorse e/o competenze (lavorative o di altro tipo) che possono aiutare il founder nella realizzazione/esecuzione della sua idea imprenditoriale.',
-              'image'=>'users_images/default-utente.svg',
+              'image'=>'users_images/default-cofounder.svg',
           ],
           [
               'name'=>'business angel',
@@ -51,7 +51,7 @@ class UsertypeTableSeeder extends Seeder
               'name_it'=>'studente',
               'description'=>'',
               'description_it'=>'',
-              'image'=>'users_images/default-utente.svg',
+              'image'=>'users_images/default-studente.svg',
           ],
           [
               'name'=>'startupper',

@@ -217,7 +217,7 @@ class ServicesTableSeeder extends Seeder
                 'hidden'=>null,
             ],
             [
-                'name'=>'Web Development',
+                'name'=>'Web/App Development',
                 'description'=> null,
                 'main_service_id'=> 3,
                 'hidden'=>null,
@@ -276,12 +276,6 @@ class ServicesTableSeeder extends Seeder
                 'main_service_id'=> 5,
                 'hidden'=>null,
             ],
-            // [
-            //     'name'=>'Finanza Agevolata',
-            //     'description'=> null,
-            //     'main_service_id'=> 5,
-            //     'hidden'=>null,
-            // ],
             [
                 'name'=>'Mentoring',
                 'description'=>'Il mentor offre servizi di consulenza volti a guidare le startup dalla fase di concepimento dell\'idea, al fine di individuare la strategia di sviluppo più opportuna.',
@@ -362,6 +356,18 @@ class ServicesTableSeeder extends Seeder
             ],
             [
                 'name'=>'Controllo di Gestione',
+                'description'=> null,
+                'main_service_id'=> 7,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Internazionalizzazione del business',
+                'description'=> null,
+                'main_service_id'=> 7,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Networking',
                 'description'=> null,
                 'main_service_id'=> 7,
                 'hidden'=>null,

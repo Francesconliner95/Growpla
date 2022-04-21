@@ -66,7 +66,7 @@
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 text-center coll-item">
                                     <div class="">
-                                        <div class="img-cont img-cont-blue medium-img">
+                                        <div class="img-cont img-cont medium-img">
                                             <img v-if="collaboration.account_2.image" :src="'/storage/' + collaboration.account_2.image" alt="">
                                         </div>
                                     </div>

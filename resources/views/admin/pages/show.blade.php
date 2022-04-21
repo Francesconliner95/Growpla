@@ -41,7 +41,7 @@
         <div class="item-cont">
             <div class="item-style">
                 <div class="profile">
-                    <a v-if="is_my_page" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.pages.edit', $page->id)}}">
+                    <a v-if="is_my_page" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.pages.edit', $page->id)}}" v-cloak>
                         <i class="fas fa-pencil-alt"></i>
                     </a>
                     <div class="row">
@@ -51,7 +51,7 @@
                                 @if($page->image)
                                   <img src="{{ asset("storage/" . $page->image) }}" alt="" class="">
                                 @endif
-                                <a v-if="is_my_page" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.images.editPageImage',$page->id)}}">
+                                <a v-if="is_my_page" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.images.editPageImage',$page->id)}}" v-cloak>
                                     <i class="fas fa-pencil-alt"></i>
                                  </a>
                             </div>
@@ -230,13 +230,16 @@
                                   </div>
                                 @endforeach
                             </div>
-                            <div v-else class="cicle-container">
-                                <div class="cicle-item">
-                                    <div class="circle c-active">
-                                        <span>{{$page->lifecycle->name}}</span>
+                            @if ($page->lifecycle_id)
+                                <div v-else class="cicle-container">
+                                    <div class="cicle-item">
+                                        <div class="circle c-active">
+                                            <span>{{$page->lifecycle->name}}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
                             {{-- @endif --}}
                         </div>
                     @endif
@@ -285,7 +288,7 @@
                 <div id="services" class="sub-section">
                     <div class="row">
                         <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5">
-                        @if($is_my_page || count($page->give_page_services)>0)
+                        @if($page->pagetype_id!=1 && $is_my_page || count($page->give_page_services)>0)
                             <h4 class="txt-green font-weight-bold pb-3  d-flex justify-content-start align-items-center">
                               <span class="mr-1">
                                 {{__('Offro')}}
@@ -311,11 +314,11 @@
                                 </div>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-1" v-cloak>
                                     {{-- <i class="fas fa-caret-left"></i> --}}
-                                    <span class="arrow-black r-180"></span>
+                                    <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                                 </button>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right bg-white" id="button-right-1" v-cloak>
                                     {{-- <i class="fas fa-caret-right"></i> --}}
-                                    <span class="arrow-black"></span>
+                                    <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                                 </button>
                             </div>
                             @endif
@@ -390,13 +393,12 @@
                                     @endforeach
                                 </div>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-2" v-cloak>
-                                    <span></span>
-                                    <span class="arrow-black r-180"></span>
+                                    <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                                     {{-- <i class="fas fa-caret-left"></i> --}}
                                 </button>
                                 <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right bg-white" id="button-right-2" v-cloak>
                                     {{-- <i class="fas fa-caret-right"></i> --}}
-                                    <span class="arrow-black"></span>
+                                    <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                                 </button>
                             </div>
                             @endif
@@ -407,7 +409,7 @@
                 @endif
             </div>
         </div>
-        <div class="item-cont" v-if="is_my_page || team_members.length>0">
+        <div class="item-cont" v-if="is_my_page || team_members.length>0" v-cloak>
             <div class="item-style">
                 <h3>Team
                     <div v-if="is_my_page" class="info">
@@ -431,7 +433,7 @@
                                 @{{member.role}}
                             </p>
                             <div class="show-profile text-center mt-4">
-                                <a v-if="member.user_id" :href="'/admin/users/'+member.user_id" class="button-style button-color-green">Visita profilo</a>                            
+                                <a v-if="member.user_id" :href="'/admin/users/'+member.user_id" class="button-style button-color-green">Visita profilo</a>
                             </div>
                             <div v-if="is_my_page" class="edit-center-center-small d-flex justify-content-between w-100">
                                 <div class="d-inline-block" style="margin-left: -30px;">
@@ -494,7 +496,7 @@
                                             <div class="img-cont mini-img">
                                               <img
                                               v-if="collaboration.account.image"
-                                              :src="'/storage/' +collaboration.account.image" alt="" class="">
+                                              :src="'/storage/' +collaboration.account.image" alt="" class="scale">
                                             </div>
                                             <span class="d-block text-dark">
                                                 @{{collaboration.account.name}}
@@ -521,12 +523,12 @@
                         </div>
                     </div>
                     <button v-if="!is_mobile" type="button" name="button" @mousedown="start(20,'left')" @mouseleave="stop(20,'left')" @mouseup="stop(20,'left')" class="slider-left" id="button-left-20" v-cloak>
-                        <span class="arrow-black r-180"></span>
+                        <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                         {{-- <i class="fas fa-caret-left"></i> --}}
                     </button>
                     <button v-if="!is_mobile" type="button" name="button" @mousedown="start(20,'right')" @mouseleave="stop(20,'right')" @mouseup="stop(20,'right')"class="slider-right" id="button-right-20" v-cloak>
                         {{-- <i class="fas fa-caret-right"></i> --}}
-                        <span class="arrow-black"></span>
+                        <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                     </button>
                     <span>@{{this.delay(20)}}</span>
                 </div>

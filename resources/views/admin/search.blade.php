@@ -28,8 +28,8 @@
     style="background-image: url({{asset("storage/images/jumbotron.svg") }})">
         <div class="container">
             <div class="search">
-                <div id="search-fixed" class="search-fixed">
-                    <h1>{{ __('What are you looking for?') }}</h1>
+                <div id="search-fixed" :class="usertypes_id.length>0||pagetypes_id.length>0||services_selected||name?'search-fixed-top':'search-fixed-center'">
+                    <h5 class="text-center text-white font-weight-bold">{{ __('What are you looking for?') }}</h5>
                     <div class="search-type">
                         <div  class="switch-big-button-container pt-1 pb-2">
                             <div :class="search_type?
@@ -42,57 +42,75 @@
                         </div>
                     </div>
                     <div class="search-main" v-cloak>
-                        <div v-if="!search_type" class="search-filter">
-                            <div class="search-style col-sm-12 col-md-12 col-lg-6 col-xl-6 mx-auto">
-                                <select class="text-capitalize" name="" v-model="category_selected" @change="change_category()" required>
-                                    <option value="">Cosa cerchi?</option>
-                                    <option value="1">{{--$pagetypes[0]->name--}}Startup</option>
-                                    <option value="2">{{--$usertypes[0]->name--}}Aspiranti Co-Founder</option>
-                                    <option value="3">Incubatore-Acceleratore</option>
-                                    <option value="4">Investitori</option>
-                                    <option value="5">Enti e associazioni</option>
-                                    <option value="6">Servizi</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div v-else class="search-filter">
-                            <div class="search-style col-sm-12 col-md-12 col-lg-6 col-xl-6 mx-auto" v-cloak>
-                                <input type="text" name="name" value="" placeholder="Cerca per nome" v-model="name" @keyup.enter="" v-on:input="" maxlength="70"    class="form-control" autocomplete="off">
-                                @error ('name')
-                                    <div class="alert alert-danger">
-                                        {{__($message)}}
-                                    </div>
-                                @enderror
-                            </div>
-                        </div>
                         <div class="filter-cont mt-3 mb-1">
                             <div class="row d-flex justify-content-center">
-                                {{-- startup --}}
-                                <div v-if="pagetypes_id.includes(1)" class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
-                                    <span class="mini-txt font-weight-bold d-block">In quale fase del ciclo di vita?</span>
-                                    <select class="text-capitalize" name="lifecycle_id" v-model="lifecycle_id_selected">
-                                            <option value="">Non specificato</option>
-                                        @foreach ($lifecycles as $lifecycle)
-                                            <option class="text-capitalize" value="{{$lifecycle->id}}">{{$lifecycle->name}}</option>
-                                        @endforeach
-                                    </select>
+                                <div v-if="!search_type" :class="usertypes_id.length>0||pagetypes_id.length>0||services_selected||name?'col-sm-12 col-md-12 col-lg-2 col-xl-2 p-0 position-relative':'col-sm-12 col-md-12 col-lg-6 col-xl-6 p-0 position-relative'">
+                                    <button type="button" name="button" @click="buttonsToggle(7)" :class="button==7?'s-filter-button bg-white':'s-filter-button'">
+                                        @{{category_selected==''?'Cosa cerchi?':''}}
+                                        @{{category_selected==1?'Startup':''}}
+                                        @{{category_selected==2?'Aspiranti Co-Founder':''}}
+                                        @{{category_selected==3?'Incubatore-Acceleratore':''}}
+                                        @{{category_selected==4?'Investitori':''}}
+                                        @{{category_selected==5?'Enti e associazioni':''}}
+                                        @{{category_selected==6?'Servizi':''}}
+                                    </button>
+                                    <div v-if="button==7" class="s-filter">
+                                        <select class="text-capitalize" name="" v-model="category_selected" @change="change_category()" required>
+                                            <option value="">Cosa cerchi?</option>
+                                            <option value="1">Startup</option>
+                                            <option value="2">Aspiranti Co-Founder</option>
+                                            <option value="3">Incubatore-Acceleratore</option>
+                                            <option value="4">Investitori</option>
+                                            <option value="5">Enti e associazioni</option>
+                                            <option value="6">Servizi</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div v-if="pagetypes_id.includes(1)" class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
-                                    <span class="mini-txt font-weight-bold d-block">Cerca solo le startup che hanno bisogno di</span>
-                                    <select class="text-capitalize" name="needs" v-model="need_selected">
-                                        <option value="">Non specificato</option>
-                                        @foreach ($usertypes as $usertype)
-                                            @if ($usertype->id==1 || $usertype->id==2)
-                                                <option class="text-capitalize" :value="{'type':1, 'id':{{$usertype->id}}}">{{$usertype->name_it}}</option>
-                                            @endif
-                                        @endforeach
-                                        @foreach ($pagetypes as $pagetype)
-                                            @if ($pagetype->id==3 || $pagetype->id==5 || $pagetype->id==8)
-                                                <option class="text-capitalize" :value="{'type':2, 'id':{{$pagetype->id}}}">{{$pagetype->name_it}}</option>
-                                            @endif
-                                        @endforeach
-                                        <option class="text-capitalize" :value="{'type':3, 'id':''}">Servizi</option>
-                                    </select>
+                                <div v-else class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-0 position-relative bg-white" v-cloak>
+                                    <div style="padding:10px;">
+                                      <input type="text" name="name" value="" placeholder="Cerca per nome" v-model="name" @keyup.enter="" v-on:input="" maxlength="40"  class="search-bar" autocomplete="off">
+                                      @error ('name')
+                                          <div class="alert alert-danger">
+                                              {{__($message)}}
+                                          </div>
+                                      @enderror
+                                    </div>
+                                    <button v-if="search_type && name || category_selected" class="button-style button-color submit-button" type="submit" name="button" @click="submitForm()">
+                                      <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                                {{-- startup --}}
+                                <div v-if="pagetypes_id.includes(1)" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-0 position-relative">
+                                    <button type="button" name="button" @click="buttonsToggle(1)" :class="button==1?'s-filter-button bg-white':'s-filter-button'">Fase</button>
+                                    <div v-if="button==1" class="s-filter">
+                                        <span class="mini-txt font-weight-bold d-block">In quale fase del ciclo di vita?</span>
+                                        <select class="text-capitalize" name="lifecycle_id" v-model="lifecycle_id_selected">
+                                                <option value="">Non specificato</option>
+                                            @foreach ($lifecycles as $lifecycle)
+                                                <option class="text-capitalize" value="{{$lifecycle->id}}">{{$lifecycle->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div v-if="pagetypes_id.includes(1)" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 position-relative p-0">
+                                    <button type="button" name="button" @click="buttonsToggle(2)" :class="button==2?'s-filter-button bg-white':'s-filter-button'">Necessità startup</button>
+                                    <div v-if="button==2" class="s-filter">
+                                        <span class="mini-txt font-weight-bold d-block">Cerca solo le startup che hanno bisogno di</span>
+                                        <select class="text-capitalize" name="needs" v-model="need_selected">
+                                            <option value="">Non specificato</option>
+                                            @foreach ($usertypes as $usertype)
+                                                @if ($usertype->id==1 || $usertype->id==2)
+                                                    <option class="text-capitalize" :value="{'type':1, 'id':{{$usertype->id}}}">{{$usertype->name_it}}</option>
+                                                @endif
+                                            @endforeach
+                                            @foreach ($pagetypes as $pagetype)
+                                                @if ($pagetype->id==3 || $pagetype->id==5 || $pagetype->id==8)
+                                                    <option class="text-capitalize" :value="{'type':2, 'id':{{$pagetype->id}}}">{{$pagetype->name_it}}</option>
+                                                @endif
+                                            @endforeach
+                                            <option class="text-capitalize" :value="{'type':3, 'id':''}">Servizi</option>
+                                        </select>
+                                    </div>
                                 </div>
 
                                 {{-- cofounder --}}
@@ -126,23 +144,28 @@
                                     </div>
                                 </div> --}}
                                 {{-- investitori --}}
-                                <div v-if="investors_selected" class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
-                                    <span class="mini-txt font-weight-bold d-block">Quale?</span>
-                                    <select class="text-capitalize" name="" v-model="investor_selected" @change="investorType()">
-                                            <option value="">Tutti</option>
-                                            <option class="text-capitalize" value="1">
-                                              Business Angel{{--$usertypes[1]->name--}}
-                                            </option>
-                                            <option class="text-capitalize" value="2">
-                                              Venture Capital{{--$pagetypes[4]->name--}}
-                                            </option>
-                                            <option class="text-capitalize" value="3">
-                                              Private Equity{{--$pagetypes[7]->name--}}
-                                            </option>
-                                    </select>
+                                <div v-if="investors_selected" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-0 position-relative">
+                                    <button type="button" name="button" @click="buttonsToggle(3)" :class="button==3?'s-filter-button bg-white':'s-filter-button'">Quale</button>
+                                    <div v-if="button==3" class="s-filter">
+                                        <span class="mini-txt font-weight-bold d-block">Quale?</span>
+                                        <select class="text-capitalize" name="" v-model="investor_selected" @change="investorType()">
+                                                <option value="">Tutti</option>
+                                                <option class="text-capitalize" value="1">
+                                                  Business Angel{{--$usertypes[1]->name--}}
+                                                </option>
+                                                <option class="text-capitalize" value="2">
+                                                  Venture Capital{{--$pagetypes[4]->name--}}
+                                                </option>
+                                                <option class="text-capitalize" value="3">
+                                                  Private Equity{{--$pagetypes[7]->name--}}
+                                                </option>
+                                        </select>
+                                    </div>
                                 </div>
                                 {{-- servizi --}}
-                                <div v-if="services_selected || need_selected.type==3" class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
+                                <div v-if="services_selected || need_selected.type==3" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-0 position-relative">
+                                    <button type="button" name="button" @click="buttonsToggle(4)" :class="button==4?'s-filter-button bg-white':'s-filter-button'">Servizi</button>
+                                    <div v-if="button==4" class="s-filter">
                                     <div class="">
                                         <span class="mini-txt font-weight-bold d-block" v-if="usertypes_id.includes(1)" for="" class="d-block">Cerco profili che offrono</span>
                                         <span class="mini-txt font-weight-bold d-block" v-else-if="need_selected.type==3" for="" class="d-block">Cerco startup che hanno bisogno di</span>
@@ -207,9 +230,12 @@
                                             </div>
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
                                 {{-- settori --}}
-                                <div v-if="category_selected && category_selected!=6" class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
+                                <div v-if="category_selected && category_selected!=6" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-0 position-relative">
+                                    <button type="button" name="button" @click="buttonsToggle(5)" :class="button==5?'s-filter-button bg-white':'s-filter-button'">Settori</button>
+                                    <div v-if="button==5" class="s-filter">
                                     <div class="">
                                         <span class="mini-txt font-weight-bold d-block">Cerco profili che includono</span>
                                         <div class="d-flex align-items-center">
@@ -243,6 +269,7 @@
                                           </select>
                                         </div>
                                     </div>
+                                    </div>
                                 </div>
                                 {{-- <div v-if="pagetypes_id.length>0 || usertypes_id.length>0 || investors_selected  || organizzations_selected" class="">
                                     <span>Dove:</span>
@@ -253,21 +280,27 @@
                                         @endforeach
                                     </select>
                                 </div> --}}
-                                <div v-if="category_selected{{--regions.length>1--}}" class="col-sm-12 col-md-12 col-lg-2 col-xl-2" v-cloak>
-                                    <span class="mini-txt font-weight-bold d-block">Regione</span>
-                                    <select class="text-capitalize" name="region_id" v-model="region_id_selected" required>
-                                        <option value="">Tutte le regioni</option>
-                                        <option v-for="region in regions" :value="region.id"
-                                        :selected="region.id==region_id_selected">@{{region.name}}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div v-if="pagetypes_id.includes(3)" class="col-sm-12 col-md-12 col-lg-2 col-xl-2" v-cloak>
-                                    <a class="button-style button-color-blue" href="{{route('incubators')}}">Incubatori d'italia</a>
+                                <div v-if="category_selected{{--regions.length>1--}}" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-0 position-relative" v.cloak>
+                                    <button type="button" name="button" @click="buttonsToggle(6)" :class="button==6?'s-filter-button bg-white':'s-filter-button'">Regione</button>
+                                    <div v-if="button==6" class="s-filter">
+                                        <span class="mini-txt font-weight-bold d-block">Regione</span>
+                                        <select class="text-capitalize" name="region_id" v-model="region_id_selected" required>
+                                            <option value="">Tutte le regioni</option>
+                                            <option v-for="region in regions" :value="region.id"
+                                            :selected="region.id==region_id_selected">@{{region.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <button v-if="search_type && name || category_selected" class="button-style button-color submit-button" type="submit" name="button" @click="submitForm()">
+                                      <i class="fas fa-search"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        <form v-if="search_type && name || category_selected" class="text-center" method="POST" action="{{ route('admin.found') }}">
+                        <div v-if="pagetypes_id.includes(3)" class="text-center" v-cloak>
+                            <a class="button-style button-color-blue" href="{{route('incubators')}}">Incubatori d'italia</a>
+                        </div>
+                        <form class="text-center" method="POST" action="{{ route('admin.found') }}" id="searchForm">
                             @csrf
                             <input v-for="usertype_id in usertypes_id" type="hidden" name="usertypes_id[]" :value="usertype_id">
                             <input v-for="pagetype_id in pagetypes_id" type="hidden" name="pagetypes_id[]" :value="pagetype_id">
@@ -286,7 +319,6 @@
                             <input type="hidden" name="sector_id" :value="sector_selected">
                             <input type="hidden" name="country_id" value="1"{{--:value="country_id_selected"--}}>
                             <input type="hidden" name="region_id" :value="region_id_selected">
-                            <button class="button-style button-color mt-2" type="submit" name="button">Ricerca</button>
                         </form>
                     </div>
                 </div>
@@ -395,10 +427,10 @@
                 </div>
             </div>
             <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left" id="button-left-1" v-cloak>
-                <span class="arrow-black r-180"></span>
+                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
             </button>
             <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')" class="slider-right" id="button-right-1" v-cloak>
-                <span class="arrow-black"></span>
+                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
             </button>
             <span>@{{this.delay(1)}}</span>
         </div>
@@ -421,10 +453,10 @@
                                 </div>
                                 <p class="name text-capitalize text-dark">
                                     @{{need.user_or_page? need.name +' ' +need.surname : need.name}}
+                                    <span v-if="need.cofounder_service_id" class="mini-txt text-dark d-block text-lowercase">cerca aspirante co-founder</span>
                                 </p>
                                 {{-- <span>@{{need.service_id?'cerca servizio di':'cerca'}}</span> --}}
-                                <p class="service text-capitalize">
-                                    @{{need.need}}
+                                <p class="service text-capitalize">           @{{need.need}}
                                 </p>
                             </div>
                             <div class="bottom text-center font-weight-normal">
@@ -435,10 +467,10 @@
                 </div>
             </div>
             <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(2,'left')" class="slider-left" id="button-left-2" v-cloak>
-                <span class="arrow-black r-180"></span>
+                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
             </button>
             <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right" id="button-right-2" v-cloak>
-                <span class="arrow-black"></span>
+                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
             </button>
             <span>@{{this.delay(2)}}</span>
         </div>
@@ -475,7 +507,7 @@
                             </div>
                             <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 text-center coll-item">
                                 <div class="">
-                                    <div class="img-cont img-cont-blue medium-img">
+                                    <div class="img-cont medium-img">
                                         <img v-if="collaboration.account_2.image" :src="'/storage/' + collaboration.account_2.image" alt="">
                                     </div>
                                 </div>
@@ -493,10 +525,10 @@
                 </div>
             </div>
             <button v-if="!is_mobile" type="button" name="button" @mousedown="start(3,'left')" @mouseleave="stop(3,'left')" @mouseup="stop(3,'left')" class="slider-left" id="button-left-3" v-cloak>
-                <span class="arrow-black r-180"></span>
+                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
             </button>
             <button v-if="!is_mobile" type="button" name="button" @mousedown="start(3,'right')" @mouseleave="stop(3,'right')" @mouseup="stop(3,'right')"class="slider-right" id="button-right-3" v-cloak>
-                <span class="arrow-black"></span>
+                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
             </button>
             <span>@{{this.delay(3)}}</span>
         </div>

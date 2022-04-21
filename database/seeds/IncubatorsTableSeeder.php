@@ -92,7 +92,7 @@ class IncubatorsTableSeeder extends Seeder
             ],
             [
                 'name'=> 'Centro Il Faro',
-                'image'=> 'incubators/centroilfaro.jpg',
+                'image'=> 'incubators/centroilfaro_incubatore-di-imprese_s.jpg',
                 'website'=> 'http://www.il-faro.com/',
                 'country_id'=> 1,
                 'region_id'=> 4,
@@ -164,7 +164,7 @@ class IncubatorsTableSeeder extends Seeder
             ],
             [
                 'name'=> 'Upidea!',
-                'image'=> 'incubators/upidea.png',
+                'image'=> 'incubators/upidea.jpg',
                 'website'=> 'http://www.upidea.it/',
                 'country_id'=> 1,
                 'region_id'=> 5,
@@ -281,7 +281,7 @@ class IncubatorsTableSeeder extends Seeder
             ],
             [
                 'name'=> 'Climate-KIC Startup Accelerator Italy',
-                'image'=> 'incubators/logo-white-wFlag2.svg',
+                'image'=> 'incubators/logo-white-wFlag2.jpg',
                 'website'=> 'https://italy.climate-kic.org/',
                 'country_id'=> 1,
                 'region_id'=> 5,
@@ -362,7 +362,7 @@ class IncubatorsTableSeeder extends Seeder
             ],
             [
                 'name'=> 'Agenzia Spaziale Italiana',
-                'image'=> 'incubators/logo-asi-white.png',
+                'image'=> 'incubators/logo-asi-white.jpg',
                 'website'=> 'https://www.asi.it/2020/10/spacecom-entrepreneur-summit-di-houston-spazio-alle-start-up-italiane/',
                 'country_id'=> 1,
                 'region_id'=> 7,
@@ -488,7 +488,7 @@ class IncubatorsTableSeeder extends Seeder
             ],
             [
                 'name'=> 'Go Beyond - Sisal',
-                'image'=> 'incubators/logo-home-white.png',
+                'image'=> 'incubators/logo-home-white.webp',
                 'website'=> 'https://www.gobeyond.info/it',
                 'country_id'=> 1,
                 'region_id'=> 7,
@@ -497,7 +497,7 @@ class IncubatorsTableSeeder extends Seeder
             ],
             [
                 'name'=> 'Wylab',
-                'image'=> 'incubators/Wylab-logo-greywhite.svg',
+                'image'=> 'incubators/Wylab-logo-greywhite.png',
                 'website'=> 'https://wylab.net/',
                 'country_id'=> 1,
                 'region_id'=> 8,
@@ -515,7 +515,7 @@ class IncubatorsTableSeeder extends Seeder
             ],
             [
                 'name'=> 'BioUpper',
-                'image'=> 'incubators/cariplo-factory@3x-300x174.png',
+                'image'=> 'incubators/cariplo-factory@3x-300x174.jpg',
                 'website'=> 'https://bioupper.cariplofactory.it/',
                 'country_id'=> 1,
                 'region_id'=> 9,
@@ -524,7 +524,7 @@ class IncubatorsTableSeeder extends Seeder
             ],
             [
                 'name'=> 'BiovelocITA',
-                'image'=> 'incubators/logo-biovelocita-ft.png',
+                'image'=> 'incubators/logo-biovelocita-ft.jpg',
                 'website'=> 'https://www.biovelocita.com/',
                 'country_id'=> 1,
                 'region_id'=> 9,
@@ -587,7 +587,7 @@ class IncubatorsTableSeeder extends Seeder
             ],
             [
                 'name'=> 'E-Novia',
-                'image'=> 'incubators/enovia_logo_white.svg',
+                'image'=> 'incubators/enovia_logo_white.jpg',
                 'website'=> 'https://e-novia.it/',
                 'country_id'=> 1,
                 'region_id'=> 9,
@@ -758,7 +758,7 @@ class IncubatorsTableSeeder extends Seeder
             ],
             [
                 'name'=> 'PTP Science Park',
-                'image'=> 'incubators/logo_ptp_w.png',
+                'image'=> 'incubators/logo_ptp_w.jpg',
                 'website'=> 'https://www.ptp.it/it/incubatore',
                 'country_id'=> 1,
                 'region_id'=> 9,
@@ -785,7 +785,7 @@ class IncubatorsTableSeeder extends Seeder
             ],
             [
                 'name'=> 'Bio4Dreams',
-                'image'=> 'incubators/logo_spec.png',
+                'image'=> 'incubators/logo_spec.jpg',
                 'website'=> 'https://www.bio4dreams.com/',
                 'country_id'=> 1,
                 'region_id'=> 9,
@@ -866,7 +866,7 @@ class IncubatorsTableSeeder extends Seeder
             ],
             [
                 'name'=> 'i3p Incubatore del Politecnico',
-                'image'=> 'incubators/i3P logo bianco.svg',
+                'image'=> 'incubators/i3P logo bianco.png',
                 'website'=> 'https://www.i3p.it/',
                 'country_id'=> 1,
                 'region_id'=> 12,
@@ -911,7 +911,7 @@ class IncubatorsTableSeeder extends Seeder
             ],
             [
                 'name'=> 'The Qube',
-                'image'=> 'incubators/LOGO-THE-QUBE-WHITE.png',
+                'image'=> 'incubators/theqube.jpg',
                 'website'=> 'https://theqube.eu/',
                 'country_id'=> 1,
                 'region_id'=> 13,
@@ -1010,7 +1010,7 @@ class IncubatorsTableSeeder extends Seeder
             ],
             [
                 'name'=> 'BicSicilia',
-                'image'=> 'incubators/logoBICSicilia200_BIANCO-TRASPARENTE.png',
+                'image'=> 'incubators/logoBICSicilia200_BIANCO-TRASPARENTE.jpg',
                 'website'=> 'https://bicsicilia.com/',
                 'country_id'=> 1,
                 'region_id'=> 15,
@@ -1064,7 +1064,7 @@ class IncubatorsTableSeeder extends Seeder
             ],
             [
                 'name'=> 'Incubatore universitario UniFi',
-                'image'=> 'incubators/unifi.svg',
+                'image'=> 'incubators/unifi.jpg',
                 'website'=> 'https://www.unifi.it/CMpro-v-p-5965.html',
                 'country_id'=> 1,
                 'region_id'=> 16,
@@ -1208,7 +1208,7 @@ class IncubatorsTableSeeder extends Seeder
             ],
             [
                 'name'=> 'H Farm',
-                'image'=> 'incubators/HFARM.svg',
+                'image'=> 'incubators/HFARM.png',
                 'website'=> 'https://www.h-farm.com/it',
                 'country_id'=> 1,
                 'region_id'=> 20,

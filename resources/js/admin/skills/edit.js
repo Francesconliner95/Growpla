@@ -14,6 +14,7 @@ var create = new Vue({
         skills_found: '',
     },
     methods: {
+
         searchSkill(){
             if(this.skill_name){
               axios.get('/api/searchSkill',{
@@ -93,5 +94,12 @@ var create = new Vue({
     },
     mounted() {
 
+    }
+});
+
+document.addEventListener('keypress', function (e) {
+    if (e.keyCode === 13 || e.which === 13) {
+        e.preventDefault();
+        return false;
     }
 });
