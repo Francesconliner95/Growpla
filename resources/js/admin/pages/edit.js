@@ -24,6 +24,9 @@ var create = new Vue({
       remove_pitch: false,
     },
     methods: {
+      submitForm(){
+          document.getElementById('pageForm').submit();
+      },
 
       getRegionsByCountry(){
         if(this.country_id_selected){

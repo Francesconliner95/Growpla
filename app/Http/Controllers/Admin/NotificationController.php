@@ -42,9 +42,12 @@ class NotificationController extends Controller
             if ($notification->ref_user_id) {
                 $user = User::find($notification->ref_user_id);
                 $notification['name'] = $user->name. ' ' . $user->surname;
+                $notification['image'] = $user->image;
             }
             if($notification->ref_page_id){
-                $notification['name'] = Page::find($notification->ref_page_id)->name;
+                $page = Page::find($notification->ref_page_id);
+                $notification['name'] = $page->name;
+                $notification['image'] = $page->image;
             }
             if($notification->ref_to_user_id){
                 $user = User::find($notification->ref_to_user_id);
@@ -82,9 +85,12 @@ class NotificationController extends Controller
           if ($notification->ref_user_id) {
               $user = User::find($notification->ref_user_id);
               $notification['name'] = $user->name. ' ' . $user->surname;
+              $notification['image'] = $user->image;
           }
           if($notification->ref_page_id){
-              $notification['name'] = Page::find($notification->ref_page_id)->name;
+              $page = Page::find($notification->ref_page_id);
+              $notification['name'] = $page->name;
+              $notification['image'] = $page->image;
           }
           if($notification->ref_to_user_id){
               $user = User::find($notification->ref_to_user_id);

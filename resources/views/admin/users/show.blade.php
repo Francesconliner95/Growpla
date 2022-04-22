@@ -114,7 +114,7 @@
                                                 @if($company->page_id)
                                                     <div class="d-inline-block">
                                                             <button aria-label="dipendente di {{$company->page->name}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
-                                                            <a href="{{route('admin.pages.show', $company->page->id)}}" class="d-inline-block">
+                                                            <a href="{{route('admin.pages.show', $company->page->id)}}" class="d-inline-block" >
                                                                 <div class="img-cont micro-img m-1">
                                                                   @if($company->page->image)
                                                                     <img src="{{ asset("storage/" . $company->page->image) }}" alt="" class="">

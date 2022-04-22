@@ -60,8 +60,9 @@
         <script type="text/javascript">
             page_selected = "{{Auth::user()->page_selected_id?App\Page::where('id',Auth::user()->page_selected_id)->select('id','image','name')->first():''}}";
         </script>
-        <nav id="nav-bar" class="navbar-light">
-            <div :class="alert?'alert active-alert':'alert deactive-alert'" v-cloak>
+        <nav id="nav-bar" {{-- class="navbar-light"--}}>
+
+            {{-- <div :class="alert?'alert active-alert':'alert deactive-alert'" v-cloak>
                 <div class="item-cont alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">
                     <div class="item-style">
                         <button type="button" name="button" class="edit-top-right button-color-gray" @click="alert=false">
@@ -90,8 +91,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="container">
+            </div> --}}
+            <div id="container-nb" class="container-nb">
                 <div class="row">
                     <div class="nav-left d-inline-block col-sm-12 col-md-12 col-lg-6 col-xl-6 d-flex align-items-center mobile-hide">
 
@@ -99,20 +100,20 @@
 
                         <a href="{{ route('admin.search') }}" class="position-relative">
                             <img src="{{ asset("storage/images/logo-fullsize.svg") }}" alt="" id="logo-fullsize" class="logo" style="width:300px;">
-                            <span class="beta">BETA</span>
+                            {{-- <span class="beta">BETA</span> --}}
                         </a>
                     </div>
                     <div class="nav-right d-inline-block col-sm-12 col-md-12 col-lg-6 col-xl-6 d-flex align-items-center">
                         <a href="{{ route('admin.search') }}" class="mobile-show position-relative">
 
                             <img src="{{ asset("storage/images/logo.svg") }}" alt="" class="mini-logo">
-                            <span class="beta">BETA</span>
+                            {{-- <span class="beta">BETA</span> --}}
                         </a>
                         {{-- <a class="" href="{{route('admin.topics.create')}}">
                             Forum
                         </a> --}}
                         <div class="dropdown show notification not-navbar">
-                            <a href="#" role="button" id="notDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="icon" @click="readNotifications()">
+                            <a href="#" role="button" id="notDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="icon tiny-img scale" @click="readNotifications()">
                                 <i class="fas fa-bell">
                                     <span v-show="notifications.length" v-cloak>
                                         @{{notifications.length}}
@@ -142,7 +143,7 @@
                             </div>
                         </div>
                         <div class="chat d-inline-block" v-cloak>
-                            <a class="not-navbar icon" href="{{route('admin.chats.index')}}">
+                            <a class="not-navbar icon tiny-img scale" href="{{route('admin.chats.index')}}">
                                 <i class="fas fa-comment-alt">
                                     <span v-if="message_not_read_qty">
                                         @{{message_not_read_qty}}
@@ -155,21 +156,21 @@
                                   <i class="fas fa-exchange-alt"></i>
                             </a>
                         </div> --}}
-                        <div class="account-menu d-inline-block" v-cloak>
+                        <div class="account-menu d-inline-block d-flex align-items-center" v-cloak>
                             <div class="user-image-cont">
-                                <a href="{{route('admin.users.show',Auth::user()->id)}}">
-                                    <div class="img-cont mini-img">
+                                <a href="{{route('admin.users.show',Auth::user()->id)}}" style="height:40px;" class="scale">
+                                    <div class="img-cont tiny-img">
                                         @if(Auth::user()->image)
                                         <img src="{{ asset('storage/'.Auth::user()->image) }}" alt="">
                                         @endif
                                     </div>
                                 </a>
-                                <a v-if="page_selected"
+                                {{-- <a v-if="page_selected"
                                 :href="'/admin/pages/'+ page_selected.id" class="micro-item">
                                     <div class="img-cont micro-img">
                                         <img v-if="page_selected.image" :src="'/storage/'+ page_selected.image" alt="">
                                     </div>
-                                </a>
+                                </a> --}}
                             </div>
                             <a id="navbarDropdown" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{-- <div class="drop-menu mobile-hide"> --}}
@@ -219,42 +220,43 @@
         <footer id="footer">
             <div class="container ">
                 <div class="row">
-                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                        <div class="legal">
-                            <h5 class="text-uppercase">{{__('Legal')}}</h5>
-                            <div class="">
-                                <a href="{{ route('termsAndConditions') }}">
-                                    {{__('Terms & Conditions')}}
-                                </a>
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-sx-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                <div class="legal mini-txt">
+                                    <div class="">
+                                        <a href="{{ route('termsAndConditions') }}">
+                                            {{__('Terms & Conditions')}}
+                                        </a>
+                                    </div>
+                                    <div class="">
+                                        <a href="{{ route('privacyPolicy') }}">
+                                            {{__('Privacy Disclaimer')}}
+                                        </a>
+                                    </div>
+                                    <div class="">
+                                        <a href="{{ route('cookiePolicy') }}">
+                                            Cookie Policy
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="">
-                                <a href="{{ route('privacyPolicy') }}">
-                                    {{__('Privacy Disclaimer')}}
-                                </a>
-                            </div>
-                            <div class="">
-                                <a href="{{ route('cookiePolicy') }}">
-                                    Cookie Policy
-                                </a>
+                            <div class="col-sx-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                <div class="contacts mini-txt">
+                                    <div class="">
+                                        <a href="{{ route('admin.supports.switch') }}">
+                                            {{__("Contact us")}}
+                                        </a>
+                                    </div>
+                                    <div class="">
+                                        <a href="mailto:info@growpla.com" >info@growpla.com</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                        <div class="contacts">
-                            <h5 class="text-uppercase">{{__('Contacts')}}</h5>
-                            <div class="">
-                                <a href="{{ route('admin.supports.switch') }}">
-                                    {{__("Contact us")}}
-                                </a>
-                            </div>
-                            <div class="">
-                                <a href="mailto:info@growpla.com" >info@growpla.com</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 d-flex justify-content-center">
                         <div class="social">
-                            <h5 class="text-uppercase">{{__('Social')}}</h5>
                             <div class="">
                                 {{-- <a href="" target="_blank">
                                     <i class="fab fa-facebook"></i>
@@ -272,7 +274,7 @@
             </div>
             <div class="container">
                 <div class="bottom-footer">
-                    <span>© {{date("Y")}} Growpla {{-- · All Rights Reserved--}}</span>
+                    <span class="mini-txt">All copyrighted reserved to  Growpla © {{date("Y")}}</span>
                 </div>
             </div>
         </footer>

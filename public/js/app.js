@@ -76541,9 +76541,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 var im_in_index = document.getElementById("search");
 
 if (im_in_index) {
-  document.getElementById("nav-bar").style.backgroundColor = "transparent"; // document.getElementById("nav-bar").style.backgroundColor = "rgb(194,214,215)";
-
-  document.getElementById("nav-bar").style.boxShadow = "none";
+  document.getElementById("container-nb").style.backgroundColor = "transparent";
+  document.getElementById("container-nb").style.boxShadow = "none";
   document.getElementById("logo-fullsize").src = "/storage/images/logo-fullsize-white.svg";
 
   window.onscroll = function () {
@@ -76553,14 +76552,13 @@ if (im_in_index) {
 
 function scrollFunction() {
   if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-    document.getElementById("nav-bar").style.backgroundColor = "white";
-    document.getElementById("nav-bar").style.boxShadow = "0 0.125rem 0.25rem rgb(0 0 0 / 8%)";
-    document.getElementById("nav-bar").style.transition = ".2s";
+    document.getElementById("container-nb").style.backgroundColor = "white";
+    document.getElementById("container-nb").style.boxShadow = "0 0.125rem 0.25rem rgb(0 0 0 / 8%)";
+    document.getElementById("container-nb").style.transition = ".2s";
     document.getElementById("logo-fullsize").src = "/storage/images/logo-fullsize.svg";
   } else {
-    // document.getElementById("nav-bar").style.backgroundColor = "rgb(194,214,215)";
-    document.getElementById("nav-bar").style.backgroundColor = "transparent";
-    document.getElementById("nav-bar").style.boxShadow = "none";
+    document.getElementById("container-nb").style.backgroundColor = "transparent";
+    document.getElementById("container-nb").style.boxShadow = "none";
     document.getElementById("logo-fullsize").src = "/storage/images/logo-fullsize-white.svg";
   }
 }
@@ -77475,6 +77473,9 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     remove_pitch: false
   },
   methods: {
+    submitForm: function submitForm() {
+      document.getElementById('pageForm').submit();
+    },
     getRegionsByCountry: function getRegionsByCountry() {
       var _this = this;
 
@@ -78735,6 +78736,15 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     }
 
     fadeIn();
+  }
+});
+document.addEventListener('click', function (event) {
+  var withinBoundaries = event.composedPath().includes(target);
+
+  if (withinBoundaries) {
+    target.innerText = 'Click happened inside element';
+  } else {
+    target.innerText = 'Click happened **OUTSIDE** element';
   }
 });
 
@@ -80541,6 +80551,9 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     remove_cv: false
   },
   methods: {
+    submitForm: function submitForm() {
+      document.getElementById('userForm').submit();
+    },
     searchPage: function searchPage() {
       var _this = this;
 
@@ -80703,7 +80716,12 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     } //END DRAG & DROP
 
   }
-});
+}); // document.addEventListener('keypress', function (e) {
+//     if (e.keyCode === 13 || e.which === 13) {
+//         e.preventDefault();
+//         return false;
+//     }
+// });
 
 /***/ }),
 

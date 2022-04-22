@@ -1,33 +1,34 @@
 #notification-index{
-    height: calc(100vh - 215px);
+    // height: calc(100vh - 215px);
     .not-cont{
         // height: 93%;
-        height: calc(100% - 50px);
+        // height: calc(100% - 50px);
         padding: 10px;
         border-radius: 10px;
-        background-color: $default_green-deactivate;        
+        // background-color: $default_green-deactivate;
         .not-item{
             display: inline-block;
             width: 100%;
             padding: 10px;
             border-radius: 10px;
-            background-color: gray;
+            background-color: $gray_1;
             color: black;
             margin-bottom: 4px;
             display: flex;
             justify-content: space-between;
             &:hover{
                 text-decoration: none;
-                background-color: $hover_gray;
+                background-color: $light_black;
+                color: white;
             }
             .mini-txt{
                 color: black;
             }
         }
         .active{
-            background-color: $default_green-deactivate;
+            background-color: $blue_2;
             &:hover{
-                background-color: $default_green;
+                background-color: $blue_3;
             }
         }
     }

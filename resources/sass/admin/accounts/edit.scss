@@ -1,7 +1,26 @@
-#account-edit{
+#user-edit,#page-edit{
     .form-sub-group{
         display: inline-block;
     }
+    .left-area{
+        position: relative;
+        height: 400px;
+        padding-top: 80px;
+        .fixed{
+            position: fixed;
+            width: 285px;
+        }
+    }
+    .right-area{
+        border-radius: 20px;
+        padding-left: 40px;
+        padding-right: 40px;
+        input,textarea,select{
+            border: none;
+            border-radius: 20px;
+        }
+    }
+    textarea { resize: none; }
     .role{
         a{
             display: block;

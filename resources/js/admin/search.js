@@ -579,3 +579,13 @@ var create = new Vue({
     }
 
 });
+
+document.addEventListener('click', (event) => {
+    const withinBoundaries = event.composedPath().includes(target);
+
+    if (withinBoundaries) {
+        target.innerText = 'Click happened inside element';
+    } else {
+        target.innerText = 'Click happened **OUTSIDE** element';
+    }
+})
