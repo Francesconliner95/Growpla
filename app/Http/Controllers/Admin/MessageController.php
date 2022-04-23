@@ -92,8 +92,8 @@ class MessageController extends Controller
             $recipient_emails = [];
             foreach ($recipient_users as $recipient_user) {
                 $exist = UserMailSetting::where('user_id',$recipient_user->id)
-                                         ->where('mail_setting_id',1)
-                                         ->first();
+                                        ->where('mail_setting_id',1)
+                                        ->first();
                 if(!$exist){
                     array_push($recipient_emails,$recipient_user->email);
                 }

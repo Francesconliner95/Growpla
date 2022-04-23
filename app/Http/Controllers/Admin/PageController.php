@@ -61,24 +61,30 @@ class PageController extends Controller
 
       $counter=1;
 
-      while($slug_exist){
-          $slug = $slug_base . '-' . $counter;
-          $counter++;
-          $slug_exist = Page::where('slug', $slug)->first();
-      }
+          while($slug_exist){
+              $slug = $slug_base . '-' . $counter;
+              $counter++;
+              $slug_exist = Page::where('slug', $slug)->first();
+          }
         //END SLUG
+        $page_exist = Page::where('name', Str::lower($request->name))
+                        ->first();
 
-        $new_page = new Page();
-        $new_page->pagetype_id = $request->pagetype_id;
-        $new_page->name = Str::lower($request->name);
-        $new_page->slug = $slug;
-        $new_page->image = Pagetype::find($request->pagetype_id)->image;
-        $new_page->save();
+        if(!$page_exist || $page_exist && !$page_exist->users->contains(Auth::user())){
+            $new_page = new Page();
+            $new_page->pagetype_id = $request->pagetype_id;
+            $new_page->name = Str::lower($request->name);
+            $new_page->slug = $slug;
+            $new_page->image = Pagetype::find($request->pagetype_id)->image;
+            $new_page->save();
 
-        $user = Auth::user();
-        $new_page->users()->attach($user);
+            $user = Auth::user();
+            $new_page->users()->attach($user);
 
-        return redirect()->route('admin.pages.edit', ['page'=> $new_page->id]);
+            return redirect()->route('admin.pages.edit', ['page'=> $new_page->id]);
+        }else{
+            return redirect()->route('admin.pages.edit', ['page'=> $page_exist->id]);
+        }
 
     }
 
