@@ -17988,15 +17988,15 @@ select option[value=""] {
 }
 
 .button-color {
-  border: 2px solid #0AB89F;
-  background-color: #0AB89F;
+  border: 2px solid #01B59C;
+  background-color: #01B59C;
   color: white;
 }
 
 .button-color:hover {
   transition: 0.2s;
-  color: #0AB89F;
-  background-color: transparent;
+  color: #01B59C;
+  background-color: #E5F7F5;
 }
 
 .button-color-green {
@@ -18008,7 +18008,7 @@ select option[value=""] {
 .button-color-green:hover {
   transition: 0.2s;
   color: #01B59C;
-  background-color: transparent;
+  background-color: #E5F7F5;
 }
 
 .button-color-blue {
@@ -18020,7 +18020,7 @@ select option[value=""] {
 .button-color-blue:hover {
   transition: 0.2s;
   color: #00A1DC;
-  background-color: transparent;
+  background-color: #E5F5FC;
 }
 
 .button-color-red {
@@ -18108,12 +18108,14 @@ select option[value=""] {
 }
 
 .bubble-cont .bubble {
-  background-color: #E5F5FC;
+  background-color: #E5F7F5;
   border-radius: 0px 20px 20px 20px;
-  padding: 10px;
+  padding: 10px 15px;
   position: relative;
   width: auto;
   margin-top: 5px;
+  color: #01B59C;
+  font-weight: bold;
 }
 
 .bubble-cont .bubble::after {
@@ -18125,7 +18127,7 @@ select option[value=""] {
   top: 0px;
   border-style: solid;
   border-width: 0 10px 10px 0;
-  border-color: transparent #E5F5FC transparent transparent;
+  border-color: transparent #E5F7F5 transparent transparent;
 }
 
 @media (min-width: 768px) {
@@ -19298,7 +19300,6 @@ select option[value=""] {
 
 main {
   min-height: calc(100vh - 267px);
-  padding-bottom: 20px;
 }
 
 footer {

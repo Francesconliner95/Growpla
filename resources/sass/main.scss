@@ -584,13 +584,13 @@ select option[value=""]{
 }
 
 .button-color{
-    border: 2px solid $default_green;
-    background-color: $default_green;
+    border: 2px solid $green_3;
+    background-color: $green_3;
     color: white;
     &:hover{
         transition: 0.2s;
-        color: $default_green;
-        background-color: transparent;
+        color: $green_3;
+        background-color: $green_1;
     }
 }
 
@@ -601,7 +601,7 @@ select option[value=""]{
     &:hover{
         transition: 0.2s;
         color: $green_3;
-        background-color: transparent;
+        background-color: $green_1;
     }
 }
 
@@ -612,7 +612,7 @@ select option[value=""]{
     &:hover{
         transition: 0.2s;
         color: $blue_3;
-        background-color: transparent;
+        background-color: $blue_1;
     }
 }
 
@@ -693,12 +693,14 @@ select option[value=""]{
 .bubble-cont{
     position: relative;
     .bubble{
-        background-color: $blue_1;
+        background-color: $green_1;
         border-radius: 0px 20px 20px 20px;
-        padding: 10px;
+        padding: 10px 15px;
         position: relative;
         width: auto;
         margin-top: 5px;
+        color: $green_3;
+        font-weight: bold;
         &::after{
             content: "";
             // background-color: black;
@@ -709,7 +711,7 @@ select option[value=""]{
             top: 0px;
             border-style: solid;
             border-width: 0 10px 10px 0;
-            border-color: transparent $blue_1 transparent transparent;
+            border-color: transparent $green_1 transparent transparent;
         }
     }
 }
