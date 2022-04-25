@@ -17541,8 +17541,13 @@ ul > p {
   opacity: 0.9;
 }
 
+.bg-blue {
+  background-color: #E5F5FC;
+  color: white !important;
+}
+
 .bg-green {
-  background-color: #0AB89F;
+  background-color: #E5F7F5;
   color: white !important;
 }
 
@@ -17958,6 +17963,16 @@ select option[value=""] {
 
 .multichoise-blue.active {
   background-color: #8AD1F1 !important;
+  color: white !important;
+}
+
+.multichoise-black {
+  color: #223436;
+  background-color: white;
+}
+
+.multichoise-black.active {
+  background-color: #223436 !important;
   color: white !important;
 }
 

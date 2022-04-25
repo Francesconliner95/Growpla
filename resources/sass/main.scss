@@ -150,9 +150,13 @@ ul>p{
     color: white;
     opacity: .9;
 }
+.bg-blue{
+    background-color: $blue_1;
+    color: white !important;
+}
 
 .bg-green{
-    background-color: $default_green;
+    background-color: $green_1;
     color: white !important;
 }
 
@@ -555,6 +559,16 @@ select option[value=""]{
 
 .multichoise-blue.active{
     background-color: $blue_2 !important;
+    color: white !important;
+}
+
+.multichoise-black{
+    color: $dark_2;
+    background-color: white;
+}
+
+.multichoise-black.active{
+    background-color: $dark_2 !important;
     color: white !important;
 }
 
