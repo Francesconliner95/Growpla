@@ -14,8 +14,8 @@ if (document.getElementById('cookie-policy')) {
     require('./guest/cookiePolicy.js');
 }
 
-if (document.getElementById('register')) {
-    require('./guest/register.js');
+if (document.getElementById('login')) {
+    require('./guest/login.js');
 }
 
 if (document.getElementById('incubators')) {

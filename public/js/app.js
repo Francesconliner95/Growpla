@@ -81072,8 +81072,8 @@ if (document.getElementById('cookie-policy')) {
   __webpack_require__(/*! ./guest/cookiePolicy.js */ "./resources/js/guest/cookiePolicy.js");
 }
 
-if (document.getElementById('register')) {
-  __webpack_require__(/*! ./guest/register.js */ "./resources/js/guest/register.js");
+if (document.getElementById('login')) {
+  __webpack_require__(/*! ./guest/login.js */ "./resources/js/guest/login.js");
 }
 
 if (document.getElementById('incubators')) {
@@ -81793,6 +81793,44 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
+/***/ "./resources/js/guest/login.js":
+/*!*************************************!*\
+  !*** ./resources/js/guest/login.js ***!
+  \*************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
+//window.history.forward();
+
+
+
+axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+  'X-CSRF-TOKEN': window.csrf_token
+};
+var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
+  el: '#login',
+  data: {
+    login: true
+  },
+  methods: {
+    maxbirthdate: function maxbirthdate() {
+      return moment__WEBPACK_IMPORTED_MODULE_2___default()().subtract(10, 'years').format('YYYY-MM-DD');
+    }
+  },
+  mounted: function mounted() {}
+});
+
+/***/ }),
+
 /***/ "./resources/js/guest/prehome.js":
 /*!***************************************!*\
   !*** ./resources/js/guest/prehome.js ***!
@@ -82025,54 +82063,6 @@ document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
 
 /***/ }),
 
-/***/ "./resources/js/guest/register.js":
-/*!****************************************!*\
-  !*** ./resources/js/guest/register.js ***!
-  \****************************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
-//window.history.forward();
-
-
-
-axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
-  'X-Requested-With': 'XMLHttpRequest',
-  'X-CSRF-TOKEN': window.csrf_token
-};
-var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  el: '#register',
-  data: {
-    code_verified: false,
-    code: '',
-    error: false
-  },
-  methods: {
-    sendCode: function sendCode() {
-      if (this.code == 'ARVTFD3') {
-        this.code_verified = true;
-      } else {
-        this.error = true;
-        console.log(this.error);
-      }
-    },
-    maxbirthdate: function maxbirthdate() {
-      return moment__WEBPACK_IMPORTED_MODULE_2___default()().subtract(10, 'years').format('YYYY-MM-DD');
-    }
-  },
-  mounted: function mounted() {}
-});
-
-/***/ }),
-
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -82091,8 +82081,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\MAMP\htdocs\Growpla\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\MAMP\htdocs\growpla\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

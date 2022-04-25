@@ -9,30 +9,17 @@ axios.defaults.headers.common = {
 };
 
 var create = new Vue({
-    el: '#register',
+    el: '#login',
     data: {
-        code_verified: false,
-        code: '',
-        error: false,
+        login: true,
     },
     methods: {
-
-        sendCode(){
-            if(this.code=='ARVTFD3'){
-                this.code_verified = true;
-            }else{
-                this.error=true;
-                console.log(this.error);
-            }
-        },
-
         maxbirthdate(){
           return moment().subtract(10, 'years').format('YYYY-MM-DD');
         },
-
     },
     mounted() {
-
+        
     }
 
 });

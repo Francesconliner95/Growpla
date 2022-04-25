@@ -156,6 +156,33 @@ ul>p{
     color: white !important;
 }
 
+.bg-dark{
+    background-color: $dark_1;
+    background-image: -webkit-linear-gradient(-60deg, $dark_1 50%, $dark_2 50%);
+    color: $green_3;
+}
+
+.custom-card{
+    border-radius: 20px;
+    input{
+        border: none;
+        border-bottom: 2px solid $green_3;
+        background-color: transparent;
+        color: white;
+        border-radius: 0px;
+        &:focus{
+            outline: none;
+            background-color: transparent;
+            color: white;
+        }
+        &:active {
+            outline: none;
+            background-color: transparent;
+            color: white;
+        }
+    }
+}
+
 :root{
     // --microtip-transition-duration: 0.5s;
     // --microtip-transition-delay: 1s;
@@ -738,7 +765,7 @@ select option[value=""]{
         position: relative;
         top: 50%;
         width: 74px;
-        height: 36px;
+        height: 31px;
         //margin: -20px auto 0 auto;
         overflow: hidden;
     }
@@ -785,8 +812,8 @@ select option[value=""]{
         //content: 'ON';
         content: '';
         position: absolute;
-        top: 4px;
-        left: 4px;
+        top: 2px;
+        left: 2px;
         width: 27px;
         height: 27px;
         color: #fff;
@@ -795,7 +822,7 @@ select option[value=""]{
         text-align: center;
         line-height: 1;
         padding: 9px 4px;
-        background-color: #f44336;
+        background-color: $green_3;
         border-radius: 50%;
         transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
     }
@@ -804,8 +831,8 @@ select option[value=""]{
     {
         //content: 'OFF';
         content: '';
-        left: 42px;
-        background-color: #03A9F4;
+        left: 45px;
+        background-color: $green_3;
     }
 
     .switch-button .checkbox:checked ~ .layer
