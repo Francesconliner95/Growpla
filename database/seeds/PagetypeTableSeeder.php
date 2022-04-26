@@ -83,7 +83,7 @@ class PagetypeTableSeeder extends Seeder
               'name_it'=>'private equity',
               'description'=>'Private equity funds intervene when the company appears mature and solid from a financial and organizational point of view, limiting itself to providing capital necessary for its expansion.',
               'description_it'=>'I fondi di private equity intervengono quando l’azienda appare matura e solida dal punto di vista finanziario ed organizzativo, limitandosi ad apportare capitali necessari all’espansione della stessa',
-              'image'=>'pages_images/default-venture-capital.svg',
+              'image'=>'pages_images/default-private-equity.svg',
               'hidden' => null,
           ],
           [

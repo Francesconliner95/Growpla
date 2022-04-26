@@ -114,11 +114,12 @@
                         </a> --}}
                         <div class="dropdown show notification not-navbar">
                             <a href="#" role="button" id="notDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="icon tiny-img scale" @click="readNotifications()">
-                                <i class="fas fa-bell">
+                                <div class="img-cont micro-img">
+                                    <img src="{{ asset("storage/images/icon-not.svg") }}" alt="">
                                     <span v-show="notifications.length" v-cloak>
                                         @{{notifications.length}}
                                     </span>
-                                </i>
+                                </div>
                             </a>
                             <div class="dropdown-menu show-notf-preview" aria-labelledby="notDropdown">
                                 <div v-if="notifications.length>0"  class="notf">
@@ -144,11 +145,12 @@
                         </div>
                         <div class="chat d-inline-block" v-cloak>
                             <a class="not-navbar icon tiny-img scale" href="{{route('admin.chats.index')}}">
-                                <i class="fas fa-comment-alt">
-                                    <span v-if="message_not_read_qty">
+                                <div class="img-cont micro-img">
+                                    <img src="{{ asset("storage/images/icon-chat.svg") }}" alt="">
+                                    <span v-if="message_not_read_qty" v-cloak>
                                         @{{message_not_read_qty}}
                                     </span>
-                                </i>
+                                </div>
                             </a>
                         </div>
                         {{-- <div class="chat d-inline-block">
@@ -158,8 +160,8 @@
                         </div> --}}
                         <div class="account-menu d-inline-block d-flex align-items-center" v-cloak>
                             <div class="user-image-cont">
-                                <a href="{{route('admin.users.show',Auth::user()->id)}}" style="height:40px;" class="scale">
-                                    <div class="img-cont tiny-img">
+                                <a href="{{route('admin.users.show',Auth::user()->id)}}" style="height:40px;" class="scale ">
+                                    <div class="img-cont tiny-img border-green">
                                         @if(Auth::user()->image)
                                         <img src="{{ asset('storage/'.Auth::user()->image) }}" alt="">
                                         @endif

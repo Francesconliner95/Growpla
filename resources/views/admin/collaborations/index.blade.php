@@ -62,7 +62,7 @@
                                     </div>
                                 </div>
                                 <div class="link">
-                                    <img src="/storage/images/link-icon.svg" alt="">
+                                    <img src="/storage/images/icon-link.svg" alt="">
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 text-center coll-item">
                                     <div class="">

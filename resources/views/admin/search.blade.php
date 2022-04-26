@@ -25,7 +25,7 @@
     </div>
     @endif
     <div class="background"
-    style="background-image: url({{asset("storage/images/jumbotron.svg") }})">
+    style="background-image: url({{asset("storage/images/bg-search.svg") }})">
         <div class="container">
             <div class="search">
                 <div id="search-fixed" :class="usertypes_id.length>0||pagetypes_id.length>0||services_selected||name?'search-fixed-top':'search-fixed-center'">
@@ -503,7 +503,7 @@
                                 </div>
                             </div>
                             <div class="link">
-                                <img src="/storage/images/link-icon.svg" alt="">
+                                <img src="/storage/images/icon-link.svg" alt="">
                             </div>
                             <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 text-center coll-item">
                                 <div class="">

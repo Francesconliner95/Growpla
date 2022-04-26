@@ -17551,7 +17551,40 @@ ul > p {
   color: white !important;
 }
 
+.bg-gray {
+  background-color: #F3F5F9;
+}
+
 .bg-dark {
+  background-color: #16292B;
+  background-image: -webkit-linear-gradient(-60deg, #16292B 50%, #223436 50%);
+  color: #01B59C;
+}
+
+.custom-card {
+  border-radius: 20px;
+}
+
+.custom-card input {
+  border: none;
+  border-bottom: 2px solid #01B59C;
+  background-color: transparent;
+  color: white;
+  border-radius: 0px;
+}
+
+.custom-card input:focus {
+  outline: none;
+  background-color: transparent;
+  color: white;
+}
+
+.custom-card input:active {
+  outline: none;
+  background-color: transparent;
+  color: white;
+}
+
 .tooltip {
   --microtip-transition-duration: 0.2s;
   --microtip-transition-delay: 0s;
@@ -19296,8 +19329,7 @@ select option[value=""] {
 }
 
 main {
-  min-height: calc(100vh - 267px);
-  padding-bottom: 20px;
+  min-height: calc(100vh - 200px);
 }
 
 footer {
@@ -20097,24 +20129,23 @@ footer .bottom-footer {
   display: inline-block;
 }
 
-#user-edit .left-area,
-#page-edit .left-area {
-  position: relative;
-  height: 400px;
-  padding-top: 80px;
-}
-
-#user-edit .left-area .fixed,
-#page-edit .left-area .fixed {
-  position: fixed;
-  width: 285px;
-}
-
 #user-edit .right-area,
 #page-edit .right-area {
   border-radius: 20px;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding: 30px;
+}
+
+#user-edit .right-area .sub-section,
+#page-edit .right-area .sub-section {
+  padding: 5px 0px;
+  border: none;
+}
+
+#user-edit .right-area .sub-section h6,
+#user-edit .right-area .sub-section label,
+#page-edit .right-area .sub-section h6,
+#page-edit .right-area .sub-section label {
+  font-size: 12px;
 }
 
 #user-edit .right-area input,
@@ -20124,7 +20155,13 @@ footer .bottom-footer {
 #page-edit .right-area textarea,
 #page-edit .right-area select {
   border: none;
-  border-radius: 20px;
+  border-radius: 15px;
+  font-size: 12px;
+}
+
+#user-edit .right-area input,
+#page-edit .right-area input {
+  height: 30px;
 }
 
 #user-edit textarea,

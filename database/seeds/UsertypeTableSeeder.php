@@ -58,7 +58,7 @@ class UsertypeTableSeeder extends Seeder
               'name_it'=>'startupper',
               'description'=>'',
               'description_it'=>'',
-              'image'=>'users_images/default-utente.svg',
+              'image'=>'users_images/default-startupper.svg',
           ],
           [
               'name'=>'other',

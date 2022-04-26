@@ -52,6 +52,9 @@
                                 @endif
                                 <a v-if="is_my_user" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.images.editUserImage')}}" v-cloak>
                                     <i class="fas fa-pencil-alt"></i>
+                                    {{-- <div class="img-cont micro-img">
+                                        <img src="{{ asset("storage/images/icon-edit.svg") }}" alt="">
+                                    </div> --}}
                                 </a>
                             </div>
                         </div>

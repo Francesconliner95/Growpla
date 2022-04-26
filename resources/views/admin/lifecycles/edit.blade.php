@@ -6,7 +6,7 @@
     lifecycles = {!! json_encode($lifecycles->toArray()) !!};
     lifecycle_id = "{{$page->lifecycle_id}}";
 </script>
-<div id="lifecycle-edit" style="background-image: url({{asset("storage/images/growpla-rocket.svg") }});">
+<div id="lifecycle-edit" style="background-image: url({{asset("storage/images/bg-rocket.svg") }}); background-position: right -85px bottom -85px; background-repeat: no-repeat; ">
     <div class="container pb-3">
         <div class="item-cont">
             <div class="item-style">
@@ -43,7 +43,7 @@
                             @endforeach
                         </div>
                     </div>
-                    <div class="text-right p-3">
+                    <div class="text-left pt-3 pb-3">
                         <button type="submit" class="button-style button-color">
                             Salva
                         </button>
