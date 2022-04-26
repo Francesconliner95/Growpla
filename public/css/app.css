@@ -17541,15 +17541,17 @@ ul > p {
   opacity: 0.9;
 }
 
-.bg-green {
-  background-color: #0AB89F;
+.bg-blue {
+  background-color: #E5F5FC;
   color: white !important;
 }
 
-.bg-gray {
-  background-color: #F3F5F9;
+.bg-green {
+  background-color: #E5F7F5;
+  color: white !important;
 }
 
+.bg-dark {
 .tooltip {
   --microtip-transition-duration: 0.2s;
   --microtip-transition-delay: 0s;
@@ -17940,6 +17942,16 @@ select option[value=""] {
   color: white !important;
 }
 
+.multichoise-black {
+  color: #223436;
+  background-color: white;
+}
+
+.multichoise-black.active {
+  background-color: #223436 !important;
+  color: white !important;
+}
+
 .button-active-sector {
   background-color: #f6993f !important;
   color: white !important;
@@ -17952,15 +17964,15 @@ select option[value=""] {
 }
 
 .button-color {
-  border: 2px solid #0AB89F;
-  background-color: #0AB89F;
+  border: 2px solid #01B59C;
+  background-color: #01B59C;
   color: white;
 }
 
 .button-color:hover {
   transition: 0.2s;
-  color: #0AB89F;
-  background-color: transparent;
+  color: #01B59C;
+  background-color: #E5F7F5;
 }
 
 .button-color-green {
@@ -17972,7 +17984,7 @@ select option[value=""] {
 .button-color-green:hover {
   transition: 0.2s;
   color: #01B59C;
-  background-color: transparent;
+  background-color: #E5F7F5;
 }
 
 .button-color-blue {
@@ -17984,7 +17996,7 @@ select option[value=""] {
 .button-color-blue:hover {
   transition: 0.2s;
   color: #00A1DC;
-  background-color: transparent;
+  background-color: #E5F5FC;
 }
 
 .button-color-red {
@@ -18072,12 +18084,14 @@ select option[value=""] {
 }
 
 .bubble-cont .bubble {
-  background-color: #E5F5FC;
+  background-color: #E5F7F5;
   border-radius: 0px 20px 20px 20px;
-  padding: 10px;
+  padding: 10px 15px;
   position: relative;
   width: auto;
   margin-top: 5px;
+  color: #01B59C;
+  font-weight: bold;
 }
 
 .bubble-cont .bubble::after {
@@ -18089,7 +18103,7 @@ select option[value=""] {
   top: 0px;
   border-style: solid;
   border-width: 0 10px 10px 0;
-  border-color: transparent #E5F5FC transparent transparent;
+  border-color: transparent #E5F7F5 transparent transparent;
 }
 
 @media (min-width: 768px) {
@@ -18155,7 +18169,7 @@ select option[value=""] {
   position: relative;
   top: 50%;
   width: 74px;
-  height: 36px;
+  height: 31px;
   overflow: hidden;
 }
 
@@ -18193,8 +18207,8 @@ select option[value=""] {
 .switch-button-container .switch-button .knobs:before {
   content: "";
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: 2px;
+  left: 2px;
   width: 27px;
   height: 27px;
   color: #fff;
@@ -18203,15 +18217,15 @@ select option[value=""] {
   text-align: center;
   line-height: 1;
   padding: 9px 4px;
-  background-color: #f44336;
+  background-color: #01B59C;
   border-radius: 50%;
   transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
 }
 
 .switch-button-container .switch-button .checkbox:checked + .knobs:before {
   content: "";
-  left: 42px;
-  background-color: #03A9F4;
+  left: 45px;
+  background-color: #01B59C;
 }
 
 .switch-button-container .switch-button .checkbox:checked ~ .layer {
@@ -19282,7 +19296,7 @@ select option[value=""] {
 }
 
 main {
-  min-height: calc(100vh - 200px);
+  min-height: calc(100vh - 267px);
   padding-bottom: 20px;
 }
 

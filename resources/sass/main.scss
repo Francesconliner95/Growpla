@@ -150,13 +150,44 @@ ul>p{
     color: white;
     opacity: .9;
 }
+.bg-blue{
+    background-color: $blue_1;
+    color: white !important;
+}
 
 .bg-green{
-    background-color: $default_green;
+    background-color: $green_1;
     color: white !important;
 }
 .bg-gray{
     background-color: $gray_2;
+}
+
+.bg-dark{
+    background-color: $dark_1;
+    background-image: -webkit-linear-gradient(-60deg, $dark_1 50%, $dark_2 50%);
+    color: $green_3;
+}
+
+.custom-card{
+    border-radius: 20px;
+    input{
+        border: none;
+        border-bottom: 2px solid $green_3;
+        background-color: transparent;
+        color: white;
+        border-radius: 0px;
+        &:focus{
+            outline: none;
+            background-color: transparent;
+            color: white;
+        }
+        &:active {
+            outline: none;
+            background-color: transparent;
+            color: white;
+        }
+    }
 }
 
 :root{
@@ -538,6 +569,16 @@ select option[value=""]{
     color: white !important;
 }
 
+.multichoise-black{
+    color: $dark_2;
+    background-color: white;
+}
+
+.multichoise-black.active{
+    background-color: $dark_2 !important;
+    color: white !important;
+}
+
 .button-active-sector{
   background-color: $orange !important;
   color: white !important;
@@ -550,13 +591,13 @@ select option[value=""]{
 }
 
 .button-color{
-    border: 2px solid $default_green;
-    background-color: $default_green;
+    border: 2px solid $green_3;
+    background-color: $green_3;
     color: white;
     &:hover{
         transition: 0.2s;
-        color: $default_green;
-        background-color: transparent;
+        color: $green_3;
+        background-color: $green_1;
     }
 }
 
@@ -567,7 +608,7 @@ select option[value=""]{
     &:hover{
         transition: 0.2s;
         color: $green_3;
-        background-color: transparent;
+        background-color: $green_1;
     }
 }
 
@@ -578,7 +619,7 @@ select option[value=""]{
     &:hover{
         transition: 0.2s;
         color: $blue_3;
-        background-color: transparent;
+        background-color: $blue_1;
     }
 }
 
@@ -659,12 +700,14 @@ select option[value=""]{
 .bubble-cont{
     position: relative;
     .bubble{
-        background-color: $blue_1;
+        background-color: $green_1;
         border-radius: 0px 20px 20px 20px;
-        padding: 10px;
+        padding: 10px 15px;
         position: relative;
         width: auto;
         margin-top: 5px;
+        color: $green_3;
+        font-weight: bold;
         &::after{
             content: "";
             // background-color: black;
@@ -675,7 +718,7 @@ select option[value=""]{
             top: 0px;
             border-style: solid;
             border-width: 0 10px 10px 0;
-            border-color: transparent $blue_1 transparent transparent;
+            border-color: transparent $green_1 transparent transparent;
         }
     }
 }
@@ -745,7 +788,7 @@ select option[value=""]{
         position: relative;
         top: 50%;
         width: 74px;
-        height: 36px;
+        height: 31px;
         //margin: -20px auto 0 auto;
         overflow: hidden;
     }
@@ -792,8 +835,8 @@ select option[value=""]{
         //content: 'ON';
         content: '';
         position: absolute;
-        top: 4px;
-        left: 4px;
+        top: 2px;
+        left: 2px;
         width: 27px;
         height: 27px;
         color: #fff;
@@ -802,7 +845,7 @@ select option[value=""]{
         text-align: center;
         line-height: 1;
         padding: 9px 4px;
-        background-color: #f44336;
+        background-color: $green_3;
         border-radius: 50%;
         transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
     }
@@ -811,8 +854,8 @@ select option[value=""]{
     {
         //content: 'OFF';
         content: '';
-        left: 42px;
-        background-color: #03A9F4;
+        left: 45px;
+        background-color: $green_3;
     }
 
     .switch-button .checkbox:checked ~ .layer

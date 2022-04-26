@@ -221,6 +221,7 @@ var create = new Vue({
                 this.my_user_chats['all_mnr'] = this.my_user_chats['all_mnr'] + chat['message_not_read'];
             });
         }
+        console.log(this.my_user_chats);
         if(this.my_pages_chats){
             this.my_pages_chats = JSON.parse(this.my_pages_chats.replace(/&quot;/g,'"'));
             this.my_pages_chats.forEach((page, i) => {

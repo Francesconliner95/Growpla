@@ -37,12 +37,14 @@
                                   <img src="/storage/images/arrows-black-icon.svg" id="arrow-0" class="p-2 r-90r" alt="">
                               </div>
                             </button>
-                            <a v-for="chat in my_user_chats.user_chats"
-                            @click="pressChat(my_user_chats,chat,'chat-item-0')"
-                              class="active chat-item d-none" id="chat-item-0" v-cloak>
-                                <span class="text-capitalize">@{{chat.user_id?chat.name + ' '+ chat.surname : chat.name}}</span>
-                                <span v-if="chat.message_not_read" class="not">@{{chat.message_not_read}}</span>
-                            </a>
+                            <div class="d-none" id="chat-item-0">
+                                <a v-for="chat in my_user_chats.user_chats"
+                                @click="pressChat(my_user_chats,chat,'chat-item-0')"
+                                  class="active chat-item" v-cloak>
+                                    <span class="text-capitalize">@{{chat.user_id?chat.name + ' '+ chat.surname : chat.name}}</span>
+                                    <span v-if="chat.message_not_read" class="not">@{{chat.message_not_read}}</span>
+                                </a>
+                            </div>
                         </div>
                         <div v-for="(page,i) in my_pages_chats"
                         v-show="page.page_chats!=''" class="account" v-cloak>
@@ -59,11 +61,13 @@
                                     <img src="/storage/images/arrows-black-icon.svg" :id="'arrow-'+(i+1)" class="p-2 r-90r" alt="">
                                 </div>
                             </button>
-                            <a v-for="chat in page.page_chats" @click="pressChat(page,chat,'chat-item-'+(i+1))"
-                            class="chat-item  d-none" :id="'chat-item-'+(i+1)">
-                                <span class="text-capitalize">@{{chat.user_id?chat.name + ' '+ chat.surname : chat.name}}</span>
-                                <span v-if="chat.message_not_read" class="not">@{{chat.message_not_read}}</span>
-                            </a>
+                            <div class="d-none" :id="'chat-item-'+(i+1)">
+                                <a v-for="chat in page.page_chats" @click="pressChat(page,chat,'chat-item-'+(i+1))"
+                                class="chat-item">
+                                    <span class="text-capitalize">@{{chat.user_id?chat.name + ' '+ chat.surname : chat.name}}</span>
+                                    <span v-if="chat.message_not_read" class="not">@{{chat.message_not_read}}</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <div v-if="!is_mobile" class="col-sm-12 col-md-9 col-lg-9 col-xl-9" v-cloak>
