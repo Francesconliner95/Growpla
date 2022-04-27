@@ -26,7 +26,8 @@
             $language_id = 2;
         }
     @endphp
-<div class="container not-log-main-hg" id="login">
+<div class="bg-blue" id="login" style="background-image: url({{asset("storage/images/bg-contact.svg") }}); background-position: left 0px bottom -17px; background-repeat: no-repeat; background-size: 700px 500px;">
+  <div class="container">
     <div class="item-cont">
         <div class="item-style">
             <div class="row d-flex justify-content-center">
@@ -222,5 +223,6 @@
             </div>
         </div>
     </div>
+  </div>
 </div>
 @endsection

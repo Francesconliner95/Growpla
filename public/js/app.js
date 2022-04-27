@@ -76546,6 +76546,9 @@ if (im_in_index) {
   document.getElementById("container-nb").style.backgroundColor = "transparent";
   document.getElementById("container-nb").style.boxShadow = "none";
   document.getElementById("logo-fullsize").src = "/storage/images/logo-fullsize-white.svg";
+  document.getElementById("logo").src = "/storage/images/logo-white.svg";
+  document.getElementById("not-img").style.filter = "brightness(0) invert(1)";
+  document.getElementById("chat-img").style.filter = "brightness(0) invert(1)";
 
   window.onscroll = function () {
     scrollFunction();
@@ -76558,10 +76561,16 @@ function scrollFunction() {
     document.getElementById("container-nb").style.boxShadow = "0 0.125rem 0.25rem rgb(0 0 0 / 8%)";
     document.getElementById("container-nb").style.transition = ".2s";
     document.getElementById("logo-fullsize").src = "/storage/images/logo-fullsize.svg";
+    document.getElementById("logo").src = "/storage/images/logo.svg";
+    document.getElementById("not-img").style.filter = "brightness(0) invert(0)";
+    document.getElementById("chat-img").style.filter = "brightness(0) invert(0)";
   } else {
     document.getElementById("container-nb").style.backgroundColor = "transparent";
     document.getElementById("container-nb").style.boxShadow = "none";
     document.getElementById("logo-fullsize").src = "/storage/images/logo-fullsize-white.svg";
+    document.getElementById("logo").src = "/storage/images/logo-white.svg";
+    document.getElementById("not-img").style.filter = "brightness(0) invert(1)";
+    document.getElementById("chat-img").style.filter = "brightness(0) invert(1)";
   }
 }
 
@@ -78808,12 +78817,15 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     pageRecommended: [],
     serviceRecommended: [],
     cofounder_service_name: '',
-    cofounsder_services_found: '' // skill_name: '',
+    cofounsder_services_found: '',
+    // skill_name: '',
     // skills_found: '',
     //END ONLY STARTUP
-
+    is_mobile: false
   },
   methods: {
+    submitForm: function submitForm() {//document.getElementById('serviceForm').submit();
+    },
     changeMainCofounderService: function changeMainCofounderService() {
       var _this = this;
 
@@ -78894,6 +78906,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         };
         this.services.push(new_service);
         this.removeRservice(new_service);
+        this.fullRight(1);
       }
 
       this.services_found = '';
@@ -78919,6 +78932,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         };
         this.services.push(new_service);
         this.removeRservice(new_service);
+        this.fullRight(1);
       }
 
       this.services_found = '';
@@ -78927,6 +78941,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     removeService: function removeService(i) {
       var service = this.services[i];
       this.services.splice(i, 1);
+      this.arrowVisibility(1);
       this.addRservice(service);
     },
     removeRservice: function removeRservice(service) {
@@ -79138,7 +79153,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       if (id == "u-1") {
         this.usertype_selected = !this.usertype_selected;
       }
-    } // radioToggle(id){
+    },
+    // radioToggle(id){
     //     var elems = document.querySelectorAll(".lifecycle-item.active");
     //     [].forEach.call(elems, function(el) {
     //         el.classList.remove("active");
@@ -79150,10 +79166,96 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     //     this.recommended();
     // }
     //END ONLY STARTUP
+    scrollLeft: function scrollLeft(slider_id) {
+      var content = document.getElementById('multi-slider-cont-' + slider_id);
+      var content_scroll_width = content.scrollWidth;
+      var content_scoll_left = content.scrollLeft;
+      content_scoll_left -= 10;
 
+      if (content_scoll_left <= 0) {
+        content_scoll_left = 0;
+      }
+
+      content.scrollLeft = content_scoll_left;
+      this.arrowVisibility(slider_id);
+    },
+    scrollRight: function scrollRight(slider_id) {
+      var content = document.getElementById('multi-slider-cont-' + slider_id);
+      var content_scroll_width = content.scrollWidth;
+      var content_scoll_left = content.scrollLeft;
+      content_scoll_left += 10;
+
+      if (content_scoll_left >= content_scroll_width) {
+        content_scoll_left = content_scroll_width;
+      }
+
+      content.scrollLeft = content_scoll_left;
+      this.arrowVisibility(slider_id);
+    },
+    fullRight: function fullRight(slider_id) {
+      var _this10 = this;
+
+      if (!this.interval) {
+        this.interval = setInterval(function () {
+          _this10.scrollRight(slider_id);
+        }, 2);
+      }
+    },
+    start: function start(slider_id, direction) {
+      var _this11 = this;
+
+      if (!this.interval) {
+        this.interval = setInterval(function () {
+          if (direction == 'right') {
+            _this11.scrollRight(slider_id);
+          } else {
+            _this11.scrollLeft(slider_id);
+          }
+        }, 10);
+      }
+    },
+    stop: function stop() {
+      clearInterval(this.interval);
+      this.interval = false;
+    },
+    arrowVisibility: function arrowVisibility(slider_id) {
+      var content = document.getElementById('multi-slider-cont-' + slider_id);
+      var content_scroll_width = content.scrollWidth;
+      var content_scoll_left = content.scrollLeft;
+      var content_offset_width = content.offsetWidth; // console.log(content_scroll_width,content_scoll_left,content_offset_width);
+
+      if (content_offset_width + content_scoll_left >= content_scroll_width) {
+        // console.log('nascondi freccia a destra');
+        document.getElementById('button-right-' + slider_id).classList.remove("visible");
+        document.getElementById('button-right-' + slider_id).classList.add("invisible");
+        this.stop();
+      } else {
+        // console.log('mostra freccia a destra');
+        document.getElementById('button-right-' + slider_id).classList.remove("invisible");
+        document.getElementById('button-right-' + slider_id).classList.add("visible");
+      }
+
+      if (content_scoll_left <= 0) {
+        // console.log('nascondi freccia a sinistra');
+        document.getElementById('button-left-' + slider_id).classList.remove("visible");
+        document.getElementById('button-left-' + slider_id).classList.add("invisible");
+        this.stop();
+      } else {
+        // console.log('mostra freccia a sinistra');
+        document.getElementById('button-left-' + slider_id).classList.remove("invisible");
+        document.getElementById('button-left-' + slider_id).classList.add("visible");
+      }
+    },
+    delay: function delay(slider_id) {
+      var _this12 = this;
+
+      setTimeout(function () {
+        _this12.arrowVisibility(slider_id);
+      }, 1000);
+    }
   },
   created: function created() {
-    var _this10 = this;
+    var _this13 = this;
 
     if (this.services) {
       this.services = JSON.parse(this.services.replace(/&quot;/g, '"'));
@@ -79162,8 +79264,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     if (this.r_services) {
       this.r_services = JSON.parse(this.r_services.replace(/&quot;/g, '"'));
       this.r_services.forEach(function (r_service, i) {
-        if (_this10.serviceExist(r_service) && !r_service.hidden) {
-          _this10.r_services_show.push(r_service);
+        if (_this13.serviceExist(r_service) && !r_service.hidden) {
+          _this13.r_services_show.push(r_service);
         }
       });
     } //ONLY STARTUP
@@ -81074,9 +81176,10 @@ document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); ///////GUEST//////
-//ACCOUNT
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+var remove_footer = false; ///////GUEST//////
+//ACCOUNT
 
 if (document.getElementById('guest-home')) {
   __webpack_require__(/*! ./guest/home.js */ "./resources/js/guest/home.js");
@@ -81092,6 +81195,8 @@ if (document.getElementById('cookie-policy')) {
 
 if (document.getElementById('login')) {
   __webpack_require__(/*! ./guest/login.js */ "./resources/js/guest/login.js");
+
+  remove_footer = true;
 }
 
 if (document.getElementById('incubators')) {
@@ -81105,14 +81210,20 @@ if (document.getElementById('search')) {
 
 if (document.getElementById('found')) {
   __webpack_require__(/*! ./admin/found.js */ "./resources/js/admin/found.js");
+
+  remove_footer = true;
 }
 
 if (document.getElementById('needs')) {
   __webpack_require__(/*! ./admin/needs/index.js */ "./resources/js/admin/needs/index.js");
+
+  remove_footer = true;
 }
 
 if (document.getElementById('offers')) {
   __webpack_require__(/*! ./admin/offers/index.js */ "./resources/js/admin/offers/index.js");
+
+  remove_footer = true;
 } //USERS
 
 
@@ -81208,6 +81319,8 @@ if (document.getElementById('company-edit')) {
 
 if (document.getElementById('collaboration-index')) {
   __webpack_require__(/*! ./admin/collaborations/index.js */ "./resources/js/admin/collaborations/index.js");
+
+  remove_footer = true;
 }
 
 if (document.getElementById('collaboration-create')) {
@@ -81287,6 +81400,11 @@ if (document.getElementById('support-index')) {
 
 if (document.getElementById('support-show')) {
   __webpack_require__(/*! ./admin/supports/show.js */ "./resources/js/admin/supports/show.js");
+}
+
+if (remove_footer) {
+  document.getElementById('footer').classList.add("d-none");
+  document.getElementById('main').classList.add("no-footer-main");
 }
 
 /***/ }),

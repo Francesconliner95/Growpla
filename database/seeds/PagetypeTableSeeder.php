@@ -67,7 +67,7 @@ class PagetypeTableSeeder extends Seeder
               'name_it'=>'piattaforma di crowdfunding',
               'description'=>'',
               'description_it'=>'',
-              'image'=>'pages_images/default-azienda.svg',
+              'image'=>'pages_images/default-crowdfunding.svg',
               'hidden' => null,
           ],
           [
@@ -75,7 +75,7 @@ class PagetypeTableSeeder extends Seeder
               'name_it'=>'ente - associazione',
               'description'=>'Agencies set up for the purpose of attracting investments and promoting business development',
               'description_it'=>'Agenzie costituite allo scopo di attrarre investimenti e favorire lo sviluppo delle imprese',
-              'image'=>'pages_images/default-associazione.svg',
+              'image'=>'pages_images/default-ente.svg',
               'hidden' => null,
           ],
           [

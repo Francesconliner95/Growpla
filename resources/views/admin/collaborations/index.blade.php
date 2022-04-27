@@ -6,7 +6,7 @@
     collaborations = "{{json_encode($collaborations)}}";
     window.csrf_token = "{{ csrf_token() }}"; //token per axios api post/put/delete
 </script>
-<div id="collaboration-index">
+<div id="collaboration-index" style="background-image: url({{asset("storage/images/bg-shadow.svg") }}); background-position: left 0px top 0px; background-repeat: no-repeat; background-attachment: fixed;">
     <div class="container">
         <div class="item-cont">
             <div class="item-style">

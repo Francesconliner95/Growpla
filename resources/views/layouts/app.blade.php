@@ -106,7 +106,7 @@
                     <div class="nav-right d-inline-block col-sm-12 col-md-12 col-lg-6 col-xl-6 d-flex align-items-center">
                         <a href="{{ route('admin.search') }}" class="mobile-show position-relative">
 
-                            <img src="{{ asset("storage/images/logo.svg") }}" alt="" class="mini-logo">
+                            <img src="{{ asset("storage/images/logo.svg") }}" alt="" class="mini-logo" id="logo">
                             {{-- <span class="beta">BETA</span> --}}
                         </a>
                         {{-- <a class="" href="{{route('admin.topics.create')}}">
@@ -114,8 +114,8 @@
                         </a> --}}
                         <div class="dropdown show notification not-navbar">
                             <a href="#" role="button" id="notDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="icon tiny-img scale" @click="readNotifications()">
-                                <div class="img-cont micro-img">
-                                    <img src="{{ asset("storage/images/icon-not.svg") }}" alt="">
+                                <div class="img-cont micro-img no-br">
+                                    <img src="{{ asset("storage/images/icon-not.svg") }}" alt="" id="not-img">
                                     <span v-show="notifications.length" v-cloak>
                                         @{{notifications.length}}
                                     </span>
@@ -145,8 +145,8 @@
                         </div>
                         <div class="chat d-inline-block" v-cloak>
                             <a class="not-navbar icon tiny-img scale" href="{{route('admin.chats.index')}}">
-                                <div class="img-cont micro-img">
-                                    <img src="{{ asset("storage/images/icon-chat.svg") }}" alt="">
+                                <div class="img-cont micro-img no-br">
+                                    <img src="{{ asset("storage/images/icon-chat.svg") }}" alt="" id="chat-img">
                                     <span v-if="message_not_read_qty" v-cloak>
                                         @{{message_not_read_qty}}
                                     </span>
@@ -215,10 +215,9 @@
         </div>
         @endguest
         {{-- class="py-4" --}}
-        <main>
+        <main id="main">
             @yield('content')
         </main>
-
         <footer id="footer">
             <div class="container ">
                 <div class="row">

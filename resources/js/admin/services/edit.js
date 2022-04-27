@@ -44,9 +44,15 @@ var create = new Vue({
         // skill_name: '',
         // skills_found: '',
         //END ONLY STARTUP
+        is_mobile: false,
 
     },
     methods: {
+
+        submitForm(){
+          //document.getElementById('serviceForm').submit();
+        },
+
         changeMainCofounderService(){
             this.sub_cofounder_services_show = [];
             this.sub_cofounder_services.forEach((sub_service, i) => {
@@ -125,6 +131,7 @@ var create = new Vue({
 
               this.services.push(new_service);
               this.removeRservice(new_service);
+              this.fullRight(1);
             }
 
             this.services_found = '';
@@ -151,6 +158,7 @@ var create = new Vue({
               };
               this.services.push(new_service);
               this.removeRservice(new_service);
+              this.fullRight(1);
             }
 
             this.services_found = '';
@@ -160,6 +168,7 @@ var create = new Vue({
         removeService(i){
             var service = this.services[i];
             this.services.splice(i, 1);
+            this.arrowVisibility(1);
             this.addRservice(service);
         },
 
@@ -380,6 +389,91 @@ var create = new Vue({
         //     this.recommended();
         // }
         //END ONLY STARTUP
+        scrollLeft(slider_id){
+            var content =
+            document.getElementById('multi-slider-cont-' + slider_id);
+            const content_scroll_width = content.scrollWidth;
+            let content_scoll_left = content.scrollLeft;
+            content_scoll_left -= 10;
+            if (content_scoll_left <= 0) {
+                content_scoll_left = 0;
+            }
+            content.scrollLeft = content_scoll_left;
+            this.arrowVisibility(slider_id);
+        },
+
+        scrollRight(slider_id){
+            var content =
+            document.getElementById('multi-slider-cont-' + slider_id);
+            const content_scroll_width = content.scrollWidth;
+            let content_scoll_left = content.scrollLeft;
+            content_scoll_left += 10;
+            if (content_scoll_left >= content_scroll_width) {
+                content_scoll_left = content_scroll_width;
+            }
+            content.scrollLeft = content_scoll_left;
+            this.arrowVisibility(slider_id);
+        },
+
+        fullRight(slider_id){
+            if(!this.interval){
+                this.interval = setInterval(()=>{
+                    this.scrollRight(slider_id);
+                }, 2);
+            }
+        },
+
+        start(slider_id,direction){
+            if(!this.interval){
+                this.interval = setInterval(()=>{
+                    if(direction=='right'){
+                        this.scrollRight(slider_id);
+                    }else{
+                        this.scrollLeft(slider_id);
+                    }
+                }, 10);
+            }
+        },
+
+        stop(){
+            clearInterval(this.interval);
+            this.interval = false;
+        },
+
+        arrowVisibility(slider_id){
+            var content =
+            document.getElementById('multi-slider-cont-' + slider_id);
+            let content_scroll_width = content.scrollWidth;
+            let content_scoll_left = content.scrollLeft;
+            let content_offset_width = content.offsetWidth;
+            // console.log(content_scroll_width,content_scoll_left,content_offset_width);
+            if(content_offset_width + content_scoll_left >= content_scroll_width){
+                // console.log('nascondi freccia a destra');
+                document.getElementById('button-right-' + slider_id).classList.remove("visible");
+                document.getElementById('button-right-' + slider_id).classList.add("invisible");
+                this.stop();
+            }else{
+                // console.log('mostra freccia a destra');
+                document.getElementById('button-right-' + slider_id).classList.remove("invisible");
+                document.getElementById('button-right-' + slider_id).classList.add("visible");
+            }
+            if(content_scoll_left<=0){
+                // console.log('nascondi freccia a sinistra');
+                document.getElementById('button-left-' + slider_id).classList.remove("visible");
+                document.getElementById('button-left-' + slider_id).classList.add("invisible");
+                this.stop();
+            }else{
+                // console.log('mostra freccia a sinistra');
+                document.getElementById('button-left-' + slider_id).classList.remove("invisible");
+                document.getElementById('button-left-' + slider_id).classList.add("visible");
+            }
+        },
+
+        delay(slider_id){
+            setTimeout(()=>{
+                this.arrowVisibility(slider_id);
+            }, 1000);
+        },
     },
     created() {
         if(this.services){

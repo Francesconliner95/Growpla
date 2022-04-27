@@ -9,7 +9,7 @@
     my_pages_id = {{Auth::user()->pages->pluck('id')}};
     window.csrf_token = "{{ csrf_token() }}"; //token per axios api post/put/delete
 </script>
-<div id="found">
+<div id="found" style="background-image: url({{asset("storage/images/bg-shadow.svg") }}); background-position: left 0px top 0px; background-repeat: no-repeat; background-attachment: fixed;">
     <div :class="alert?'d-alert active-alert':'d-alert deactive-alert'" v-cloak>
         <div class="item-cont alert-item col-sm-12 col-md-12 col-lg-6 col-xl-6">
             <div class="item-style-visible">

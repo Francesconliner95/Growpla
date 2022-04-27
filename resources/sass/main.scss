@@ -135,6 +135,7 @@ ul>p{
 .scale{
     &:hover{
         transform: scale(1.2);
+        cursor: pointer;
     }
 }
 
@@ -444,6 +445,20 @@ ul>p{
     }
 }
 
+.custom-select-blue{
+    border: 2px solid $blue_3;
+    border-radius: 15px;
+    font-size: 14px;
+    background-color: $blue_1;
+}
+
+.custom-select-green{
+    border: 2px solid $green_3;
+    border-radius: 15px;
+    font-size: 14px;
+    background-color: $green_1;
+}
+
 select,
 select option {
   color: #000000;
@@ -458,13 +473,14 @@ select option[value=""]{
 [hidden] {
   display: none;
 }
+
 .img-cont{
     display: inline-block;
     border-radius: 50%;
     // background-color: $green_2;
     // border: 2px solid $green_2;
     position: relative;
-    img{
+    img,embed{
         position: absolute;
         top: 0px;
         left: 0px;
@@ -474,10 +490,19 @@ select option[value=""]{
         border-radius: 50%;
     }
 }
+.no-br{
+  border-radius: 0px !important;
+}
 .img-cont-blue{
     background-color: $blue_2 !important;
     border: 2px solid $blue_2 !important;
 }
+
+.icon-img{
+    width: 10px;
+    height: 10px;
+}
+
 .micro-img{
     width: 30px;
     height: 30px;
@@ -1436,11 +1461,11 @@ select option[value=""]{
         height: 100%;
         position: relative;
     }
-    img,embed{
+    img,embed,iframe{
         width: 100%;
         height: 150px;
         background-color: $hover_gray;
-        border-radius: 20px;
+        border-radius: 15px;
     }
     .drop-zone{
         //width: calc(50% - 5px);
@@ -1450,8 +1475,9 @@ select option[value=""]{
 .dd-cropper{
     min-height: 520px;
     height: auto;
-    img,embed{
+    img,embed,iframe{
         border-radius: 0px;
+        border: none;
     }
 }
 
@@ -1471,7 +1497,7 @@ select option[value=""]{
     color: #ccc;
     //border: 4px dashed $default_green;
     border: 2px solid $green_3;
-    border-radius: 20px;
+    border-radius: 15px;
 }
 
 .drop-zone--over{
@@ -1763,6 +1789,27 @@ select option[value=""]{
     object-fit: contain;
 }
 
+.raccomanded-service{
+    background: $blue_3;
+    background: linear-gradient(90deg, $blue_3 0%, $green_3 100%);
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    position: relative;
+    .img-1{
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        transform: translate(-50%,-50%);
+    }
+    .img-2{
+        position: absolute;
+        top: 50px;
+        right: -50px;
+        transform: translate(-0%,-50%);
+    }
+}
+
 @media (max-width: 576px){
     .container-nb{
           width: 100%;
@@ -1800,6 +1847,6 @@ select option[value=""]{
 @media (min-width: 1200px){
     .container-nb{
         width: calc(100% - 100px);
-        padding: 0 50px;
+        padding: 0 40px;
     }
 }

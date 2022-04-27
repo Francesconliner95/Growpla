@@ -7,14 +7,14 @@
     userTypes = "{{$userTypes}}";
 </script>
 
-<div id="user-edit">
+<div id="user-edit" style="background-image: url({{asset("storage/images/bg-form.svg") }}); background-position: left 100px bottom -155px; background-repeat: no-repeat; background-size: 500px 500px;">
     <div class="container">
         <div class="item-cont">
             <div class="item-style">
               <div class="row pb-5">
-                  <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 left-area order-sm-2 order-md-1">
+                  <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 left-area order-sm-2 order-md-1">
                     <div class="h-100 d-flex align-items-center">
-                        <div class="pr-5">
+                        <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 pt-3 pb-3">
                             <h4 class="text-capitalize font-weight-bold">{{$user->name}} {{$user->surname}}</h4>
                             <p class="txt-green font-weight-bold m-0">La compilazione dei seguenti campi è facoltativa</p>
                             <p class="txt-green mini-txt">Tuttavia un profilo più completo ha più possibiltà di essere visionato dagli altri utenti</p>
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                   </div>
-                  <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 bg-gray right-area order-sm-1 order-md-2">
+                  <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 bg-gray right-area order-sm-1 order-md-2">
                       <form method="POST" enctype="multipart/form-data" action="{{ route('admin.users.update', ['user'=> $user->id]) }}" id="userForm">
                         @csrf
                         @method('PUT')
@@ -98,14 +98,12 @@
                           </div>
                           <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
                             <div class="edit-image-drag-drop row m-0">
-                                <div v-if="user.cv" class="file-cont  col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <embed :src="'/storage/'+user.cv" class="w-100 h-100"/>
-                                    {{-- <button type="button"  class="button-style button-color-red "> --}}
-                                        {{-- <i class="fas fa-times edit-top-right txt-green" ></i> --}}
-                                    {{-- </button> --}}
+                                <div v-if="user.cv" class="file-cont  col-sm-12 col-md-6 col-lg-6 col-xl-6 pl-1 pr-1 mb-1" style="height:150px">
+                                    <iframe :src="'/storage/'+user.cv" class=""/></iframe>
                                 </div>
                                 <input type="hidden" name="remove_cv" :value="remove_cv">
-                                <div class="drop-zone  col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-2">
+                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 pl-1 pr-1 mb-1" style="height:150px">
+                                  <div class="drop-zone">
                                     <span class="drop-zone__prompt">{{__('Drop file here or click to upload')}}
                                         <span class="mini-txt d-block">{{__('Supported formats')}} .pdf max:6Mb</span>
                                     </span>
@@ -115,6 +113,7 @@
                                             {{__($message)}}
                                         </div>
                                     @enderror
+                                  </div>
                                 </div>
                             </div>
                             <a v-if="user.cv" class="txt-blue font-weight-bold" @click="user.cv='';remove_cv=true" href="#">Elimina</a>

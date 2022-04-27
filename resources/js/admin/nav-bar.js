@@ -93,6 +93,9 @@ if(im_in_index){
     document.getElementById("container-nb").style.backgroundColor = "transparent";
     document.getElementById("container-nb").style.boxShadow = "none";
     document.getElementById("logo-fullsize").src="/storage/images/logo-fullsize-white.svg";
+    document.getElementById("logo").src="/storage/images/logo-white.svg";
+    document.getElementById("not-img").style.filter = "brightness(0) invert(1)";
+    document.getElementById("chat-img").style.filter = "brightness(0) invert(1)";
     window.onscroll = function() {scrollFunction()};
 }
 
@@ -102,9 +105,16 @@ function scrollFunction() {
     document.getElementById("container-nb").style.boxShadow = "0 0.125rem 0.25rem rgb(0 0 0 / 8%)";
     document.getElementById("container-nb").style.transition = ".2s";
     document.getElementById("logo-fullsize").src="/storage/images/logo-fullsize.svg";
+    document.getElementById("logo").src="/storage/images/logo.svg";
+    document.getElementById("not-img").style.filter = "brightness(0) invert(0)";
+    document.getElementById("chat-img").style.filter = "brightness(0) invert(0)";
     } else {
     document.getElementById("container-nb").style.backgroundColor = "transparent";
     document.getElementById("container-nb").style.boxShadow = "none";
     document.getElementById("logo-fullsize").src="/storage/images/logo-fullsize-white.svg";
+    document.getElementById("logo").src="/storage/images/logo-white.svg";
+    document.getElementById("not-img").style.filter = "brightness(0) invert(1)";
+    document.getElementById("chat-img").style.filter = "brightness(0) invert(1)";
+
     }
 }

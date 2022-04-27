@@ -1,5 +1,7 @@
 require('./bootstrap');
 
+var remove_footer = false;
+
 ///////GUEST//////
 //ACCOUNT
 if (document.getElementById('guest-home')) {
@@ -16,6 +18,7 @@ if (document.getElementById('cookie-policy')) {
 
 if (document.getElementById('login')) {
     require('./guest/login.js');
+    remove_footer = true;
 }
 
 if (document.getElementById('incubators')) {
@@ -30,14 +33,17 @@ if (document.getElementById('search')) {
 
 if (document.getElementById('found')) {
     require('./admin/found.js');
+    remove_footer = true;
 }
 
 if (document.getElementById('needs')) {
     require('./admin/needs/index.js');
+    remove_footer = true;
 }
 
 if (document.getElementById('offers')) {
     require('./admin/offers/index.js');
+    remove_footer = true;
 }
 
 
@@ -134,6 +140,7 @@ if (document.getElementById('company-edit')) {
 //COLLABORATION
 if (document.getElementById('collaboration-index')) {
     require('./admin/collaborations/index.js');
+    remove_footer = true;
 }
 if (document.getElementById('collaboration-create')) {
     require('./admin/collaborations/create.js');
@@ -209,4 +216,9 @@ if (document.getElementById('support-index')) {
 }
 if (document.getElementById('support-show')) {
     require('./admin/supports/show.js');
+}
+
+if(remove_footer){
+    document.getElementById('footer').classList.add("d-none");
+    document.getElementById('main').classList.add("no-footer-main");
 }

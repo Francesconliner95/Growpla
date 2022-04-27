@@ -138,17 +138,17 @@ class UserController extends Controller
               $user->image = $default_images[0];
           }
           //DIPENDENTI
-          // if(in_array(4,$user_usertypes)){
-          //     $user->image = $default_images[6];
-          // }
-          // //FREELANCER
-          // if(in_array(3,$user_usertypes)){
-          //     $user->image = $default_images[6];
-          // }
-          // //STARTUPPER
-          // if(in_array(6,$user_usertypes)){
-          //     $user->image = $default_images[6];
-          // }
+          if(in_array(4,$user_usertypes)){
+              $user->image = $default_images[3];
+          }
+          //FREELANCER
+          if(in_array(3,$user_usertypes)){
+              $user->image = $default_images[2];
+          }
+          //STARTUPPER
+          if(in_array(6,$user_usertypes)){
+              $user->image = $default_images[5];
+          }
           //BUSINESS ANGEL
           if(in_array(2,$user_usertypes)){
               $user->image = $default_images[1];

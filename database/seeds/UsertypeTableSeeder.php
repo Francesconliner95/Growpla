@@ -37,14 +37,14 @@ class UsertypeTableSeeder extends Seeder
               'name_it'=>'libero professionista',
               'description'=>'',
               'description_it'=>'',
-              'image'=>'users_images/default-utente.svg',
+              'image'=>'users_images/default-freelancer.svg',
           ],
           [
               'name'=>'employee',
               'name_it'=>'dipendente',
               'description'=>'',
               'description_it'=>'',
-              'image'=>'users_images/default-utente.svg',
+              'image'=>'users_images/default-dipendente.svg',
           ],
           [
               'name'=>'student',
