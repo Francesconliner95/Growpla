@@ -17552,6 +17552,11 @@ ul > p {
   color: white !important;
 }
 
+.bg-green-3 {
+  background-color: #01B59C;
+  color: white !important;
+}
+
 .bg-gray {
   background-color: #F3F5F9;
 }
@@ -18388,7 +18393,7 @@ select option[value=""] {
   position: absolute;
   width: 50%;
   height: 30px;
-  color: #80DACD;
+  color: #224143;
   font-size: 15px;
   font-weight: bold;
   text-align: center;
@@ -18840,7 +18845,7 @@ select option[value=""] {
 }
 
 .dd-cropper {
-  min-height: 520px;
+  min-height: 200px;
   height: auto;
 }
 
@@ -20175,18 +20180,30 @@ footer .bottom-footer {
 }
 
 #user-edit .form-sub-group,
-#page-edit .form-sub-group {
+#page-edit .form-sub-group,
+#team-create .form-sub-group,
+#team-edit .form-sub-group,
+#company-create .form-sub-group,
+#company-edit .form-sub-group {
   display: inline-block;
 }
 
 #user-edit .right-area,
-#page-edit .right-area {
+#page-edit .right-area,
+#team-create .right-area,
+#team-edit .right-area,
+#company-create .right-area,
+#company-edit .right-area {
   border-radius: 20px;
   padding: 30px 20px 30px;
 }
 
 #user-edit .right-area .sub-section,
-#page-edit .right-area .sub-section {
+#page-edit .right-area .sub-section,
+#team-create .right-area .sub-section,
+#team-edit .right-area .sub-section,
+#company-create .right-area .sub-section,
+#company-edit .right-area .sub-section {
   padding: 5px 0px;
   border: none;
 }
@@ -20194,7 +20211,15 @@ footer .bottom-footer {
 #user-edit .right-area .sub-section h6,
 #user-edit .right-area .sub-section label,
 #page-edit .right-area .sub-section h6,
-#page-edit .right-area .sub-section label {
+#page-edit .right-area .sub-section label,
+#team-create .right-area .sub-section h6,
+#team-create .right-area .sub-section label,
+#team-edit .right-area .sub-section h6,
+#team-edit .right-area .sub-section label,
+#company-create .right-area .sub-section h6,
+#company-create .right-area .sub-section label,
+#company-edit .right-area .sub-section h6,
+#company-edit .right-area .sub-section label {
   font-size: 12px;
 }
 
@@ -20203,24 +20228,48 @@ footer .bottom-footer {
 #user-edit .right-area select,
 #page-edit .right-area input,
 #page-edit .right-area textarea,
-#page-edit .right-area select {
+#page-edit .right-area select,
+#team-create .right-area input,
+#team-create .right-area textarea,
+#team-create .right-area select,
+#team-edit .right-area input,
+#team-edit .right-area textarea,
+#team-edit .right-area select,
+#company-create .right-area input,
+#company-create .right-area textarea,
+#company-create .right-area select,
+#company-edit .right-area input,
+#company-edit .right-area textarea,
+#company-edit .right-area select {
   border: none;
   border-radius: 15px;
   font-size: 12px;
 }
 
 #user-edit .right-area input,
-#page-edit .right-area input {
+#page-edit .right-area input,
+#team-create .right-area input,
+#team-edit .right-area input,
+#company-create .right-area input,
+#company-edit .right-area input {
   height: 30px;
 }
 
 #user-edit textarea,
-#page-edit textarea {
+#page-edit textarea,
+#team-create textarea,
+#team-edit textarea,
+#company-create textarea,
+#company-edit textarea {
   resize: none;
 }
 
 #user-edit .role a,
-#page-edit .role a {
+#page-edit .role a,
+#team-create .role a,
+#team-edit .role a,
+#company-create .role a,
+#company-edit .role a {
   display: block;
   width: 100%;
   height: 100%;
@@ -20231,21 +20280,33 @@ footer .bottom-footer {
 }
 
 #user-edit .role a:hover,
-#page-edit .role a:hover {
+#page-edit .role a:hover,
+#team-create .role a:hover,
+#team-edit .role a:hover,
+#company-create .role a:hover,
+#company-edit .role a:hover {
   background-color: #f0f0f0;
   cursor: pointer;
   text-decoration: none;
 }
 
 #user-edit .services select,
-#page-edit .services select {
+#page-edit .services select,
+#team-create .services select,
+#team-edit .services select,
+#company-create .services select,
+#company-edit .services select {
   display: inline-block;
   margin: 10px 0;
   margin-right: 10px;
 }
 
 #user-edit .services i:hover,
-#page-edit .services i:hover {
+#page-edit .services i:hover,
+#team-create .services i:hover,
+#team-edit .services i:hover,
+#company-create .services i:hover,
+#company-edit .services i:hover {
   cursor: pointer;
 }
 

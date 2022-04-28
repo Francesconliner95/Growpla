@@ -12,7 +12,7 @@
         <div class="item-cont">
             <div class="item-style">
               <div class="row pb-5">
-                  <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 left-area order-sm-2 order-md-1">
+                  <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 left-area order-1 order-sm-1 order-md-0">
                     <div class="h-100 d-flex align-items-center">
                         <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 pt-3 pb-3">
                             <h4 class="text-capitalize font-weight-bold">{{$user->name}} {{$user->surname}}</h4>
@@ -27,7 +27,7 @@
                         </div>
                     </div>
                   </div>
-                  <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 bg-gray right-area order-sm-1 order-md-2">
+                  <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 bg-gray right-area order-0 order-sm-0 order-md-1">
                       <form method="POST" enctype="multipart/form-data" action="{{ route('admin.users.update', ['user'=> $user->id]) }}" id="userForm">
                         @csrf
                         @method('PUT')

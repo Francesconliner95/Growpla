@@ -29,6 +29,9 @@ var create = new Vue({
         alert_b2: '',
     },
     methods: {
+        submitForm(){
+            document.getElementById('formEditTeam').submit();
+        },
         alertMenu(case_type){
             this.delete_alert = true;
             this.case_type = case_type;

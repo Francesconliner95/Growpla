@@ -21,6 +21,9 @@ var create = new Vue({
         user_selected: '',
     },
     methods: {
+        submitForm(){
+            document.getElementById('formCreateTeam').submit();
+        },
         searchUser(){
           if(this.user_name){
               axios.get('/api/searchUser',{
@@ -132,7 +135,7 @@ var create = new Vue({
 
     },
     mounted() {
-        window.history.forward();
+        // window.history.forward();
 
         if(this.image){
             this.createCrop();

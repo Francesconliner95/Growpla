@@ -21,6 +21,9 @@ var create = new Vue({
         page_selected: '',
     },
     methods: {
+        submitForm(){
+            document.getElementById('formCreateCompany').submit();
+        },
         searchPage(){
           if(this.page_name){
               axios.get('/api/searchPage',{

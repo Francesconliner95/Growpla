@@ -429,7 +429,7 @@
                                 </a>
                             </h5>
                             <p v-if="member.role" class="role font-weight-bold">
-                                <i class="fas fa-user-tie"></i>
+                                {{-- <i class="fas fa-user-tie"></i> --}}
                                 @{{member.role}}
                             </p>
                             <div class="show-profile text-center mt-4">
@@ -437,13 +437,13 @@
                             </div>
                             <div v-if="is_my_page" class="edit-center-center-small d-flex justify-content-between w-100">
                                 <div class="d-inline-block" style="margin-left: -30px;">
-                                    <a v-if="member.position!=0 && member.position<team_members.length-1" type="button" name="button" class="button-color-gray" @click="changeTeamPosition(member.id,-1)">
+                                    <a v-if="member.position!=0" type="button" name="button" class="button-color-gray" @click="changeTeamPosition(member.id,-1)">
                                         {{-- <i  class="fas fa-sort-up"></i> --}}
                                         <i class="fas fa-caret-left"></i>
                                     </a>
                                 </div>
                                 <div class="d-inline-block" style="margin-right: -30px;">
-                                    <a v-if="member.position<team_members.length-1 && member.position!=0" type="button" name="button" class="button-color-gray" @click="changeTeamPosition(member.id,1)">
+                                    <a v-if="member.position<team_members.length-1" type="button" name="button" class="button-color-gray" @click="changeTeamPosition(member.id,1)">
                                         {{-- <i  class="fas fa-sort-down"></i> --}}
                                         <i class="fas fa-caret-right"></i>
                                     </a>
@@ -458,11 +458,8 @@
                     </div>
                     <div v-if="team_num>3" class="text-center d-block w-100 pb-2">
                         <a href="javascript:void(0)" @click="teamToggle()" class="mini-txt">
-                            {{-- <span v-if="team_members.length<=3" class="txt-blue font-weight-bold">{{__('Show all')}}
-                            </span> --}}
-                            <span v-if="team_members.length<=3" class="arrow-black-item r-90r"></span>
-                            {{-- <span v-else class="txt-blue font-weight-bold">{{__('Show less')}}</span> --}}
-                            <span v-else class="arrow-black-item r-90l"></span>
+                            <img v-if="team_members.length<=3" src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-90r" alt="">
+                            <img v-else src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-90l" alt="">
                         </a>
                     </div>
                     <div v-if="is_my_page" class="d-flex justify-content-center w-100">

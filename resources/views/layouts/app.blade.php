@@ -105,7 +105,6 @@
                     </div>
                     <div class="nav-right d-inline-block col-sm-12 col-md-12 col-lg-6 col-xl-6 d-flex align-items-center">
                         <a href="{{ route('admin.search') }}" class="mobile-show position-relative">
-
                             <img src="{{ asset("storage/images/logo.svg") }}" alt="" class="mini-logo" id="logo">
                             {{-- <span class="beta">BETA</span> --}}
                         </a>

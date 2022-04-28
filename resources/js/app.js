@@ -73,6 +73,11 @@ if (document.getElementById('user-settings')) {
 }
 
 //PAGES
+if (document.getElementById('page-create')) {
+    require('./admin/pages/create.js');
+    remove_footer = true;
+}
+
 if (document.getElementById('page-edit')) {
     require('./admin/pages/edit.js');
 }

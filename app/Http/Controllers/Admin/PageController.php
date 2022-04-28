@@ -48,6 +48,19 @@ class PageController extends Controller
       $request->validate([
           'name'=> 'required|string|min:3|max:70',
           'pagetype_id'=> 'required|integer',
+          'summary' => 'required|min:50|max:250',
+          'description' => 'nullable|max:1000',
+          'website' => 'nullable|max:255',
+          'linkedin'=> 'nullable|max:255',
+          'pitch' => 'nullable|mimes:pdf|max:6144',
+          'incorporated' => 'nullable|boolean',
+          'moneyrange_id' => 'nullable|integer|min:1|max:5',
+          'startup_n' => 'nullable|integer',
+          'latitude' => 'nullable',
+          'longitude' => 'nullable',
+          'street_name' => 'nullable',
+          'street_number' => 'nullable',
+          'municipality' => 'nullable',
       ]);
 
       $data = $request->all();
@@ -76,12 +89,13 @@ class PageController extends Controller
             $new_page->name = Str::lower($request->name);
             $new_page->slug = $slug;
             $new_page->image = Pagetype::find($request->pagetype_id)->image;
+            $new_page->fill($data);
             $new_page->save();
 
             $user = Auth::user();
             $new_page->users()->attach($user);
 
-            return redirect()->route('admin.pages.edit', ['page'=> $new_page->id]);
+            return redirect()->route('admin.pages.show', ['page'=> $new_page->id]);
         }else{
             return redirect()->route('admin.pages.edit', ['page'=> $page_exist->id]);
         }
@@ -110,7 +124,7 @@ class PageController extends Controller
         $request->validate([
           'name' => 'required|string|min:3|max:70',
           'summary' => 'required|min:50|max:250',
-          'description' => 'nullable|min:50|max:1000',
+          'description' => 'nullable|max:1000',
           'website' => 'nullable|max:255',
           'linkedin'=> 'nullable|max:255',
           'pitch' => 'nullable|mimes:pdf|max:6144',
