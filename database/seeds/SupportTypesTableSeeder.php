@@ -64,7 +64,7 @@ class SupportTypesTableSeeder extends Seeder
 
         foreach ($supportTypes as $supportType){
             $new_supportType = new SupportType();
-            $new_supportType->name = $supportType['name_it'];
+            $new_supportType->name_it = $supportType['name_it'];
             $new_supportType->description = $supportType['description_it'];
             $new_supportType->name = $supportType['name'];
             $new_supportType->description = $supportType['description'];

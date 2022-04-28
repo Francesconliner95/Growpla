@@ -215,6 +215,7 @@ if (document.getElementById('settings-index')) {
 //SUPPORTS
 if (document.getElementById('support-create')) {
     require('./admin/supports/create.js');
+    remove_footer = true;
 }
 if (document.getElementById('support-index')) {
     require('./admin/supports/index.js');

@@ -81571,6 +81571,8 @@ if (document.getElementById('settings-index')) {
 
 if (document.getElementById('support-create')) {
   __webpack_require__(/*! ./admin/supports/create.js */ "./resources/js/admin/supports/create.js");
+
+  remove_footer = true;
 }
 
 if (document.getElementById('support-index')) {

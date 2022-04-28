@@ -290,7 +290,7 @@ class CollaborationController extends Controller
 
             }
 
-            return redirect()->route('admin.users.show', ['user' => $user->id]);
+            return redirect()->route('admin.users.show', ['user' => $sender_id]);
 
         }elseif($sender_user_or_page=='page') {
             $page = Page::find($sender_id);
@@ -351,7 +351,7 @@ class CollaborationController extends Controller
                     }
                 }
             }
-            return redirect()->route('admin.pages.show', ['page' => $page->id]);
+            return redirect()->route('admin.pages.show', ['page' => $sender_id]);
         }
     }
 
