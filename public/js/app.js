@@ -74523,29 +74523,16 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     chat_selected_id: ''
   },
   methods: {
-    // getChats(){
-    //     axios.get('/admin/getChats',{
-    //
-    //     }).then((response) => {
-    //         this.chats = response.data.results.chats;
-    //     });
-    // },
     selectAccount: function selectAccount(i, user_or_page) {
-      //console.log(this.my_user_chats);
-      // var elements = document.getElementsByClassName('chat-item');
-      // for (var j = 0; j < elements.length; j++) {
-      //     elements[j].classList.add("d-none");
-      // }
-      //console.log(i,user_or_page,);
       if (user_or_page) {
         if (document.getElementById('chat-item-0').classList.contains('d-none')) {
           document.getElementById('chat-item-0').classList.remove("d-none");
           document.getElementById('arrow-0').classList.remove("r-90r");
-          document.getElementById('arrow-0').classList.add("r-90l"); //console.log(document.getElementById('arrow-0'));
+          document.getElementById('arrow-0').classList.add("r-90l");
         } else {
           document.getElementById('chat-item-0').classList.add("d-none");
           document.getElementById('arrow-0').classList.remove("r-90l");
-          document.getElementById('arrow-0').classList.add("r-90r"); //console.log(document.getElementById('arrow-0'));
+          document.getElementById('arrow-0').classList.add("r-90r");
         }
       } else {
         if (document.getElementById('chat-item-' + (i + 1)).classList.contains('d-none')) {
@@ -74573,8 +74560,6 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       return object;
     },
     pressChat: function pressChat(account, chat, html_id) {
-      // console.log(account);
-      // console.log(chat);
       this.my_user_id = '';
       this.your_user_id = '';
       this.my_page_id = '';
@@ -74597,23 +74582,19 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       if (chat.page_id) {
         this.your_page_id = chat.page_id;
         this.displayed_name = chat.name;
-      } // console.log(this.my_user_id,this.my_page_id,this.your_user_id,this.your_page_id);
-      // console.log(this.my_user_id);
-      // console.log(this.my_page_id);
-      // console.log(this.your_user_id);
-      // console.log(this.your_page_id);
+      }
 
+      var elements = document.getElementsByClassName('chat-item');
+
+      for (var j = 0; j < elements.length; j++) {
+        elements[j].classList.remove("active");
+      }
+
+      document.getElementById(html_id).classList.add('active');
 
       if (window.innerWidth >= 768) {
         // console.log('stai');
         this.chat_selected_id = chat.id;
-        var elements = document.getElementsByClassName('chat-item');
-
-        for (var j = 0; j < elements.length; j++) {
-          elements[j].classList.remove("active");
-        }
-
-        document.getElementById(html_id).classList.add('active');
       } else {
         // console.log('esci');
         if (this.my_page_id) {
@@ -74623,7 +74604,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         }
       }
 
-      this.getMessages(); //console.log(this.chat_selected_id);
+      this.getMessages();
     },
     sendMessage: function sendMessage() {
       var _this = this;
@@ -74864,75 +74845,6 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
 /***/ }),
 
-/***/ "./resources/js/admin/collaborations/create.js":
-/*!*****************************************************!*\
-  !*** ./resources/js/admin/collaborations/create.js ***!
-  \*****************************************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! croppr */ "./node_modules/croppr/dist/croppr.js");
-/* harmony import */ var croppr__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(croppr__WEBPACK_IMPORTED_MODULE_2__);
-
-
-
-axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
-  'X-Requested-With': 'XMLHttpRequest',
-  'X-CSRF-TOKEN': window.csrf_token
-};
-var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  el: '#collaboration-create',
-  data: {
-    account_name: '',
-    accounts_found: '',
-    account_selected: ''
-  },
-  methods: {
-    searchAccount: function searchAccount() {
-      var _this = this;
-
-      if (this.account_name) {
-        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchAccount', {
-          params: {
-            account_name: this.account_name
-          }
-        }).then(function (response) {
-          _this.accounts_found = response.data.results.accounts;
-          console.log(_this.accounts_found);
-
-          if (!_this.account_name) {
-            _this.accounts_found = '';
-          }
-        });
-      } else {
-        this.accounts_found = '';
-      }
-    },
-    addAccount: function addAccount(account_found) {
-      this.account_selected = account_found;
-      this.account_name = '';
-      this.accounts_found = '';
-      setTimeout(function () {
-        document.collaborationForm.submit();
-      }, 100);
-    }
-  },
-  mounted: function mounted() {} // watch: {
-  //     account_selected: function(new_val, old_val) {
-  //         console.log(new_val, old_val);
-  //     }
-  // }
-
-});
-
-/***/ }),
-
 /***/ "./resources/js/admin/collaborations/index.js":
 /*!****************************************************!*\
   !*** ./resources/js/admin/collaborations/index.js ***!
@@ -74972,7 +74884,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     collaborations_show: [],
     page: 1,
     show_prev: false,
-    show_next: false
+    show_next: false,
+    in_load: false
   },
   methods: {
     showMore: function showMore() {
@@ -74989,6 +74902,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       var _this = this;
 
       if (new_collaborations) {
+        this.in_load = true;
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/loadCollaborationsInfo', {
           params: {
             collaborations: new_collaborations
@@ -74997,6 +74911,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           var _this$collaborations_;
 
           (_this$collaborations_ = _this.collaborations_show).push.apply(_this$collaborations_, _toConsumableArray(response.data.results.collaborations));
+
+          _this.in_load = false;
         });
       }
     },
@@ -75060,7 +74976,9 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     alert_par: '',
     message: '',
     alert_b1: '',
-    alert_b2: ''
+    alert_b2: '',
+    account_name: '',
+    accounts_found: ''
   },
   methods: {
     alertMenu: function alertMenu(case_type, parameter) {
@@ -75217,17 +75135,50 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       }).then(function (response) {
         _this5.getCollaborations();
       });
+    },
+    searchAccount: function searchAccount() {
+      var _this6 = this;
+
+      if (this.account_name) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/searchAccount', {
+          params: {
+            account_name: this.account_name
+          }
+        }).then(function (response) {
+          _this6.accounts_found = response.data.results.accounts;
+          console.log(_this6.accounts_found);
+
+          if (!_this6.account_name) {
+            _this6.accounts_found = '';
+          }
+        });
+      } else {
+        this.accounts_found = '';
+      }
+    },
+    addAccount: function addAccount(account_found) {
+      var _this7 = this;
+
+      this.accounts_found = '';
+      this.account_name = '';
+      axios__WEBPACK_IMPORTED_MODULE_1___default()({
+        method: 'post',
+        url: '/admin/collaborations',
+        data: {
+          sender_id: this.id,
+          sender_user_or_page: this.user_or_page,
+          recipient_id: account_found.id,
+          recipient_user_or_page: account_found.user_or_page
+        }
+      }).then(function (response) {
+        _this7.getCollaborations();
+      });
     }
   },
   mounted: function mounted() {
     this.getCollaborations();
     this.getProposalCollaborations();
-  } // watch: {
-  //     account_selected: function(new_val, old_val) {
-  //         console.log(new_val, old_val);
-  //     }
-  // }
-
+  }
 });
 
 /***/ }),
@@ -75764,17 +75715,20 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#follows-index',
   data: {
-    followed: followed
+    followed: followed,
+    in_load: false
   },
   methods: {
     getFollowed: function getFollowed() {
       var _this = this;
 
+      this.in_load = true;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getFollowed', {}).then(function (response) {
         _this.followed = response.data.results.followed;
+        _this.in_load = false;
       });
     },
-    toggleFollow: function toggleFollow(following_id, follow_type) {
+    toggleFollow: function toggleFollow(following_id, follow_type, i) {
       var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default()({
@@ -75786,7 +75740,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           follow_id: following_id
         }
       }).then(function (response) {
-        _this2.getFollowed();
+        _this2.followed.splice(i, 1);
       });
     }
   },
@@ -75875,7 +75829,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     sector_selected: '',
     lifecycle_id_selected: '',
     sectors: []
-  }, _defineProperty(_data, "sector_selected", ''), _defineProperty(_data, "sectorToggle", false), _defineProperty(_data, "list_user", ''), _defineProperty(_data, "list_pages", ''), _defineProperty(_data, "alert", false), _defineProperty(_data, "account_index_selected", ''), _data),
+  }, _defineProperty(_data, "sector_selected", ''), _defineProperty(_data, "sectorToggle", false), _defineProperty(_data, "list_user", ''), _defineProperty(_data, "list_pages", ''), _defineProperty(_data, "alert", false), _defineProperty(_data, "account_index_selected", ''), _defineProperty(_data, "in_load", false), _data),
   methods: {
     switchAccounts: function switchAccounts(i) {
       var _this = this;
@@ -76197,6 +76151,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       var _this6 = this;
 
       if (new_accounts) {
+        this.in_load = true;
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/loadInfo', {
           params: {
             accounts: new_accounts
@@ -76204,9 +76159,10 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         }).then(function (response) {
           var _this6$accounts_show;
 
-          (_this6$accounts_show = _this6.accounts_show).push.apply(_this6$accounts_show, _toConsumableArray(response.data.results.accounts));
+          (_this6$accounts_show = _this6.accounts_show).push.apply(_this6$accounts_show, _toConsumableArray(response.data.results.accounts)); // console.log(this.accounts_show);
 
-          console.log(_this6.accounts_show);
+
+          _this6.in_load = false;
         });
       }
     },
@@ -76621,7 +76577,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     needs_show: [],
     page: 1,
     show_prev: false,
-    show_next: false
+    show_next: false,
+    in_load: false
   },
   methods: {
     orderById: function orderById(needs) {
@@ -76652,9 +76609,9 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     loadNeedInfo: function loadNeedInfo(new_needs) {
       var _this = this;
 
-      console.log(new_needs);
-
+      // console.log(new_needs);
       if (new_needs) {
+        this.in_load = true;
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/loadNeedInfo', {
           params: {
             needs: new_needs
@@ -76662,9 +76619,10 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         }).then(function (response) {
           var _this$needs_show;
 
-          (_this$needs_show = _this.needs_show).push.apply(_this$needs_show, _toConsumableArray(response.data.results.needs));
+          (_this$needs_show = _this.needs_show).push.apply(_this$needs_show, _toConsumableArray(response.data.results.needs)); // console.log(this.needs_show);
 
-          console.log(_this.needs_show);
+
+          _this.in_load = false;
         });
       }
     },
@@ -76884,7 +76842,8 @@ if (performance.navigation.type == 2) {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#notification-index',
   data: {
-    notifications: []
+    notifications: [],
+    in_load: false
   },
   methods: {
     getDate: function getDate(created_at) {
@@ -76910,18 +76869,18 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     getNotifications: function getNotifications() {
       var _this = this;
 
+      this.in_load = true;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getNotifications', {}).then(function (response) {
-        _this.notifications = response.data.results.notifications;
-        console.log(_this.notifications);
+        _this.notifications = response.data.results.notifications; // console.log(this.notifications);
+
+        _this.in_load = false;
       });
     }
   },
   mounted: function mounted() {
-    this.getNotifications();
-
-    if (performance.navigation.type == 2) {
-      this.getNotifications();
-    }
+    this.getNotifications(); // if(performance.navigation.type==2){
+    //    this.getNotifications();
+    // }
   }
 });
 
@@ -76966,7 +76925,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     offers_show: [],
     page: 1,
     show_prev: false,
-    show_next: false
+    show_next: false,
+    in_load: false
   },
   methods: {
     orderById: function orderById(offers) {
@@ -76997,9 +76957,9 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     loadNeedInfo: function loadNeedInfo(new_offers) {
       var _this = this;
 
-      console.log(new_offers);
-
+      // console.log(new_offers);
       if (new_offers) {
+        this.in_load = true;
         axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/loadNeedInfo', {
           params: {
             needs: new_offers
@@ -77007,9 +76967,10 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         }).then(function (response) {
           var _this$offers_show;
 
-          (_this$offers_show = _this.offers_show).push.apply(_this$offers_show, _toConsumableArray(response.data.results.needs));
+          (_this$offers_show = _this.offers_show).push.apply(_this$offers_show, _toConsumableArray(response.data.results.needs)); // console.log(this.offers_show);
 
-          console.log(_this.offers_show);
+
+          _this.in_load = false;
         });
       }
     },
@@ -81502,10 +81463,6 @@ if (document.getElementById('collaboration-index')) {
   remove_footer = true;
 }
 
-if (document.getElementById('collaboration-create')) {
-  __webpack_require__(/*! ./admin/collaborations/create.js */ "./resources/js/admin/collaborations/create.js");
-}
-
 if (document.getElementById('my-collaboration')) {
   __webpack_require__(/*! ./admin/collaborations/my.js */ "./resources/js/admin/collaborations/my.js");
 } //SKILL
@@ -81542,15 +81499,21 @@ if (document.getElementById('page-usertypes-edit')) {
 
 if (document.getElementById('chat-index')) {
   __webpack_require__(/*! ./admin/chats/index.js */ "./resources/js/admin/chats/index.js");
+
+  remove_footer = true;
 }
 
 if (document.getElementById('chat-show')) {
   __webpack_require__(/*! ./admin/chats/show.js */ "./resources/js/admin/chats/show.js");
+
+  remove_footer = true;
 } //FOLLOW
 
 
 if (document.getElementById('follows-index')) {
   __webpack_require__(/*! ./admin/follows/index.js */ "./resources/js/admin/follows/index.js");
+
+  remove_footer = true;
 } //NOTIFICATIONS
 
 

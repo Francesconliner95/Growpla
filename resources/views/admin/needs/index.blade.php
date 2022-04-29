@@ -6,7 +6,7 @@
     needs = "{{json_encode($needs)}}";
     window.csrf_token = "{{ csrf_token() }}"; //token per axios api post/put/delete
 </script>
-<div id="needs" style="background-image: url({{asset("storage/images/bg-shadow.svg") }}); background-position: left 0px top 0px; background-repeat: no-repeat; background-attachment: fixed;">
+<div id="needs" style="background-image: url({{asset("storage/images/bg-shadow.svg") }}); background-position: left -150px top 0px; background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
     <div class="container">
         <div class="item-cont">
             <div class="item-style">
@@ -37,6 +37,14 @@
                                 </div>
                             </div> --}}
                             <a :href="need.user_or_page?'/admin/users/'+ need.id : '/admin/pages/'+ need.id" class="button-style button-color">Visita profilo</a>
+                        </div>
+                    </div>
+                    <div v-if="needs_show.length==0 && !in_load" class="" v-cloak>
+                        <h5>Nessun risultato</h5>
+                    </div>
+                    <div v-if="in_load" class="d-flex justify-content-center" v-clock>
+                        <div class="spinner-border text-secondary" role="status">
+                            <span class="sr-only">Loading...</span>
                         </div>
                     </div>
                 </div>

@@ -26,6 +26,14 @@
                         </div>
                         <span class="mini-txt">@{{getDate(notification.created_at)}}</span>
                     </a>
+                    <div v-if="notifications.length==0 && !in_load" class="" v-cloak>
+                        <h5>Nessuna notifica</h5>
+                    </div>
+                    <div v-if="in_load" class="d-flex justify-content-center" v-clock>
+                        <div class="spinner-border text-secondary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

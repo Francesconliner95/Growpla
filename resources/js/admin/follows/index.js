@@ -9,17 +9,20 @@ var create = new Vue({
     el: '#follows-index',
     data: {
         followed,
+        in_load: false,
     },
     methods: {
 
         getFollowed(){
+            this.in_load = true;
             axios.get('/admin/getFollowed',{
             }).then((response) => {
                 this.followed = response.data.results.followed;
+                this.in_load = false;
             });
         },
 
-        toggleFollow(following_id,follow_type){
+        toggleFollow(following_id,follow_type,i){
           axios({
               method: 'post',
               url: '/admin/toggleFollowing',
@@ -28,7 +31,7 @@ var create = new Vue({
                   follow_id: following_id,
               }
           }).then(response => {
-              this.getFollowed();
+              this.followed.splice(i, 1);
           });
         },
 

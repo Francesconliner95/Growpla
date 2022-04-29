@@ -147,9 +147,6 @@ if (document.getElementById('collaboration-index')) {
     require('./admin/collaborations/index.js');
     remove_footer = true;
 }
-if (document.getElementById('collaboration-create')) {
-    require('./admin/collaborations/create.js');
-}
 if (document.getElementById('my-collaboration')) {
     require('./admin/collaborations/my.js');
 }
@@ -186,15 +183,18 @@ if (document.getElementById('page-usertypes-edit')) {
 //CHAT
 if (document.getElementById('chat-index')) {
     require('./admin/chats/index.js');
+    remove_footer = true;
 }
 
 if (document.getElementById('chat-show')) {
     require('./admin/chats/show.js');
+    remove_footer = true;
 }
 
 //FOLLOW
 if (document.getElementById('follows-index')) {
     require('./admin/follows/index.js');
+    remove_footer = true;
 }
 
 //NOTIFICATIONS

@@ -1,8 +1,8 @@
 #chat-show,.chat-show{
-    height: calc(100vh - 250px);
+    height: 100%;
     .messages-cont{
         background-color: $green_1;
-        height: calc(100% - 100px);
+        height: calc(100% - 50px);
         border-radius: 20px;
         margin-top: 10px;
         padding: 15px;
@@ -38,7 +38,8 @@
         }
     }
     .messages-footer{
-        padding: 15px 0;
+        height: 50px;
+        padding-top: 15px;
         display: flex;
         justify-content: space-between;
         align-items: center;

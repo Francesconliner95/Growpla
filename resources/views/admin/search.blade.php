@@ -7,7 +7,7 @@
 </script>
 <div id="search">
     @if(Auth::user()->tutorial)
-    <div class="bg-white">
+    <div class="bg-green-3" style="margin-top: -80px; padding-top: 80px;">
         <div class="container pb-5">
             <h3 class="section-title">
                 <b></b>
@@ -18,7 +18,7 @@
             <p class="text-center m-0">
                 {{ __('To complete your registration click here') }}
             </p>
-            <div class="create-profile">
+            <div class="create-profile pb-5">
                 <a class="item col-sm-12 col-md-6 col-lg-6 col-xl-6" href="{{ route('admin.users.tutorial') }}">{{__('Start')}}</a>
             </div>
         </div>
@@ -392,10 +392,10 @@
                     <span>Slide 6</span>
                 </div>
             </div>
-            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left" v-cloak>
+            <button type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left" v-cloak>
                 <i class="fas fa-caret-left"></i>
             </button>
-            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right" v-cloak>
+            <button type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right" v-cloak>
                 <i class="fas fa-caret-right"></i>
             </button>
         </div>
@@ -426,10 +426,10 @@
                     </div>
                 </div>
             </div>
-            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left" id="button-left-1" v-cloak>
+            <button type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left" id="button-left-1" v-cloak>
                 <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
             </button>
-            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')" class="slider-right" id="button-right-1" v-cloak>
+            <button type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')" class="slider-right" id="button-right-1" v-cloak>
                 <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
             </button>
             <span>@{{this.delay(1)}}</span>
@@ -466,10 +466,10 @@
                     </div>
                 </div>
             </div>
-            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(2,'left')" class="slider-left" id="button-left-2" v-cloak>
+            <button type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(2,'left')" class="slider-left" id="button-left-2" v-cloak>
                 <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
             </button>
-            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right" id="button-right-2" v-cloak>
+            <button type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right" id="button-right-2" v-cloak>
                 <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
             </button>
             <span>@{{this.delay(2)}}</span>
@@ -524,10 +524,10 @@
                     </div>
                 </div>
             </div>
-            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(3,'left')" @mouseleave="stop(3,'left')" @mouseup="stop(3,'left')" class="slider-left" id="button-left-3" v-cloak>
+            <button type="button" name="button" @mousedown="start(3,'left')" @mouseleave="stop(3,'left')" @mouseup="stop(3,'left')" class="slider-left" id="button-left-3" v-cloak>
                 <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
             </button>
-            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(3,'right')" @mouseleave="stop(3,'right')" @mouseup="stop(3,'right')"class="slider-right" id="button-right-3" v-cloak>
+            <button type="button" name="button" @mousedown="start(3,'right')" @mouseleave="stop(3,'right')" @mouseup="stop(3,'right')"class="slider-right" id="button-right-3" v-cloak>
                 <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
             </button>
             <span>@{{this.delay(3)}}</span>

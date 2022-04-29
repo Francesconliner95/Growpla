@@ -46,7 +46,7 @@
                     </a>
                     <div class="row">
                         {{-- Immagine --}}
-                        <div class="profile-image col-sm-12 col-md-12 col-lg-2 col-xl-2 text-center">
+                        <div class="profile-image col-sm-12 col-md-12 col-lg-2 col-xl-2 d-flex justify-content-center align-items-center">
                             <div class="img-cont big-img position-relative">
                                 @if($page->image)
                                   <img src="{{ asset("storage/" . $page->image) }}" alt="" class="">
@@ -57,27 +57,14 @@
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
-                            <div class="row">
-                                <h2 class="text-capitalize col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    {{$page->name}}
-                                    <a v-if="is_my_page" class="button-style-circle button-color-gray" href="{{route('admin.pages.settings', $page->id)}}">
-                                        <i class="fas fa-cog"></i>
-                                    </a>
-                                </h2>
-                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                    <button v-if="!is_my_page" :class="following?'button-style button-color-orange':'button-style button-color'" type="button" name="button" @click="toggleFollow({{$page->id}})" v-cloak>
-                                        <span v-if="following">{{__('Following')}}</span>
-                                        <span v-else>{{__('Follow')}}</span>
-                                    </button>
-                                    @if(!$is_my_page)
-                                    <button class="button-style button-color-blue" type="button" name="button" @click="switchAccounts()">
-                                        <span>Messaggio</span>
-                                    </button>
-                                    @endif
-                                </div>
-                            </div>
+                            <h2 class="text-capitalize d-flex align-items-center">
+                                {{$page->name}}
+                                <a v-if="is_my_page" class="button-style-circle button-color-gray ml-1" href="{{route('admin.pages.settings', $page->id)}}">
+                                    <i class="fas fa-cog"></i>
+                                </a>
+                            </h2>
                             <div class="">
-                                <div class="d-inline-block">
+                                <div class="d-inline-block pr-2">
                                     <button aria-label="{{$page->pagetype->name_it}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
                                     <div class="micro-img d-inline-block">
                                         <img src="{{ asset("storage/" . $page->pagetype->image) }}" alt="">
@@ -86,35 +73,33 @@
                                 {{-- {{$page->pagetype->image}} --}}
                                 @switch($page->pagetype_id)
                                     @case(1){{-- Startup --}}
-                                    @if($page->incorporated)
-                                        <p class="d-inline-block pr-2">Costituita
-                                            <i class="fas fa-check-circle txt-blue"></i>
-                                        </p>
-                                    @endif
-                                        <div class="d-inline-block pr-2">
-
-                                            @if($page->type_bool_1)
-                                                <span>
-                                                    MVP
-                                                    <i class="fas fa-check-circle  txt-blue"></i>
-                                                </span>
-                                            @endif
-                                        </div>
+                                        @if($page->incorporated)
+                                            <div class="d-inline-block pr-2 ">
+                                                <span class="font-weight-bold mini-txt">Costituita</span>
+                                                <i class="fas fa-check-circle txt-blue"></i>
+                                            </div>
+                                        @endif
+                                        @if($page->type_bool_1)
+                                            <div class="d-inline-block pr-2">
+                                                  <span class="font-weight-bold mini-txt">MVP</span>
+                                                  <i class="fas fa-check-circle  txt-blue"></i>
+                                            </div>
+                                        @endif
                                     @break
                                     @case(2)
 
                                     @break
                                     @case(3){{-- Incubatore --}}
-                                        <div class="d-inline-block  pr-2">
-                                            Tipologia:
+                                        <div class="d-inline-block pr-2  mini-txt">
+                                            <span class="font-weight-bold mini-txt">Tipologia:</span>
                                             @if(!$page->type_bool_1)
                                                 <span>Privato</span>
                                             @elseif($page->type_bool_1)
                                                 <span>Pubblico</span>
                                             @endif
                                         </div>
-                                        <div class="d-inline-block  pr-2">
-                                            Servizi erogati:
+                                        <div class="d-inline-block pr-2  mini-txt">
+                                            <span class="font-weight-bold mini-txt">Servizi erogati:</span>
                                             @if(!$page->type_int_1)
                                                 <span>Fisici</span>
                                             @elseif($page->type_int_1==1)
@@ -146,7 +131,7 @@
                                     @endforeach
                                 @endif
                                 @if($is_my_page && count($page->sectors)<=0)
-                                    <h6 v-if="is_my_page" class="d-inline-block">{{__('Sector')}}
+                                    <h6 v-if="is_my_page" class="d-inline-block m-0 pr-1">{{__('Sector')}}
                                     </h6>
                                 @endif
                                 @if($is_my_page)
@@ -156,54 +141,21 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2 d-flex justify-content-center align-items-center">
+                          <div class="">
+                              <button v-if="!is_my_page" :class="following?'button-style m-1':'button-style button-color m-1'" type="button" name="button" @click="toggleFollow({{$page->id}})" v-cloak>
+                                  <span v-if="following">{{__('Following')}}</span>
+                                  <span v-else>{{__('Follow')}}</span>
+                              </button>
+                              @if(!$is_my_page)
+                              <button class="button-style button-color-blue m-1" type="button" name="button" @click="switchAccounts()">
+                                  <span>Messaggio</span>
+                              </button>
+                              @endif
+                          </div>
+                        </div>
                     </div>
                 </div>
-                {{-- <div class="profile row">
-                    <div class="profile-image col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                        <div class="img-cont big-img position-relative">
-                        @if($page->image)
-                          <img src="{{ asset("storage/" . $page->image) }}" alt="" class="">
-                        @endif
-                          <a v-if="is_my_page" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.images.editPageImage',$page->id)}}">
-                            <i class="fas fa-pencil-alt"></i>
-                          </a>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                        <h2 class="text-capitalize ">
-                            {{$page->name}}
-                            <a v-if="is_my_page" class="button-style-circle button-color-gray" href="{{route('admin.pages.edit', $page->id)}}">
-                                <i class="fas fa-pencil-alt"></i>
-                            </a>
-                            <a v-if="is_my_page" class="button-style-circle button-color-gray" href="{{route('admin.pages.settings', $page->id)}}">
-                                <i class="fas fa-cog"></i>
-                            </a>
-                        </h2>
-                        <div class="text-capitalize">
-                            {{$page->pagetype->name_it}}
-                        </div>
-                        <div class="address">
-                            <span>{{$page->region_id?$page->region->name:''}}</span>
-                            <span>{{$page->region_id && $page->municipality?',':''}}</span>
-                            <span>{{$page->municipality}}</span>
-                            <span>{{$page->municipality && $page->street_name?',':''}}</span>
-                            <span>{{$page->municipality && $page->street_name?$page->street_name:''}}</span>
-                            <span>{{$page->municipality && $page->street_name && $page->street_number?$page->street_number:''}}</span>
-                        </div>
-                        <div class="">
-                            <button v-if="!is_my_page" :class="following?'button-style button-color-orange':'button-style button-color'" type="button" name="button" @click="toggleFollow({{$page->id}})" v-cloak>
-                                <span v-if="following">Seguito</span>
-                                <span v-else>Segui</span>
-                            </button>
-                            @if(!$is_my_page)
-                                <button class="button-style button-color-blue" type="button" name="button" @click="switchAccounts()">
-                                    <span>Messaggio</span>
-                                </button>
-                            @endif
-                        </div>
-                    </div>
-                </div> --}}
-                {{-- @endif --}}
                 @if($page->pagetype_id==1)
                     @if($page->lifecycle_id || $is_my_page)
                         <div class="sub-section" id="lifecycle">
@@ -260,7 +212,7 @@
                     <div class="link-item">
                         <a class="txt-blue" href="{{$page->linkedin}}" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-linkedin"></i>
-                            <span>LinkedIn</span>
+                            <span class="mini-txt font-weight-bold">LinkedIn</span>
                         </a>
                     </div>
                     @endif
@@ -269,15 +221,15 @@
                     <div class="link-item">
                         <a class="txt-green" href="{{$page->website}}" target="_blank" rel="noopener noreferrer">
                             <i class="fas fa-globe-americas"></i>
-                            <span>{{__('Website')}}</span>
+                            <span class="mini-txt font-weight-bold">{{__('Website')}}</span>
                         </a>
                     </div>
                     @endif
                     @if ($page->pitch)
                     <div class="link-item">
                         <a class="txt-blue" href="#" @click="open(page.pitch)">
-                            <i class="fas fa-address-card"></i>
-                            <span>Pitch</span>
+                            <i class="fas fa-bullhorn"></i>
+                            <span class="mini-txt font-weight-bold">Pitch</span>
                         </a>
                     </div>
                     @endif
@@ -312,11 +264,11 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-1" v-cloak>
+                                <button type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-1" v-cloak>
                                     {{-- <i class="fas fa-caret-left"></i> --}}
                                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                                 </button>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right bg-white" id="button-right-1" v-cloak>
+                                <button type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right bg-white" id="button-right-1" v-cloak>
                                     {{-- <i class="fas fa-caret-right"></i> --}}
                                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                                 </button>
@@ -392,11 +344,11 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-2" v-cloak>
+                                <button type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-2" v-cloak>
                                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                                     {{-- <i class="fas fa-caret-left"></i> --}}
                                 </button>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right bg-white" id="button-right-2" v-cloak>
+                                <button type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right bg-white" id="button-right-2" v-cloak>
                                     {{-- <i class="fas fa-caret-right"></i> --}}
                                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                                 </button>
@@ -409,7 +361,7 @@
                 @endif
             </div>
         </div>
-        <div class="item-cont" v-if="is_my_page || team_members.length>0" v-cloak>
+        <div class="item-cont sub-section" v-if="is_my_page || team_members.length>0" v-cloak>
             <div class="item-style">
                 <h3>Team
                     <div v-if="is_my_page" class="info">
@@ -507,23 +459,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="multi-slider-item col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <div class="d-flex justify-content-center align-items-center h-100">
-                                <div class="card-style-mini">
-                                    <a class="" href="{{ route('admin.collaborations.create', ['id'=> $page->id,'user_or_page'=> 'page']) }}">
-                                        <div class="text-cont text-dark">
-                                            <i class="fas fa-plus"></i>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    <button v-if="!is_mobile" type="button" name="button" @mousedown="start(20,'left')" @mouseleave="stop(20,'left')" @mouseup="stop(20,'left')" class="slider-left" id="button-left-20" v-cloak>
+                    <button type="button" name="button" @mousedown="start(20,'left')" @mouseleave="stop(20,'left')" @mouseup="stop(20,'left')" class="slider-left" id="button-left-20" v-cloak>
                         <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                         {{-- <i class="fas fa-caret-left"></i> --}}
                     </button>
-                    <button v-if="!is_mobile" type="button" name="button" @mousedown="start(20,'right')" @mouseleave="stop(20,'right')" @mouseup="stop(20,'right')"class="slider-right" id="button-right-20" v-cloak>
+                    <button type="button" name="button" @mousedown="start(20,'right')" @mouseleave="stop(20,'right')" @mouseup="stop(20,'right')"class="slider-right" id="button-right-20" v-cloak>
                         {{-- <i class="fas fa-caret-right"></i> --}}
                         <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                     </button>

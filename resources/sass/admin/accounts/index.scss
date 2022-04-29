@@ -1,7 +1,7 @@
 #search{
     .background{
-        margin-top: -75px;
-        padding-top: 75px;
+        margin-top: -80px;
+        padding-top: 80px;
         background-color: white;
         // background-image: url('../../../../public/storage/images/jumbotron.svg');
         background-size:  cover;
@@ -338,20 +338,20 @@
         justify-content: center;
         .item{
             height: 100%;
-            border: 2px solid $default_green;
+            border: 2px solid white;
             border-radius: 30px;
             padding: 0 30px;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: $default_green;
+            color: white;
             text-decoration: none;
             font-size: 30px;
             font-weight: bold;
             &:hover{
                 transition: 0.4s;
-                background-color: $default_green;
-                color: white;
+                background-color: white;
+                color: $green_3;
             }
         }
     }

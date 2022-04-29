@@ -55,9 +55,24 @@ class UserController extends Controller
                 return redirect()->route('admin.users.sectors',$my_user->id);
             break;
             case 4:
-                $my_user->tutorial = null;
+                $my_user->tutorial = 5;
                 $my_user->update();
                 return redirect()->route('admin.users.edit',$my_user->id);
+            break;
+            case 5:
+                $my_user->tutorial = 6;
+                $my_user->update();
+                return redirect()->route('admin.give-user-services.edit',$my_user->id);
+            break;
+            case 6:
+                $my_user->tutorial = 7;
+                $my_user->update();
+                return redirect()->route('admin.have-user-services.edit',$my_user->id);
+            break;
+            case 7:
+                $my_user->tutorial = null;
+                $my_user->update();
+                return redirect()->route('admin.users.show',$my_user->id);
             break;
             default:
                 return redirect()->route('admin.users.show',$my_user->id);

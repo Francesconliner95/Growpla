@@ -48,6 +48,7 @@ var create = new Vue({
         list_pages: '',
         alert: false,
         account_index_selected: '',
+        in_load: false,
     },
     methods: {
         switchAccounts(i){
@@ -377,13 +378,15 @@ var create = new Vue({
 
         loadInfo(new_accounts){
             if(new_accounts){
+                this.in_load=true;
                 axios.get('/admin/loadInfo',{
                     params: {
                         accounts: new_accounts,
                     }
                 }).then((response) => {
                     this.accounts_show.push(...response.data.results.accounts);
-                    console.log(this.accounts_show);
+                    // console.log(this.accounts_show);
+                    this.in_load=false;
                 });
             }
         },

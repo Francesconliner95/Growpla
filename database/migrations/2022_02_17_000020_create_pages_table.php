@@ -34,6 +34,7 @@ class CreatePagesTable extends Migration
             $table->string('street_name')->nullable();
             $table->string('street_number')->nullable();
             $table->string('municipality')->nullable();
+            $table->tinyInteger('tutorial')->default(1)->nullable();
             //$table->string('email')->nullable();
 
             //STURTUP

@@ -20,7 +20,7 @@ class FollowController extends Controller
         ->leftjoin('users','users.id','=','follows.user_following_id')
         ->leftjoin('pages','pages.id','=','follows.page_following_id')
         ->select('users.id as user_id', 'users.name as user_name',
-        'users.surname as user_surname','pages.id as page_id','pages.name as page_name')
+        'users.surname as user_surname','pages.id as page_id','pages.name as page_name', 'users.image as user_image', 'pages.image  as page_image')
         ->get();
 
         // dd($following);

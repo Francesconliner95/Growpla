@@ -45,7 +45,7 @@
                     </a>
                     <div class="row">
                         {{-- Immagine --}}
-                        <div class="profile-image col-sm-12 col-md-12 col-lg-2 col-xl-2 text-center">
+                        <div class="profile-image col-sm-12 col-md-12 col-lg-2 col-xl-2  d-flex justify-content-center align-items-center">
                             <div class="img-cont big-img position-relative">
                                 @if($user->image)
                                   <img src="{{ asset("storage/" . $user->image) }}" alt="" class="">
@@ -59,35 +59,18 @@
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
-                            <div class="row">
-                                <h2 class="text-capitalize col-sm-12 col-md-6 col-lg-6 col-xl-6 m-0 d-flex justify-content-start align-items-center">
-                                    {{$user->name}} {{$user->surname}}
-                                    <a v-if="is_my_user" class="button-style-circle button-color-gray" href="{{route('admin.users.create')}}" v-cloak>
-                                        <i class="fas fa-cog"></i>
-                                    </a>
-                                </h2>
-                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 text-center">
-                                    <a v-if="is_my_user" class="button-style button-color-green m-1" href="{{route('admin.follows.index')}}">
-                                        {{count(Auth::user()->user_following)
-                                        +count(Auth::user()->page_following)}} Seguiti
-                                    </a>
-                                    <button v-if="!is_my_user" :class="following?'button-style button-color-orangem r-1':'button-style button-color m-1'" type="button" name="button" @click="toggleFollow({{$user->id}})" v-cloak>
-                                        <span v-if="following">{{__('Following')}}</span>
-                                        <span v-else>{{__('Follow')}}</span>
-                                    </button>
-                                    @if(!$is_my_user)
-                                    <button class="button-style button-color-blue m-1" type="button" name="button" @click="switchAccounts()">
-                                        <span>Messaggio</span>
-                                    </button>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="address">
+                            <h2 class="text-capitalize m-0 d-flex justify-content-start align-items-center pb-1">
+                                {{$user->name}} {{$user->surname}}
+                                <a v-if="is_my_user" class="button-style-circle button-color-gray pl-1" href="{{route('admin.users.create')}}" v-cloak>
+                                    <i class="fas fa-cog"></i>
+                                </a>
+                            </h2>
+                            <div class="address pb-1">
                                 <span>{{$user->region_id?$user->region->name:''}}</span>
                                 <span>{{$user->region_id && $user->municipality?',':''}}</span>
                                 <span>{{$user->municipality}}</span>
                             </div>
-                            <div class="d-flex justify-content-start align-items-center">
+                            <div class="d-flex justify-content-start align-items-center pb-1">
                                 @foreach ($user->usertypes as $key => $usertype)
                                     @if(in_array ($usertype->id, array(1, 2)))
                                         <div class="d-inline-block">
@@ -115,7 +98,7 @@
                                       @else
                                           @foreach ($user->companies as $company)
                                                 @if($company->page_id)
-                                                    <div class="d-inline-block">
+                                                    <div class="d-inline-block mt-1">
                                                             <button aria-label="dipendente di {{$company->page->name}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
                                                             <a href="{{route('admin.pages.show', $company->page->id)}}" class="d-inline-block" >
                                                                 <div class="img-cont micro-img m-1">
@@ -160,6 +143,23 @@
                             </div>
                             @endif
                         </div>
+                        <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2 d-flex justify-content-center align-items-center">
+                          <div class="">
+                              <a v-if="is_my_user" class="button-style button-color-green m-1" href="{{route('admin.follows.index')}}">
+                                  {{count(Auth::user()->user_following)
+                                  +count(Auth::user()->page_following)}} Seguiti
+                              </a>
+                              <button v-if="!is_my_user" :class="following?'button-style button-color-orangem r-1':'button-style button-color m-1'" type="button" name="button" @click="toggleFollow({{$user->id}})" v-cloak>
+                                  <span v-if="following">{{__('Following')}}</span>
+                                  <span v-else>{{__('Follow')}}</span>
+                              </button>
+                              @if(!$is_my_user)
+                              <button class="button-style button-color-blue m-1" type="button" name="button" @click="switchAccounts()">
+                                  <span>Messaggio</span>
+                              </button>
+                              @endif
+                          </div>
+                        </div>
                     </div>
                 </div>
                 {{-- @if($is_my_user || count($user->sectors)>0)
@@ -185,7 +185,7 @@
                     <div class="link-item">
                         <a class="txt-blue" href="{{$user->linkedin}}" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-linkedin"></i>
-                            <span>LinkedIn</span>
+                            <span class="mini-txt font-weight-bold">LinkedIn</span>
                         </a>
                     </div>
                     @endif
@@ -193,7 +193,7 @@
                     <div class="link-item">
                         <a class="txt-green" href="{{$user->website}}" target="_blank" rel="noopener noreferrer">
                             <i class="fas fa-globe-americas"></i>
-                            <span>{{__('Website')}}</span>
+                            <span class="mini-txt font-weight-bold">{{__('Website')}}</span>
                         </a>
                     </div>
                     @endif
@@ -201,7 +201,7 @@
                     <div class="link-item">
                         <a class="txt-blue" href="#" @click="open('{{$user->cv}}')">
                             <i class="fas fa-address-card"></i>
-                            <span>CV</span>
+                            <span class="mini-txt font-weight-bold">CV</span>
                         </a>
                     </div>
                     @endif
@@ -263,11 +263,11 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-1" v-cloak>
+                                <button type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-1" v-cloak>
                                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                                     {{-- <i class="fas fa-caret-left"></i> --}}
                                 </button>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right bg-white" id="button-right-1" v-cloak>
+                                <button type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right bg-white" id="button-right-1" v-cloak>
                                     {{-- <i class="fas fa-caret-right"></i> --}}
                                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                                 </button>
@@ -300,11 +300,11 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-2" v-cloak>
+                                <button type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-2" v-cloak>
                                     {{-- <i class="fas fa-caret-left"></i> --}}
                                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                                 </button>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right bg-white" id="button-right-2" v-cloak>
+                                <button type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right bg-white" id="button-right-2" v-cloak>
                                     {{-- <i class="fas fa-caret-right"></i> --}}
                                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                                 </button>
@@ -324,9 +324,11 @@
                             <i class="fas fa-pencil-alt"></i>
                         </a>
                       </h6>
-                      @foreach ($user->give_user_skills as $skill)
-                        <span class="border-style bg-green-1">{{$skill->name}}</span>
-                      @endforeach
+                      <div class="">
+                          @foreach ($user->give_user_skills as $skill)
+                            <span class="border-style bg-green txt-green font-weight-bold">{{$skill->name}}</span>
+                          @endforeach
+                      </div>
                     </div>
                     @endif
                 {{-- @endif --}}
@@ -381,11 +383,11 @@
                                             </div>
                                         </div>
                                 </div>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start({{$key+3}},'left')" @mouseleave="stop({{$key+3}},'left')" @mouseup="stop({{$key+3}},'left')" class="slider-left" id="button-left-{{$key+3}}" v-cloak>
+                                <button type="button" name="button" @mousedown="start({{$key+3}},'left')" @mouseleave="stop({{$key+3}},'left')" @mouseup="stop({{$key+3}},'left')" class="slider-left" id="button-left-{{$key+3}}" v-cloak>
                                     {{-- <i class="fas fa-caret-left"></i> --}}
                                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                                 </button>
-                                <button v-if="!is_mobile" type="button" name="button" @mousedown="start({{$key+3}},'right')" @mouseleave="stop({{$key+3}},'right')" @mouseup="stop({{$key+3}},'right')"class="slider-right" id="button-right-{{$key+3}}" v-cloak>
+                                <button type="button" name="button" @mousedown="start({{$key+3}},'right')" @mouseleave="stop({{$key+3}},'right')" @mouseup="stop({{$key+3}},'right')"class="slider-right" id="button-right-{{$key+3}}" v-cloak>
                                     {{-- <i class="fas fa-caret-right"></i> --}}
                                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                                 </button>
@@ -432,24 +434,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="multi-slider-item col-sm-12 col-md-6 col-lg-3 col-xl-3">
-                            <div class="d-flex justify-content-center align-items-center h-100">
-                                <div class="card-style-mini">
-                                    <a class="" href="{{ route('admin.collaborations.create', ['id'=> $user->id,'user_or_page'=> 'user']) }}">
-                                        <div class="text-cont text-dark">
-                                            <i class="fas fa-plus"></i>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    <button v-if="!is_mobile" type="button" name="button" @mousedown="start(20,'left')" @mouseleave="stop(20,'left')" @mouseup="stop(20,'left')" class="slider-left" id="button-left-20" v-cloak>
+                    <button type="button" name="button" @mousedown="start(20,'left')" @mouseleave="stop(20,'left')" @mouseup="stop(20,'left')" class="slider-left" id="button-left-20" v-cloak>
                         {{-- <span class="arrow-black r-180"></span> --}}
                         {{-- <i class="fas fa-caret-left"></i> --}}
                         <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                     </button>
-                    <button v-if="!is_mobile" type="button" name="button" @mousedown="start(20,'right')" @mouseleave="stop(20,'right')" @mouseup="stop(20,'right')"class="slider-right" id="button-right-20" v-cloak>
+                    <button type="button" name="button" @mousedown="start(20,'right')" @mouseleave="stop(20,'right')" @mouseup="stop(20,'right')"class="slider-right" id="button-right-20" v-cloak>
                         {{-- <i class="fas fa-caret-right"></i> --}}
                         <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                     </button>

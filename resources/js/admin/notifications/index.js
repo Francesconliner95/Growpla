@@ -14,6 +14,7 @@ var create = new Vue({
     el: '#notification-index',
     data: {
         notifications: [],
+        in_load: false,
     },
 
     methods: {
@@ -36,19 +37,20 @@ var create = new Vue({
         },
 
         getNotifications(){
+            this.in_load = true;
             axios.get('/admin/getNotifications',{
-
             }).then((response) => {
                 this.notifications = response.data.results.notifications;
-                console.log(this.notifications);
+                // console.log(this.notifications);
+                this.in_load = false;
             });
         },
     },
     mounted() {
         this.getNotifications();
-        if(performance.navigation.type==2){
-           this.getNotifications();
-        }
+        // if(performance.navigation.type==2){
+        //    this.getNotifications();
+        // }
     }
 
 });

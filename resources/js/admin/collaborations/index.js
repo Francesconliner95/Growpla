@@ -14,6 +14,7 @@ var create = new Vue({
         page: 1,
         show_prev: false,
         show_next: false,
+        in_load: false,
     },
     methods: {
 
@@ -28,12 +29,14 @@ var create = new Vue({
         },
         loadNeedInfo(new_collaborations){
             if(new_collaborations){
+                this.in_load = true;
                 axios.get('/admin/loadCollaborationsInfo',{
                     params: {
                         collaborations: new_collaborations,
                     }
                 }).then((response) => {
                     this.collaborations_show.push(...response.data.results.collaborations);
+                    this.in_load = false;
                 });
             }
         },

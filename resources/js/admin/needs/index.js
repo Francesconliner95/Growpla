@@ -14,6 +14,7 @@ var create = new Vue({
         page: 1,
         show_prev: false,
         show_next: false,
+        in_load: false,
     },
     methods: {
 
@@ -43,15 +44,17 @@ var create = new Vue({
         },
 
         loadNeedInfo(new_needs){
-            console.log(new_needs);
+            // console.log(new_needs);
             if(new_needs){
+                this.in_load = true;
                 axios.get('/admin/loadNeedInfo',{
                     params: {
                         needs: new_needs,
                     }
                 }).then((response) => {
                     this.needs_show.push(...response.data.results.needs);
-                    console.log(this.needs_show);
+                    // console.log(this.needs_show);
+                    this.in_load = false;
                 });
             }
         },

@@ -11,9 +11,9 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js?8') }}" defer></script>
+    <script src="{{ asset('js/app.js?1') }}" defer></script>
     <!-- Styles -->
-    <link href="{{ asset('css/app.css?8') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css?1') }}" rel="stylesheet">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JQ65YBYMPD"></script>

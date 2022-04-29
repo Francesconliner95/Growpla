@@ -14,9 +14,9 @@
                     <h4 class="mb-5 text-center" style="font-size: 23px;line-height: 1.6em;">
                        Crea la tua Startup, sviluppa la tua idea di business, forma il tuo team, incontra persone e stringi relazioni. Entra a far parte della prima piattaforma italiana che genera ecosistemi tra incubatori, acceleratori, investitori, aspiranti co-founder, enti, professionisti ed imprese al fine di favorire occupazione, contaminazione ed innovazione
                     </h4>
-                    <div class="text-center">
+                    {{-- <div class="text-center">
                         <a href="{{route('login')}}" class="button-style button-color-green">Iscriviti</a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

@@ -26,32 +26,17 @@ var create = new Vue({
     },
 
     methods: {
-        // getChats(){
-        //     axios.get('/admin/getChats',{
-        //
-        //     }).then((response) => {
-        //         this.chats = response.data.results.chats;
-        //     });
-        // },
 
         selectAccount(i,user_or_page){
-            //console.log(this.my_user_chats);
-            // var elements = document.getElementsByClassName('chat-item');
-            // for (var j = 0; j < elements.length; j++) {
-            //     elements[j].classList.add("d-none");
-            // }
-            //console.log(i,user_or_page,);
             if(user_or_page){
                 if(document.getElementById('chat-item-0').classList.contains('d-none')){
                     document.getElementById('chat-item-0').classList.remove("d-none");
                     document.getElementById('arrow-0').classList.remove("r-90r");
                     document.getElementById('arrow-0').classList.add("r-90l");
-                    //console.log(document.getElementById('arrow-0'));
                 }else{
                     document.getElementById('chat-item-0').classList.add("d-none");
                     document.getElementById('arrow-0').classList.remove("r-90l");
                     document.getElementById('arrow-0').classList.add("r-90r");
-                    //console.log(document.getElementById('arrow-0'));
                 }
             }else{
                 if(document.getElementById('chat-item-'+(i+1)).classList.contains('d-none')){
@@ -80,8 +65,6 @@ var create = new Vue({
         },
 
         pressChat(account,chat,html_id){
-            // console.log(account);
-            // console.log(chat);
             this.my_user_id = '';
             this.your_user_id = '';
             this.my_page_id = '';
@@ -102,20 +85,15 @@ var create = new Vue({
                 this.displayed_name = chat.name;
             }
 
-            // console.log(this.my_user_id,this.my_page_id,this.your_user_id,this.your_page_id);
-            // console.log(this.my_user_id);
-            // console.log(this.my_page_id);
-            // console.log(this.your_user_id);
-            // console.log(this.your_page_id);
+            var elements = document.getElementsByClassName('chat-item');
+            for (var j = 0; j < elements.length; j++) {
+                elements[j].classList.remove("active");
+            }
+            document.getElementById(html_id).classList.add('active');
 
             if(window.innerWidth>=768){
                 // console.log('stai');
                 this.chat_selected_id = chat.id;
-                var elements = document.getElementsByClassName('chat-item');
-                for (var j = 0; j < elements.length; j++) {
-                    elements[j].classList.remove("active");
-                }
-                document.getElementById(html_id).classList.add('active');
             }else{
                 // console.log('esci');
                 if (this.my_page_id) {
@@ -125,11 +103,9 @@ var create = new Vue({
                 }
             }
             this.getMessages();
-            //console.log(this.chat_selected_id);
         },
 
         sendMessage(){
-
             if(this.message_text){
                 var message_text = this.message_text;
                 this.message_text = '';

@@ -42,7 +42,8 @@
                       <span class="mini-txt txt-red font-weight-bold">@{{display_message}}</span>
                   </div>
                 </div>
-                {{-- <h4 class="pb-1">Cosa possiedi?</h4> --}}
+                <h4 class="pb-1">Crea pagina</h4>
+                <p class="font-weight-bold txt-blue mini-txt">Growpla ti permette di associare al tuo profilo personale delle pagine connesse alle attività che possiedi o per le quali operi.</p>
                 <div class="row d-flex justify-content-center mt-3">
                   @foreach ($pageTypes as $pageType)
                     <div class="col-sm-6 col-md-4 col-lg-4 col-xl-4 mb-4 justify-content-center">
@@ -70,8 +71,15 @@
                     </div>
                   @endforeach
                 </div>
-                <h6 class="pb-2">Seleziona una o più delle seguenti alternative</h6>
-                <button type="button" name="button" class="button-style button-color-blue" @click="submitForm()">Salva</button>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <button type="button" name="button" class="button-style button-color-blue" @click="submitForm()">Salva</button>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 text-right">
+                        <h6 class="m-0">Seleziona una o più delle precedenti alternative</h6>
+                        <span class="mini-txt">Potrai modificare queste opzioni in qualsiasi momento</span>
+                    </div>
+                </div>
               </form>
             </div>
         </div>

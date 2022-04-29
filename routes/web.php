@@ -146,7 +146,6 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
 
     //COLLABORATIONS
     Route::resource('/collaborations', 'CollaborationController');
-    Route::get('collaborations/create/{id}/{user_or_page}', 'CollaborationController@create')->name('collaborations.create');
     Route::get('collaborations/my/{id}/{user_or_page}', 'CollaborationController@my')->name('collaborations.my');
     Route::get('getCollaborations', 'CollaborationController@getCollaborations')->name('getCollaborations');
     Route::get('getProposalCollaborations', 'CollaborationController@getProposalCollaborations')->name('getProposalCollaborations');

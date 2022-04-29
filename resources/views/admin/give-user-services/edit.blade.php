@@ -11,7 +11,7 @@
     lifecycle_id = "";
     cofounder_services = "";
 </script>
-<div id="service-edit" style="background-image: url({{asset("storage/images/bg-servizi.svg") }}); background-position: right -70px bottom -7px; background-repeat: no-repeat; background-size: 700px 500px;">
+<div id="service-edit" style="background-image: url({{asset("storage/images/bg-servizi.svg") }}); background-position: right -400px bottom -230px; background-repeat: no-repeat; background-size: 700px 500px;">
     <div class="container">
         <div class="item-cont">
             <div class="item-style">
@@ -71,10 +71,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-1" v-cloak>
+                            <button type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-1" v-cloak>
                                 <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                             </button>
-                            <button v-if="!is_mobile" type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right bg-white" id="button-right-1" v-cloak>
+                            <button type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right bg-white" id="button-right-1" v-cloak>
                                 <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                             </button>
                             <span>@{{this.delay(1)}}</span>
@@ -106,7 +106,7 @@
                     </button>
                 </form>
                 <div class="text-right">
-                    <a href="{{ route('admin.supports.switch') }}" class="font-weight-bold mini-txt txt-green">
+                    <a href="{{ route('admin.supports.switch') }}" class="font-weight-bold mini-txt text-dark">
                         Suggerisci altri servizi
                     </a>
                 </div>

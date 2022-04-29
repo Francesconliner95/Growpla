@@ -90,18 +90,6 @@ class CollaborationController extends Controller
         return view('admin.collaborations.my', $data);
     }
 
-    public function create($id,$user_or_page)
-    {
-
-        $data = [
-            'my_id' => $id,
-            'user_or_page' => $user_or_page,
-        ];
-        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
-        return view('admin.collaborations.create', $data);
-
-    }
-
     public function getCollaborations(Request $request) {
 
         $request->validate([

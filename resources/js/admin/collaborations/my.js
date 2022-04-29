@@ -19,6 +19,8 @@ var create = new Vue({
         message: '',
         alert_b1: '',
         alert_b2: '',
+        account_name: '',
+        accounts_found: '',
     },
     methods: {
 
@@ -163,15 +165,45 @@ var create = new Vue({
             });
         },
 
+        searchAccount(){
+          if(this.account_name){
+              axios.get('/api/searchAccount',{
+                  params: {
+                      account_name: this.account_name,
+                  }
+              }).then((response) => {
+                  this.accounts_found = response.data.results.accounts;
+                  console.log(this.accounts_found);
+                  if(!this.account_name){
+                      this.accounts_found = '';
+                  }
+              });
+          }else{
+              this.accounts_found = '';
+          }
+        },
+
+        addAccount(account_found){
+            this.accounts_found = '';
+            this.account_name = '';
+            axios({
+                method: 'post',
+                url: '/admin/collaborations',
+                data: {
+                    sender_id: this.id,
+                    sender_user_or_page: this.user_or_page,
+                    recipient_id: account_found.id,
+                    recipient_user_or_page: account_found.user_or_page,
+                }
+            }).then(response => {
+                this.getCollaborations();
+            });
+        },
+
     },
     mounted() {
         this.getCollaborations();
         this.getProposalCollaborations();
     },
-    // watch: {
-    //     account_selected: function(new_val, old_val) {
-    //         console.log(new_val, old_val);
-    //     }
-    // }
 
 });
