@@ -1,413 +1,537 @@
 @extends('layouts.app')
 
 @section('content')
-    <script type="text/javascript">
-        accounts = "{{$accounts}}";
-        cooperations = "{{$cooperations}}";
-        chats = "{{$chats}}";
-    </script>
-    <div class="background not-log-main-hg" id="guest-home">
+<script type="text/javascript">
+</script>
+<div id="guest-home" class="pt-0">
+    <section class="pt-5 mb-5" style="background: url({{asset("storage/images/bg-razzo.svg") }}) right -250px top 200px,url({{asset("storage/images/bg-cerchio.svg") }}) right -270px top -150px; background-repeat: no-repeat; background-size: 800px 800px,1000px 1000px;">
+        <div class="header mb-5 pb-5">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="mobile-hide">
+                        <img src="{{ asset("storage/images/logo-fullsize-white.svg") }}" alt="" class="logo" style="width:300px; height:80px; object-fit:contain;">
+                    </div>
+                    <div class="mobile-show">
+                        <img src="{{ asset("storage/images/logo-white.svg") }}" alt="" class="logo" style="width:80px; height:80px; object-fit:contain;">
+                    </div>
+                    <div class="text-right">
+                        <span class="font-weight-bold text-white d-inline-block m-2">Sei già iscritto?</span>
+                        <a href="{{route('login')}}" class="button-style-radius button-color-transparent">LOGIN</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container">
-            <div class="logo-cont mt-5 mb-3 position-relative">
-                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                    <img src="{{ asset("storage/images/logo-fullsize.svg") }}" alt="" class="logo ">
-                    <span class="beta">BETA</span>
-                </div>
+            <div class="row">
+                <h1 class="col-sm-12 col-md-8 col-lg-5 col-xl-5 pb-3">Fai decollare il tuo business.</h1>
+                <h4 class="col-sm-12 col-md-12 col-lg-10 col-xl-10 pt-3 pb-3">Crea la tua Startup, sviluppa la tua <strong> idea di business</strong>, forma il tuo team, incontra persone e stringi relazioni.</h4>
+                <h4 class="col-sm-12 col-md-12 col-lg-10 col-xl-10 pt-3 pb-3">Entra a far parte della <strong>prima piattaforma</strong> italiana che genera ecosistemi unendo gli attori principali della <strong>community degli innovatori</strong>.</h4>
             </div>
-            <h3 class="pt-3 text-center">
-                {{__('The platform that allows direct interaction between incubators, investors, companies, organizations, professionals and Startups following your growth step by step.')}}
-            </h3>
-            <div class="preview row">
-                <div class="intro col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                    @if($language_id==2)
-                        <img v-if="" src="{{ asset('storage/images/home_it.svg') }}" alt="" class="home-img">
-                    @else
-                        <img v-if="" src="{{ asset('storage/images/home_en.svg') }}" alt="" class="home-img">
-                    @endif
-                    <h3 class="pt-4">{{__("Register and create one of these")}}
-                        <a href="#accounts" class="txt-green">
-                            {{__("accounts")}}</a>!
-                    </h3>
-                </div>
-                <div v-if="!code_verified" class="code-ver col-sm-12 col-md-6 col-lg-6 col-xl-6" v-cloak>
-                    {{-- <h4 for="email" class="text-center">{{ __('Access to the platform is currently reserved exclusively for those who have received the invitation code. If you have one, enter it in the appropriate section') }}</h4>
-                    <div class="form-group">
-                        <div class="">
-                            <input type="text" class="form-control"  placeholder="{{ __('Enter code here') }}" v-model="code" autofocus required>
-                        </div>
-                        <button type="button" class="button-style button-color" @click="sendCode()">
-                            {{ __('Send') }}
-                        </button>
-                    </div>
-                    <span v-if="error" class="input-error">
-                        <strong>{{ __('Invalid code') }}</strong>
-                    </span>--}}
-                    <h4 for="email" class="text-center">{{ __('Enter Growpla! Enter your email to access the registration form and be among the first 100 users to test the platform') }}</h4>
-
-                    <div class="form-group">
-                        <input type="email" class="form-control mr-2"  placeholder="{{ __('Enter email here') }}" v-model="email" autofocus autocomplete="email" required>
-                        <button type="submit" class="button-style button-color" @click="sendEmail()">
-                            {{ __('Send') }}
-                        </button>
-                    </div>
-                    <span v-if="error" class="input-error" v-cloak>
-                        <strong>{{ __('Invalid email') }}</strong>
-                    </span>
-                    <div class="">
-                        <span>Sei gia registrato? Vai al
-                            <a class="txt-green" href="{{ route('login') }}">Login</a>
-                        </span>
-                    </div>
-                </div>
-                <div v-else class="code-ver col-sm-12 col-md-6 col-lg-6 col-xl-6 text-center" v-cloak>
-                    <i class="fas fa-check-circle txt-green mb-4"></i>
-                    <h4 for="email" class="text-center">{{ __('Mail sent successfully, you will receive a reply shortly') }}</h4>
-                </div>
-                {{-- <div v-else-if="!im_log" class="login-register-cont col-sm-12 col-md-6 col-lg-6 col-xl-6" v-cloak>
-                    <div class="switch">
-                        <button @click="log_reg_switch(true)" type="button" name="button" :class="show_login?'selected':''">
-                            {{ __('Login') }}
-                        </button>
-                        <button @click="log_reg_switch(false)" type="button" name="button" :class="!show_login?'selected':''">
-                            {{ __('Register') }}
-                        </button>
-                    </div>
-                    <div v-if="show_login" class="log-reg">
-                        <form method="POST" action="{{ route('login') }}" name="formLogName">
-                            @csrf
-                            <div class="form-group row">
-                                <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail') }}</label>
-
-                                <div class="col-md-8">
-                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" v-model="email" autofocus>
-
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ __($message) }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                                <div class="col-md-8 password">
-                                    <input id="password" :type="show_password?'text':'password'" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" v-model="psw">
-                                    <button type="button" name="button" @click="show_password=!show_password">
-                                        <i :class="show_password?'fas fa-eye':'fas fa-eye-slash'"></i>
-                                    </button>
-
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ __($message) }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <div class="col-md-6 offset-md-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="remember" id="remember" v-model="remember_me">
-
-                                        <label class="form-check-label" for="remember">
-                                            {{ __('Remember me') }}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <button v-if="!press_reg" class="button-style button-color" @click="loading(1)">
-                                        {{ __('Login') }}
-                                    </button>
-                                    <div v-else class="anim-load-cont">
-                                        <span v-for="item in 5" class="anim-item anim-green"></span>
-                                    </div>
-                                    <button type="submit" id="login-button" class="invisible">
-                                        {{ __('Login') }}
-                                    </button>
-
-                                    @if (Route::has('password.request'))
-                                        <a class="btn btn-link" href="{{ route('password.request') }}">
-                                            {{ __('Forgot Your Password?') }}
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div v-else class="log-reg">
-                        <form method="POST" action="{{ route('register') }}" name="formRegName">
-                            @csrf
-
-                            {{-- <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">Nome</label>
-
-                                <div class="col-md-8">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                                    @error('name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail</label>
-
-                                <div class="col-md-8">
-                                    <input id="email_r" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ __($message) }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                                <div class="col-md-8 password">
-                                    <input id="password_r" :type="show_password?'text':'password'" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-                                    <button type="button" name="button" @click="show_password=!show_password">
-                                        <i :class="show_password?'fas fa-eye':'fas fa-eye-slash'"></i>
-                                    </button>
-
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ __($message) }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="password-confirm" class="col-md-4 col-form-label text-md-right password">
-                                    {{ __('Confirm Password') }}
-                                </label>
-
-                                <div class="col-md-8 password">
-                                    <input id="password-confirm" :type="show_password?'text':'password'" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                                </div>
-                            </div>
-
-                            <input type="hidden" name="language_id" value="{{$language_id}}">
-
-                            <div class="form-group row">
-                                <div class="col-md-8 offset-md-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="" id="tc" required>
-                                        <label class="form-check-label " for="tc">
-                                            <small>
-                                                {{ __('I accept these') }}
-                                            <a href="{{ route('termsAndConditions') }}">
-                                                {{ __('Terms & Conditions') }}
-                                            </a>
-                                            </small>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <div class="col-md-8 offset-md-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="" id="pp"
-                                        required>
-                                        <label class="form-check-label" for="pp" >
-                                            <small>
-                                                {{ __('I have read the information on the processing of personal data.') }}
-                                            <a href="{{ route('privacyPolicy') }}">Privacy Policy</a>
-                                            </small>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                    <button v-if="!press_reg" class="button-style button-color" @click="loading(2)">
-                                        {{ __('Register') }}
-                                    </button>
-                                    <div v-else class="anim-load-cont">
-                                        <span v-for="item in 5" class="anim-item anim-green"></span>
-                                    </div>
-                                    <button type="submit" id="register-button" class="invisible">
-                                        {{ __('Register') }}
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div v-else class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                    <h3>Hai già una sessione attiva</h3>
-                    <a class="button-style button-color pt-3 pb-3 pl-5 pr-5" href="{{ route('admin.accounts.index') }}">
-                        Entra
-                    </a>
-                    <a class="button-style button-color-red pt-3 pb-3 pl-5 pr-5" href="{{ url('/logout') }}">Logout </a>
-                </div> --}}
+            <div class="pt-5 pb-5 row justify-content-start">
+                <a href="{{route('login')}}" class="button-color-white iscriviti-ora m-2">iscriviti ora</a>
+                <a href="{{route('login')}}"  class="button-color-transparent iscriviti-ora m-2">login</a>
             </div>
         </div>
-        <div class="stats">
-            <div class="container">
-                {{-- <h3 class="section-title">
-                    <b></b>
-                    <span>RELAZIONI</span>
-                    <b></b>
-                </h3> --}}
-                <div class="row justify-content-center">
-                    <div class="text-center col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                        <h2 class="count-anim" id="profiles">0</h2>
-                        <p class="font-weight-bold">{{__("Profiles")}}</p>
+    </section>
+    <section class="mb-5 pt-5">
+        <div class="container">
+            <div class="row pt-3">
+                <h1 class="col-sm-12 col-md-10 col-lg-10 col-xl-7 pb-3">A chi ci rivolgiamo?</h1>
+            </div>
+            <div class="row justify-content-center pt-5 pb-5">
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
+                    <div class="text-center scale-nocursor">
+                        <div class="img-cont medium-img mb-3">
+                            <img src="{{asset('storage/pages_images/default-startup.svg')}}" alt="">
+                        </div>
+                        <h5 class="text-white m-0">STARTUP</h5>
                     </div>
-                    <div class="text-center col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                        <h2 class="count-anim" id="cooperations">0</h2>
-                        <p class="font-weight-bold">{{__("Collaborations born")}}</p>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
+                    <div class="text-center scale-nocursor">
+                        <div class="img-cont medium-img mb-3">
+                            <img src="{{asset('storage/users_images/default-cofounder.svg')}}" alt="">
+                        </div>
+                        <h5 class="text-white m-0">CO-FOUNDER</h5>
                     </div>
-                    <div class="text-center col-sm-12 col-md-6 col-lg-4 col-xl-4">
-                        <h2 class="count-anim" id="chats">0</h2>
-                        <p class="font-weight-bold">{{__("Conversations started")}}</p>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
+                    <div class="text-center  scale-nocursor">
+                        <div class="img-cont medium-img mb-3">
+                            <img src="{{asset('storage/pages_images/default-incubatore.svg')}}" alt="">
+                        </div>
+                        <h5 class="text-white m-0">INCUBATORI ED ACCELERATORI</h5>
                     </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
+                    <div class="text-center scale-nocursor">
+                        <div class="img-cont medium-img mb-3">
+                            <img src="{{asset('storage/users_images/default-business-angel.svg')}}" alt="">
+                        </div>
+                        <h5 class="text-white m-0">INVESTITORI</h5>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
+                    <div class="text-center scale-nocursor">
+                        <div class="img-cont medium-img mb-3">
+                            <img src="{{asset('storage/pages_images/default-associazione.svg')}}" alt="">
+                        </div>
+                        <h5 class="text-white m-0">ENTI ED ASSOCIAZIONI</h5>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
+                    <div class="text-center scale-nocursor">
+                        <div class="img-cont medium-img mb-3">
+                            <img src="{{asset('storage/users_images/default-studente.svg')}}" alt="">
+                        </div>
+                        <h5 class="text-white m-0">STUDENTI</h5>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
+                    <div class="text-center scale-nocursor">
+                        <div class="img-cont medium-img mb-3">
+                            <img src="{{asset('storage/pages_images/default-azienda.svg')}}" alt="">
+                        </div>
+                        <h5 class="text-white m-0">AZIENDE</h5>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
+                    <div class="text-center scale-nocursor">
+                        <div class="img-cont medium-img mb-3">
+                            <img src="{{asset('storage/users_images/default-freelancer.svg')}}" alt="">
+                        </div>
+                        <h5 class="text-white m-0">LIBERI PROFESSIONISTI</h5>
+                    </div>
+                </div>
+            </div>
+            <h4 class="pt-3 pb-3">Prendi parte al cambiamento, scorri e scopri di più su  <strong>Growpla</strong>!</h4>
+        </div>
+    </section>
+    <section class="mb-5 pt-5"  style="background: url({{asset("storage/images/bg-cerchio.svg") }}) right -270px top 0px; background-repeat: no-repeat; background-size: 1000px 1000px;">
+        <div class="container">
+            <div class="row pt-5 pb-5">
+                <h1 class="col-sm-12 col-md-10 col-lg-7 col-xl-7 pb-5">Pochi semplici step!</h1>
+            </div>
+            <div class="row pb-5">
+                <div class="col-sm-12 col-md-10 col-lg-7 col-xl-7 pb-3">
+                    <div class="step-cont">
+                        <div class="step">
+                            <div class="step-circle">
 
-                </div>
-            </div>
-        </div>
-        <div class="landing" id="accounts">
-            <div class="container pb-4">
-                <h3 class="section-title">
-                    <b></b>
-                    <span class="text-uppercase">{{__('our accounts')}}</span>
-                    <b></b>
-                </h3>
-            </div>
-            <div class="container pb-5">
-                <div class="row justify-content-center">
-                    <div class="item-cont col-sm-12 col-md-6 col-lg-4 col-xl-4 text-center fade-anim fade-up">
-                        <div class="item-style p-0">
-                            {{-- <img src="/storage/images/account-startup.svg" alt="" class="w-100"> --}}
-                            <div class="card-info">
-                                <h2>{{__('Company')}}</h2>
-                                <p>{{__('Do you have a business idea? Growpla helps you understand the Startup ecosystem by indicating what you need based on the stage of the life cycle you are going through and allowing you to find and get in touch with those who could help you. If your business has passed the Startup stage you can use this type of account to get in touch with other companies that can offer you the services you need')}}</p>
+                            </div>
+                            <div class="step-line">
+
                             </div>
                         </div>
-                    </div>
-                    <div class="item-cont col-sm-12 col-md-6 col-lg-4 col-xl-4 text-center fade-anim fade-up">
-                        <div class="item-style p-0">
-                            {{-- <img src="/storage/images/account-cofounder.svg" alt="" class="w-100"> --}}
-                            <div class="card-info">
-                                <h2>{{__('Aspiring Co-founder')}}</h2>
-                                <p>{{__('Collaborate in the realization of interesting business ideas by making your skills available. We can grow together!')}}</p>
-                            </div>
+                        <div class="step-text">
+                            <h5>Step 1</h5>
+                            <p>Crea il tuo profilo con tutte le informazioni utili</p>
                         </div>
                     </div>
-                    <div class="item-cont col-sm-12 col-md-6 col-lg-4 col-xl-4 text-center fade-anim fade-up">
-                        <div class="item-style p-0">
-                            {{-- <img src="/storage/images/account-incubatore.svg" alt="" class="w-100"> --}}
-                            <div class="card-info">
-                                <h2>{{__('Incubator/Accelerator')}}</h2>
-                                <p>{{__('It supports the birth and growth of the Startups present on the platform')}}</p>
+                    <div class="step-cont">
+                        <div class="step">
+                            <div class="step-circle">
+
+                            </div>
+                            <div class="step-line">
+
                             </div>
                         </div>
-                    </div>
-                    <div class="item-cont col-sm-12 col-md-6 col-lg-4 col-xl-4 text-center fade-anim fade-up">
-                        <div class="item-style p-0">
-                            {{-- <img src="/storage/images/account-investitori.svg" alt="" class="w-100"> --}}
-                            <div class="card-info" >
-                                <h2>Business Angel, Venture Capital, Private Equity</h2>
-                                <p>{{__('Scout and invest in Startups that are part of our network')}}</p>
-                            </div>
+                        <div class="step-text">
+                            <h5>Step 2</h5>
+                            <p>Cerca i ruoli, i servizi o le competenze di cui hai bisogno</p>
                         </div>
                     </div>
-                    <div class="item-cont col-sm-12 col-md-6 col-lg-4 col-xl-4 text-center fade-anim fade-up">
-                        <div class="item-style p-0">
-                            {{-- <img src="/storage/images/account-servizi.svg" alt="" class="w-100"> --}}
-                            <div class="card-info">
-                                <h2>{{__('Company Services')}}</h2>
-                                <p>{{__('The account dedicated to freelancers, companies and their employees who offer Startups coaching, mentoring, advisoring, software development and nocode, marketing, legal, crowdfunding, pitch and business plan creation, subsidized finance, product development, prototyping, plant engineering and much more. Including the services offered to companies that have passed the Startup phase')}}</p>
+                    <div class="step-cont">
+                        <div class="step">
+                            <div class="step-circle">
+
+                            </div>
+                            <div class="step-line">
+
                             </div>
                         </div>
+                        <div class="step-text">
+                            <h5>Step 3</h5>
+                            <p>Trova il profilo perfetto per le tue necessità</p>
+                        </div>
                     </div>
-                    <div class="item-cont col-sm-12 col-md-6 col-lg-4 col-xl-4 text-center fade-anim fade-up">
-                        <div class="item-style p-0">
-                            {{-- <img src="/storage/images/account-agenzia.svg" alt="" class="w-100"> --}}
-                            <div class="card-info">
-                                <h2>{{__('Regional/National Agency')}}</h2>
-                                <p>{{__('Create an account on the platform in order to inform the Startups present about opportunities, calls and incentives aimed at encouraging their development')}}</p>
+                    <div class="step-cont">
+                        <div class="step">
+                            <div class="step-circle">
+
                             </div>
+                            <div class="step-line">
+
+                            </div>
+                        </div>
+                        <div class="step-text">
+                            <h5>Step 4</h5>
+                            <p>Contatta persone e crea un network di interazioni</p>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="pt-5 pb-5 d-flex justify-content-center">
+                <a href="{{route('login')}}" class="button-color-white iscriviti-ora m-2">iscriviti ora</a>
+            </div>
         </div>
-        <div class="container pb-2">
-            <h3 class="section-title">
-                <b></b>
-                <span class="text-uppercase">{{__('partners')}}</span>
-                <b></b>
-            </h3>
-            <div class="partner row justify-content-center">
-                {{-- <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 text-center fade-anim fade-right">
-                    <a href="https://www.knowledge-hub.it/" target="_blank" class="d-inline-block">
-                        <img src="/storage/images/khub-logo.png" alt="">
-                    </a>
-                </div> --}}
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 text-center fade-anim fade-right">
+    </section>
+    <section class="screenshot pt-5 pb-5">
+            <div class="row pb-5">
+                <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 order-1 order-sm-1 order-md-0">
+                    <div class="text-container">
+                        <h1 class="pb-5">Fai crescere la tua startup</h1>
+                        <p>Growpla ti guida nel <strong>processo di crescita</strong> indicandotile figure che fanno al caso tuo in base alla fase del <strong>ciclo di vita</strong> che attraversi con l’<strong>obiettivo</strong> di passare alla successiva!</p>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 order-0 order-sm-0 order-md-1">
+                    <div class="image-container">
+                        <img src="{{asset("storage/images/monitor-1.svg") }}" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="row pb-5">
+                <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5">
+                    <div class="image-container">
+                        <img src="{{asset("storage/images/monitor-2.svg") }}" alt="">
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7">
+                    <div class="text-container">
+                        <h1 class="pb-5">Scopri i futuri talenti</h1>
+                        <p>Imposta i parametri che preferisci e fai <strong>scouting delle Startup</strong>facenti parte nel nostro network</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row pb-5">
+                <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 order-1 order-sm-1 order-md-0">
+                    <div class="text-container">
+                        <h1 class="pb-5">Offri e cerca servizi</h1>
+                        <p>Ottieni recensioni positive ed <strong>amplia la tua cerchia di clienti</strong>, comunica novità, sconti e promozioni</p>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 order-0 order-sm-0 order-md-1">
+                    <div class="image-container">
+                        <img src="{{asset("storage/images/monitor-3.svg") }}" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="row pb-5">
+                <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5">
+                    <div class="image-container">
+                        <img src="{{asset("storage/images/monitor-4.svg") }}" alt="">
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7">
+                    <div class="text-container">
+                        <h1 class="pb-5">Insieme si va più lontano</h1>
+                        <p>Vuoi diventare uno startupper ma non hai idee su cui puntare?</p>
+                        <p><strong>Il progetto che fa per te potrebbe già esistere, cercalo!</strong></p>
+                        <p>Collabora alla realizzazione di idee di business interessanti mettendo a disposizione le tue capacità.</p>
+                    </div>
+                </div>
+            </div>
+            <div class=" pb-5 d-flex justify-content-center">
+                <a href="{{route('login')}}" class="button-color-white iscriviti-ora m-2">iscriviti ora</a>
+            </div>
+    </section>
+    <section class="partner pt-5 pb-5 mb-5">
+        <div class="container">
+            <div class="pt-3 pb-5">
+                <h5 class="pb-4"><strong>Growpla</strong> è una dimensione emergente ma già solida, che gode del supporto di importanti <strong>realtà affermate</strong>.</h5>
+                <h5 class="pb-4">Ecco alcuni dei nostri <strong>partner</strong> e sostenitori:</h5>
+            </div>
+        </div>
+        <div class="partner-cont pt-5 pb-5">
+            <div class="row justify-content-center">
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-2 text-center fade-anim fade-right">
                     <a href="https://www.lum.it/" target="_blank" class="d-inline-block">
-                        <img src="/storage/images/lum-logo.png" alt="">
+                        <img src="/storage/images/partner-lum-logo.png" alt="">
                     </a>
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 text-center fade-anim fade-right">
+               </div>
+               <div class="col-sm-12 col-md-6 col-lg-4 col-xl-2 text-center fade-anim fade-right">
+                    <a href="https://www.ic406.com/" target="_blank" class="d-inline-block">
+                        <img src="/storage/images/partner-ic406-logo.png" alt="">
+                    </a>
+              </div>
+              <div class="col-sm-12 col-md-6 col-lg-4 col-xl-2 text-center fade-anim fade-right">
                     <a href="https://www.goheroes.it/" target="_blank" class="d-inline-block">
-                        <img src="/storage/images/heroes-logo.png" alt="">
+                        <img src="/storage/images/partner-heroes-logo.png" alt="">
                     </a>
                 </div>
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 text-center fade-anim fade-right">
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-2 text-center fade-anim fade-right">
                     <a href="https://www.viscontilegal.it/" target="_blank" class="d-inline-block">
-                        <img src="/storage/images/visconti-logo.png" alt="">
+                        <img src="/storage/images/partner-visconti-logo.png" alt="">
+                    </a>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-2 text-center fade-anim fade-right">
+                    <a href="https://www.knowledge-hub.it/" target="_blank" class="d-inline-block">
+                        <img src="/storage/images/partner-khub-logo.png" alt="">
                     </a>
                 </div>
             </div>
         </div>
-        <div v-if="showConsenScreen" class="cookie-consent" v-cloak>
-            <p class="position-relative">
-                <a href="#" @click="closeConsentScreen()" class="txt-blue edit-top-right">
-                    <i class="fas fa-times"></i>
-                </a>
-            </p>
-            <div class="container">
-                <p>{{__('Growpla and third-party use technical cookies and similar technologies (“tracking tools”) to operate and improve the platform. For full details on how we use cookies please see the full')}} <a href="{{ route('cookiePolicy') }}" class="txt-green">cookie policy</a>.
-                </p>
-                <div v-if="cookieSettings" class="cookie-list pb-3">
-                    <div  class="switch-button-container pt-1 pb-2">
-                        <label class="pt-2 mr-4" for="">{{__('Technical Cookies')}}</label>
-                        <span>{{__('Always Enabled')}}</span>
-                    </div>
-                    <div  class="switch-button-container pt-1 pb-2">
-                        <label class="pt-2 mr-4" for="">{{__('Analytical Cookies')}}</label>
-                        <div class="button r switch-button d-inline-block">
-                            <input type="checkbox" class="checkbox" v-model="analyticsCookie">
-                            <div class="knobs"></div>
-                            <div class="layer"></div>
+    </section>
+    <section class="mb-5 pt-1"  style="background: url({{asset("storage/images/bg-aereo.svg") }}) left -150px top 0px; background-repeat: no-repeat; background-size: contain">
+        <div class="container">
+            <div class="row pt-5 pb-5">
+                <h1 class="col-sm-12 col-md-10 col-lg-7 col-xl-7 pb-5">Roadmap</h1>
+            </div>
+            <div class="d-flex justify-content-center">
+                <div class="d-inline-block">
+                    <div class="roadmap-item">
+                        <div class="roadmap-img">
+                            <img src="{{asset('storage/images/icon-roadmap-1.svg')}}" alt="" class="scale-nocursor">
+                            <div class="roadmap-line">
+                            </div>
+                        </div>
+                        <div class="roadmap-text">
+                            <div class="title-cont">
+                                <h5 style="color: #00C5C5">LUGLIO 2021</h5>
+                                <span style="background-color: #00C5C5"></span>
+                            </div>
+                            <div class="">
+                                <p>il team avvia il progetto Growpla</p>
+                            </div>
                         </div>
                     </div>
-                    <a href="#" class="txt-blue" @click="acceptSelected()">{{__('Accept selected')}}</a>
+                    <div class="roadmap-item">
+                        <div class="roadmap-img">
+                            <img src="{{asset('storage/images/icon-roadmap-2.svg')}}" alt="" class="scale-nocursor">
+                            <div class="roadmap-line">
+                            </div>
+                        </div>
+                        <div class="roadmap-text">
+                            <div class="title-cont">
+                                <h5 style="color: #4033C5">MAGGIO 2022</h5>
+                                <span style="background-color:#4033C5"></span>
+                            </div>
+                            <div class="">
+                                <p>lancio della versione 1.0 della piattaforma</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-img">
+                            <img src="{{asset('storage/images/icon-roadmap-3.svg')}}" alt="" class="scale-nocursor">
+                            <div class="roadmap-line">
+                            </div>
+                        </div>
+                        <div class="roadmap-text">
+                            <div class="title-cont">
+                                <h5 style="color: #7620BB">GIUGNO 2022</h5>
+                                <span style="background-color: #7620BB"></span>
+                            </div>
+                            <div class="">
+                                <p>inserimento della sezione news</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-img">
+                            <img src="{{asset('storage/images/icon-roadmap-4.svg')}}" alt="" class="scale-nocursor">
+                            <div class="roadmap-line">
+                            </div>
+                        </div>
+                        <div class="roadmap-text">
+                            <div class="title-cont">
+                                <h5 style="color: #C5337E">OTTOBRE 2022</h5>
+                                <span style="background-color: #C5337E"></span>
+                            </div>
+                            <div class="">
+                                <p>introduzione della possibilità di effettuare transazioni in piattaforma e lasciare recensioni sui servizi ottenuti dagli altri utenti</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-img">
+                            <img src="{{asset('storage/images/icon-roadmap-5.svg')}}" alt="" class="scale-nocursor">
+                            <div class="roadmap-line">
+                            </div>
+                        </div>
+                        <div class="roadmap-text">
+                            <div class="title-cont">
+                                <h5 style="color: #BC7100">GENNAIO 2023</h5>
+                                <span style="background-color: #BC7100"></span>
+                            </div>
+                            <div class="">
+                                <p>introduzione di nuove funzionalità di discussione ed interazione</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-img">
+                            <img src="{{asset('storage/images/icon-roadmap-6.svg')}}" alt="" class="scale-nocursor">
+                            <div class="roadmap-line">
+                            </div>
+                        </div>
+                        <div class="roadmap-text">
+                            <div class="title-cont">
+                                <h5 style="color: #2D8329">APRILE 2023</h5>
+                                <span style="background-color: #2D8329"></span>
+                            </div>
+                            <div class="">
+                                <p>rilascio mobile app</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="roadmap-item">
+                        <div class="roadmap-img">
+                            <img src="{{asset('storage/images/icon-roadmap-6.svg')}}" alt="" class="scale-nocursor">
+                            <div class="roadmap-line">
+                            </div>
+                        </div>
+                        <div class="roadmap-text">
+                            <div class="title-cont">
+                                <h5 style="color: #2D8329">IN EVOLUZIONE</h5>
+                                <span style="background-color: #2D8329"></span>
+                            </div>
+                            <div class="">
+                                <p>in divenire</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <p>
-                    <a href="#" class="txt-blue" @click="cookieSettings=!cookieSettings">
-                        <span v-if="cookieSettings">{{__('Close customize')}}</span>
-                        <span v-else>{{__('Customize')}}</span>
-                    </a>
-                    <a href="#" class="ml-5 txt-green" @click="acceptAll()">{{__('Accept all')}}</a>
-                </p>
             </div>
+        </div>
+    </section>
+    <section class="reviews pt-5 pb-5">
+        <div class="container">
+            <h1 class="col-sm-12 col-md-10 col-lg-10 col-xl-7 pb-3">Cosa dicono di noi i nostri utenti</h1>
+        </div>
+        <div class="card-slider-review pt-3 pb-5">
+            <div class="container">
+	            <div class="row">
+	                <div class="MultiCarousel" data-items="1,2,2,2" data-slide="1" id="MultiCarousel"  data-interval="1000">
+                        <div class="MultiCarousel-inner">
+                            <div class="item">
+                                <div class="pad15">
+                                    <div class="info-container">
+                                        <div class="image-container">
+                                            <img src="{{asset('storage/pages_images/default-startup.svg')}}" alt="">
+                                        </div>
+                                        <div class="text-container">
+                                            <div class="main-text">
+                                                <p>Avevo un sogno:</p>
+                                                <p>creare il mio business e far emegere la mia startup.</p>
+                                                <p>Ma è difficile trovare le giuste persone e la guida necessaria..</p>
+                                                <p>Con Growpla ho trovato tutto in un’unica piattaforma!</p>
+                                            </div>
+                                            <p class="text-white">Lucia C.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="pad15">
+                                    <div class="info-container">
+                                        <div class="image-container">
+                                            <img src="{{asset('storage/pages_images/default-startup.svg')}}" alt="">
+                                        </div>
+                                        <div class="text-container">
+                                            <div class="main-text">
+                                                <p>Avevo un sogno:</p>
+                                                <p>creare il mio business e far emegere la mia startup.</p>
+                                            </div>
+                                            <p class="text-white">Lucia C.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="pad15">
+                                    <div class="info-container">
+                                        <div class="image-container">
+                                            <img src="{{asset('storage/pages_images/default-startup.svg')}}" alt="">
+                                        </div>
+                                        <div class="text-container">
+                                            <div class="main-text">
+                                                <p>Avevo un sogno:</p>
+                                                <p>creare il mio business e far emegere la mia startup.</p>
+                                                <p>Ma è difficile trovare le giuste persone e la guida necessaria..</p>
+                                                <p>Con Growpla ho trovato tutto in un’unica piattaforma!</p>
+                                            </div>
+                                            <p class="text-white">Lucia C.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="pad15">
+                                    <div class="info-container">
+                                        <div class="image-container">
+                                            <img src="{{asset('storage/pages_images/default-startup.svg')}}" alt="">
+                                        </div>
+                                        <div class="text-container">
+                                            <div class="main-text">
+                                                <p>Avevo un sogno:</p>
+                                                <p>creare il mio business e far emegere la mia startup.</p>
+                                                <p>Ma è difficile trovare le giuste persone e la guida necessaria..</p>
+                                                <p>Con Growpla ho trovato tutto in un’unica piattaforma!</p>
+                                            </div>
+                                            <p class="text-white">Lucia C.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn leftLst">
+                        </button>
+                        <button class="btn rightLst">
+                        </button>
+                    </div>
+	            </div>
+            </div>
+        </div>
+    </section>
+    <section class="pt-5 pb-5">
+        <div class="container">
+            <h1 class="pb-5">Non perdere l’occasione di crescere con professionisti del settore e far decollare il tuo business.</h1>
+        </div>
+        <div class="pb-5 d-flex justify-content-center">
+            <a href="{{route('login')}}" class="button-color-white iscriviti-ora m-2">iscriviti ora</a>
+        </div>
+    </section>
+    <div v-if="showConsenScreen" class="cookie-consent" v-cloak>
+        <p class="position-relative">
+            <a href="#" @click="closeConsentScreen()" class="txt-blue edit-top-right scale">
+                <i class="fas fa-times"></i>
+            </a>
+        </p>
+        <div class="container">
+            <p class="font-weight-bold">{{__('Growpla and third-party use technical cookies and similar technologies (“tracking tools”) to operate and improve the platform. For full details on how we use cookies please see the full')}} <a href="{{ route('cookiePolicy') }}" class="txt-green">cookie policy</a>.
+            </p>
+            <div v-if="cookieSettings" class="cookie-list pb-3">
+                <div  class="switch-button-on-off pt-1 pb-2">
+                    <label class="pt-2 mr-4" for="">
+                        {{__('Technical Cookies')}}
+                        <span class="d-block txt-green font-weight-bold">"Sempre abilitati"</span>
+                    </label>
+                    <div class="button r switch-button d-inline-block">
+                        <input type="checkbox" class="checkbox" onclick="return false;" readonly>
+                        <div class="knobs"></div>
+                        <div class="layer"></div>
+                    </div>
+                </div>
+                <div  class="switch-button-on-off pt-1 pb-2">
+                    <label class="pt-2 mr-4" for="">{{__('Analytical Cookies')}}</label>
+                    <div class="button r switch-button d-inline-block">
+                        <input type="checkbox" class="checkbox" v-model="analyticsCookie">
+                        <div class="knobs"></div>
+                        <div class="layer"></div>
+                    </div>
+                </div>
+                <a href="#" class="txt-blue" @click="acceptSelected()">{{__('Accept selected')}}</a>
+            </div>
+            <p>
+                <a href="#" class="txt-blue" @click="cookieSettings=!cookieSettings">
+                    <span v-if="cookieSettings">{{__('Close customize')}}</span>
+                    <span v-else>{{__('Customize')}}</span>
+                </a>
+                <a href="#" class="ml-5 txt-green" @click="acceptAll()">{{__('Accept all')}}</a>
+            </p>
         </div>
     </div>
+</div>
 @endsection

@@ -35,6 +35,9 @@ class CompanyController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+          'image' => 'nullable|mimes:jpeg,png,jpg|max:6144',
+        ]);
 
         $data = $request->all();
 
@@ -109,6 +112,9 @@ class CompanyController extends Controller
 
     public function update(Request $request, Company $company)
     {
+        $request->validate([
+          'image' => 'nullable|mimes:jpeg,png,jpg|max:6144',
+        ]);
 
         $data = $request->all();
         $user_id = Auth::user()->id;

@@ -7,12 +7,12 @@
 </script>
 <div id="search">
     @if(Auth::user()->tutorial)
-    <div class="bg-green-3" style="margin-top: -80px; padding-top: 80px;">
+    <div class="bg-dark" style="margin-top: -80px; padding-top: 80px;">
         <div class="container pb-5">
             <h3 class="section-title">
                 <b></b>
-                <span>{{ __('Welcome to Growpla!') }}
-                 </span>
+                <span class="text-white">{{ __('Welcome to Growpla!') }}
+                </span>
                 <b></b>
             </h3>
             <p class="text-center m-0">
@@ -25,7 +25,7 @@
     </div>
     @endif
     <div class="background"
-    style="background-image: url({{asset("storage/images/bg-search.svg") }})">
+    style="background-image: url({{asset("storage/images/bg-search.png") }})">
         <div class="container">
             <div class="search">
                 <div id="search-fixed" :class="usertypes_id.length>0||pagetypes_id.length>0||services_selected||name?'search-fixed-top':'search-fixed-center'">
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="search-main" v-cloak>
+                    <div class="search-main" id="search-main" v-cloak>
                         <div class="filter-cont mt-3 mb-1">
                             <div class="row d-flex justify-content-center">
                                 <div v-if="!search_type" :class="usertypes_id.length>0||pagetypes_id.length>0||services_selected||name?'col-sm-12 col-md-12 col-lg-2 col-xl-2 p-0 position-relative':'col-sm-12 col-md-12 col-lg-6 col-xl-6 p-0 position-relative'">
@@ -200,9 +200,9 @@
                                         </div>
                                     </div>
                                     <div class="mt-1">
-                                        <div v-for="(service,i) in services" class="border-style bg-white" v-cloak>
+                                        <div v-for="(service,i) in services" :class="serviceToggle=='true'?'border-style bg-blue txt-blue':'border-style bg-green txt-green'" v-cloak>
                                           <input type="hidden" name="services[]" :value="service.name">
-                                          <label for="" class="m-0">@{{service.name}}
+                                          <label for="" class="m-0 font-weight-bold">@{{service.name}}
                                             <i class="fas fa-times" @click="removeService(i)"></i>
                                           </label>
                                         </div>
@@ -255,12 +255,12 @@
                                         <span class="mini-txt font-weight-bold d-block" v-if="category_selected==1 || category_selected==2">Settore di appartenenza</span>
                                         <span class="mini-txt font-weight-bold d-block" v-if="category_selected==3 || category_selected==5">Settore d'interesse</span>
                                         <span class="mini-txt font-weight-bold d-block" v-if="category_selected==4">Settore d'interesse d'investimento</span>
-                                        <div v-for="(sector,i) in sectors" class="border-style bg-white" v-cloak>
-                                          <label for="" class="m-0">@{{sector.name_it}}
+                                        <div v-for="(sector,i) in sectors" class="border-style bg-black" v-cloak>
+                                          <label for="" class="m-0  text-white font-weight-bold">@{{sector.name_it}}
                                             <i class="fas fa-times" @click="removeSector(i)"></i>
                                           </label>
                                         </div>
-                                        <div v-if="sectors.length<4" class="m-0">
+                                        <div v-if="sectors.length<3" class="m-0">
                                           <select name="sector_id" v-model="sector_selected" class="text-capitalize" @change="addSector()">
                                                   <option value="">Tutti</option>
                                               @foreach ($sectors as $sector)
@@ -297,9 +297,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div v-if="pagetypes_id.includes(3)" class="text-center" v-cloak>
+                        {{-- <div v-if="pagetypes_id.includes(3)" class="text-center" v-cloak>
                             <a class="button-style button-color-blue" href="{{route('incubators')}}">Incubatori d'italia</a>
-                        </div>
+                        </div> --}}
                         <form class="text-center" method="POST" action="{{ route('admin.found') }}" id="searchForm">
                             @csrf
                             <input v-for="usertype_id in usertypes_id" type="hidden" name="usertypes_id[]" :value="usertype_id">

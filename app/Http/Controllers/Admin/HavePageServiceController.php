@@ -63,8 +63,7 @@ class HavePageServiceController extends Controller
         }else{
             $recommended_services = $page->pagetype->have_services;
         }
-        if (in_array ($page->pagetype_id, array(1,2))
-        && $user->pages->contains($page)) {
+        if ($user->pages->contains($page)) {
             $data = [
                 'page' => $page,
                 'services' => $page->have_page_services,
@@ -167,7 +166,13 @@ class HavePageServiceController extends Controller
 
             }
 
-            return redirect()->route('admin.pages.show',$page->id);
+            if($page->tutorial>=1){
+                $page->tutorial = null;
+                $page->update();
+                return redirect()->route('admin.pages.show',$page->id);
+            }else{
+                return redirect()->route('admin.pages.show',$page->id);
+            }
 
         }abort(404);
     }

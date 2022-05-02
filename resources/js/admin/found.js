@@ -18,6 +18,13 @@ var create = new Vue({
         page: 1,
         show_prev: false,
         show_next: false,
+        list_user: '',
+        list_pages: '',
+        alert: false,
+        account_index_selected: '',
+        in_load: false,
+        showScrollTop: false,
+        //ricerca
         search_type: false,
         category_selected: '',
         usertypes_id: [],
@@ -44,13 +51,13 @@ var create = new Vue({
         sectors: [],
         sector_selected: '',
         sectorToggle: false,
-        list_user: '',
-        list_pages: '',
-        alert: false,
-        account_index_selected: '',
-        in_load: false,
+        button: false,
+        //fine ricerca
     },
     methods: {
+        scrollTop(){
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        },
         switchAccounts(i){
             this.account_index_selected = i;
             console.log(i);
@@ -391,9 +398,14 @@ var create = new Vue({
             }
         },
         scrollFunction(){
-          //console.log((window.innerHeight + window.scrollY) >= document.body.offsetHeight);
+          // console.log(window.innerHeight,window.scrollY,document.body.offsetHeight);
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
                 this.showMore();
+            }
+            if(window.scrollY>0){
+                this.showScrollTop = true;
+            }else{
+                this.showScrollTop = false;
             }
         },
 
@@ -410,34 +422,9 @@ var create = new Vue({
 
     },
     mounted() {
+
         this.getRegionsByCountry();
-
         window.onscroll = ()=>{this.scrollFunction()};
-
-
-        if(!this.getCookie("tecCookie")){
-            document.cookie = "tecCookie"+ "=" +"accept"+ ";" + "expires="+ this.dateUTC() +";path=/";
-        }
-        if(!this.getCookie("analyticsCookie")){
-            document.cookie =
-            "analyticsCookie"+ "=" +"reject"+ ";" + "expires="+ this.dateUTC() +";path=/";
-        }
-
-        //FADE ANIMATION
-        let elementsArray = document.querySelectorAll(".fade-anim");
-        window.addEventListener('scroll', fadeIn );
-        function fadeIn() {
-            for (var i = 0; i < elementsArray.length; i++) {
-                var elem = elementsArray[i]
-                var distInView = elem.getBoundingClientRect().top - window.innerHeight + 20;
-                if (distInView < 0) {
-                    elem.classList.add("inView");
-                } else {
-                    elem.classList.remove("inView");
-                }
-            }
-        }
-        fadeIn();
 
     }
 

@@ -20,7 +20,6 @@ var create = new Vue({
         height: 300,
     },
     methods: {
-
         createCrop(){
             var croppr = new Croppr('#croppr', {
                 // options
@@ -49,8 +48,8 @@ var create = new Vue({
             }
         },
 
-        submitForm(){
-            document.getElementById("myForm").submit();
+        submitForm(form_id){
+            document.getElementById(form_id).submit();
         },
 
         newFile(){

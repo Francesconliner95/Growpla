@@ -8,7 +8,9 @@
     <div class="container">
         <div class="item-cont">
             <div class="item-style">
-                <div class="row pb-5">
+                <form ref="editTeam" method="POST" enctype="multipart/form-data" action="{{ route('admin.teams.storeTeam', ['page_id'=> $page_id]) }}" id="formCreateTeam">
+                    @csrf
+                    <div class="row pb-5">
                     <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 left-area order-1 order-sm-1 order-md-0">
                       <div class="h-100 d-flex align-items-center">
                           <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 pt-3 pb-3">
@@ -19,7 +21,7 @@
                               <p class="txt-green mini-txt">Tuttavia un profilo più completo ha più possibiltà di essere visionato dagli altri utenti</p>
                               <div class="pt-3">
                                   <p class="mini-txt font-weight-bold">Appena terminato salva i progressi</p>
-                                  <button type="submit" class="button-style button-color" @click="submitForm()">
+                                  <button type="submit" class="button-style button-color">
                                       {{__('Save')}}
                                   </button>
                               </div>
@@ -27,9 +29,6 @@
                       </div>
                     </div>
                     <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 bg-gray right-area order-0 order-sm-0 order-md-1">
-                      <form ref="editTeam" method="POST" enctype="multipart/form-data" action="{{ route('admin.teams.storeTeam', ['page_id'=> $page_id]) }}" id="formCreateTeam">
-                          @csrf
-
                           <div class="sub-section text-center pb-4">
                               <h4 class="pb-2">Aggiungi utente iscritto?</h4>
                               <div class="row justify-content-center">
@@ -127,7 +126,7 @@
                                     <h6>Linkedin</h6>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
-                                    <input type="text" name="linkedin" class="form-control" maxlength="255" value="">
+                                    <input type="url" name="linkedin" class="form-control" maxlength="255" value="">
                                     @error ('linkedin')
                                         <div class="alert alert-danger">
                                             {{__($message)}}
@@ -162,7 +161,7 @@
                                       <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-1" style="height:150px">
                                           <div class="drop-zone">
                                               <span class="drop-zone__prompt">{{__('Drop file here or click to upload')}}
-                                                  <span class="mini-txt d-block">{{__('Supported formats')}} .jpeg-.png .jpg .gif .swg max:6Mb</span>
+                                                  <span class="mini-txt d-block">{{__('Supported formats')}} .jpeg-.png .jpg max:6Mb</span>
                                               </span>
                                               <input ref="mainImage" type="file" class="form-control-file drop-zone__input" name="image" accept="image/*" id="imgInp" >
                                               @error ('image')
@@ -181,9 +180,10 @@
                                   </div>
                               </div>
                           </div>
-                      </form>
+
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>

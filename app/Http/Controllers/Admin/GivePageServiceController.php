@@ -24,7 +24,7 @@ class GivePageServiceController extends Controller
     {
         $page = Page::find($page_id);
         $user = Auth::user();
-        if (in_array ($page->pagetype_id, array(1, 2))
+        if (!in_array($page->pagetype_id, array(1))
         && $user->pages->contains($page)) {
             $data = [
                 'page' => $page,
@@ -94,8 +94,11 @@ class GivePageServiceController extends Controller
                   $new_notf->save();
               }
           }
-
-          return redirect()->route('admin.pages.show',$page->id);
+            if($page->tutorial>=1){
+                return redirect()->route('admin.have-page-services.edit',$page->id);
+            }else{
+                return redirect()->route('admin.pages.show',$page->id);
+            }
 
       }abort(404);
   }

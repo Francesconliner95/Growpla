@@ -6,10 +6,7 @@ var remove_footer = false;
 //ACCOUNT
 if (document.getElementById('guest-home')) {
     require('./guest/home.js');
-}
-
-if (document.getElementById('guest-prehome')) {
-    require('./guest/prehome.js');
+    remove_footer = true;
 }
 
 if (document.getElementById('cookie-policy')) {
@@ -23,6 +20,7 @@ if (document.getElementById('login')) {
 
 if (document.getElementById('incubators')) {
     require('./guest/incubators.js');
+    remove_footer = true;
 }
 
 ///////SEARCH///////

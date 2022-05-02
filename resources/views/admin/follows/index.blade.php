@@ -51,7 +51,7 @@
                   </div>
                 </div>
                 <p v-if="followed.length==1  && !in_load" v-cloak>Nessun seguito</p>
-                <div v-if="in_load" class="d-flex justify-content-center" v-clock>
+                <div v-if="in_load" class="d-flex justify-content-center" v-cloak>
                     <div class="spinner-border text-secondary" role="status">
                         <span class="sr-only">Loading...</span>
                     </div>

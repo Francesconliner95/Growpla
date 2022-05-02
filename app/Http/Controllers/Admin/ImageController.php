@@ -42,7 +42,7 @@ class ImageController extends Controller
     public function updateUserImage(Request $request){
 
         $request->validate([
-            'image' => 'nullable|mimes:jpeg,png,jpg,gif,swg|max:6144',
+            'image' => 'nullable|mimes:jpeg,png,jpg|max:6144',
         ]);
 
         $data = $request->all();
@@ -209,7 +209,7 @@ class ImageController extends Controller
 
         $request->validate([
             'page_id' => 'required|integer',
-            'image' => 'nullable|mimes:jpeg,png,jpg,gif,swg|max:6144',
+            'image' => 'nullable|mimes:jpeg,png,jpg|max:6144',
         ]);
 
         $data = $request->all();

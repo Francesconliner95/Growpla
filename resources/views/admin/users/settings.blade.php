@@ -51,7 +51,7 @@
                         <i class="fas fa-cog"></i>
                     </h1>
                 </div>
-                <div class="sub-section">
+                <div class="mb-5">
                     <h6>Voglio ricevere mail</h6>
                     @foreach ($mail_settings as $mail_setting)
                         <div class="">
@@ -66,19 +66,18 @@
                         </div>
                     @endforeach
                 </div>
-                <div v-if="user" class="sub-section pt-3 pb-2" v-cloak>
-                    <div class="row">
-                        <div class="text-center col-sm-12 col-md-12 col-lg-8 col-xl-8 d-flex justify-content-start align-items-center pb-2">
-                            <div class="img-cont mini-img d-inline-block mr-3" v-cloak>
+                <div v-if="user" class="pt-3 pb-2 d-flex justify-content-center" v-cloak>
+                    <div class="text-center card-style card-color-gray">
+                        <div class="mb-5">
+                            <div class="img-cont mini-img d-inline-block mb-2" v-cloak>
                                 <img :src="'/storage/' + user.image" alt="" class="">
                             </div>
-                            <h4 class="d-inline-block text-capitalize m-0">@{{user.name}}</h4>
+                            <h6 class="d-inline-block text-capitalize m-0">@{{user.name}} @{{user.surname}}</h6>
                         </div>
-                        <div class="text-center col-sm-12 col-md-12 col-lg-4 col-xl-4">
-                            <button type="button" name="button" class="button-style button-color-red" @click="alert=true">
-                                <i class="fas fa-trash-alt mr-1"></i> {{__('Delete account')}}
-                            </button>
-                        </div>
+                        <a :href="'/admin/users/'+user.id" class="txt-green mb-3 d-inline-block">Torna al profilo</a>
+                        <button type="button" name="button" class="button-style button-color-black" @click="alert=true">
+                            <i class="fas fa-trash-alt"></i> {{__('Delete account')}}
+                        </button>
                     </div>
                 </div>
             </div>

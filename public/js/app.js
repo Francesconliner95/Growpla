@@ -74885,9 +74885,16 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     page: 1,
     show_prev: false,
     show_next: false,
-    in_load: false
+    in_load: false,
+    showScrollTop: false
   },
   methods: {
+    scrollTop: function scrollTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    },
     showMore: function showMore() {
       var collaborations_qty = this.collaborations.length;
       var items_qty = 6;
@@ -74921,6 +74928,12 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       // console.log(document.body.offsetHeight+2);
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 2) {
         this.showMore();
+      }
+
+      if (window.scrollY > 0) {
+        this.showScrollTop = true;
+      } else {
+        this.showScrollTop = false;
       }
     }
   },
@@ -74978,7 +74991,9 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     alert_b1: '',
     alert_b2: '',
     account_name: '',
-    accounts_found: ''
+    accounts_found: '',
+    in_load_1: false,
+    in_load_2: false
   },
   methods: {
     alertMenu: function alertMenu(case_type, parameter) {
@@ -75049,6 +75064,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     getCollaborations: function getCollaborations() {
       var _this = this;
 
+      this.in_load_1 = true;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getCollaborations', {
         params: {
           account_id: this.id,
@@ -75056,11 +75072,13 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         }
       }).then(function (response) {
         _this.collaborations = response.data.results.collaborations;
+        _this.in_load_1 = false;
       });
     },
     getProposalCollaborations: function getProposalCollaborations() {
       var _this2 = this;
 
+      this.in_load_2 = true;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getProposalCollaborations', {
         params: {
           account_id: this.id,
@@ -75068,6 +75086,7 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         }
       }).then(function (response) {
         _this2.prop_collaborations = response.data.results.collaborations;
+        _this2.in_load_2 = false;
       });
     },
     deleteCollaboration: function deleteCollaboration(collaboration) {
@@ -75173,6 +75192,82 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       }).then(function (response) {
         _this7.getCollaborations();
       });
+    },
+    scrollLeft: function scrollLeft(slider_id) {
+      var content = document.getElementById('multi-slider-cont-' + slider_id);
+      var content_scroll_width = content.scrollWidth;
+      var content_scoll_left = content.scrollLeft;
+      content_scoll_left -= 10;
+
+      if (content_scoll_left <= 0) {
+        content_scoll_left = 0;
+      }
+
+      content.scrollLeft = content_scoll_left;
+      this.arrowVisibility(slider_id);
+    },
+    scrollRight: function scrollRight(slider_id) {
+      var content = document.getElementById('multi-slider-cont-' + slider_id);
+      var content_scroll_width = content.scrollWidth;
+      var content_scoll_left = content.scrollLeft;
+      content_scoll_left += 10;
+
+      if (content_scoll_left >= content_scroll_width) {
+        content_scoll_left = content_scroll_width;
+      }
+
+      content.scrollLeft = content_scoll_left;
+      this.arrowVisibility(slider_id);
+    },
+    start: function start(slider_id, direction) {
+      var _this8 = this;
+
+      if (!this.interval) {
+        this.interval = setInterval(function () {
+          if (direction == 'right') {
+            _this8.scrollRight(slider_id);
+          } else {
+            _this8.scrollLeft(slider_id);
+          }
+        }, 10);
+      }
+    },
+    arrowVisibility: function arrowVisibility(slider_id) {
+      var content = document.getElementById('multi-slider-cont-' + slider_id);
+      var content_scroll_width = content.scrollWidth;
+      var content_scoll_left = content.scrollLeft;
+      var content_offset_width = content.offsetWidth; // console.log(content_scroll_width,content_scoll_left,content_offset_width);
+
+      if (content_offset_width + content_scoll_left >= content_scroll_width) {
+        // console.log('nascondi freccia a destra');
+        document.getElementById('button-right-' + slider_id).classList.remove("visible");
+        document.getElementById('button-right-' + slider_id).classList.add("invisible");
+      } else {
+        // console.log('mostra freccia a destra');
+        document.getElementById('button-right-' + slider_id).classList.remove("invisible");
+        document.getElementById('button-right-' + slider_id).classList.add("visible");
+      }
+
+      if (content_scoll_left <= 0) {
+        // console.log('nascondi freccia a sinistra');
+        document.getElementById('button-left-' + slider_id).classList.remove("visible");
+        document.getElementById('button-left-' + slider_id).classList.add("invisible");
+      } else {
+        // console.log('mostra freccia a sinistra');
+        document.getElementById('button-left-' + slider_id).classList.remove("invisible");
+        document.getElementById('button-left-' + slider_id).classList.add("visible");
+      }
+    },
+    stop: function stop(slider_id, direction) {
+      clearInterval(this.interval);
+      this.interval = false;
+    },
+    delay: function delay(slider_id) {
+      var _this9 = this;
+
+      setTimeout(function () {
+        _this9.arrowVisibility(slider_id);
+      }, 1000);
     }
   },
   mounted: function mounted() {
@@ -75803,6 +75898,13 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     page: 1,
     show_prev: false,
     show_next: false,
+    list_user: '',
+    list_pages: '',
+    alert: false,
+    account_index_selected: '',
+    in_load: false,
+    showScrollTop: false,
+    //ricerca
     search_type: false,
     category_selected: '',
     usertypes_id: [],
@@ -75829,8 +75931,14 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     sector_selected: '',
     lifecycle_id_selected: '',
     sectors: []
-  }, _defineProperty(_data, "sector_selected", ''), _defineProperty(_data, "sectorToggle", false), _defineProperty(_data, "list_user", ''), _defineProperty(_data, "list_pages", ''), _defineProperty(_data, "alert", false), _defineProperty(_data, "account_index_selected", ''), _defineProperty(_data, "in_load", false), _data),
+  }, _defineProperty(_data, "sector_selected", ''), _defineProperty(_data, "sectorToggle", false), _defineProperty(_data, "button", false), _data),
   methods: {
+    scrollTop: function scrollTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    },
     switchAccounts: function switchAccounts(i) {
       var _this = this;
 
@@ -76167,9 +76275,15 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       }
     },
     scrollFunction: function scrollFunction() {
-      //console.log((window.innerHeight + window.scrollY) >= document.body.offsetHeight);
+      // console.log(window.innerHeight,window.scrollY,document.body.offsetHeight);
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
         this.showMore();
+      }
+
+      if (window.scrollY > 0) {
+        this.showScrollTop = true;
+      } else {
+        this.showScrollTop = false;
       }
     }
   },
@@ -76192,33 +76306,6 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     window.onscroll = function () {
       _this7.scrollFunction();
     };
-
-    if (!this.getCookie("tecCookie")) {
-      document.cookie = "tecCookie" + "=" + "accept" + ";" + "expires=" + this.dateUTC() + ";path=/";
-    }
-
-    if (!this.getCookie("analyticsCookie")) {
-      document.cookie = "analyticsCookie" + "=" + "reject" + ";" + "expires=" + this.dateUTC() + ";path=/";
-    } //FADE ANIMATION
-
-
-    var elementsArray = document.querySelectorAll(".fade-anim");
-    window.addEventListener('scroll', fadeIn);
-
-    function fadeIn() {
-      for (var i = 0; i < elementsArray.length; i++) {
-        var elem = elementsArray[i];
-        var distInView = elem.getBoundingClientRect().top - window.innerHeight + 20;
-
-        if (distInView < 0) {
-          elem.classList.add("inView");
-        } else {
-          elem.classList.remove("inView");
-        }
-      }
-    }
-
-    fadeIn();
   }
 });
 
@@ -76578,9 +76665,16 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     page: 1,
     show_prev: false,
     show_next: false,
-    in_load: false
+    in_load: false,
+    showScrollTop: false
   },
   methods: {
+    scrollTop: function scrollTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    },
     orderById: function orderById(needs) {
       //ordinamento per id
       for (var i = 0; i < needs.length; i++) {
@@ -76629,6 +76723,12 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     scrollFunction: function scrollFunction() {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
         this.showMore();
+      }
+
+      if (window.scrollY > 0) {
+        this.showScrollTop = true;
+      } else {
+        this.showScrollTop = false;
       }
     }
   },
@@ -76926,9 +77026,16 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     page: 1,
     show_prev: false,
     show_next: false,
-    in_load: false
+    in_load: false,
+    showScrollTop: false
   },
   methods: {
+    scrollTop: function scrollTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    },
     orderById: function orderById(offers) {
       //ordinamento per id
       for (var i = 0; i < offers.length; i++) {
@@ -76977,6 +77084,12 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     scrollFunction: function scrollFunction() {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
         this.showMore();
+      }
+
+      if (window.scrollY > 0) {
+        this.showScrollTop = true;
+      } else {
+        this.showScrollTop = false;
       }
     }
   },
@@ -77465,8 +77578,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
         this.height = 0;
       }
     },
-    submitForm: function submitForm() {
-      document.getElementById("myForm").submit();
+    submitForm: function submitForm(form_id) {
+      document.getElementById(form_id).submit();
     },
     newFile: function newFile() {
       var _this2 = this;
@@ -78367,6 +78480,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       } else {
         this.button = index;
       }
+
+      console.log(this.button);
     },
     change_category: function change_category() {
       this.need_selected = '';
@@ -78380,6 +78495,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           this.pagetypes_id = [1];
           this.investors_selected = false;
           this.services_selected = false;
+          this.serviceToggle = 'true'; //utile solo per il cambio colore
+
           break;
 
         case '2':
@@ -78388,6 +78505,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
           this.pagetypes_id = [];
           this.investors_selected = false;
           this.services_selected = true;
+          this.serviceToggle = 'false'; //utile solo per il cambio colore
+
           break;
 
         case '3':
@@ -78832,18 +78951,13 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     this.myLatestViews_f();
     this.mostViewedAccounts_f();
     this.getAllServices();
-    this.latestCollaborations(); // // if(){
-    //     console.log(document.getElementsByClassName('multi-slider-cont'));
-    //     var elements = document.getElementsByClassName('multi-slider-cont');
-    //     for (var i = 0; i < elements.length; i++) {
-    //         console.log('adsads');
-    //         this.arrowVisibility(i+1);
-    //     }
-    // // }
-    //document.getElementsByClassName('myClassName')[0].id
-    // document.getElementById('multi-slider-cont-' + slider_id);
-    // this.arrowVisibility(slider_id);
-    //check if is mobile
+    this.latestCollaborations(); //se clicco fuori dal div 'search-main'
+
+    window.addEventListener('click', function (e) {
+      if (!document.getElementById('search-main').contains(e.target)) {
+        _this15.button = false;
+      }
+    }); //check if is mobile
 
     this.checkMobile();
     window.addEventListener('resize', function (event) {
@@ -78876,15 +78990,6 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     }
 
     fadeIn();
-  }
-});
-document.addEventListener('click', function (event) {
-  var withinBoundaries = event.composedPath().includes(target);
-
-  if (withinBoundaries) {
-    target.innerText = 'Click happened inside element';
-  } else {
-    target.innerText = 'Click happened **OUTSIDE** element';
   }
 });
 
@@ -81317,10 +81422,8 @@ var remove_footer = false; ///////GUEST//////
 
 if (document.getElementById('guest-home')) {
   __webpack_require__(/*! ./guest/home.js */ "./resources/js/guest/home.js");
-}
 
-if (document.getElementById('guest-prehome')) {
-  __webpack_require__(/*! ./guest/prehome.js */ "./resources/js/guest/prehome.js");
+  remove_footer = true;
 }
 
 if (document.getElementById('cookie-policy')) {
@@ -81335,6 +81438,8 @@ if (document.getElementById('login')) {
 
 if (document.getElementById('incubators')) {
   __webpack_require__(/*! ./guest/incubators.js */ "./resources/js/guest/incubators.js");
+
+  remove_footer = true;
 } ///////SEARCH///////
 
 
@@ -81709,117 +81814,19 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#guest-home',
   data: {
-    accounts: accounts,
-    cooperations: cooperations,
-    chats: chats,
-    show_password: false,
-    show_login: localStorage.getItem("showLog") == 'yes' ? true : false,
-    im_log: false,
-    press_reg: false,
     showConsenScreen: false,
     analyticsCookie: getCookie('analyticsCookie') == 'accept' ? true : false,
-    cookieSettings: false,
-    user_id: false,
-    remember_me: false,
-    email: '',
-    psw: '',
-    code_verified:
-    /*getCookie('codeCookie')?true:*/
-    false,
-    code: '',
-    error: false
+    cookieSettings: false
   },
   methods: {
-    sendEmail: function sendEmail() {
-      var _this = this;
-
-      var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
-      if (this.email && this.email.match(mailformat)) {
-        this.error = false;
-        axios__WEBPACK_IMPORTED_MODULE_1___default()({
-          method: 'post',
-          url: '/api/sendEmail',
-          data: {
-            email: this.email
-          }
-        }).then(function (response) {
-          _this.code_verified = true;
-        });
-      } else {
-        this.error = true;
-      }
-    },
-    log_reg_switch: function log_reg_switch(value) {
-      this.show_login = value;
-
-      if (value == true) {
-        localStorage.setItem("showLog", 'yes');
-      } else {
-        localStorage.setItem("showLog", 'no');
-      }
-    },
-    im_log_f: function im_log_f(value) {
-      var _this2 = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/admin/getUser', {}).then(function (response) {
-        _this2.user_id = response.data.results.user_id;
-      });
-      setTimeout(function () {
-        //console.log(this.user_id);
-        if (_this2.user_id) {
-          _this2.im_log = true;
-        } else {
-          _this2.im_log = false;
-
-          if (_this2.remember_me) {
-            _this2.setRememberMe();
-          } else {
-            _this2.deleteRememberMe();
-          }
-
-          if (value == 1) {
-            document.getElementById('login-button').click();
-          } else {
-            document.getElementById('register-button').click();
-          }
-        }
-      }, 1000);
-    },
-    loading: function loading(value) {
-      var _this3 = this;
-
-      this.press_reg = true;
-      this.im_log_f(value);
-      setTimeout(function () {
-        _this3.press_reg = false;
-      }, 3000);
-    },
-    // loading(value){
-    //     this.press_reg = true;
-    //
-    //     if(!this.im_log){
-    //         console.log(this.im_log);
-    //         if(value==1){
-    //             document.getElementById('login-button').click();
-    //         }else{
-    //             document.getElementById('register-button').click();
-    //         }
-    //     }
-    //     setTimeout(()=>{
-    //         this.press_reg = false;
-    //     }, 3000);
-    // },
     getCookie: function getCookie(name) {
       var value = "; ".concat(document.cookie);
       var parts = value.split("; ".concat(name, "="));
       if (parts.length === 2) return parts.pop().split(';').shift();
     },
     showConsentScreen: function showConsentScreen() {
-      // console.log(this.getCookie('tecCookie'));
-      // console.log(this.getCookie('analyticsCookie'));
       if (!this.getCookie('tecCookie') || !this.getCookie('analyticsCookie')) {
-        this.showConsenScreen = true; //console.log(this.showConsenScreen);
+        this.showConsenScreen = true;
       } else {
         this.showConsenScreen = false;
       }
@@ -81860,50 +81867,13 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     dateUTC: function dateUTC() {
       var d = new Date();
       d.setMonth(d.getMonth() + 6);
-      return d.toUTCString(); //console.log(d.toUTCString());
-    },
-    getRememberMe: function getRememberMe() {
-      var emailCookie = this.getCookie('emailCookie');
-      var pswCookie = this.getCookie('pswCookie');
-
-      if (emailCookie || pswCookie) {
-        this.email = emailCookie;
-        this.psw = pswCookie;
-        this.remember_me = true;
-      } else {
-        this.remember_me = false;
-      } // console.log(this.getCookie('emailCookie'));
-      // console.log(this.getCookie('emailCookie'));
-
-    },
-    setRememberMe: function setRememberMe() {
-      document.cookie = 'emailCookie=' + this.email; // document.cookie = 'pswCookie='+this.psw+';secure';
-    },
-    deleteRememberMe: function deleteRememberMe() {
-      document.cookie = 'emailCookie=;'; // document.cookie = 'pswCookie=;';
-    },
-    sendCode: function sendCode() {
-      if (this.code == 'ARVTFD3') {
-        document.cookie = 'codeCookie=true; expires=' + this.dateUTC() + ";path=/";
-        this.code_verified = true;
-      } else {
-        this.error = true;
-        console.log(this.error);
-      }
+      return d.toUTCString();
     }
   },
   mounted: function mounted() {
-    this.im_log_f();
-    this.getRememberMe(); //aggiorno torno indietro
-
-    if (performance.navigation.type == 2) {
-      this.im_log_f();
-    }
-
     this.showConsentScreen(); //FADE ANIMATION
 
-    var elementsArray = document.querySelectorAll(".fade-anim"); //console.log(elementsArray);
-
+    var elementsArray = document.querySelectorAll(".fade-anim");
     window.addEventListener('scroll', fadeIn);
 
     function fadeIn() {
@@ -81919,79 +81889,110 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       }
     }
 
-    fadeIn(); //COUNTER ANIMATION
+    fadeIn(); //SCROLL LENTO
 
-    function animateValue(obj, start, end, duration) {
-      var startTimestamp = null;
-
-      var step = function step(timestamp) {
-        if (!startTimestamp) startTimestamp = timestamp;
-        var progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        obj.innerHTML = Math.floor(progress * (end - start) + start);
-
-        if (progress < 1) {
-          window.requestAnimationFrame(step);
-        }
-      };
-
-      window.requestAnimationFrame(step);
-    }
-
-    var cooperations_obj = document.getElementById("cooperations");
-    var chats_obj = document.getElementById("chats");
-    var accounts_obj = document.getElementById("profiles");
-    var cooperations = parseInt(this.cooperations);
-    var chats = parseInt(this.chats);
-    var accounts = parseInt(this.accounts);
-    var elementsCounter = document.querySelectorAll(".count-anim");
-    var count_anim = false;
-    window.addEventListener('scroll', counterAnimScroll);
-    window.cooperations = cooperations;
-    window.cooperations_obj = cooperations_obj;
-    window.chats = chats;
-    window.chats_obj = chats_obj;
-    window.accounts = accounts;
-    window.accounts_obj = accounts_obj;
-
-    function counterAnimScroll(evt) {
-      for (var i = 0; i < elementsCounter.length; i++) {
-        var elem = elementsCounter[i];
-        var distInView = elem.getBoundingClientRect().top - window.innerHeight + 20;
-
-        if (distInView < 0 && !count_anim) {
-          animateValue(cooperations_obj, 0, evt.currentTarget.cooperations, 2000);
-          animateValue(chats_obj, 0, evt.currentTarget.chats, 2000);
-          animateValue(accounts_obj, 0, evt.currentTarget.accounts, 2000);
-          count_anim = true;
-        }
-      }
-    }
-
-    function counterAnimFirstShow(num, obj) {
-      for (var i = 0; i < elementsCounter.length; i++) {
-        var elem = elementsCounter[i];
-        var distInView = elem.getBoundingClientRect().top - window.innerHeight + 20;
-
-        if (distInView < 0 && !count_anim) {
-          animateValue(cooperations_obj, 0, cooperations, 2000);
-          animateValue(chats_obj, 0, chats, 2000);
-          animateValue(accounts_obj, 0, accounts, 2000);
-          count_anim = true;
-        }
-      }
-    }
-
-    counterAnimFirstShow();
-  }
-}); //SCROLL LENTO
-
-document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault();
-    document.querySelector(this.getAttribute('href')).scrollIntoView({
-      behavior: 'smooth'
+    document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
     });
+  }
+});
+$(document).ready(function () {
+  var itemsMainDiv = '.MultiCarousel';
+  var itemsDiv = '.MultiCarousel-inner';
+  var itemWidth = "";
+  $('.leftLst, .rightLst').click(function () {
+    var condition = $(this).hasClass("leftLst");
+    if (condition) click(0, this);else click(1, this);
   });
+  ResCarouselSize();
+  $(window).resize(function () {
+    ResCarouselSize();
+  }); //this function define the size of the items
+
+  function ResCarouselSize() {
+    var incno = 0;
+    var dataItems = "data-items";
+    var itemClass = '.item';
+    var id = 0;
+    var btnParentSb = '';
+    var itemsSplit = '';
+    var sampwidth = $(itemsMainDiv).width();
+    var bodyWidth = $('body').width();
+    $(itemsDiv).each(function () {
+      id = id + 1;
+      var itemNumbers = $(this).find(itemClass).length;
+      btnParentSb = $(this).parent().attr(dataItems);
+      itemsSplit = btnParentSb.split(',');
+      $(this).parent().attr("id", "MultiCarousel" + id);
+
+      if (bodyWidth >= 1200) {
+        incno = itemsSplit[3];
+        itemWidth = sampwidth / incno;
+      } else if (bodyWidth >= 992) {
+        incno = itemsSplit[2];
+        itemWidth = sampwidth / incno;
+      } else if (bodyWidth >= 768) {
+        incno = itemsSplit[1];
+        itemWidth = sampwidth / incno;
+      } else {
+        incno = itemsSplit[0];
+        itemWidth = sampwidth / incno;
+      }
+
+      $(this).css({
+        'transform': 'translateX(0px)',
+        'width': itemWidth * itemNumbers
+      });
+      $(this).find(itemClass).each(function () {
+        $(this).outerWidth(itemWidth);
+      });
+      $(".leftLst").addClass("over");
+      $(".rightLst").removeClass("over");
+    });
+  } //this function used to move the items
+
+
+  function ResCarousel(e, el, s) {
+    var leftBtn = '.leftLst';
+    var rightBtn = '.rightLst';
+    var translateXval = '';
+    var divStyle = $(el + ' ' + itemsDiv).css('transform');
+    var values = divStyle.match(/-?[\d\.]+/g);
+    var xds = Math.abs(values[4]);
+
+    if (e == 0) {
+      translateXval = parseInt(xds) - parseInt(itemWidth * s);
+      $(el + ' ' + rightBtn).removeClass("over");
+
+      if (translateXval <= itemWidth / 2) {
+        translateXval = 0;
+        $(el + ' ' + leftBtn).addClass("over");
+      }
+    } else if (e == 1) {
+      var itemsCondition = $(el).find(itemsDiv).width() - $(el).width();
+      translateXval = parseInt(xds) + parseInt(itemWidth * s);
+      $(el + ' ' + leftBtn).removeClass("over");
+
+      if (translateXval >= itemsCondition - itemWidth / 2) {
+        translateXval = itemsCondition;
+        $(el + ' ' + rightBtn).addClass("over");
+      }
+    }
+
+    $(el + ' ' + itemsDiv).css('transform', 'translateX(' + -translateXval + 'px)');
+  } //It is used to get some elements from btn
+
+
+  function click(ell, ee) {
+    var Parent = "#" + $(ee).parent().attr("id");
+    var slide = $(Parent).attr("data-slide");
+    ResCarousel(ell, Parent, slide);
+  }
 });
 
 /***/ }),
@@ -82023,7 +82024,8 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     incubators_show: [],
     region_id: '',
     region_id_selected: '',
-    name: ''
+    name: '',
+    in_load: false
   },
   methods: {
     searchByName: function searchByName() {
@@ -82059,9 +82061,11 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     getAllIncubators: function getAllIncubators() {
       var _this3 = this;
 
+      this.in_load = true;
       axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('/api/getAllIncubators', {}).then(function (response) {
         _this3.incubators = response.data.results.incubators;
         _this3.incubators_show = _this3.incubators;
+        _this3.in_load = false;
       });
     }
   },
@@ -82107,238 +82111,6 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
     }
   },
   mounted: function mounted() {}
-});
-
-/***/ }),
-
-/***/ "./resources/js/guest/prehome.js":
-/*!***************************************!*\
-  !*** ./resources/js/guest/prehome.js ***!
-  \***************************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-//window.history.forward();
-
-
-axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
-  'X-Requested-With': 'XMLHttpRequest',
-  'X-CSRF-TOKEN': window.csrf_token
-};
-var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
-  el: '#guest-prehome',
-  data: {
-    email: '',
-    error: false,
-    send_success: false,
-    showConsenScreen: false,
-    analyticsCookie: getCookie('analyticsCookie') == 'accept' ? true : false,
-    cookieSettings: false
-  },
-  methods: {
-    sendEmail: function sendEmail() {
-      var _this = this;
-
-      console.log(this.email);
-      var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
-      if (this.email && this.email.match(mailformat)) {
-        this.error = false;
-        axios__WEBPACK_IMPORTED_MODULE_1___default()({
-          method: 'post',
-          url: '/api/sendEmail',
-          data: {
-            email: this.email
-          }
-        }).then(function (response) {
-          _this.send_success = true;
-        });
-      } else {
-        this.error = true;
-      }
-    },
-    getCookie: function getCookie(name) {
-      var value = "; ".concat(document.cookie);
-      var parts = value.split("; ".concat(name, "="));
-      if (parts.length === 2) return parts.pop().split(';').shift();
-    },
-    showConsentScreen: function showConsentScreen() {
-      // console.log(this.getCookie('tecCookie'));
-      // console.log(this.getCookie('analyticsCookie'));
-      if (!this.getCookie('tecCookie') || !this.getCookie('analyticsCookie')) {
-        this.showConsenScreen = true; //console.log(this.showConsenScreen);
-      } else {
-        this.showConsenScreen = false;
-      }
-    },
-    closeConsentScreen: function closeConsentScreen() {
-      this.showConsenScreen = false;
-      document.cookie =
-      /*"tecCookie=accept"; */
-      "tecCookie" + "=" + "accept" + ";" + "expires=" + this.dateUTC() + ";path=/";
-
-      if (!this.getCookie('analyticsCookie')) {
-        document.cookie = "analyticsCookie" + "=" + "reject" + ";" + "expires=" + this.dateUTC() + ";path=/";
-        this.analyticsCookie = false;
-      }
-    },
-    acceptAll: function acceptAll() {
-      this.showConsenScreen = false;
-      document.cookie =
-      /*"tecCookie=accept"; */
-      "tecCookie" + "=" + "accept" + ";" + "expires=" + this.dateUTC() + ";path=/";
-      document.cookie = "analyticsCookie" + "=" + "accept" + ";" + "expires=" + this.dateUTC() + ";path=/";
-      this.analyticsCookie = true;
-    },
-    acceptSelected: function acceptSelected() {
-      this.showConsenScreen = false;
-      document.cookie =
-      /*"tecCookie=accept"; */
-      "tecCookie" + "=" + "accept" + ";" + "expires=" + this.dateUTC() + ";path=/";
-
-      if (this.analyticsCookie) {
-        document.cookie = "analyticsCookie" + "=" + "accept" + ";" + "expires=" + this.dateUTC() + ";path=/";
-        this.analyticsCookie = true;
-      } else {
-        document.cookie = "analyticsCookie" + "=" + "reject" + ";" + "expires=" + this.dateUTC() + ";path=/";
-        this.analyticsCookie = false;
-      }
-    },
-    dateUTC: function dateUTC() {
-      var d = new Date();
-      d.setMonth(d.getMonth() + 6);
-      return d.toUTCString(); //console.log(d.toUTCString());
-    },
-    getRememberMe: function getRememberMe() {
-      var emailCookie = this.getCookie('emailCookie');
-      var pswCookie = this.getCookie('pswCookie');
-
-      if (emailCookie || pswCookie) {
-        this.email = emailCookie;
-        this.psw = pswCookie;
-        this.remember_me = true;
-      } else {
-        this.remember_me = false;
-      } // console.log(this.getCookie('emailCookie'));
-      // console.log(this.getCookie('emailCookie'));
-
-    },
-    setRememberMe: function setRememberMe() {
-      document.cookie = 'emailCookie=' + this.email; // document.cookie = 'pswCookie='+this.psw+';secure';
-    },
-    deleteRememberMe: function deleteRememberMe() {
-      document.cookie = 'emailCookie=;'; // document.cookie = 'pswCookie=;';
-    },
-    sendCode: function sendCode() {
-      if (this.code == 'ARVTFD3') {
-        document.cookie = 'codeCookie=true; expires=' + this.dateUTC() + ";path=/";
-        this.code_verified = true;
-      } else {
-        this.error = true;
-        console.log(this.error);
-      }
-    }
-  },
-  mounted: function mounted() {
-    this.getRememberMe();
-    this.showConsentScreen(); //FADE ANIMATION
-
-    var elementsArray = document.querySelectorAll(".fade-anim"); //console.log(elementsArray);
-
-    window.addEventListener('scroll', fadeIn);
-
-    function fadeIn() {
-      for (var i = 0; i < elementsArray.length; i++) {
-        var elem = elementsArray[i];
-        var distInView = elem.getBoundingClientRect().top - window.innerHeight + 20;
-
-        if (distInView < 0) {
-          elem.classList.add("inView");
-        } else {
-          elem.classList.remove("inView");
-        }
-      }
-    }
-
-    fadeIn(); //COUNTER ANIMATION
-
-    function animateValue(obj, start, end, duration) {
-      var startTimestamp = null;
-
-      var step = function step(timestamp) {
-        if (!startTimestamp) startTimestamp = timestamp;
-        var progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        obj.innerHTML = Math.floor(progress * (end - start) + start);
-
-        if (progress < 1) {
-          window.requestAnimationFrame(step);
-        }
-      };
-
-      window.requestAnimationFrame(step);
-    }
-
-    var cooperations_obj = document.getElementById("cooperations");
-    var chats_obj = document.getElementById("chats");
-    var accounts_obj = document.getElementById("profiles");
-    var cooperations = parseInt(this.cooperations);
-    var chats = parseInt(this.chats);
-    var accounts = parseInt(this.accounts);
-    var elementsCounter = document.querySelectorAll(".count-anim");
-    var count_anim = false;
-    window.addEventListener('scroll', counterAnimScroll);
-    window.cooperations = cooperations;
-    window.cooperations_obj = cooperations_obj;
-    window.chats = chats;
-    window.chats_obj = chats_obj;
-    window.accounts = accounts;
-    window.accounts_obj = accounts_obj;
-
-    function counterAnimScroll(evt) {
-      for (var i = 0; i < elementsCounter.length; i++) {
-        var elem = elementsCounter[i];
-        var distInView = elem.getBoundingClientRect().top - window.innerHeight + 20;
-
-        if (distInView < 0 && !count_anim) {
-          animateValue(cooperations_obj, 0, evt.currentTarget.cooperations, 2000);
-          animateValue(chats_obj, 0, evt.currentTarget.chats, 2000);
-          animateValue(accounts_obj, 0, evt.currentTarget.accounts, 2000);
-          count_anim = true;
-        }
-      }
-    }
-
-    function counterAnimFirstShow(num, obj) {
-      for (var i = 0; i < elementsCounter.length; i++) {
-        var elem = elementsCounter[i];
-        var distInView = elem.getBoundingClientRect().top - window.innerHeight + 20;
-
-        if (distInView < 0 && !count_anim) {
-          animateValue(cooperations_obj, 0, cooperations, 2000);
-          animateValue(chats_obj, 0, chats, 2000);
-          animateValue(accounts_obj, 0, accounts, 2000);
-          count_anim = true;
-        }
-      }
-    }
-
-    counterAnimFirstShow();
-  }
-}); //SCROLL LENTO
-
-document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault();
-    document.querySelector(this.getAttribute('href')).scrollIntoView({
-      behavior: 'smooth'
-    });
-  });
 });
 
 /***/ }),

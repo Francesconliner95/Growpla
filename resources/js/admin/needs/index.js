@@ -15,8 +15,12 @@ var create = new Vue({
         show_prev: false,
         show_next: false,
         in_load: false,
+        showScrollTop: false,
     },
     methods: {
+        scrollTop(){
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        },
 
         orderById(needs){
             //ordinamento per id
@@ -61,6 +65,11 @@ var create = new Vue({
         scrollFunction(){
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
                 this.showMore();
+            }
+            if(window.scrollY>0){
+                this.showScrollTop = true;
+            }else{
+                this.showScrollTop = false;
             }
         },
 

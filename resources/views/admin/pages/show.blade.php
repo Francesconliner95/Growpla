@@ -21,14 +21,14 @@
                     </button>
                     <div class="">
                         <h6>Seleziona l'account con cui vuoi contattare</h6>
-                        <a v-if="list_user.id" href="#" @click="startChat()" class="d-block" v-cloak>
+                        <a v-if="list_user.id" href="#" @click="startChat()" class="" v-cloak>
                             <div class="img-cont mini-img">
                                 <img v-if="list_user.image" :src="'/storage/' + list_user.image" alt="">
                             </div>
                             @{{list_user.name + ' ' + list_user.surname}}
                         </a>
                         <a v-for="page in list_pages"
-                        v-if="page.id!=id" href="#" @click="startChat(page.id)" class="d-block" v-cloak>
+                        v-if="page.id!=id" href="#" @click="startChat(page.id)" class="" v-cloak>
                             <div class="img-cont mini-img">
                                 <img v-if="page.image" :src="'/storage/'+page.image" alt="">
                             </div>

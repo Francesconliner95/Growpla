@@ -11,6 +11,9 @@
         <div class="item-cont">
             <div class="item-style">
                 <h3 >Tutte le offerte</h3>
+                <button v-if="showScrollTop" type="button" name="button" class="button-scroll" @click="scrollTop()">
+                    <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-90l" alt="">
+                </button>
                 <div class="">
                     <div v-for="offer in offers_show" class="row gray-cont" v-cloak>
                         <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
@@ -40,7 +43,7 @@
                     <div v-if="offers_show.length==0 && !in_load" class="" v-cloak>
                         <h5>Nessun risultato</h5>
                     </div>
-                    <div v-if="in_load" class="d-flex justify-content-center" v-clock>
+                    <div v-if="in_load" class="d-flex justify-content-center" v-cloak>
                         <div class="spinner-border text-secondary" role="status">
                             <span class="sr-only">Loading...</span>
                         </div>

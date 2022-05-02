@@ -86,8 +86,8 @@ class HaveUserServiceController extends Controller
                 }
             }
 
-            if(Auth::user()->tutorial>=2){
-                return redirect()->route('admin.users.tutorial');
+            if(Auth::user()->tutorial){
+                return redirect()->route('admin.give_user_skills.edit',$user->id);
             }else{
                 return redirect()->route('admin.users.show',$user->id);
             }

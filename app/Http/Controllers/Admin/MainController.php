@@ -47,7 +47,12 @@ class MainController extends Controller
 
       app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
-      return view('admin.search', $data);
+
+        if(Auth::user()->tutorial){
+            return redirect()->route('admin.users.create');
+        }else{
+            return view('admin.search', $data);
+        }
 
     }
 

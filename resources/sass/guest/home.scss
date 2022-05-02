@@ -1,182 +1,290 @@
 #guest-home{
-    // background-image: url('../../../public/storage/images/preview-background.jpg');
-    // background-size: cover;
-    //background-color: #f3f5f9;
-    // rgb(175,217,170)
-    // rgb(122,175,223);
-    position: relative;
-    // min-height: calc(100vh - 113px);
+
+background-color: $green_3;
+background: linear-gradient(0deg, $green_3 0%, $blue_3 50%, $green_3 100%);
+
+h1{
+    font-weight: bold;
+    color: white;
+    font-size: 40px;
+    line-height: 1;
+}
+
+h4{
+    color: black;
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+p{
+    font-size: 15px;
+}
+
+.iscriviti-ora{
+    text-transform: uppercase;
+    width: 250px;
+    height: 80px;
+    border-radius: 40px;
+    font-size: 27px;
+    font-weight: bold;
+    border: 4px solid white;
+    display: inline-block;
     display: flex;
     align-items: center;
-    flex-direction: column;
-    justify-content: space-around;
-    .logo-cont{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        .logo{
-            width: 100%;
-            height: auto;
-            object-fit: fill;
+    justify-content: center;
+    &:hover{
+        text-decoration: none;
+    }
+}
+
+.step-cont{
+    display: flex;
+    justify-content: flex-start;
+    .step{
+        .step-circle{
+            height: 80px;
+            width: 80px;
+            border-radius: 50%;
+            border: 6px solid white;
+            margin: 0 auto;
+            transition: 0.5s;
+            &:hover{
+                background-color: white;
+            }
         }
-        .beta{
-            position: absolute;
-            top: 0px;
-            right: 0px;
+        .step-line{
+            height: 40px;
+            width: 6px;
+            background-color: white;
+            margin: 0 auto;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+    }
+    .step-text{
+        padding-left: 25px;
+        padding-top: 7px;
+        h5{
+            font-weight: bold;
+            color: white;
+        }
+        p{
+            color: white;
+        }
+    }
+    &:last-child{
+        .step{
+            .step-line{
+                display: none;
+            }
+        }
+    }
+}
+
+.roadmap-item{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    &:last-child{
+        .roadmap-img{
+            .roadmap-line{
+                display: none;
+            }
+        }
+    }
+    .roadmap-img{
+        position: relative;
+        img{
+            width: 120px;
+            height: 200px;
+            object-fit: contain;
+            z-index: 2;
+            object-position: -11px 0px;
+        }
+        // .roadmap-line{
+        //     position: absolute;
+        //     height: 100px;
+        //     width: 10px;
+        //     background-color: rgba(255, 255, 255, .5);
+        //     top: 180px;
+        //     left: 50%;
+        //     transform: translateX(-50%);
+        // }
+    }
+    .roadmap-text{
+        padding-left: 20px;
+        .title-cont{
+            h5{
+                font-weight: bold;
+            }
+            span{
+                display: inline-block;
+                width: 100px;
+                height: 2px;
+                margin-left: 20px;
+            }
+        }
+        p{
+            max-width: 385px;
+            padding-top: 10px;
+            padding-left: 20px;
+            color: white;
             font-weight: bold;
         }
     }
-    .preview{
-        .intro{
-            text-align: center;
-            color: white;
-            padding-top: 75px;
-            padding-bottom: 50px;
-            color: $light_black;
-            h3{
-                padding: 15px 0;
-            }
-            .home-img{
-                width: 100%;
-                height: auto;
-            }
-        }
-        .code-ver{
-            padding: 75px 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            .form-group{
-                display: flex;
-                justify-content: space-around;
-                margin-top: 20px;
-                div{
-                    margin-right: 5px;
-                }
-            }
-        }
-        .login-register-cont{
-            padding: 75px 0px;
-            .switch{
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-end;
-                button{
-                    width: 50%;
-                    height: 35px;
-                    border: none;
-                    border-radius: 10px 10px 0px 0px;
-                    font-size: 20px;
-                    background-color: $default_green;
-                    color: white;
-                    font-weight: bold;
-                }
-                .selected{
-                    height: 50px;
-                    background-color: white;
-                    color: black;
-                    border-bottom: none;
-                }
-            }
+}
 
-            .log-reg{
-                background-color: white;
-                min-height: 400px;
-                padding: 5px 20px;
-                box-shadow: 0px 0px 10px 1px #ccc;
-                border-radius: 0px 0px 10px 10px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-                form{
-                    width: 100%;
-                }
-            }
-
-            .password{
-                position: relative;
-                button{
-                    position: absolute;
-                    top: 50%;
-                    right: 0px;
-                    transform: translate(-150%,-50%);
-                    color: gray;
-                }
-            }
+.screenshot{
+    >div>div>div{
+        // display: flex;
+        // align-items: center;
+        // justify-content: center;
+        // height: 600px;
+    }
+    .text-container{
+        min-height: 250px;
+        padding: 25px;
+        h1{
+            padding: 0px;
         }
     }
-
-    .landing{
-        width: 100%;
-        h2{
-            margin-bottom: 30px;
-        }
-        .item-style{
-            // height: 450px;
-            min-height: 250px;
-            display: flex;
-            justify-content: space-between;
-            flex-direction: column;
-            //border: 2px solid $default_green;
-            transition: .2s;
-            //border-radius: 5px;
-            &:hover{
-                transform: scale(1.01);
-            }
-            img{
-                height: 50%;
-                border-top-left-radius: 10px;
-                border-top-right-radius: 10px;
-            }
-            .card-info{
-                // height: 50%;
-                height: 100%;
-                padding: 10px;
-                // border-bottom-left-radius: 10px;
-                // border-bottom-right-radius: 10px;
-                // border-top-left-radius: 10px;
-                // border-top-right-radius: 10px;
-                color: #555;
-                h2{
-                    margin-bottom: 15px;
-                }
-                p{
-                    margin: 0px;
-                }
-            }
-        }
-        .gray-blue-bg{
-            background-color: $gray-blue;
-        }
+    .image-container{
+        min-height: 250px;
+        position: relative;
         img{
-            height: 333px;
-            object-fit: cover;
+            height: 100%;
+            width: 100%;
         }
-        .text-cont{
-            display: flex;
-            align-items: center;
-            justify-content: center;
+    }
+}
+
+.partner{
+    .partner-cont{
+        background-color: white;
+        img{
+            width: 300px;
+            object-fit: contain;
+            // filter: brightness(0) invert(1);
+        }
+    }
+}
+
+.reviews{
+    .card-slider-review{
+        .MultiCarousel {
+            float: left;
+            overflow: hidden;
+            padding: 80px;
+            width: 100%;
+            position:relative;
+        }
+        .MultiCarousel .MultiCarousel-inner {
+            transition: 1s ease all;
+            float: left;
+        }
+        .MultiCarousel .MultiCarousel-inner .item {
+            float: left;
+            padding: 25px;
+        }
+        .MultiCarousel .MultiCarousel-inner .item .pad15{
+            height: 460px;
+            padding: 40px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 40px;
+            margin:10px;
+            .info-container{
+                .image-container{
+                    margin: 0 auto;
+                    margin-bottom: 40px;
+                    background-color: white;
+                    border-radius: 50%;
+                    width: 80px;
+                    height: 80px;
+                    img{
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+                .text-container{
+                    .main-text{
+                        height: 240px;
+                    }
+                    p{
+                        text-align: center;
+                        color: black;
+                        font-size: 16px;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+        .MultiCarousel .leftLst, .MultiCarousel .rightLst {
+            width: 45px;
+            height: 460px;
+            position:absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            //background: red;
+            background-color: transparent;
+            &:focus{
+                outline: none;
+                box-shadow: none;
+            }
+        }
+        .MultiCarousel .leftLst {
+            left: 0px;
+        }
+        .MultiCarousel .rightLst {
+            right: 0px;
+        }
+        .MultiCarousel .leftLst.over, .MultiCarousel .rightLst.over {
+            display: none;
+        }
+    }
+}
+
+@media (min-width: 768px){
+
+    h1{
+        font-size: 65px;
+    }
+
+    h4{
+        font-size: 35px;
+    }
+
+    h5{
+        font-size: 25px;
+    }
+
+    p{
+        font-size: 20px;
+    }
+
+    .roadmap-item{
+        .roadmap-img{
+            img{
+                width: 200px;
+            }
+        }
+        .roadmap-text{
+            padding-left: 50px;
+            .title-cont{
+                span{
+                    margin-left: 50px;
+                }
+            }
             p{
-                font-size: 20px;
-            }
-        }
-
-    }
-
-    .stats{
-        width: 100%;
-        // padding: 20px 0;
-        // background-color: $teal;
-        // color: white;
-    }
-
-    @media (min-width: 992px){
-        .preview{
-            .intro{
-                padding-right:50px;
+                padding-left: 50px;
             }
         }
     }
+    .screenshot{
+        .text-container{
+            padding: 100px;
+        }
+    }
+}
+
 }

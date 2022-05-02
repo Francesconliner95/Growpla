@@ -9,7 +9,10 @@
     <div class="container">
         <div class="item-cont">
             <div class="item-style">
-              <div class="row pb-5">
+                <form method="POST" id="pageForm" enctype="multipart/form-data" action="{{ route('admin.pages.update', ['page'=> $page->id]) }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="row pb-5">
                   <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 left-area order-1 order-sm-1 order-md-0">
                     <div class="h-100 d-flex align-items-center">
                         <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 pt-3 pb-3">
@@ -18,7 +21,7 @@
                             <p class="txt-green mini-txt">Tuttavia un profilo più completo ha più possibiltà di essere visionato dagli altri utenti</p>
                             <div class="pt-5">
                                 <p class="mini-txt font-weight-bold">Appena terminato salva i progressi</p>
-                                <button type="submit" class="button-style button-color" @click="submitForm()">
+                                <button type="submit" class="button-style button-color">
                                     {{__('Save Changes')}}
                                 </button>
                             </div>
@@ -26,10 +29,6 @@
                     </div>
                   </div>
                   <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 bg-gray right-area order-0 order-sm-0 order-md-1">
-                      <form method="POST" id="pageForm" enctype="multipart/form-data" action="{{ route('admin.pages.update', ['page'=> $page->id]) }}" {{--@submit.prevent="submitForm()"--}}>
-                        @csrf
-                        @method('PUT')
-
                         {{-- NOME --}}
                         <div class="sub-section">
                             <div class="row">
@@ -48,7 +47,7 @@
                         </div>
                         <div class="sub-section row">
                             <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
-                              <h6>Sommario</h6>
+                              <h6>Sommario*</h6>
                             </div>
                             <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
                               <textarea name="summary" rows="3" cols="80" class="form-control" placeholder="Descrivi brevente ciò che fai"  minlength="50" maxlength="150">{{ $page->summary }}</textarea>
@@ -139,7 +138,7 @@
                                           <label class="input-container m-0">Si
                                             <input type="radio" id="mvp-yes" name="type_bool_1" value="1"
                                             {{$page->type_bool_1?'checked':''}} required>
-                                            <span class="checkmark mt-1"></span>
+                                            <span class="checkmark"></span>
                                           </label>
                                       </div>
                                     </div>
@@ -148,7 +147,7 @@
                                           <label class="input-container m-0">No
                                             <input type="radio" id="mvp-no" name="type_bool_1" value=""
                                             {{!$page->type_bool_1?'checked':''}} required>
-                                            <span class="checkmark mt-1"></span>
+                                            <span class="checkmark"></span>
                                           </label>
                                       </div>
                                     </div>
@@ -168,7 +167,7 @@
                                             <label class="input-container m-0">Privato
                                               <input type="radio" id="i-private" name="type_bool_1" value=""
                                               {{!$page->type_bool_1?'checked':''}} required>
-                                              <span class="checkmark mt-1"></span>
+                                              <span class="checkmark"></span>
                                             </label>
                                           </div>
                                         </div>
@@ -177,7 +176,7 @@
                                             <label class="input-container m-0">Pubblico
                                               <input type="radio" id="i-public" name="type_bool_1" value="1"
                                               {{$page->type_bool_1?'checked':''}} required>
-                                              <span class="checkmark mt-1"></span>
+                                              <span class="checkmark"></span>
                                             </label>
                                           </div>
                                         </div>
@@ -195,7 +194,7 @@
                                             <label class="input-container m-0">Fisici
                                               <input type="radio" id="i-fisici" name="type_int_1" value=""
                                               {{!$page->type_int_1?'checked':''}} required>
-                                              <span class="checkmark mt-1"></span>
+                                              <span class="checkmark"></span>
                                             </label>
                                           </div>
                                         </div>
@@ -204,7 +203,7 @@
                                             <label class="input-container m-0">Online
                                               <input type="radio" id="i-online" name="type_int_1" value="1"
                                               {{$page->type_int_1==1?'checked':''}} required>
-                                              <span class="checkmark mt-1"></span>
+                                              <span class="checkmark"></span>
                                             </label>
                                           </div>
                                         </div>
@@ -213,48 +212,13 @@
                                             <label class="input-container m-0">Ibridi
                                               <input type="radio" id="i-ibrid" name="type_int_1" value="2"
                                               {{$page->type_int_1==2?'checked':''}} required>
-                                              <span class="checkmark mt-1"></span>
+                                              <span class="checkmark"></span>
                                             </label>
                                           </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            {{-- <div class="sub-section">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-2">
-                                        <h6>Tipologia</h6>
-                                        <label class="input-container m-0">Privato
-                                          <input type="radio" id="i-private" name="type_bool_1" value=""
-                                          {{!$page->type_bool_1?'checked':''}} required>
-                                          <span class="checkmark mt-1"></span>
-                                        </label>
-                                        <label class="input-container m-0">Pubblico
-                                          <input type="radio" id="i-public" name="type_bool_1" value="1"
-                                          {{$page->type_bool_1?'checked':''}} required>
-                                          <span class="checkmark mt-1"></span>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-2">
-                                        <h6>Servizi erogati</h6>
-                                        <label class="input-container m-0">Fisici
-                                          <input type="radio" id="i-fisici" name="type_int_1" value=""
-                                          {{!$page->type_int_1?'checked':''}} required>
-                                          <span class="checkmark mt-1"></span>
-                                        </label>
-                                        <label class="input-container m-0">Online
-                                          <input type="radio" id="i-online" name="type_int_1" value="1"
-                                          {{$page->type_int_1==1?'checked':''}} required>
-                                          <span class="checkmark mt-1"></span>
-                                        </label>
-                                        <label class="input-container m-0">Ibridi
-                                          <input type="radio" id="i-ibrid" name="type_int_1" value="2"
-                                          {{$page->type_int_1==2?'checked':''}} required>
-                                          <span class="checkmark mt-1"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div> --}}
                         @endif
                         {{-- SitoWeb --}}
                         <div class="sub-section  row">
@@ -267,7 +231,7 @@
                             </h6>
                           </div>
                           <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
-                            <input type="text" name="website" class="form-control border-green" maxlength="255" value="{{ old('website',$page->website)}}" placeholder="es. https://www.growpla.it">
+                            <input type="url" name="website" class="form-control border-green" maxlength="255" value="{{ old('website',$page->website)}}" placeholder="es. https://www.growpla.it">
                             @error ('website')
                                 <div class="alert alert-danger">
                                     {{__($message)}}
@@ -286,7 +250,7 @@
                             </h6>
                           </div>
                           <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
-                            <input type="text" name="linkedin" class="form-control border-green" maxlength="255" value="{{ old('linkedin',$page->linkedin)}}" placeholder="es. https://www.linkedin.com/in/...">
+                            <input type="url" name="linkedin" class="form-control border-green" maxlength="255" value="{{ old('linkedin',$page->linkedin)}}" placeholder="es. https://www.linkedin.com/in/...">
                             @error ('linkedin')
                                 <div class="alert alert-danger">
                                     {{__($message)}}
@@ -343,9 +307,9 @@
                               </div>
                             </div>
                         </div>
-                    </form>
                   </div>
               </div>
+                </form>
             </div>
         </div>
   </div>

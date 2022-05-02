@@ -22,7 +22,7 @@
                         <div class="img-cont micro-img no-br">
                             <img src="{{ asset("storage/images/icon-chat.svg") }}" alt="">
                         </div>
-                    </h4>                    
+                    </h4>
                 </div>
                 <div style="height: calc(100vh - 200px);">
                     <div class="messages-cont custom-scrollbar" id="scroll-messages">
@@ -35,7 +35,7 @@
                         </div>
                     </div>
                     <div class="messages-footer">
-                        <input v-model="message_text" @keyup.enter="sendMessage()" type="text" name="" value="" class="input" placeholder="{{__('Write a message')}}...">
+                        <input v-model="message_text" @keyup.enter="sendMessage()" type="text" name="" value="" class="custom-input" placeholder=" {{__('Write a message')}}...">
                         <button type="button" name="button" @click="sendMessage()" class="button-style button-color">{{__('Send')}}</button>
                     </div>
                 </div>

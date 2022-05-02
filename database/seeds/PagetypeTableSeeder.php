@@ -22,7 +22,7 @@ class PagetypeTableSeeder extends Seeder
               'name'=>'startup',
               'name_it'=>'startup',
               'description'=>'',
-              'description_it'=>'',
+              'description_it'=>'Una Startup è un\'azienda il cui modello di business è innovativo, scalabile e ripetibile',
               'image'=>'pages_images/default-startup.svg',
               'hidden' => null,
           ],
@@ -40,9 +40,8 @@ class PagetypeTableSeeder extends Seeder
               'description'=>'A business incubator is an organization that accelerates and systematizes the process of creating new businesses by providing them with a wide range of integrated support services that include physical incubator spaces, business development support services and opportunities for integration and networking.
               The accelerator is a program aimed at accelerating the development of startups and early stage companies, within which entrepreneurial support is offered through the provision of services, the organization of networking activities, the possibility of obtaining consultancy on the model of business, the provision of physical spaces in which to work.
               Generally, both incubation and acceleration services are offered within the same structure.',
-              'description_it'=>'Un incubatore d’impresa è un’organizzazione che accelera e rende sistematico il processo di creazione di nuove imprese fornendo loro una vasta gamma di servizi di supporto integrati che includono gli spazi fisici dell’incubatore, i servizi di supporto allo sviluppo del business e le opportunità di integrazione e networking.
-              L’acceleratore è un programma volto ad accelerare lo sviluppo di startup e di imprese early stage, all\'interno del quale si offre supporto imprenditoriale attraverso l’erogazione di servizi, l’organizzazione di attività di networking, la possibilità di ottenere consulenze sul modello di business, la fornitura di spazi fisici nei quali lavorare.
-              Generalmente all\'interno di una stessa struttura sono offerti sia i servizi di incubazione che di accelerazione.',
+              'description_it'=>'Un incubatore velocizza e rende sistematico il processo di creazione di nuove imprese fornendo loro servizi di supporto.
+              Un acceleratore accelera lo sviluppo di imprese early stage.',
               'image'=>'pages_images/default-incubatore.svg',
               'hidden' => null,
           ],

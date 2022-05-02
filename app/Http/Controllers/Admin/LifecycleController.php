@@ -77,7 +77,11 @@ class LifecycleController extends Controller
 
             app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
-            return redirect()->route('admin.pages.show',$page->id);
+            if($page->tutorial>=1){
+                return redirect()->route('admin.have-page-services.edit',$page->id);
+            }else{
+                return redirect()->route('admin.pages.show',$page->id);
+            }
 
         }abort(404);
 

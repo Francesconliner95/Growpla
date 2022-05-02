@@ -26,7 +26,7 @@ body{
         top: 0px;
         left: 0px;
         background-color: rgba(1, 1, 1, .5);
-        z-index: 5;
+        z-index: 7;
         left: 0px;
         .alert-item{
             max-height: 500px;
@@ -35,12 +35,34 @@ body{
             left: 50%;
             transform: translate(-50%,-50%);
             overflow-y: auto;
-            .item-style{
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                align-items: center;
-                padding-top: 40px;
+            .item-style-visible{
+                padding: 30px;
+                background-color: white;
+                border-radius: 20px;
+                button{
+                    margin-top: 20px;
+                    margin-right: 15px;
+                }
+                h6{
+                    color: $blue_3;
+                    margin-bottom: 15px;
+                }
+                a{
+                    display: flex;
+                    align-items: center;
+                    color: black;
+                    font-weight: bold;
+                    border-radius: 10px;
+                    text-transform: capitalize;
+                    padding: 3px 5px;
+                    &:hover{
+                        text-decoration: none;
+                        background-color: $blue_1;
+                    }
+                    img{
+                        padding-right: 5px;
+                    }
+                }
             }
         }
     }
@@ -146,10 +168,9 @@ ul>p{
     //padding: 10px;
     text-align: center;
     width: 100%;
-    background-color: #031b4e;
+    background-color: $gray_1;
     z-index: 5;
-    color: white;
-    opacity: .9;
+    color: black;
 }
 .bg-blue{
     background-color: $blue_1;
@@ -166,6 +187,10 @@ ul>p{
 }
 .bg-gray{
     background-color: $gray_2;
+}
+
+.bg-black{
+    background-color: $dark_2;
 }
 
 .bg-dark{
@@ -378,6 +403,7 @@ select option[value=""]{
   width: 15px;
   background-color: #eee;
   border-radius: 50%;
+  border: 2px solid $green_3;
 }
 /* On mouse-over, add a grey background color */
 .input-container:hover input ~ .checkmark {
@@ -403,8 +429,8 @@ select option[value=""]{
 
 /* Style the indicator (dot/circle) */
 .input-container .checkmark:after {
- 	top: 5px;
-	left: 5px;
+ 	top: 3px;
+	left: 3px;
 	width: 5px;
 	height: 5px;
 	border-radius: 50%;
@@ -415,32 +441,61 @@ select option[value=""]{
     padding: 10px 0px;
     position: relative;
     .found{
-        width: 300px;
-        background-color: white;
-        box-shadow: 0px 0px 10px 1px #ccc;
+        width: 350px;
+        background-color: $gray_2;
         padding: 5px;
-        border-radius: 10px;
         max-height: 200px;
         overflow: auto;
         position: absolute;
-        z-index: 1;
+        z-index: 6;
+        &::-webkit-scrollbar{//scroll
+            width: 3px;
+            background-color: $gray_2;
+            position: absolute;
+            right: 10px;
+        }
+        &::-webkit-scrollbar-track{//binario
+            //border-radius: 10px;
+            background-color: transparent;
+
+        }
+        &::-webkit-scrollbar-thumb{//cursore
+            background-color:  $green_3;
+        }
         .item{
             padding: 5px;
-            border-bottom: solid 1px rgba(0,0,0,.2);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            // button{
-            //     padding: 5px 15px;
-            //     border: none;
-            //     outline: none;
-            //     border-radius: 20px;
-            //     background-color: $default_green;
-            //     color: white;
-            //     &:hover{
-            //         opacity: 0.9;
-            //     }
-            // }
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: capitalize;
+            text-align: left;
+            color: black;
+            .profile-info{
+                display: flex;
+                align-items: center;
+                .img-cont{
+                    margin-right: 5px;
+                }
+                a{
+                    color: black;
+                    &:hover{
+                        text-decoration: none;
+                    }
+                }
+            }
+            button{
+                border: 2px solid $dark_2;
+                background-color: $dark_2;
+                color: white;
+                padding: 2px 6px;
+                transition: 0.2s;
+                &:hover{
+                    background-color: white;
+                    color: $dark_2;
+                }
+            }
         }
     }
 }
@@ -622,10 +677,26 @@ select option[value=""]{
   color: white !important;
 }
 
-.button-color-sector{
-    border: 2px solid $orange;
-    color: $orange;
+.button-color-white{
+    border: 2px solid white;
     background-color: white;
+    color: $green_3;
+    &:hover{
+        transition: 0.2s;
+        color: white;
+        background-color: transparent;
+    }
+}
+
+.button-color-transparent{
+    border: 2px solid white;
+    background-color: transparent;
+    color: white;
+    &:hover{
+        transition: 0.2s;
+        color: $green_3;
+        background-color: white;
+    }
 }
 
 .button-color{
@@ -658,6 +729,17 @@ select option[value=""]{
         transition: 0.2s;
         color: $blue_3;
         background-color: $blue_1;
+    }
+}
+
+.button-color-black{
+    border: 2px solid $dark_2;
+    background-color: $dark_2;
+    color: white;
+    &:hover{
+        transition: 0.2s;
+        color: $dark_2;
+        background-color: white;
     }
 }
 
@@ -735,6 +817,32 @@ select option[value=""]{
     border: 3px solid $green_3;
 }
 
+.button-scroll{
+    position: fixed;
+    background-color: $dark_2;
+    border: 2px solid $dark_2;
+    border-radius: 50%;
+    color: white;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 20px;
+    bottom: 20px;
+    transition: 0.2s;
+    img{
+        filter: brightness(0) invert(1);
+    }
+    &:hover{
+        background-color: white;
+        color: $dark_2;
+        img{
+            filter: brightness(0) invert(0);
+        }
+    }
+}
+
 .bubble-cont{
     position: relative;
     .bubble{
@@ -783,7 +891,17 @@ select option[value=""]{
     }
 }
 
-
+.button-style-radius{
+    display: inline-block;
+    padding: 5px 45px 5px 45px;
+    border-radius: 20px;
+    transition: 0.2s;
+    font-weight: bold;
+    &:hover{
+        text-decoration: none;
+        cursor: pointer;
+    }
+}
 
 .button-style-circle{
     display: inline-block;
@@ -805,7 +923,7 @@ select option[value=""]{
     }
 }
 
-//switch piccolo
+//switch toggle
 .switch-button-container{
     display: flex;
     justify-content: center;
@@ -906,7 +1024,108 @@ select option[value=""]{
         transition: 0.3s ease all;
     }
 }
+//switch on-of
+//switch piccolo
+.switch-button-on-off{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
+    .knobs, .layer
+    {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+
+    .button
+    {
+        display: inline-block;
+        position: relative;
+        top: 50%;
+        width: 74px;
+        height: 31px;
+        //margin: -20px auto 0 auto;
+        overflow: hidden;
+    }
+
+
+    .button.r, .button.r .layer
+    {
+        border-radius: 100px;
+    }
+
+    .button.b2
+    {
+        border-radius: 2px;
+    }
+
+    .checkbox
+    {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        opacity: 0;
+        cursor: pointer;
+        z-index: 3;
+    }
+
+    .knobs
+    {
+        z-index: 2;
+    }
+
+    .layer
+    {
+        width: 100%;
+        background-color: #fcebeb;
+        transition: 0.3s ease all;
+        z-index: 1;
+    }
+
+    //saddaad
+    .switch-button .knobs:before
+    {
+        //content: 'ON';
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 45px;
+        width: 27px;
+        height: 27px;
+        color: #fff;
+        font-size: 10px;
+        font-weight: bold;
+        text-align: center;
+        line-height: 1;
+        padding: 9px 4px;
+        background-color: lightgreen;
+        border-radius: 50%;
+        transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
+    }
+
+    .switch-button .checkbox:checked + .knobs:before
+    {
+        //content: 'OFF';
+        content: '';
+        left: 2px;
+        background-color: #ffcccb;
+    }
+
+    .switch-button .checkbox:checked ~ .layer
+    {
+        background-color: #ebf7fc;
+    }
+
+    .switch-button .knobs, .switch-button .knobs:before, .switch-button .layer
+    {
+        transition: 0.3s ease all;
+    }
+}
 //switch grande
 .switch-big-button-container{
     display: flex;
@@ -1113,11 +1332,11 @@ select option[value=""]{
 
 .item-cont{
     padding-top: 20px;
-    .item-style-visible{
-        box-shadow: 0px 0px 10px 1px #ccc;
-        padding: 30px;
-        background-color: white;
-    }
+    // .item-style-visible{
+    //     box-shadow: 0px 0px 10px 1px #ccc;
+    //     padding: 30px;
+    //     background-color: white;
+    // }
     .item-style{
         width: 100%;
         height: 100%;
@@ -1165,7 +1384,7 @@ select option[value=""]{
         width: 350px;
         opacity: 0;
         z-index: 10;
-        background-color: $default_green;
+        background-color: $green_3;
         color: white;
         padding: 5px;
         position: absolute;
@@ -1257,11 +1476,10 @@ select option[value=""]{
 
 //ANIMATIONS
 
-.hover-scale{
+.scale-nocursor{
     transition: 0.2s;
     &:hover{
         transform: scale(1.2);
-        cursor: pointer;
     }
 }
 
@@ -1783,6 +2001,11 @@ select option[value=""]{
     color: $blue_3;
 }
 
+.card-color-gray{
+    background-color: $gray_2;
+    color: black;
+}
+
 .r-90l{
     transition: .2s;
     transform: rotate(-90deg);
@@ -1803,7 +2026,7 @@ select option[value=""]{
 }
 
 .legal-background{
-  background: $blue_3;
+  background: #00A1DC;
   background: radial-gradient(circle, $blue_3 0%, $green_3 33%, $blue_3 66%, $green_3 100%);
   h6{
     color:white;

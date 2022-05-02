@@ -87,12 +87,16 @@
                                 </div>
                             </div>
                             <div class="messages-footer">
-                                <input v-model="message_text" @keyup.enter="sendMessage()" type="text" name="" value="" class="input" placeholder="{{__('Write a message')}}...">
+                                <input v-model="message_text" @keyup.enter="sendMessage()" type="text" name="" value="" class="custom-input-blue" placeholder=" {{__('Write a message')}}...">
                                 <button type="button" name="button" @click="sendMessage()" class="button-style button-color">{{__('Send')}}</button>
                             </div>
                         </div>
                         <div v-else class="h-100 d-flex justify-content-center align-items-center">
-                            <h4>Seleziona un chat per iniziare</h4>
+                            <div class="text-center">
+                                <h4>Seleziona un chat per iniziare</h4>
+                                <p class="mini-txt txt-blue">Per avviare una nuova convesazione cerca il profilo interessato e premi sul pulsante "messaggio"</p>
+                                <a href="{{route('admin.search')}}" class="button-style button-color-blue">Cerca</a>
+                            </div>
                         </div>
                     </div>
                 </div>

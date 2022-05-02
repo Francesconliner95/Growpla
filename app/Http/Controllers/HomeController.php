@@ -41,19 +41,14 @@ class HomeController extends Controller
         // $accounts = Account::all()->count();
         // $cooperations = Cooperation::all()->count();
         // $chats = Chat::all()->count();
-
-        $data = [
-            'accounts' => /*$accounts*/1,
-            'cooperations' => /*$cooperations*/1,
-            'chats' => /*$chats*/1,
-            'language_id' => /*$language_id*/1,
-        ];
+        app()->setLocale('it');
+        $language_id = 2;
 
         //se gia loggato mi resta nell pagina admin finche non faccio logout
         if(Auth::check()){
             return redirect()->route('admin.search');
         }else{
-            return view('guest.pre-home');
+            return view('guest.home');
             //return view('guest.home',$data);
         }
     }
@@ -79,8 +74,8 @@ class HomeController extends Controller
             }
 
             if(!$set_lang){
-                app()->setLocale('en');
-                $language_id = 1;
+                app()->setLocale('it');
+                $language_id = 2;
             }
         }
 
@@ -109,8 +104,8 @@ class HomeController extends Controller
             }
 
             if(!$set_lang){
-                app()->setLocale('en');
-                $language_id = 1;
+                app()->setLocale('it');
+                $language_id = 2;
             }
         }
 
@@ -139,8 +134,8 @@ class HomeController extends Controller
             }
 
             if(!$set_lang){
-                app()->setLocale('en');
-                $language_id = 1;
+                app()->setLocale('it');
+                $language_id = 2;
             }
         }
 

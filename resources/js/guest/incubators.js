@@ -15,6 +15,7 @@ var create = new Vue({
         region_id : '',
         region_id_selected: '',
         name: '',
+        in_load: false,
     },
     methods: {
         searchByName(){
@@ -44,10 +45,12 @@ var create = new Vue({
             }
         },
         getAllIncubators(){
+            this.in_load = true;
             axios.get('/api/getAllIncubators',{
             }).then((response) => {
                 this.incubators = response.data.results.incubators;
                 this.incubators_show = this.incubators;
+                this.in_load = false;
             });
         },
     },

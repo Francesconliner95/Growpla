@@ -43,14 +43,14 @@ class UsertypeTableSeeder extends Seeder
               'name'=>'employee',
               'name_it'=>'dipendente',
               'description'=>'',
-              'description_it'=>'',
+              'description_it'=>'Seleziona questa voce se puoi offrire i tuoi servizi soltanto sotto il nome dell\'azienda per cui lavori',
               'image'=>'users_images/default-dipendente.svg',
           ],
           [
               'name'=>'student',
               'name_it'=>'studente',
               'description'=>'',
-              'description_it'=>'',
+              'description_it'=>'Metti a disposizione delle startup che necessitano la tua conoscenza',
               'image'=>'users_images/default-studente.svg',
           ],
           [

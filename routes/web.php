@@ -57,6 +57,8 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::get('pages/{page_id}/settings', 'PageController@settings')->name('pages.settings');
     Route::get('pages/{page_id}/sectors', 'PageController@sectors')->name('pages.sectors');
     Route::put('pages/{page_id}/storesectors', 'PageController@storesectors')->name('pages.storesectors');
+    Route::get('/incubator/{page_id}', 'PageController@incubator')
+    ->name('pages.incubator');
 
     //IMAGE
     Route::get('/editUserImage', 'ImageController@editUserImage')->name('images.editUserImage');

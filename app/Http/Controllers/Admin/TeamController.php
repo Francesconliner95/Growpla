@@ -38,6 +38,7 @@ class TeamController extends Controller
     {
         $request->validate([
             'role'=> 'required|max:25',
+            'image' => 'nullable|mimes:jpeg,png,jpg|max:6144',
         ]);
 
         $data = $request->all();
@@ -136,6 +137,7 @@ class TeamController extends Controller
     {
         $request->validate([
           'role'=> 'required|max:25',
+          'image' => 'nullable|mimes:jpeg,png,jpg|max:6144',
         ]);
 
         $old_user_id = $team->user_id;

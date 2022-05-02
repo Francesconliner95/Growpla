@@ -55,7 +55,7 @@
 
 
                               <p>
-                                  <a href="#" @click="showConsenScreen=true">{{__('Check or edit your cookie preference')}}</a>
+                                  <button class="button-style button-color-black" @click="showConsenScreen=true">{{__('Check or edit your cookie preference')}}</button>
                               </p>
                               {{-- <p>{{__('For tracking tools that depend on consent, the user can manage and change his preferences below:')}}</p>
                               @if ($consentValue=='accept')
@@ -80,19 +80,26 @@
     </div>
     <div v-if="showConsenScreen" class="cookie-consent" v-cloak>
             <p class="position-relative">
-                <a href="#" @click="closeConsentScreen()" class="txt-blue edit-top-right">
+                <a href="#" @click="closeConsentScreen()" class="txt-blue edit-top-right scale">
                     <i class="fas fa-times"></i>
                 </a>
             </p>
             <div class="container">
-                <p>{{__('Growpla and third-party use technical cookies and similar technologies (“tracking tools”) to operate and improve the platform. For full details on how we use cookies please see the full')}} <a href="{{ route('cookiePolicy') }}" class="txt-green">cookie policy</a>.
+                <p class="font-weight-bold">{{__('Growpla and third-party use technical cookies and similar technologies (“tracking tools”) to operate and improve the platform. For full details on how we use cookies please see the full')}} <a href="{{ route('cookiePolicy') }}" class="txt-green">cookie policy</a>.
                 </p>
                 <div v-if="cookieSettings" class="cookie-list pb-3">
-                    <div  class="switch-button-container pt-1 pb-2">
-                        <label class="pt-2 mr-4" for="">{{__('Technical Cookies')}}</label>
-                        <span>{{__('Always Enabled')}}</span>
+                    <div  class="switch-button-on-off pt-1 pb-2">
+                        <label class="pt-2 mr-4" for="">
+                            {{__('Technical Cookies')}}
+                            <span class="d-block txt-green font-weight-bold">"Sempre abilitati"</span>
+                        </label>
+                        <div class="button r switch-button d-inline-block">
+                            <input type="checkbox" class="checkbox" onclick="return false;" readonly>
+                            <div class="knobs"></div>
+                            <div class="layer"></div>
+                        </div>
                     </div>
-                    <div  class="switch-button-container pt-1 pb-2">
+                    <div  class="switch-button-on-off pt-1 pb-2">
                         <label class="pt-2 mr-4" for="">{{__('Analytical Cookies')}}</label>
                         <div class="button r switch-button d-inline-block">
                             <input type="checkbox" class="checkbox" v-model="analyticsCookie">

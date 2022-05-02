@@ -94,36 +94,41 @@
             width: 300px;
             left: 50%;
             z-index: 1;
-            padding: 20px 5px;
+            padding: 20px 0px;
             //transform: translateX(-20%) !important;
-            top: 35px;
+            top: 15px !important;
             background-color: white;
             border-radius: 20px;
-            background-color: $light_black;
+            // background-color: $light_black;
             // border: 1px solid $default_green;
             text-align: center;
             color:white;
             .notf{
                 a{
-                    border-radius: 5px;
-                    background-color: white;
+                    // border-radius: 5px;
                     text-align: left;
                     display: inline-block;
                     width: 100%;
-                    background-color: $default_green_deactivate;
+                    background-color: $green_2;
                     text-decoration: none;
                     color: black;
                     margin-top: 3px;
-                    padding: 10px;
+                    padding: 0px 10px;
+                    height: 40px;
+                    line-height: 1.2;
+                    font-size: 13px;
+                    display: flex;
+                    align-items: center;
                     &:hover{
-                        background-color: $default_green;
+                        background-color: $green_3;
                         color: white;
                     }
                 }
             }
             .v-notf{
-                padding: 5px 0;
+                padding-top: 5px;
                 a{
+                    padding: 0px;
                     &:hover{
                         color: white;
                     }

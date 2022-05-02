@@ -66,6 +66,7 @@ var create = new Vue({
             }else{
                 this.button = index;
             }
+            console.log(this.button);
         },
 
         change_category(){
@@ -80,6 +81,7 @@ var create = new Vue({
               this.pagetypes_id = [1];
               this.investors_selected = false;
               this.services_selected = false;
+              this.serviceToggle = 'true';//utile solo per il cambio colore
             break;
             case '2':
               //aspirante-cofounder
@@ -87,6 +89,7 @@ var create = new Vue({
               this.pagetypes_id = [];
               this.investors_selected = false;
               this.services_selected = true;
+              this.serviceToggle = 'false';//utile solo per il cambio colore
             break;
             case '3':
               //incubatore-acc
@@ -531,20 +534,12 @@ var create = new Vue({
         this.getAllServices();
         this.latestCollaborations();
 
-
-        // // if(){
-        //     console.log(document.getElementsByClassName('multi-slider-cont'));
-        //     var elements = document.getElementsByClassName('multi-slider-cont');
-        //     for (var i = 0; i < elements.length; i++) {
-        //         console.log('adsads');
-        //         this.arrowVisibility(i+1);
-        //     }
-        // // }
-
-        //document.getElementsByClassName('myClassName')[0].id
-
-        // document.getElementById('multi-slider-cont-' + slider_id);
-        // this.arrowVisibility(slider_id);
+        //se clicco fuori dal div 'search-main'
+        window.addEventListener('click', (e)=>{
+            if (!document.getElementById('search-main').contains(e.target)){
+                this.button = false;
+            }
+        })
 
         //check if is mobile
         this.checkMobile();
@@ -579,13 +574,3 @@ var create = new Vue({
     }
 
 });
-
-document.addEventListener('click', (event) => {
-    const withinBoundaries = event.composedPath().includes(target);
-
-    if (withinBoundaries) {
-        target.innerText = 'Click happened inside element';
-    } else {
-        target.innerText = 'Click happened **OUTSIDE** element';
-    }
-})

@@ -38,7 +38,14 @@
     <div class="container">
         <div class="item-cont">
             <div class="item-style">
-                <h3 >Risultati per "<strong>{{$search_type}}</strong>"</h3>
+                <div class="header">
+                    <h3 >Risultati per "<strong>{{$search_type}}</strong>"</h3>
+                    @if($search_type=='Incubatori-Acceleratori')
+                        <div class="text-center" v-cloak>
+                            <a class="button-style button-color-blue" href="{{route('incubators')}}">Incubatori d'italia</a>
+                        </div>
+                    @endif
+                </div>
                 <div class="pt-3">
                     <div v-if="accounts_show.length>0" v-for="(account,i) in accounts_show" class="p-2" v-cloak>
                         <div class="row gray-cont">
@@ -107,10 +114,13 @@
                             </div>
                         </div>
                     </div>
+                    <button v-if="showScrollTop" type="button" name="button" class="button-scroll" @click="scrollTop()">
+                        <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-90l" alt="">
+                    </button>
                     <div v-if="accounts_show.length==0 && !in_load" class="" v-cloak>
                         <h5>Nessun risultato</h5>
                     </div>
-                    <div v-if="in_load" class="d-flex justify-content-center" v-clock>
+                    <div v-if="in_load" class="d-flex justify-content-center" v-cloak>
                         <div class="spinner-border text-secondary" role="status">
                             <span class="sr-only">Loading...</span>
                         </div>

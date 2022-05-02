@@ -84,7 +84,7 @@
                       </h6>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
-                      <input type="text" name="website" class="form-control border-green" maxlength="255" value="" placeholder="es. https://www.growpla.it">
+                      <input type="url" name="website" class="form-control border-green" maxlength="255" value="" placeholder="es. https://www.growpla.it">
                       @error ('website')
                           <div class="alert alert-danger">
                               {{__($message)}}
@@ -103,7 +103,7 @@
                       </h6>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
-                      <input type="text" name="linkedin" class="form-control border-green" maxlength="255" value="" placeholder="es. https://www.linkedin.com/in/...">
+                      <input type="url" name="linkedin" class="form-control border-green" maxlength="255" value="" placeholder="es. https://www.linkedin.com/in/...">
                       @error ('linkedin')
                           <div class="alert alert-danger">
                               {{__($message)}}

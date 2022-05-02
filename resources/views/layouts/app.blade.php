@@ -120,7 +120,7 @@
                                     </span>
                                 </div>
                             </a>
-                            <div class="dropdown-menu show-notf-preview" aria-labelledby="notDropdown">
+                            <div class="dropdown-menu show-notf-preview bg-dark" aria-labelledby="notDropdown">
                                 <div v-if="notifications.length>0"  class="notf">
                                     <a v-for="notification in notifications"
                                     :href="notification.notification_type.url + notification.parameter">
@@ -136,7 +136,7 @@
                                     <span>{{__('No new notifications')}}</span>
                                 </div>
                                 <div class="v-notf">
-                                    <a class="mini-txt" :href="'/admin/notifications/'">
+                                    <a class="mini-txt txt-green" :href="'/admin/notifications/'">
                                         <span>{{__('See all notifications')}}</span>
                                     </a>
                                 </div>

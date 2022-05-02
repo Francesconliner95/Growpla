@@ -15,9 +15,12 @@ var create = new Vue({
         show_prev: false,
         show_next: false,
         in_load: false,
+        showScrollTop: false,
     },
     methods: {
-
+        scrollTop(){
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        },
         showMore(){
             var collaborations_qty = this.collaborations.length;
             var items_qty = 6;
@@ -45,6 +48,11 @@ var create = new Vue({
             // console.log(document.body.offsetHeight+2);
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight-2) {
                 this.showMore();
+            }
+            if(window.scrollY>0){
+                this.showScrollTop = true;
+            }else{
+                this.showScrollTop = false;
             }
         },
 

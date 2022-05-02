@@ -29,8 +29,17 @@ class PageController extends Controller
       $this->middleware(['auth','verified']);
     }
 
-    public function create(){
-
+    public function incubator($page_id){
+        $user = Auth::user();
+        $page = Page::find($page_id);
+        if($page->users->contains($user)){
+            $data = [
+                'page' => $page,
+                'moneyranges' => Moneyrange::all(),
+            ];
+            app()->setLocale(Language::find($user->language_id)->lang);
+            return view('admin.page.incubator', $data);
+        }abort(404);
     }
 
     public function newPage($pagetype_id){
@@ -89,13 +98,18 @@ class PageController extends Controller
             $new_page->name = Str::lower($request->name);
             $new_page->slug = $slug;
             $new_page->image = Pagetype::find($request->pagetype_id)->image;
+            $new_page->tutorial = 1;
             $new_page->fill($data);
             $new_page->save();
 
             $user = Auth::user();
             $new_page->users()->attach($user);
 
-            return redirect()->route('admin.pages.show', ['page'=> $new_page->id]);
+            if($new_page->tutorial>=1){
+                return redirect()->route('admin.pages.sectors', $new_page->id);
+            }else{
+                return redirect()->route('admin.pages.show', ['page'=> $new_page->id]);
+            }
         }else{
             return redirect()->route('admin.pages.edit', ['page'=> $page_exist->id]);
         }
@@ -224,6 +238,7 @@ class PageController extends Controller
 
         $data = [
           'page_id' => $page->id,
+          'page' => $page,
         ];
         app()->setLocale(Language::find(Auth::user()->language_id)->lang);
         return view('admin.pages.settings', $data);
@@ -282,7 +297,15 @@ class PageController extends Controller
           $page->sectors()->sync([]);
         }
 
-        return redirect()->route('admin.pages.show',$page->id);
+        if($page->tutorial>=1){
+            if($page->pagetype_id!=1){
+                return redirect()->route('admin.give-page-services.edit',$page->id);
+            }else{
+                return redirect()->route('admin.lifecycles.edit',$page->id);
+            }
+        }else{
+            return redirect()->route('admin.pages.show',$page->id);
+        }
 
       }abort(404);
 

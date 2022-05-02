@@ -106,7 +106,6 @@ class UserController extends Controller
       ];
       app()->setLocale(Language::find(Auth::user()->language_id)->lang);
       return view('admin.users.create', $data);
-      //return redirect()->route('admin.users.create');
 
     }
 
@@ -172,11 +171,11 @@ class UserController extends Controller
           $user->save();
       }
 
-      if(Auth::user()->tutorial>=2){
-          return redirect()->route('admin.users.tutorial');
-      }else{
-          return redirect()->route('admin.users.show',$user->id);
-      }
+        if(Auth::user()->tutorial){
+            return redirect()->route('admin.users.edit',$user->id);
+        }else{
+            return redirect()->route('admin.users.show',$user->id);
+        }
 
     }
 
@@ -245,11 +244,11 @@ class UserController extends Controller
 
           $user->update();
 
-          if(Auth::user()->tutorial>=2){
-              return redirect()->route('admin.users.tutorial');
-          }else {
-              return redirect()->route('admin.users.show', ['user' => $user->id]);
-          }
+            if(Auth::user()->tutorial){
+                return redirect()->route('admin.give-user-services.edit',$user->id);
+            }else{
+                return redirect()->route('admin.users.show',$user->id);
+            }
 
       }abort(404);
     }
@@ -425,7 +424,7 @@ class UserController extends Controller
             $user = User::find($user_id);
             $page->users()->attach($user);
             if(!$user->pagetypes->contains($page->pagetype)){
-                $user->pagetypes->attach($page->pagetype);
+                $user->pagetypes()->attach($page->pagetype);
             }
             //NOTIFICATIONS
             $new_notf = new Notification();
