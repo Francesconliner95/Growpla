@@ -37,9 +37,9 @@ var create = new Vue({
 
     },
     created(){
-      if(this.followed){
-          this.followed = JSON.parse(this.followed.replace(/&quot;/g,'"'));
-      }
+      // if(this.followed){
+      //     this.followed = JSON.parse(this.followed.replace(/&quot;/g,'"'));
+      // }
     },
     mounted() {
         //console.log(this.my_follows);

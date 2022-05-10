@@ -3,8 +3,8 @@
 @section('content')
 <script type="text/javascript">
     lang = "{{Auth::user()->language_id}}";
-    pages_id = "{{json_encode($pages_id)}}";
-    users_id = "{{json_encode($users_id)}}";
+    pages_id = @json($pages_id);
+    users_id = @json($users_id);
     my_user_id = {{Auth::user()->id}};
     my_pages_id = {{Auth::user()->pages->pluck('id')}};
     window.csrf_token = "{{ csrf_token() }}"; //token per axios api post/put/delete
@@ -42,7 +42,7 @@
                     <h3 >Risultati per "<strong>{{$search_type}}</strong>"</h3>
                     @if($search_type=='Incubatori-Acceleratori')
                         <div class="text-center" v-cloak>
-                            <a class="button-style button-color-blue" href="{{route('incubators')}}">Incubatori d'italia</a>
+                            <a class="button-style button-color-blue" href="{{route('incubators')}}">Lista incubatori d'italia</a>
                         </div>
                     @endif
                 </div>
@@ -55,13 +55,15 @@
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7">
-                                <div>
-                                    <div style="height: 25px">
+                                <div style="height: 60px; display: flex;
+                                flex-direction: column;
+                                justify-content: flex-end;">
+                                    <div class="text-truncate mb-1">
                                         <span class="text-capitalize font-weight-bold">
                                           @{{account.user_or_page? account.name +' ' +account.surname : account.name}}
                                         </span>
                                     </div>
-                                    <div style="height: 30px">
+                                    <div  class="text-truncate">
                                         <div v-for="sector in account.sectors" class="d-inline-block border-style bg-white mini-txt" v-cloak>
                                           <span>@{{sector.name_it}}</span>
                                         </div>
@@ -124,6 +126,9 @@
                         <div class="spinner-border text-secondary" role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
+                    </div>
+                    <div v-if="!in_load && accounts_show.length<accounts.length" class="text-center pt-3 pb-2" v-cloak>
+                        <button type="button" name="button" class="button-style text-dark" @click="showMore()">Mostra altro</button>
                     </div>
                 </div>
                 {{-- <button v-if="show_prev" type="button" name="button" class="" @click="showAccounts(-1)">Indietro</button>

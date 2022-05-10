@@ -3,8 +3,8 @@
 @section('content')
 <script type="text/javascript">
     language_id = "{{Auth::user()->language_id}}";
-    user = "{{$user}}";
-    userTypes = "{{$userTypes}}";
+    user = @json($user);
+    userTypes = @json($userTypes);
 </script>
 
 <div id="user-edit" style="background-image: url({{asset("storage/images/bg-form.svg") }}); background-position: left 100px bottom -155px; background-repeat: no-repeat; background-size: 500px 500px;">
@@ -177,9 +177,9 @@
                                       </select>
                                   </div> --}}
                                   <input type="hidden" name="country_id" value="1">
-                                  <div v-if="regions.length>1" class="col-sm-12 col-md-6 col-lg-6 col-xl-6" v-cloak>
-                                      <label>Regione</label>
-                                      <select class="form-control" name="region_id" v-model="region_id_selected">
+                                  <div v-if="regions.length>1" class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mt-1 mb-1" v-cloak>
+                                      <label class="m-0">Regione</label>
+                                      <select class="form-control" name="region_id" v-model="region_id_selected" required>
                                           <option value="">Non specificata</option>
                                           <option v-for="region in regions" :value="region.id">
                                               @{{region.name}}
@@ -189,8 +189,8 @@
                                   <div v-else class="">
                                       <input type="hidden" name="region_id" value="">
                                   </div>
-                                  <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                      <label>Città</label>
+                                  <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mt-1 mb-1">
+                                      <label class="m-0">Città</label>
                                       <input type="text" name="municipality" class="form-control" value="{{ old('municipality',$user->municipality)}}" required>
                                   </div>
                               </div>

@@ -10,6 +10,7 @@ var create = new Vue({
         user_id,
         lang,
         page_id,
+        page,
         user_name: '',
         users_found: '',
         admins: '',
@@ -69,7 +70,6 @@ var create = new Vue({
             switch (this.case_type) {
                 case 1:
                     //conferma eliminazione pagina
-                    console.log('brana');
                     document.deletePage.submit();
                 break;
                 case 2:

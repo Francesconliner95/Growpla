@@ -3,7 +3,7 @@
 @section('content')
 <script type="text/javascript">
     language_id = "{{Auth::user()->language_id}}";
-    user = "{{$user}}";
+    user = @json($user);
 </script>
 <div id="user-edit" style="background-image: url({{asset("storage/images/bg-servizi.svg") }}); background-position: right -200px bottom 100px; background-repeat: no-repeat; background-attachment: fixed; background-size: 500px;">
     <div class="container">
@@ -79,11 +79,18 @@
                             </div>
                         </div>
                         @endif
-                        <div class=" col-sm-12 col-md-6 col-lg-6 col-xl-6 d-flex align-items-center justify-content-center">
+                        {{-- <div class=" col-sm-12 col-md-6 col-lg-6 col-xl-6 d-flex align-items-center justify-content-center">
                             <button type="submit" class="button-style button-color">
-                                {{__('Save Changes')}}
+                                {{$user->tutorial?'Avanti':'Salva'}}
                             </button>
+                        </div> --}}
+                    </div>
+                    <div class="d-flex justify-content-between mt-1">
+                        <div class="">
                         </div>
+                        <button type="submit" class="button-style button-color">
+                            {{$user->tutorial?'Avanti':'Salva'}}
+                        </button>
                     </div>
               </form>
             </div>

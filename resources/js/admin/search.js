@@ -41,6 +41,7 @@ var create = new Vue({
         sectors: [],
         sector_selected: '',
         sectorToggle: false,
+        background_selected: '',
         myLatestViews: [],
         mostViewedAccounts: [],
         needs: [],
@@ -66,7 +67,7 @@ var create = new Vue({
             }else{
                 this.button = index;
             }
-            console.log(this.button);
+            //console.log(this.button);
         },
 
         change_category(){
@@ -299,7 +300,7 @@ var create = new Vue({
 
         removeService(i){
             this.services.splice(i, 1);
-            console.log('rimuovi'+i);
+            //console.log('rimuovi'+i);
         },
 
         addSector(){
@@ -430,7 +431,7 @@ var create = new Vue({
         latestCollaborations(){
             axios.get('/admin/latestCollaborations',{
             }).then((response) => {
-              this.collaborations = response.data.results.collaborations;
+                this.collaborations = response.data.results.collaborations;
             });
         },
 
@@ -512,19 +513,26 @@ var create = new Vue({
         },
 
         checkMobile(){
-            // if(window.innerWidth>=768){
-            //     if(this.is_mobile){
-            //         this.is_mobile = false;
-            //     }
-            // }else{
-            //     if(!this.is_mobile){
-            //         this.is_mobile = true;
-            //     }
-            // }
+            if(window.innerWidth>=992){
+                if(this.is_mobile){
+                    this.is_mobile = false;
+                }
+            }else{
+                if(!this.is_mobile){
+                    this.is_mobile = true;
+                }
+            }
         }
 
     },
     mounted() {
+
+
+        // setInterval(()=>{console.log(this.search_type);}, 1000);
+        //console.log(document.getElementById('search-type-checkbox').checked);
+        // if(performance.navigation.type==2){
+        //    this.search_type = !this.search_type;
+        // }
 
         this.getLastHave();
         this.getLastOffer();

@@ -20,7 +20,7 @@ var create = new Vue({
     methods: {
 
         sendEmail(){
-            console.log(this.email);
+            //console.log(this.email);
             var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             if(this.email && this.email.match(mailformat)){
                 this.error = false;
@@ -131,7 +131,7 @@ var create = new Vue({
                 this.code_verified = true;
             }else{
                 this.error=true;
-                console.log(this.error);
+                //console.log(this.error);
             }
         },
 

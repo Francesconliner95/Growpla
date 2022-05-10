@@ -23,12 +23,9 @@ var create = new Vue({
         },
 
         showConsentScreen(){
-            // console.log(this.getCookie('tecCookie'));
-            // console.log(this.getCookie('analyticsCookie'));
             if(!this.getCookie('tecCookie')
             ||  !this.getCookie('analyticsCookie')){
                 this.showConsenScreen = true;
-                //console.log(this.showConsenScreen);
             }else{
                 this.showConsenScreen = false;
             }
@@ -81,7 +78,7 @@ var create = new Vue({
     mounted() {
 
         this.showConsentScreen();
-        //console.log(this.analyticsCookie);
+        console.log(this.analyticsCookie);
     }
 
 });

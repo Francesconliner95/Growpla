@@ -117,10 +117,10 @@ var create = new Vue({
         // },
     },
     created(){
-      this.page = JSON.parse(this.page.replace(/&quot;/g,'"'));
-      if(this.regions){
-          this.regions = JSON.parse(this.regions.replace(/&quot;/g,'"'));
-      }
+      // this.page = JSON.parse(this.page.replace(/&quot;/g,'"'));
+      // if(this.regions){
+      //     this.regions = JSON.parse(this.regions.replace(/&quot;/g,'"'));
+      // }
 
       this.country_id_selected = this.page.country_id?this.page.country_id:1;
       this.region_id_selected = this.page.region_id;

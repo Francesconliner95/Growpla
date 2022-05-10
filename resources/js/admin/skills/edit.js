@@ -33,24 +33,20 @@ var create = new Vue({
         },
 
         addSkill(skill_found){
-
+            // console.log(skill_found);
+            // console.log(this.skills);
             var exist = false;
             this.skills.forEach((skill, i) => {
-                if(skill.pivot.skill_id==skill_found.id){
-                  exist = true;
+                if(skill_found.name.toLowerCase()==skill.name.toLowerCase()){
+                    exist = true;
                 }
             });
 
             if(!exist){
-
-              let new_skill = {
-                "name":skill_found.name,
-                "pivot":{
-                  "skill_id": skill_found.id,
-                },
-              };
-
-              this.skills.push(new_skill);
+                let new_skill = {
+                                    name: skill_found.name,
+                                }
+                this.skills.push(new_skill);
             }
 
             this.skills_found = '';
@@ -68,12 +64,9 @@ var create = new Vue({
 
             if(!exist && this.skill_name){
 
-              let new_skill = {
-                "name":this.skill_name,
-                // "pivot":{
-                //   "skill_id": skill_found.id,
-                // },
-              };
+                let new_skill = {
+                                    name: this.skill_name,
+                                }
               this.skills.push(new_skill);
             }
 
@@ -87,10 +80,9 @@ var create = new Vue({
 
     },
     created() {
-        if(this.skills){
-            this.skills = JSON.parse(this.skills.replace(/&quot;/g,'"'));
-        }
-
+        // if(this.skills){
+        //     this.skills = JSON.parse(this.skills.replace(/&quot;/g,'"'));
+        // }
     },
     mounted() {
 

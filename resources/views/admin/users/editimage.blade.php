@@ -4,7 +4,7 @@
 <script type="text/javascript">
     user_id = "{{$user_id}}";
     image = "{{$image}}";
-    default_images = "{{json_encode($default_images)}}";
+    default_images = @json($default_images);
     window.csrf_token = "{{ csrf_token() }}"; //token per axios api post/put/delete
 </script>
 <div class="container">

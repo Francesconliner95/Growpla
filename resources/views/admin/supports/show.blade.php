@@ -2,7 +2,7 @@
 
 @section('content')
 <script type="text/javascript">
-    support = {!! json_encode($support->toArray()) !!};
+    support = @json($support);
 </script>
 <div id="support-show" class="container">
     <div class="item-cont">
@@ -28,7 +28,7 @@
                 <p>{{$support->title}}</p>
                 <h6>Descrizione</h6>
                 <p>{{$support->description}}</p>
-                
+
                 @if ($support->file)
                     <h6>File</h6>
                     <embed v-if="extensionsType()=='pdf'" src="{{ asset("storage/" . $support->file) }}" / class="col-12" style="height: 500px">

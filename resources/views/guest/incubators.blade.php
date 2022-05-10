@@ -4,21 +4,23 @@
 <script type="text/javascript">
     window.csrf_token = "{{ csrf_token() }}";
 </script>
-<div id="incubators" style="background-image: url({{asset("storage/images/bg-shadow.svg") }}); background-position: left -150px top 0px; background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
+<div id="incubators">
     <div class="container not-log-main-hg">
         <div class="item-cont">
             <div class="item-style">
                 <h3 class="text-center mb-4">
                     Incubatori - Acceleratori
                 </h3>
-                <div class="mb-5 row">
-                    <select class="form-control col-sm-12 col-md-6 col-lg-4 col-xl-4 mx-auto custom-select-blue" name="regions" @change="filterByRegion()" v-model="region_id_selected">
-                        <option value="">Tutte le regioni</option>
-                        @foreach ($regions as $region)
-                            <option value="{{$region->id}}">{{$region->name}}</option>
-                        @endforeach
-                    </select>
-                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 mx-auto ">
+                <div class="row justify-content-around mb-5 ">
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                        <select class="form-control custom-select-blue mt-1 mb-1" name="regions" @change="filterByRegion()" v-model="region_id_selected">
+                            <option value="">Tutte le regioni</option>
+                            @foreach ($regions as $region)
+                                <option value="{{$region->id}}">{{$region->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 mt-1 mb-1">
                         <input type="text" name="" value=""
                         v-model="name" class="form-control custom-input-blue" v-on:input="searchByName()" placeholder="Cerca per nome">
                     </div>

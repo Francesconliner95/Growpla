@@ -19,13 +19,15 @@
                       <p>Vincenzo Tarantino, C.F. TRNVCN96A25B180N          mail: info@growpla.com</p>
                       <h6>2.	{{__('Purposes of the processing and legal basis')}}</h6>
                       <ul>
-                          <li>{{__('For all users: First Name, Last Name, email address, phone number, profile picture, cover picture, profile description, website, linkedin profile.')}}</li>
-                          <li>{{__('Additional for startups: VAT number, startup status (e.g. Established/unestablished; pre-seed/ seed/ early stage/ early growth (round A or B)/ growth/ exit), pitch, roadmap, registered office, data of team members (Photo, role in the startup, background, linkedin profile).')}}</li>
-                          <li>{{__('Additional for Co-founders: CV, role they intend to assume.')}}</li>
-                          <li>{{__('Additional for incubators and accelerators: VAT number, team data (photo, role, background, linkedin profile of each component), number of startups supported.')}}</li>
-                          <li>{{__('Additional information for Business Angel: Association name, VAT number.')}}</li>
-                          <li>{{__('For startup service providers: VAT number, type of service offered, team data (photo, role, background, linkedin profile of each member)')}}</li>
-                          <li>{{__('For Agencies: VAT number')}}</li>
+                          <li>{{__('Per gli utenti: Nome, Cognome, indirizzo mail, età, regione e città, immagine del profilo, identificazione (aspirante co-founder, business angel, libero professionista, dipendente, studente, founder, altro), sommario, presentazione, sito web, profilo linkedin, curriculum vitae, eventuali servizi che cercano/offrono, eventuali pagine che si desiderano creare (startup, azienda, incubatore-acceleratore, venture capital, piattaforma di crowdfunding, ente-associazione, private equity).')}}</li>
+                          <li>{{__('Aggiuntivi per gli aspiranti Co-founder: formazione, ruolo che intende assumere.')}}</li>
+                          <li>{{__('Aggiuntivi per i Business Angel: Taglio d’investimenti, quantità di progetti finanziati.')}}</li>
+                          <li>{{__('Aggiuntivi per i dipendenti: azienda in cui lavora.')}}</li>
+                          <li>{{__('Aggiuntivi per gli studenti: formazione.')}}</li>
+                          <li>{{__('Per le pagine startup: Nome, immagine del profilo (logo), sommario, presentazione, sito web, profilo linkedin, eventuali servizi cercati, Stato della startup (Costituita/ non costituita); fase del ciclo di vita (pre-seed/ seed/ early stage/ early growth (round A o B)/ growth/ exit), pitch, MVP sì/no, sede legale, dati dei componenti del team (Foto, ruolo nella startup, profilo linkedin), settore d’appartenenza.')}}</li>
+                          <li>{{__('Per le pagine azienda: Nome, immagine del profilo (logo), sommario, presentazione, sito web, profilo linkedin, eventuali servizi cercati/offerti, sede legale, dati dei componenti del team (Foto, ruolo nell’azienda, profilo linkedin), settore d’appartenenza.')}}</li>
+                          <li>{{__('Per le pagine incubatore-acceleratore: Nome, immagine del profilo (logo), sommario, presentazione, sito web, profilo linkedin, sede legale, dati dei componenti del team (Foto, ruolo nell’azienda, profilo linkedin), tipologia (pubblico/privato), servizi erogati (fisici/online/fisici ed online), settore.')}}</li>
+                          <li>{{__('Per le pagine ente-associazione, piattaforma di crowdfunding, private equity e venture capital: Nome, immagine del profilo (logo), sommario, presentazione, sito web, profilo linkedin, sede legale, dati dei componenti del team (Foto, ruolo nell’azienda, profilo linkedin), settore.')}}</li>
                       </ul>
                       <p>- {{__('The data will be processed to provide the service. Legal base art. 6 lett. B GDPR;')}}</p>
                       <p>- {{__('Data may be disclosed to public authorities to comply with specific provisions of the law (e.g. regarding taxation) Legal base art. 6 lett C GDPR;')}}</p>

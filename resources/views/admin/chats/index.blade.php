@@ -2,8 +2,8 @@
 
 @section('content')
 <script type="text/javascript">
-    my_user_chats = "{{$my_user_chats}}";
-    my_pages_chats = "{{$my_pages_chats}}";
+    my_user_chats = @json($my_user_chats);
+    my_pages_chats = @json($my_pages_chats);
     lang = "{{Auth::user()->language_id}}";
     window.csrf_token = "{{ csrf_token() }}";
 </script>
@@ -14,8 +14,8 @@
                 <div class="header">
                     <div class="">
                         <h2 class="d-inline-block pr-1">{{__('Chats')}}</h2>
-                        <div class="img-cont micro-img no-br">
-                            <img src="{{ asset("storage/images/icon-chat.svg") }}" alt="">
+                        <div class="img-cont micro-img">
+                            <img src="{{ asset("storage/images/icon-chat.svg") }}" alt="" class="rounded-0">
                         </div>
                     </div>
                     <h4 v-if="!is_mobile" class="text-dark">
@@ -38,9 +38,11 @@
                                       <span class="notread"></span>
                                   </span>
                               </div>
-                              <div class="micro-img">
+                                <i class="fas fa-angle-down mr-2" id="arrow-0"></i>
+                              {{-- <div class="micro-img">
                                   <img src="/storage/images/arrows-black-icon.svg" id="arrow-0" class="p-2 r-90r" alt="">
-                              </div>
+
+                              </div> --}}
                             </button>
                             <div class="d-none" id="chat-item-0">
                                 <a v-for="(chat,i) in my_user_chats.user_chats"
@@ -61,9 +63,10 @@
                                         <span class="notread"></span>
                                     </span>
                                 </div>
-                                <div class="micro-img">
+                                <i class="fas fa-angle-down mr-2" :id="'arrow-'+(index+1)"></i>
+                                {{-- <div class="micro-img">
                                     <img src="/storage/images/arrows-black-icon.svg" :id="'arrow-'+(index+1)" class="p-2 r-90r" alt="">
-                                </div>
+                                </div> --}}
                             </button>
                             <div class="d-none" :id="'chat-item-'+(index+1)">
                                 <a v-for="(chat,i) in page.page_chats" @click="pressChat(page,chat,'chat-item-'+(index+1)+'-'+i)"
@@ -76,7 +79,7 @@
                         </div>
                     </div>
                     <div v-if="!is_mobile" class="col-sm-12 col-md-9 col-lg-9 col-xl-9 h-100" v-cloak>
-                        <div v-if="displayed_name" class="chat-show">
+                        <div v-if="displayed_name" :class="message_text.length>45?'chat-show chat-show-longtext':'chat-show' ">
                             <div class="messages-cont custom-scrollbar" id="scroll-messages">
                                 <div
                                 v-for="message in messages.slice().reverse()"
@@ -87,7 +90,8 @@
                                 </div>
                             </div>
                             <div class="messages-footer">
-                                <input v-model="message_text" @keyup.enter="sendMessage()" type="text" name="" value="" class="custom-input-blue" placeholder=" {{__('Write a message')}}...">
+                                <textarea name="name" rows="1" v-model="message_text" @keyup.enter="sendMessage()" type="text" name="" value="" class="custom-input-blue custom-scrollbar" placeholder=" {{__('Write a message')}}..."></textarea>
+                                {{-- <input v-model="message_text" @keyup.enter="sendMessage()" type="text" name="" value="" class="custom-input-blue" placeholder=" {{__('Write a message')}}..."> --}}
                                 <button type="button" name="button" @click="sendMessage()" class="button-style button-color">{{__('Send')}}</button>
                             </div>
                         </div>

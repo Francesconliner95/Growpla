@@ -89,18 +89,18 @@
                 </p>
                 <div v-if="cookieSettings" class="cookie-list pb-3">
                     <div  class="switch-button-on-off pt-1 pb-2">
-                        <label class="pt-2 mr-4" for="">
+                        <label class="pt-2" for="">
                             {{__('Technical Cookies')}}
                             <span class="d-block txt-green font-weight-bold">"Sempre abilitati"</span>
                         </label>
                         <div class="button r switch-button d-inline-block">
-                            <input type="checkbox" class="checkbox" onclick="return false;" readonly>
+                            <input type="checkbox" class="checkbox" onclick="return false;" checked readonly>
                             <div class="knobs"></div>
                             <div class="layer"></div>
                         </div>
                     </div>
                     <div  class="switch-button-on-off pt-1 pb-2">
-                        <label class="pt-2 mr-4" for="">{{__('Analytical Cookies')}}</label>
+                        <label class="pt-2" for="">{{__('Analytical Cookies')}}</label>
                         <div class="button r switch-button d-inline-block">
                             <input type="checkbox" class="checkbox" v-model="analyticsCookie">
                             <div class="knobs"></div>

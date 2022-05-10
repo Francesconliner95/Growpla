@@ -3,7 +3,7 @@
 @section('content')
 <script type="text/javascript">
     lang = "{{Auth::user()->language_id}}";
-    needs = "{{json_encode($needs)}}";
+    needs = @json($needs);
     window.csrf_token = "{{ csrf_token() }}"; //token per axios api post/put/delete
 </script>
 <div id="needs" style="background-image: url({{asset("storage/images/bg-shadow.svg") }}); background-position: left -150px top 0px; background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
@@ -49,6 +49,9 @@
                         <div class="spinner-border text-secondary" role="status">
                             <span class="sr-only">Loading...</span>
                         </div>
+                    </div>
+                    <div v-if="!in_load && needs_show.length<needs.length" class="text-center pt-3 pb-2" v-cloak>
+                        <button type="button" name="button" class="button-style text-dark" @click="showMore()">Mostra altro</button>
                     </div>
                 </div>
             </div>

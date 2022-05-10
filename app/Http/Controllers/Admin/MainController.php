@@ -23,6 +23,7 @@ use App\HaveUserService;
 use App\HavePagePagetype;
 use App\HavePageUsertype;
 use App\Service;
+use App\Background;
 
 class MainController extends Controller
 {
@@ -43,13 +44,14 @@ class MainController extends Controller
           'sectors' => Sector::all(),
           'lifecycles' => Lifecycle::all(),
           'countries' => Country::all(),
+          'backgrounds' => Background::where('hidden',null)->get(),
       ];
 
       app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
 
         if(Auth::user()->tutorial){
-            return redirect()->route('admin.users.create');
+            return redirect()->route('admin.users.accounts',Auth::user()->id);
         }else{
             return view('admin.search', $data);
         }
@@ -79,7 +81,10 @@ class MainController extends Controller
             //Settore
             'sectors' => 'nullable',
             'sector_toggle' => 'nullable',
+            'background_id' => 'nullable|integer',
         ]);
+
+        //dd($request);
 
         $usertypes_id = $request->usertypes_id;
         $pagetypes_id = $request->pagetypes_id;
@@ -101,6 +106,7 @@ class MainController extends Controller
         //Settore
         $sectors = $request->sectors;
         $sector_toggle = $request->sector_toggle;
+        $background_id = $request->background_id;
         //dd($usertypes_id,$pagetypes_id);
         //TIPO di ricerca
         $search_type = '';
@@ -205,6 +211,19 @@ class MainController extends Controller
                 }
             }
             return $pages_output;
+        }
+
+        function  filterUserByBackground($users_input,$background_id){
+            $users_output = [];
+            foreach ($users_input as $user){
+                $user_backgrounds = $user->backgrounds;
+                foreach ($user_backgrounds as $user_background) {
+                    if($user_background->id==$background_id){
+                        array_push($users_output,$user);
+                    }
+                }
+            }
+            return $users_output;
         }
 
         function filterUserBySkills($users_input,$skills,$skills_toggle){
@@ -451,6 +470,12 @@ class MainController extends Controller
               $users_input = $users;
               $users = filterUserBySkills($users_input,$skills,$skills_toggle);
           }
+
+            //aspirante cofounder - studente
+            if(in_array(1, $usertypes_id) && $background_id){
+                $users_input = $users;
+                $users = filterUserByBackground($users_input,$background_id);
+            }
 
           if($sectors){
               $users_input = $users;
@@ -710,10 +735,15 @@ class MainController extends Controller
                 $account_info['have'] = $account_info->have_user_services;
             }else{
                 $account_info = Page::where('id',$account->id)
-                ->select('id','name','image','summary',/*'pagetype_id'*/)
+                ->select('id','name','image','summary','pagetype_id')
                 ->first();
                 $account_info['user_or_page'] = false;
-                $account_info['sectors'] = $account_info->sectors;
+                // Faccio visualizzare i settori solo se sono startup o aziende
+                if(in_array($account_info->pagetype_id, array(1,2))){
+                    $account_info['sectors'] = $account_info->sectors;
+                }else{
+                    $account_info['sectors'] = [];
+                }
                 $account_info['give'] = $account_info->give_page_services;
                 $have_services = $account_info->have_page_services;
                 // if(array_key_exists($account_info['pagetype_id']) && $account_info->pagetype_id==1){

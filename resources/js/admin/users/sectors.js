@@ -31,7 +31,7 @@ var create = new Vue({
 
     },
     created(){
-      this.sectors = JSON.parse(this.sectors.replace(/&quot;/g,'"'));
+      // this.sectors = JSON.parse(this.sectors.replace(/&quot;/g,'"'));
     },
     mounted() {
 

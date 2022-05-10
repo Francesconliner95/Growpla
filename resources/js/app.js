@@ -2,6 +2,11 @@ require('./bootstrap');
 
 var remove_footer = false;
 
+//rimuove messaggi nella console
+window.Vue = require('vue');
+Vue.config.devtools = false;
+Vue.config.productionTip = false;
+
 ///////GUEST//////
 //ACCOUNT
 if (document.getElementById('guest-home')) {
@@ -46,6 +51,10 @@ if (document.getElementById('offers')) {
 
 
 //USERS
+if (document.getElementById('user-accounts')) {
+    require('./admin/users/accounts.js');
+}
+
 if (document.getElementById('user-create')) {
     require('./admin/users/create.js');
 }
@@ -68,6 +77,10 @@ if (document.getElementById('user-sectors')) {
 
 if (document.getElementById('user-settings')) {
     require('./admin/users/settings.js');
+}
+
+if (document.getElementById('user-background')) {
+    require('./admin/users/background.js');
 }
 
 //PAGES
@@ -99,27 +112,6 @@ if (document.getElementById('page-sectors')) {
 //ACCOUNT
 if (document.getElementById('nav-bar')) {
     require('./admin/nav-bar.js');
-}
-
-//ACCOUNT
-if (document.getElementById('account-index')) {
-    require('./admin/accounts/index.js');
-}
-
-if (document.getElementById('account-show')) {
-    require('./admin/accounts/show.js');
-}
-
-if (document.getElementById('account-edit')) {
-    require('./admin/accounts/edit.js');
-}
-
-if (document.getElementById('image-editor')) {
-    require('./admin/accounts/image-editor.js');
-}
-
-if (document.getElementById('cover-image-editor')) {
-    require('./admin/accounts/cover-image-editor.js');
 }
 
 //TEAM
@@ -159,23 +151,9 @@ if (document.getElementById('service-edit')) {
     require('./admin/services/edit.js');
 }
 
-//OTHER
-if (document.getElementById('other-create')) {
-    require('./admin/others/create.js');
-}
-
-if (document.getElementById('other-edit')) {
-    require('./admin/others/edit.js');
-}
-
 //LIFECYCLE
 if (document.getElementById('lifecycle-edit')) {
     require('./admin/lifecycles/edit.js');
-}
-
-//PAGE-USERTYPE
-if (document.getElementById('page-usertypes-edit')) {
-    require('./admin/have-page-usertypes/edit.js');
 }
 
 //CHAT
@@ -198,11 +176,7 @@ if (document.getElementById('follows-index')) {
 //NOTIFICATIONS
 if (document.getElementById('notification-index')) {
     require('./admin/notifications/index.js');
-}
-
-//NOTIFICATIONS
-if (document.getElementById('nomination-startup')) {
-    require('./admin/nominations/startup.js');
+    remove_footer = true;
 }
 
 //SETTINGS

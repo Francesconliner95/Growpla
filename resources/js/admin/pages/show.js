@@ -64,14 +64,14 @@ var create = new Vue({
         });
       },
 
-      teamToggle(){
-          this.show_all_team = !this.show_all_team;
-          if(this.show_all_team){
-              this.getTeamMembers();
-          }else{
-              this.team_members = this.team_members.slice(0, 3);
-          }
-      },
+      // teamToggle(){
+      //     this.show_all_team = !this.show_all_team;
+      //     if(this.show_all_team){
+      //         this.getTeamMembers();
+      //     }else{
+      //         this.team_members = this.team_members.slice(0, 3);
+      //     }
+      // },
 
       getTeamMembers(){
           axios.get('/api/getTeamMembers',{
@@ -80,6 +80,8 @@ var create = new Vue({
               }
           }).then((response) => {
               this.team_members = response.data.results.team_members;
+              // this.delay(30);
+              this.arrowVisibility(30);
           });
       },
 
@@ -105,7 +107,7 @@ var create = new Vue({
                 }
             }).then((response) => {
                 this.collaborations = response.data.results.collaborations;
-                console.log(this.collaborations);
+                //console.log(this.collaborations);
             });
         },
 
@@ -199,16 +201,17 @@ var create = new Vue({
 
     },
     created(){
-      this.page = JSON.parse(this.page.replace(/&quot;/g,'"'));
-      if(this.team_members){
-          this.team_members = JSON.parse(this.team_members.replace(/&quot;/g,'"'));
-          console.log(this.team_members);
-      }
-
+        // this.page = JSON.parse(this.page.replace(/&quot;/g,'"'));
+        // if(this.team_members){
+        //     this.team_members = JSON.parse(this.team_members.replace(/&quot;/g,'"'));
+        //     console.log(this.team_members);
+        // }
     },
     mounted() {
         this.getCollaborations();
         this.checkMobile();
+        this.getTeamMembers();
+
         window.addEventListener('resize', (event)=> {
             this.checkMobile();
         }, true);

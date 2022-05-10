@@ -19,7 +19,7 @@ class ServicesTableSeeder extends Seeder
         $services = [
 
             [
-              'name'=>'Brevetti',
+              'name'=>'Brevetti e Marchi',
               'description'=> null,
               'main_service_id'=> 1,
               'hidden'=>null,
@@ -253,7 +253,7 @@ class ServicesTableSeeder extends Seeder
                 'hidden'=>null,
             ],
             [
-                'name'=>'Coatching',
+                'name'=>'Coaching',
                 'description'=>'Il coach è un soggetto che aiuta il team a migliorarsi rendendolo in grado di risolvere problemi di business.',
                 'main_service_id'=> 5,
                 'hidden'=>null,
@@ -372,6 +372,19 @@ class ServicesTableSeeder extends Seeder
                 'main_service_id'=> 7,
                 'hidden'=>null,
             ],
+            [
+              'name'=>'NDA',
+              'description'=> null,
+              'main_service_id'=> 1,
+              'hidden'=>null,
+            ],
+            [
+                'name'=>'Corporate Sustainability Strategies',
+                'description'=> null,
+                'main_service_id'=> 7,
+                'hidden'=>null,
+            ],
+
         ];
 
       foreach ($services as $service){

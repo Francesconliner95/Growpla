@@ -16,16 +16,17 @@ var create = new Vue({
         show_next: false,
         in_load: false,
         showScrollTop: false,
+        colls: [],
     },
     methods: {
         scrollTop(){
             window.scrollTo({top: 0, behavior: 'smooth'});
         },
         showMore(){
-            var collaborations_qty = this.collaborations.length;
+            var collaborations_qty = this.colls.length;
             var items_qty = 6;
             if(this.page<=Math.ceil(collaborations_qty/items_qty)){
-                var new_collaborations_show = this.collaborations.slice(items_qty*this.page-items_qty,items_qty*this.page);
+                var new_collaborations_show = this.colls.slice(items_qty*this.page-items_qty,items_qty*this.page);
                 this.loadNeedInfo(new_collaborations_show);
                 this.page++;
             }
@@ -56,15 +57,74 @@ var create = new Vue({
             }
         },
 
+        already_exist(collaboration){
+
+            var sender_user_id = collaboration.sender_user_id;
+            var sender_page_id = collaboration.sender_page_id;
+            var recipient_user_id = collaboration.recipient_user_id;
+            var recipient_page_id = collaboration.recipient_page_id;
+            var exist = false;
+
+            this.colls.forEach((coll, i) => {
+                if(sender_user_id){
+                    if(sender_user_id==coll.sender_user_id){
+                        if(coll.recipient_user_id==recipient_user_id){
+                            exist = true;
+                        }
+                        if(coll.recipient_page_id==recipient_page_id){
+                            exist = true;
+                        }
+                    }
+                    if(sender_user_id==coll.recipient_user_id){
+                        if(coll.sender_user_id==recipient_user_id){
+                            exist = true;
+                        }
+                        if(coll.sender_page_id==recipient_user_id){
+                            exist = true;
+                        }
+                    }
+                }
+                if(sender_page_id){
+                    if(sender_page_id==coll.sender_page_id){
+                        if(coll.recipient_user_id==recipient_user_id){
+                            exist = true;
+                        }
+                        if(coll.recipient_page_id==recipient_page_id){
+                            exist = true;
+                        }
+                    }
+                    if(sender_page_id==coll.recipient_page_id){
+                        if(coll.sender_user_id==recipient_user_id){
+                            exist = true;
+                        }
+                        if(coll.sender_page_id==recipient_user_id){
+                            exist = true;
+                        }
+                    }
+
+                }
+            });
+
+            if(exist){
+                return true;
+            }else{
+                return false;
+            }
+
+        },
 
     },
     created(){
-
+        console.log(this.collaborations);
         if(this.collaborations){
-            this.collaborations = JSON.parse(this.collaborations.replace(/&quot;/g,'"'));
+            this.collaborations.forEach((collaboration, i) => {
+                if(!this.already_exist(collaboration)){
+                    this.colls.push(collaboration);
+                }
+            });
+            console.log(this.colls);
         }
         this.showMore();
-
     },
     mounted() {
         window.onscroll = ()=>{this.scrollFunction()};

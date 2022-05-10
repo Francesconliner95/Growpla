@@ -103,10 +103,10 @@ var create = new Vue({
         // },
     },
     created(){
-      this.user = JSON.parse(this.user.replace(/&quot;/g,'"'));
-      if(this.regions){
-          this.regions = JSON.parse(this.regions.replace(/&quot;/g,'"'));
-      }
+      // this.user = JSON.parse(this.user.replace(/&quot;/g,'"'));
+      // if(this.regions){
+      //     this.regions = JSON.parse(this.regions.replace(/&quot;/g,'"'));
+      // }
 
       this.country_id_selected = this.user.country_id?this.user.country_id:1;
       this.region_id_selected = this.user.region_id;

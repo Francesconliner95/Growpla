@@ -3,7 +3,7 @@
 @section('content')
 <script type="text/javascript">
     window.csrf_token = "{{ csrf_token() }}";
-    user = "{{$user}}";
+    user = @json($user);
     lang = "{{Auth::user()->language_id}}";
 </script>
 <div class="container">
@@ -55,14 +55,14 @@
                     <h6>Voglio ricevere mail</h6>
                     @foreach ($mail_settings as $mail_setting)
                         <div class="">
-                            {{-- @if($errors->any())
-                              <input type="checkbox" name="mail_settings[]" class="" value="{{$mail_setting->id}}" id="ms-{{$mail_setting->id}}"
-                              {{ in_array($mail_setting->id, old('mail_settings', [])) ? 'checked=checked' : ''}} @click="checkboxToggle({{$mail_setting->id}})">
-                            @else --}}
-                              <input type="checkbox" name="mail_settings[]" class="" value="{{$mail_setting->id}}" id="ms-{{$mail_setting->id}}"
-                              {{!$user->mail_settings->contains($mail_setting)?'checked=checked':''}} @click="checkboxToggle({{$mail_setting->id}})">
-                            {{-- @endif --}}
-                            <label class="pl-2" for="ms-{{$mail_setting->id}}">{{$mail_setting->name_it}}</label>
+                            <label class="input-container m-0 d-flex align-items-center">
+                                {{$mail_setting->name_it}}
+                                <input type="checkbox"
+                                value="{{$mail_setting->id}}"
+                                id="ms-{{$mail_setting->id}}"
+                                {{!$user->mail_settings->contains($mail_setting)?'checked=checked':''}} @click="checkboxToggle({{$mail_setting->id}})">
+                                <span class="checkmark-checkbox mt-1"></span>
+                            </label>
                         </div>
                     @endforeach
                 </div>

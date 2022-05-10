@@ -21,7 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ServicesTableSeeder::class);
         $this->call(HavePagetypeServiceTableSeeder::class);
         $this->call(GivePagetypeServiceTableSeeder::class);
-        $this->call(SkillsTableSeeder::class);
         $this->call(LifecyclesTableSeeder::class);
         $this->call(CountriesTableSeeder::class);
         $this->call(RegionsTableSeeder::class);
@@ -29,5 +28,6 @@ class DatabaseSeeder extends Seeder
         $this->call(NotificationTypesTableSeeder::class);
         $this->call(IncubatorsTableSeeder::class);
         $this->call(MailSettingsTableSeeder::class);
+        $this->call(BackgroundsTableSeeder::class);
     }
 }

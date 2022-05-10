@@ -2,29 +2,29 @@
 
 @section('content')
     @php
-        use App\Language;
-
-        $lang =
-        preg_split('/,|;/',request()->server('HTTP_ACCEPT_LANGUAGE'))[1];
-
-        $languages = Language::all();
-
-        $set_lang = false;
-
-        foreach ($languages as $language) {
-            if($language->lang == $lang){
-                app()->setLocale($lang);
-                $set_lang = true;
-                $language_id = $language->id;
-            }
-        }
-
-        if(!$set_lang){
-            // app()->setLocale('en');
-            // $language_id = 1;
-            app()->setLocale('it');
-            $language_id = 2;
-        }
+        // use App\Language;
+        //
+        // $lang =
+        // preg_split('/,|;/',request()->server('HTTP_ACCEPT_LANGUAGE'))[1];
+        //
+        // $languages = Language::all();
+        //
+        // $set_lang = false;
+        //
+        // foreach ($languages as $language) {
+        //     if($language->lang == $lang){
+        //         app()->setLocale($lang);
+        //         $set_lang = true;
+        //         $language_id = $language->id;
+        //     }
+        // }
+        //
+        // if(!$set_lang){
+        //     app()->setLocale('it');
+        //     $language_id = 2;
+        // }
+        app()->setLocale('it');
+        $language_id = 2;
     @endphp
 <div class="bg-blue" id="login" style="background-image: url({{asset("storage/images/bg-contact.svg") }}); background-position: left 0px bottom -17px; background-repeat: no-repeat; background-size: 700px 500px;">
   <div class="container">
@@ -34,11 +34,11 @@
                 <div class="bg-dark custom-card col-sm-12 col-md-12 col-lg-6 col-xl-6 p-5">
                     <div  class="switch-button-container pt-1 pb-5">
                         <label class="pt-2 mr-4 font-weight-bold" for="">Login</label>
-                        <div class="button r switch-button d-inline-block">
-                            <input type="checkbox" class="checkbox" @click="login=!login">
+                        <button class="button r switch-button d-inline-block">
+                            <input type="checkbox" class="checkbox" @click="login=!login" id="switch-checkbox">
                             <div class="knobs"></div>
                             <div class="layer"></div>
-                        </div>
+                        </button>
                         <label class="pt-2 ml-4 font-weight-bold" for="">Registati</label>
                     </div>
                     <form v-if="login" method="POST" action="{{ route('login') }}" v-cloak>
@@ -62,8 +62,10 @@
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-8">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
+                                <div class="placeholder-icon">
+                                    <input id="password" :type="show_password?'text':'password'" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                    <i :class="show_password?'fas fa-eye':'fas fa-eye-slash'" @click="show_password=!show_password"></i>
+                                </div>
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -86,10 +88,11 @@
 
                         <div class="form-group row mb-2">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="button-style button-color">
+                                <button type="submit" id="button-submit-login" class="invisible">
+                                </button>
+                                <button type="button" :class="login_btn?'button-style button-color':'button-style button-color button-deactivate'" @click="submitLogin()" v-cloak>
                                     {{ __('Login') }}
                                 </button>
-
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
@@ -165,8 +168,10 @@
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
+                                <div class="placeholder-icon">
+                                    <input id="password" :type="show_password?'text':'password'" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                    <i :class="show_password?'fas fa-eye':'fas fa-eye-slash'" @click="show_password=!show_password"></i>
+                                </div>
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -179,7 +184,7 @@
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Conferma password</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                <input id="password-confirm" :type="show_password?'text':'password'" class="form-control" name="password_confirmation" required autocomplete="new-password">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -213,7 +218,9 @@
                         </div>
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="button-style button-color">
+                                <button type="submit" id="button-submit-register" class="invisible">
+                                </button>
+                                <button type="button" :class="register_btn?'button-style button-color':'button-style button-color button-deactivate'" @click="submitRegister()" v-cloak>
                                     Registrati
                                 </button>
                             </div>

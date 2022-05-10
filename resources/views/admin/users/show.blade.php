@@ -40,6 +40,9 @@
         <div class="item-cont">
             <div class="item-style">
                 <div class="profile">
+                    <a v-if="is_my_user" class="edit-top-left button-style-circle button-color-gray pl-1" href="{{route('admin.users.accounts',$user->id)}}" v-cloak>
+                        <i class="fas fa-cog"></i>
+                    </a>
                     <a v-if="is_my_user" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.users.edit', $user->id)}}" v-cloak>
                         <i class="fas fa-pencil-alt"></i>
                     </a>
@@ -59,20 +62,17 @@
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
-                            <h2 class="text-capitalize m-0 d-flex justify-content-start align-items-center pb-1">
+                            <h2 class="text-capitalize m-0 d-flex justify-content-start align-items-center pt-1 pb-1">
                                 {{$user->name}} {{$user->surname}}
-                                <a v-if="is_my_user" class="button-style-circle button-color-gray pl-1" href="{{route('admin.users.create')}}" v-cloak>
-                                    <i class="fas fa-cog"></i>
-                                </a>
                             </h2>
                             <div class="address pb-1">
                                 <span>{{$user->region_id?$user->region->name:''}}</span>
                                 <span>{{$user->region_id && $user->municipality?',':''}}</span>
-                                <span>{{$user->municipality}}</span>
+                                <span class="text-capitalize">{{$user->municipality}}</span>
                             </div>
                             <div class="d-flex justify-content-start align-items-center pb-1">
                                 @foreach ($user->usertypes as $key => $usertype)
-                                    @if(in_array ($usertype->id, array(1, 2)))
+                                    @if(in_array ($usertype->id, array(1, 2, 3)))
                                         <div class="d-inline-block">
                                             <button aria-label="{{$usertype->name_it}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
                                             <div class="micro-img d-inline-block m-1">
@@ -144,12 +144,12 @@
                             @endif
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2 d-flex justify-content-center align-items-center">
-                          <div class="">
+                          <div class="pt-2 text-center">
                               <a v-if="is_my_user" class="button-style button-color-green m-1" href="{{route('admin.follows.index')}}">
                                   {{count(Auth::user()->user_following)
                                   +count(Auth::user()->page_following)}} Seguiti
                               </a>
-                              <button v-if="!is_my_user" :class="following?'button-style button-color-orangem r-1':'button-style button-color m-1'" type="button" name="button" @click="toggleFollow({{$user->id}})" v-cloak>
+                              <button v-if="!is_my_user" :class="following?'button-style m-1':'button-style button-color-green m-1'" type="button" name="button" @click="toggleFollow({{$user->id}})" v-cloak>
                                   <span v-if="following">{{__('Following')}}</span>
                                   <span v-else>{{__('Follow')}}</span>
                               </button>
@@ -238,7 +238,7 @@
                 @if($is_my_user || count($user->give_user_services)>0 || count($user->have_user_services)>0)
                 <div id="services" class="sub-section">
                     <div class="row pb-2 justify-content-between">
-                        <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5">
+                        <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 mb-3">
                         @if($is_my_user || count($user->give_user_services)>0)
                             <h4 class="txt-green font-weight-bold pb-3  d-flex justify-content-start align-items-center">
                                 <span class="mr-1">
@@ -252,7 +252,7 @@
                             <div class="main-multi-slider">
                                 <div class="multi-slider-cont mini" id="multi-slider-cont-1">
                                     @foreach ($user->give_user_services as $service)
-                                        <div class="multi-slider-item col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                        <div class="multi-slider-item col-8 col-sm-8 col-md-8 col-lg-6 col-xl-6">
                                             <div class=" d-flex justify-content-center align-items-center h-100">
                                                 <div class="card-style-mini card-color-green">
                                                     <div class="text-capitalize text-cont">
@@ -263,11 +263,11 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <button type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-1" v-cloak>
+                                <button type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white mobile-hide" id="button-left-1" v-cloak>
                                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                                     {{-- <i class="fas fa-caret-left"></i> --}}
                                 </button>
-                                <button type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right bg-white" id="button-right-1" v-cloak>
+                                <button type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right bg-white mobile-hide" id="button-right-1" v-cloak>
                                     {{-- <i class="fas fa-caret-right"></i> --}}
                                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                                 </button>
@@ -275,7 +275,7 @@
                             @endif
                         @endif
                         </div>
-                        <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5">
+                        <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5  mb-3">
                         @if($is_my_user || count($user->have_user_services)>0)
                             <h4 class="txt-blue font-weight-bold pb-3 d-flex justify-content-start align-items-center">
                                 <span class="mr-1">
@@ -289,7 +289,7 @@
                             <div class="main-multi-slider">
                                 <div class="multi-slider-cont mini" id="multi-slider-cont-2">
                                     @foreach ($user->have_user_services as $service)
-                                        <div class="multi-slider-item col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                        <div class="multi-slider-item col-8 col-sm-8 col-md-8 col-lg-6 col-xl-6">
                                             <div class=" d-flex justify-content-center align-items-center h-100">
                                                 <div class="card-style-mini card-color-blue">
                                                     <div class="text-capitalize text-cont">
@@ -300,11 +300,11 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <button type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white" id="button-left-2" v-cloak>
+                                <button type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(1,'left')" class="slider-left bg-white mobile-hide" id="button-left-2" v-cloak>
                                     {{-- <i class="fas fa-caret-left"></i> --}}
                                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                                 </button>
-                                <button type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right bg-white" id="button-right-2" v-cloak>
+                                <button type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right bg-white mobile-hide" id="button-right-2" v-cloak>
                                     {{-- <i class="fas fa-caret-right"></i> --}}
                                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                                 </button>
@@ -319,7 +319,11 @@
                 {{-- @if($user->usertypes->contains(1)) --}}
                     @if($is_my_user || count($user->give_user_skills)>0)
                     <div class="sub-section">
-                      <h6>{{__('Competenze')}}
+                        <h6>{{__('Competenze')}}
+                            <div v-if="is_my_user" class="info" v-cloak>
+                                <button aria-label="Inserisci competenze correlate a ciò che sai fare (SW utilizzati, linguaggi di programmazione, soft skill, aree di conoscenza e competenza e molto altro)" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
                         <a v-if="is_my_user" href="{{route('admin.give_user_skills.edit',$user->id)}}" class="edit-top-right button-style-circle button-color-gray">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
@@ -332,6 +336,23 @@
                     </div>
                     @endif
                 {{-- @endif --}}
+                @if($user->usertypes->contains(1)
+                || $user->usertypes->contains(5))
+                    @if($is_my_user || count($user->backgrounds)>0)
+                    <div class="sub-section">
+                      <h6>Formazione
+                        <a v-if="is_my_user" href="{{route('admin.users.background', $user->id)}}" class="edit-top-right button-style-circle button-color-gray">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+                      </h6>
+                      <div class="">
+                          @foreach ($user->backgrounds as $background)
+                            <span class="border-style bg-blue txt-green font-weight-bold">{{$background->name}}</span>
+                          @endforeach
+                      </div>
+                    </div>
+                    @endif
+                @endif
                 @if($user->description)
                 <div class="sub-section">
                   <h6>{{__('Presentation')}}</h6>
@@ -340,6 +361,7 @@
                 @endif
             </div>
         </div>
+        @if(count($user->pages)>0)
         <div class="sub-section">
             @foreach ($pageTypes  as $key => $pageType)
                 @if($user->pageTypes->contains($pageType->id))
@@ -352,9 +374,9 @@
                               </div>
                             </div>
                             <div class="main-multi-slider d-flex justify-content-center">
-                                <div class="multi-slider-cont mini w-75" id="multi-slider-cont-{{$key+3}}">
+                                <div class="multi-slider-cont mini col-12 col-sm-12 col-md-12 col-lg-10 col-xl-10" id="multi-slider-cont-{{$key+3}}">
                                     @foreach ($user->pages->where('pagetype_id',$pageType->id)  as $page)
-                                        <div class="multi-slider-item col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                        <div class="multi-slider-item col-8 col-sm-8 col-md-8 col-lg-6 col-xl-6">
                                             <div class="d-flex justify-content-center align-items-center h-100">
                                                 <div class="card-style-mini">
                                                     <a href="{{ route('admin.pages.show', ['page'=> $page->id]) }}" class="">
@@ -364,14 +386,14 @@
                                                                 <img src="{{ asset("storage/" . $page->image) }}" alt="" class="scale">
                                                                 @endif
                                                             </div>
-                                                            <span class="d-block text-dark text-truncate">{{$page->name}}</span>
+                                                            <span class="d-block text-dark text-truncate text-capitalize">{{$page->name}}</span>
                                                         </div>
                                                     </a>
                                                 </div>
                                             </div>
                                         </div>
                                     @endforeach
-                                        <div class="multi-slider-item col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                                        <div v-if="is_my_user" class="multi-slider-item col-sm-12 col-md-6 col-lg-4 col-xl-4" v-cloak>
                                             <div class="d-flex justify-content-center align-items-center h-100">
                                                 <div class="card-style-mini">
                                                     <a class="" href="{{ route('admin.pages.newPage', ['pagetype_id'=> $pageType->id]) }}">
@@ -383,11 +405,11 @@
                                             </div>
                                         </div>
                                 </div>
-                                <button type="button" name="button" @mousedown="start({{$key+3}},'left')" @mouseleave="stop({{$key+3}},'left')" @mouseup="stop({{$key+3}},'left')" class="slider-left" id="button-left-{{$key+3}}" v-cloak>
+                                <button type="button" name="button" @mousedown="start({{$key+3}},'left')" @mouseleave="stop({{$key+3}},'left')" @mouseup="stop({{$key+3}},'left')" class="slider-left mobile-hide" id="button-left-{{$key+3}}" v-cloak>
                                     {{-- <i class="fas fa-caret-left"></i> --}}
                                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                                 </button>
-                                <button type="button" name="button" @mousedown="start({{$key+3}},'right')" @mouseleave="stop({{$key+3}},'right')" @mouseup="stop({{$key+3}},'right')"class="slider-right" id="button-right-{{$key+3}}" v-cloak>
+                                <button type="button" name="button" @mousedown="start({{$key+3}},'right')" @mouseleave="stop({{$key+3}},'right')" @mouseup="stop({{$key+3}},'right')"class="slider-right  mobile-hide" id="button-right-{{$key+3}}" v-cloak>
                                     {{-- <i class="fas fa-caret-right"></i> --}}
                                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                                 </button>
@@ -397,6 +419,7 @@
                 @endif
             @endforeach
         </div>
+        @endif
         <div v-if="is_my_user || collaborations.length>0" id="collaborations" class="item-cont" v-cloak>
             <div class="item-style">
                 <h3 class="text-capitalize">Collaborazioni
@@ -409,15 +432,15 @@
                     </a>
                 </h3>
                 <div class="main-multi-slider">
-                    <div class="multi-slider-cont mini" id="multi-slider-cont-20">
-                        <div v-for="collaboration in collaborations" class="multi-slider-item col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                    <div class="multi-slider-cont" id="multi-slider-cont-20" style="height: 160px;">
+                        <div v-for="collaboration in collaborations" class="multi-slider-item col-8 col-sm-5 col-md-5 col-lg-3 col-xl-3">
                             <div class="d-flex justify-content-center align-items-center h-100">
                                 <div class="card-style-mini">
                                     <a :href="collaboration.recipient_user_id?
                                     '/admin/users/'+collaboration.account.id
-                                    :'/admin/pages/'+collaboration.account.id" class="">
+                                    :'/admin/pages/'+collaboration.account.id" class="d-inline-block">
                                         <div class="text-cont">
-                                            <div class="img-cont mini-img">
+                                            <div class="img-cont medium-img mt-2">
                                               <img
                                               v-if="collaboration.account.image"
                                               :src="'/storage/' +collaboration.account.image" alt="" class="scale">
@@ -426,8 +449,11 @@
                                                 @{{collaboration.account.name}}
                                                 @{{collaboration.account.surname?
                                                 collaboration.account.surname:''}}
-                                                <i v-if="collaboration.confirmed" class="fas fa-certificate txt-blue"></i>
-                                                {{-- @{{collaboration.confirmed?'confermata':''}} --}}
+                                                <div  v-if="collaboration.confirmed"
+                                                 class="d-inline-block">
+                                                    <button aria-label="Collaborazione verificata" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
+                                                    <i class="fas fa-certificate txt-blue"></i>
+                                                </div>
                                             </span>
                                         </div>
                                     </a>
@@ -435,12 +461,12 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" name="button" @mousedown="start(20,'left')" @mouseleave="stop(20,'left')" @mouseup="stop(20,'left')" class="slider-left" id="button-left-20" v-cloak>
+                    <button type="button" name="button" @mousedown="start(20,'left')" @mouseleave="stop(20,'left')" @mouseup="stop(20,'left')" class="slider-left mobile-hide" id="button-left-20" v-cloak>
                         {{-- <span class="arrow-black r-180"></span> --}}
                         {{-- <i class="fas fa-caret-left"></i> --}}
                         <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
                     </button>
-                    <button type="button" name="button" @mousedown="start(20,'right')" @mouseleave="stop(20,'right')" @mouseup="stop(20,'right')"class="slider-right" id="button-right-20" v-cloak>
+                    <button type="button" name="button" @mousedown="start(20,'right')" @mouseleave="stop(20,'right')" @mouseup="stop(20,'right')"class="slider-right mobile-hide" id="button-right-20" v-cloak>
                         {{-- <i class="fas fa-caret-right"></i> --}}
                         <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
                     </button>

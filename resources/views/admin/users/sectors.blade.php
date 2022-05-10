@@ -3,7 +3,7 @@
 @section('content')
 <script type="text/javascript">
     language_id = "{{Auth::user()->language_id}}";
-    sectors = "{{$sectors}}";
+    sectors = @json($sectors);
 </script>
 <div class="container">
     <div id="user-sectors">

@@ -3,9 +3,9 @@
 @section('content')
 <script type="text/javascript">
     window.csrf_token = "{{ csrf_token() }}";
-    team = {!! json_encode($team->toArray()) !!};
-    user = "{{$user}}";
-    default_images = "{{json_encode($default_images)}}";
+    team = @json($team);
+    user = @json($user);
+    default_images = @json($default_images);
 </script>
 
 <div id="team-edit" style="background-image: url({{asset("storage/images/bg-team.svg") }}); background-position: left 235px bottom 0px; background-repeat: no-repeat; background-size: 500px;">
@@ -45,7 +45,7 @@
                                   <p class="mini-txt font-weight-bold">Appena terminato salva i progressi</p>
                                   <div class="d-flex justify-content-between">
                                       <button type="submit" class="button-style button-color">
-                                          {{__('Save Changes')}}
+                                          Salva
                                       </button>
                                       <button class="button-style button-color-blue ml-5" type="button" name="button" @click="alertMenu(1)">
                                           <i class="fas fa-trash-alt mr-1"></i>Elimina

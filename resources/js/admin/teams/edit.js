@@ -213,7 +213,7 @@ var create = new Vue({
     },
     created() {
       if(this.user){
-        this.user = JSON.parse(this.user.replace(/&quot;/g,'"'));
+        // this.user = JSON.parse(this.user.replace(/&quot;/g,'"'));
         this.user_selected = this.user;
       }
     },

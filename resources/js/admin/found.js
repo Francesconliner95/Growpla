@@ -60,7 +60,7 @@ var create = new Vue({
         },
         switchAccounts(i){
             this.account_index_selected = i;
-            console.log(i);
+            //console.log(i);
             this.alert = true;
             axios.get('/admin/getMyAccounts',{
             }).then((response) => {
@@ -255,7 +255,8 @@ var create = new Vue({
                   }
               }).then((response) => {
                   this.services_found = response.data.results.services;
-                  console.log(this.services_found);
+
+                  //console.log(this.services_found);
                   if(!this.service_name){
                       this.services_found = '';
                   }
@@ -412,12 +413,12 @@ var create = new Vue({
     },
     created(){
 
-        if(this.pages_id){
-            this.pages_id = JSON.parse(this.pages_id.replace(/&quot;/g,'"'));
-        }
-        if(this.users_id){
-            this.users_id = JSON.parse(this.users_id.replace(/&quot;/g,'"'));
-        }
+        // if(this.pages_id){
+        //     this.pages_id = JSON.parse(this.pages_id.replace(/&quot;/g,'"'));
+        // }
+        // if(this.users_id){
+        //     this.users_id = JSON.parse(this.users_id.replace(/&quot;/g,'"'));
+        // }
         this.mergePagesUsers();
 
     },

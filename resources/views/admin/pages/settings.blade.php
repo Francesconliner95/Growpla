@@ -6,6 +6,7 @@
     lang = "{{Auth::user()->language_id}}";
     user_id = "{{Auth::user()->id}}";
     page_id = "{{$page_id}}";
+    page = @json($page);
 </script>
 <div class="container">
     <div id="page-settings">
@@ -16,7 +17,7 @@
                         <i class="fas fa-times"></i>
                     </button>
                     <h3 class="p-2 pt-4">@{{message}}</h3>
-                    <div class="">
+                    <div class="d-flex justify-content-between">
                         <button type="button" name="button" class="button-style button-color mr-5" @click="option1()">
                             @{{alert_b1}}
                         <button class="button-style button-color-red ml-5" type="submit" name="button" @click="option2()">
@@ -32,11 +33,7 @@
         </form>
         <div class="item-cont">
             <div class="item-style">
-                <h3 class="pb-3">Impostazioni pagina
-                    <span class="text-capitalize font-weight-bold">
-                    {{$page->name}}
-                    </span>
-                </h3>
+                <h3 class="pb-3">Impostazioni pagina</h3>
                 <div class="pb-3">
                     <h6>Admin</h6>
                     <div v-for="admin in admins" v-cloak>
@@ -54,7 +51,9 @@
                 <div class="pb-3">
                     <h6>Aggiungi admin</h6>
                     <div class="search">
-                        <input type="text" name="user" value="" placeholder="Nome o cognome utente" v-model="user_name" @keyup.enter="searchUser()" v-on:input="searchUser()" maxlength="70" class="form-control col-sm-12 col-md-6 col-lg-4 col-xl-4 custom-input-blue" autocomplete="off">
+                        <input type="text" name="user" value="" placeholder="Nome o cognome utente" v-model="user_name" @keyup.enter="searchUser()"
+                        @input='searchUser()'
+                         maxlength="70" class="form-control col-sm-12 col-md-6 col-lg-4 col-xl-4 custom-input-blue" autocomplete="off">
                         @error ('user_name')
                             <div class="alert alert-danger">
                                 {{__($message)}}
@@ -78,11 +77,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-flex justify-content-center pt-5">
-                    <button type="button" name="button" class="button-style button-color-black" @click="alertMenu(1)">
-                        <i class="fas fa-trash-alt mr-1"></i>
-                        Elimina pagina
-                    </button>
+                <div v-if="page" class="pt-3 pb-2 d-flex justify-content-center" v-cloak>
+                    <div class="text-center card-style card-color-gray">
+                        <div class="mb-5 text-center">
+                            <div class="img-cont mini-img d-inline-block mb-2" v-cloak>
+                                <img :src="'/storage/' + page.image" alt="" class="">
+                            </div>
+                            <h6 class="text-capitalize m-0">@{{page.name}}</h6>
+                        </div>
+                        <a :href="'/admin/pages/'+page.id" class="txt-green mb-3 d-inline-block">Torna al profilo</a>
+                        <button type="button" name="button" class="button-style button-color-black" @click="alertMenu(1)">
+                            <i class="fas fa-trash-alt"></i> Elimina pagina
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

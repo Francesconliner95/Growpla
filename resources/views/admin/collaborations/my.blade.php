@@ -15,7 +15,7 @@
                         <i class="fas fa-times"></i>
                     </button>
                     <h3 class="p-2 pt-4">@{{message}}</h3>
-                    <div class="">
+                    <div class="d-flex justify-content-around">
                         <button type="button" name="button" class="button-style button-color mr-5" @click="option1()">
                             @{{alert_b1}}
                         <button class="button-style button-color-red ml-5" type="submit" name="button" @click="option2()">
@@ -58,7 +58,7 @@
                         <div class="multi-slider-cont" id="multi-slider-cont-1">
                             <div v-for="collaboration in collaborations" class="multi-slider-item col-sm-12 col-md-6 col-lg-3 col-xl-3">
                                 <div class=" d-flex justify-content-center align-items-center h-100">
-                                    <div class="card-style card-color-gray text-center">
+                                    <div class="card-style card-color-gray text-center position-relative">
                                         <div class="img-cont medium-img">
                                             <img
                                             v-if="collaboration.account.image"
@@ -75,7 +75,7 @@
                                                 :'/admin/pages/'+collaboration.account.id" class="button-style button-color-green mt-5">
                                                     Visita profilo
                                                 </a>
-                                                <button class="edit-top-right button-style-circle button-color-gray mr-4 mt-4" type="submit" name="button" @click="alertMenu(1,collaboration)">
+                                                <button class="edit-top-right button-style-circle button-color-gray" type="submit" name="button" @click="alertMenu(1,collaboration)">
                                                     <i class="fas fa-times"></i>
                                                 </button>
                                             </div>
@@ -105,7 +105,7 @@
                         <div class="multi-slider-cont" id="multi-slider-cont-2">
                             <div v-for="collaboration in prop_collaborations" class="multi-slider-item col-sm-12 col-md-6 col-lg-3 col-xl-3">
                                 <div class=" d-flex justify-content-center align-items-center h-100">
-                                    <div class="card-style card-color-gray text-center">
+                                    <div class="card-style card-color-gray text-center position-relative">
                                         <div class="img-cont medium-img">
                                             <img
                                             v-if="collaboration.account.image"
@@ -125,7 +125,7 @@
                                                 :'/admin/pages/'+collaboration.account.id" class="button-style button-color-green mt-2">
                                                     Visita profilo
                                                 </a>
-                                                <button class="edit-top-right button-style-circle button-color-gray mr-4 mt-4" type="submit" name="button" @click="alertMenu(2,collaboration)">
+                                                <button class="edit-top-right button-style-circle button-color-gray" type="submit" name="button" @click="alertMenu(2,collaboration)">
                                                     <i class="fas fa-times"></i>
                                                 </button>
                                             </div>

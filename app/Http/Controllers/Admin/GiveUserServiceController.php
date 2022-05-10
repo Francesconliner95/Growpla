@@ -85,13 +85,8 @@ class GiveUserServiceController extends Controller
                     $new_notf->save();
                 }
             }
-
-
-            if(Auth::user()->tutorial){
-                return redirect()->route('admin.have-user-services.edit',$user->id);
-            }else{
-                return redirect()->route('admin.users.show',$user->id);
-            }
+                
+            return redirect()->route('admin.users.show',$user->id);
 
       }abort(404);
   }

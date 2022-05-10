@@ -76,9 +76,9 @@ var create = new Vue({
     },
     created(){
 
-        if(this.offers){
-            this.offers = JSON.parse(this.offers.replace(/&quot;/g,'"'));
-        }
+        // if(this.offers){
+        //     this.offers = JSON.parse(this.offers.replace(/&quot;/g,'"'));
+        // }
         this.orderById(this.offers);
 
     },

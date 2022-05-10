@@ -63,6 +63,9 @@ var create = new Vue({
             }
         },
         scrollFunction(){
+            // console.log(window.innerHeight + window.scrollY);
+            // console.log(document.body.offsetHeight);
+            // console.log((window.innerHeight + window.scrollY) >= document.body.offsetHeight);
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
                 this.showMore();
             }
@@ -76,9 +79,9 @@ var create = new Vue({
     },
     created(){
 
-        if(this.needs){
-            this.needs = JSON.parse(this.needs.replace(/&quot;/g,'"'));
-        }
+        // if(this.needs){
+        //     this.needs = JSON.parse(this.needs.replace(/&quot;/g,'"'));
+        // }
         this.orderById(this.needs);
 
     },

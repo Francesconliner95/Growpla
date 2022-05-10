@@ -4,7 +4,14 @@
 <script type="text/javascript">
 </script>
 <div id="guest-home" class="pt-0">
-    <section class="pt-5 mb-5" style="background: url({{asset("storage/images/bg-razzo.svg") }}) right -250px top 200px,url({{asset("storage/images/bg-cerchio.svg") }}) right -270px top -150px; background-repeat: no-repeat; background-size: 800px 800px,1000px 1000px;">
+    <section class="pt-5 mb-5"
+    {{-- :style="is_mobile?
+    'background: url({{asset("storage/images/bg-cerchio.svg") }}) right -270px top -150px; background-repeat: no-repeat; background-size: 1000px 1000px;'
+    :'background: url({{asset("storage/images/bg-razzo.svg") }}) right -250px top 200px,url({{asset("storage/images/bg-cerchio.svg") }}) right -270px top -150px; background-repeat: no-repeat; background-size: 800px 800px,1000px 1000px;'" --}}
+    style="background: url({{asset("storage/images/bg-cerchio.svg") }}) right -270px top -150px; background-repeat: no-repeat; background-size: 1000px 1000px;"
+
+     v-cloak>
+        <img src="{{asset("storage/images/bg-razzo.svg") }}" alt="" class="rocket-animation mobile-hide">
         <div class="header mb-5 pb-5">
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
@@ -25,10 +32,10 @@
             <div class="row">
                 <h1 class="col-sm-12 col-md-8 col-lg-5 col-xl-5 pb-3">Fai decollare il tuo business.</h1>
                 <h4 class="col-sm-12 col-md-12 col-lg-10 col-xl-10 pt-3 pb-3">Crea la tua Startup, sviluppa la tua <strong> idea di business</strong>, forma il tuo team, incontra persone e stringi relazioni.</h4>
-                <h4 class="col-sm-12 col-md-12 col-lg-10 col-xl-10 pt-3 pb-3">Entra a far parte della <strong>prima piattaforma</strong> italiana che genera ecosistemi unendo gli attori principali della <strong>community degli innovatori</strong>.</h4>
+                <h4 class="col-sm-12 col-md-12 col-lg-10 col-xl-10 pt-3 pb-3">Entra a far parte della <strong>piattaforma</strong> italiana che genera ecosistemi unendo gli attori principali della <strong>community degli innovatori</strong>.</h4>
             </div>
             <div class="pt-5 pb-5 row justify-content-start">
-                <a href="{{route('login')}}" class="button-color-white iscriviti-ora m-2">iscriviti ora</a>
+                <a href="login#register" class="button-color-white iscriviti-ora m-2">iscriviti ora</a>
                 <a href="{{route('login')}}"  class="button-color-transparent iscriviti-ora m-2">login</a>
             </div>
         </div>
@@ -38,8 +45,8 @@
             <div class="row pt-3">
                 <h1 class="col-sm-12 col-md-10 col-lg-10 col-xl-7 pb-3">A chi ci rivolgiamo?</h1>
             </div>
-            <div class="row justify-content-center pt-5 pb-5">
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
+            <div class="row">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
                     <div class="text-center scale-nocursor">
                         <div class="img-cont medium-img mb-3">
                             <img src="{{asset('storage/pages_images/default-startup.svg')}}" alt="">
@@ -47,15 +54,17 @@
                         <h5 class="text-white m-0">STARTUP</h5>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
                     <div class="text-center scale-nocursor">
                         <div class="img-cont medium-img mb-3">
                             <img src="{{asset('storage/users_images/default-cofounder.svg')}}" alt="">
                         </div>
-                        <h5 class="text-white m-0">CO-FOUNDER</h5>
+                        <h5 class="text-white m-0">ASPIRANTI
+                            <span class="d-block">CO-FOUNDER</span>
+                        </h5>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
                     <div class="text-center  scale-nocursor">
                         <div class="img-cont medium-img mb-3">
                             <img src="{{asset('storage/pages_images/default-incubatore.svg')}}" alt="">
@@ -63,7 +72,7 @@
                         <h5 class="text-white m-0">INCUBATORI ED ACCELERATORI</h5>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
                     <div class="text-center scale-nocursor">
                         <div class="img-cont medium-img mb-3">
                             <img src="{{asset('storage/users_images/default-business-angel.svg')}}" alt="">
@@ -71,7 +80,7 @@
                         <h5 class="text-white m-0">INVESTITORI</h5>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
                     <div class="text-center scale-nocursor">
                         <div class="img-cont medium-img mb-3">
                             <img src="{{asset('storage/pages_images/default-associazione.svg')}}" alt="">
@@ -79,7 +88,7 @@
                         <h5 class="text-white m-0">ENTI ED ASSOCIAZIONI</h5>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
                     <div class="text-center scale-nocursor">
                         <div class="img-cont medium-img mb-3">
                             <img src="{{asset('storage/users_images/default-studente.svg')}}" alt="">
@@ -87,7 +96,7 @@
                         <h5 class="text-white m-0">STUDENTI</h5>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
                     <div class="text-center scale-nocursor">
                         <div class="img-cont medium-img mb-3">
                             <img src="{{asset('storage/pages_images/default-azienda.svg')}}" alt="">
@@ -95,7 +104,7 @@
                         <h5 class="text-white m-0">AZIENDE</h5>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
                     <div class="text-center scale-nocursor">
                         <div class="img-cont medium-img mb-3">
                             <img src="{{asset('storage/users_images/default-freelancer.svg')}}" alt="">
@@ -173,11 +182,12 @@
                 </div>
             </div>
             <div class="pt-5 pb-5 d-flex justify-content-center">
-                <a href="{{route('login')}}" class="button-color-white iscriviti-ora m-2">iscriviti ora</a>
+                <a href="login#register" class="button-color-white iscriviti-ora m-2">iscriviti ora</a>
             </div>
         </div>
     </section>
     <section class="screenshot pt-5 pb-5">
+        <div class="container-fluid">
             <div class="row pb-5">
                 <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 order-1 order-sm-1 order-md-0">
                     <div class="text-container">
@@ -185,16 +195,16 @@
                         <p>Growpla ti guida nel <strong>processo di crescita</strong> indicandotile figure che fanno al caso tuo in base alla fase del <strong>ciclo di vita</strong> che attraversi con l’<strong>obiettivo</strong> di passare alla successiva!</p>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 order-0 order-sm-0 order-md-1">
+                <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 order-0 order-sm-0 order-md-1 pr-0">
                     <div class="image-container">
-                        <img src="{{asset("storage/images/monitor-1.svg") }}" alt="">
+                        <img src="{{asset("storage/images/monitor-1.png") }}" alt="">
                     </div>
                 </div>
             </div>
             <div class="row pb-5">
-                <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5">
+                <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 pl-0">
                     <div class="image-container">
-                        <img src="{{asset("storage/images/monitor-2.svg") }}" alt="">
+                        <img src="{{asset("storage/images/monitor-2.png") }}" alt="">
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7">
@@ -211,16 +221,16 @@
                         <p>Ottieni recensioni positive ed <strong>amplia la tua cerchia di clienti</strong>, comunica novità, sconti e promozioni</p>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 order-0 order-sm-0 order-md-1">
+                <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 order-0 order-sm-0 order-md-1 pr-0">
                     <div class="image-container">
-                        <img src="{{asset("storage/images/monitor-3.svg") }}" alt="">
+                        <img src="{{asset("storage/images/monitor-3.png") }}" alt="">
                     </div>
                 </div>
             </div>
             <div class="row pb-5">
-                <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5">
+                <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 pl-0">
                     <div class="image-container">
-                        <img src="{{asset("storage/images/monitor-4.svg") }}" alt="">
+                        <img src="{{asset("storage/images/monitor-4.png") }}" alt="">
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7">
@@ -233,43 +243,72 @@
                 </div>
             </div>
             <div class=" pb-5 d-flex justify-content-center">
-                <a href="{{route('login')}}" class="button-color-white iscriviti-ora m-2">iscriviti ora</a>
+                <a href="login#register" class="button-color-white iscriviti-ora m-2">iscriviti ora</a>
             </div>
+        </div>
     </section>
     <section class="partner pt-5 pb-5 mb-5">
         <div class="container">
             <div class="pt-3 pb-5">
                 <h5 class="pb-4"><strong>Growpla</strong> è una dimensione emergente ma già solida, che gode del supporto di importanti <strong>realtà affermate</strong>.</h5>
-                <h5 class="pb-4">Ecco alcuni dei nostri <strong>partner</strong> e sostenitori:</h5>
+                <h5 class="pb-4">Ecco alcuni dei membri del nostro network:</h5>
             </div>
         </div>
         <div class="partner-cont pt-5 pb-5">
-            <div class="row justify-content-center">
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-2 text-center fade-anim fade-right">
-                    <a href="https://www.lum.it/" target="_blank" class="d-inline-block">
-                        <img src="/storage/images/partner-lum-logo.png" alt="">
-                    </a>
-               </div>
-               <div class="col-sm-12 col-md-6 col-lg-4 col-xl-2 text-center fade-anim fade-right">
-                    <a href="https://www.ic406.com/" target="_blank" class="d-inline-block">
-                        <img src="/storage/images/partner-ic406-logo.png" alt="">
-                    </a>
-              </div>
-              <div class="col-sm-12 col-md-6 col-lg-4 col-xl-2 text-center fade-anim fade-right">
-                    <a href="https://www.goheroes.it/" target="_blank" class="d-inline-block">
-                        <img src="/storage/images/partner-heroes-logo.png" alt="">
-                    </a>
+            <div class="main-multi-slider d-flex justify-content-center">
+                <div class="multi-slider-cont mini" id="multi-slider-cont-1">
+                    <div class="multi-slider-item col-8 col-sm-8 col-md-6 col-lg-4 col-xl-3">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="card-style-mini">
+                                <a href="https://www.lum.it/" target="_blank" class="d-inline-block">
+                                    <img src="/storage/images/partner-lum-logo.png" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="multi-slider-item col-8 col-sm-8 col-md-6 col-lg-4 col-xl-3">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="card-style-mini">
+                                <a href="https://www.ic406.com/" target="_blank" class="d-inline-block">
+                                    <img src="/storage/images/partner-ic406-logo.png" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="multi-slider-item col-8 col-sm-8 col-md-6 col-lg-4 col-xl-3">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="card-style-mini">
+                                <a href="https://www.goheroes.it/" target="_blank" class="d-inline-block">
+                                    <img src="/storage/images/partner-heroes-logo.png" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="multi-slider-item col-8 col-sm-8 col-md-6 col-lg-4 col-xl-3">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="card-style-mini">
+                                <a href="https://www.viscontilegal.it/" target="_blank" class="d-inline-block">
+                                    <img src="/storage/images/partner-visconti-logo.png" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="multi-slider-item col-8 col-sm-8 col-md-6 col-lg-4 col-xl-3">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="card-style-mini">
+                                <a href="https://www.knowledge-hub.it/" target="_blank" class="d-inline-block">
+                                    <img src="/storage/images/partner-khub-logo.png" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-2 text-center fade-anim fade-right">
-                    <a href="https://www.viscontilegal.it/" target="_blank" class="d-inline-block">
-                        <img src="/storage/images/partner-visconti-logo.png" alt="">
-                    </a>
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-4 col-xl-2 text-center fade-anim fade-right">
-                    <a href="https://www.knowledge-hub.it/" target="_blank" class="d-inline-block">
-                        <img src="/storage/images/partner-khub-logo.png" alt="">
-                    </a>
-                </div>
+                <button type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left mobile-hide" id="button-left-1" v-cloak>
+                    <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
+                </button>
+                <button type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right mobile-hide" id="button-right-1" v-cloak>
+                    <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
+                </button>
             </div>
         </div>
     </section>
@@ -368,8 +407,8 @@
                         </div>
                         <div class="roadmap-text">
                             <div class="title-cont">
-                                <h5 style="color: #2D8329">APRILE 2023</h5>
-                                <span style="background-color: #2D8329"></span>
+                                <h5 style="color: #C3B50C">APRILE 2023</h5>
+                                <span style="background-color: #C3B50C"></span>
                             </div>
                             <div class="">
                                 <p>rilascio mobile app</p>
@@ -378,17 +417,17 @@
                     </div>
                     <div class="roadmap-item">
                         <div class="roadmap-img">
-                            <img src="{{asset('storage/images/icon-roadmap-6.svg')}}" alt="" class="scale-nocursor">
+                            <img src="{{asset('storage/images/icon-roadmap-7.svg')}}" alt="" class="scale-nocursor">
                             <div class="roadmap-line">
                             </div>
                         </div>
                         <div class="roadmap-text">
                             <div class="title-cont">
-                                <h5 style="color: #2D8329">IN EVOLUZIONE</h5>
+                                <h5 style="color: #2D8329">IN DIVENIRE</h5>
                                 <span style="background-color: #2D8329"></span>
                             </div>
                             <div class="">
-                                <p>in divenire</p>
+                                <p></p>
                             </div>
                         </div>
                     </div>
@@ -396,29 +435,27 @@
             </div>
         </div>
     </section>
-    <section class="reviews pt-5 pb-5">
+    <section class="reviews mt-5 pt-5 pb-5">
         <div class="container">
-            <h1 class="col-sm-12 col-md-10 col-lg-10 col-xl-7 pb-3">Cosa dicono di noi i nostri utenti</h1>
+            <h1 class="col-sm-12 col-md-10 col-lg-10 col-xl-7">Cosa dicono di noi i nostri utenti</h1>
         </div>
-        <div class="card-slider-review pt-3 pb-5">
-            <div class="container">
-	            <div class="row">
-	                <div class="MultiCarousel" data-items="1,2,2,2" data-slide="1" id="MultiCarousel"  data-interval="1000">
+        <div class="container-fluid" id="review-cont">
+            <div class="card-slider-review pb-5">
+                <div class="row">
+                    <div class="MultiCarousel" data-items="1,1,1,2,3" data-slide="1" id="MultiCarousel"  data-interval="1000">
                         <div class="MultiCarousel-inner">
                             <div class="item">
                                 <div class="pad15">
                                     <div class="info-container">
                                         <div class="image-container">
-                                            <img src="{{asset('storage/pages_images/default-startup.svg')}}" alt="">
+                                            <img src="{{asset('storage/images/partner-khub-logo.png')}}" alt="">
                                         </div>
                                         <div class="text-container">
                                             <div class="main-text">
-                                                <p>Avevo un sogno:</p>
-                                                <p>creare il mio business e far emegere la mia startup.</p>
-                                                <p>Ma è difficile trovare le giuste persone e la guida necessaria..</p>
-                                                <p>Con Growpla ho trovato tutto in un’unica piattaforma!</p>
+                                                <p>Growpla è il sistema ideale per permettere agli incubatori di scoprire le migliori idee emergenti.</p>
+                                                <p>Attraverso la piattaforma si riescono a valorizzare le competenze e a individuare le soluzioni migliori per completare le necessità di ciascun team.</p>
                                             </div>
-                                            <p class="text-white">Lucia C.</p>
+                                            <p class="text-white">K HUB</p>
                                         </div>
                                     </div>
                                 </div>
@@ -427,14 +464,14 @@
                                 <div class="pad15">
                                     <div class="info-container">
                                         <div class="image-container">
-                                            <img src="{{asset('storage/pages_images/default-startup.svg')}}" alt="">
+                                            <img src="{{asset('storage/images/review-visconti.png')}}" alt="">
                                         </div>
                                         <div class="text-container">
                                             <div class="main-text">
-                                                <p>Avevo un sogno:</p>
-                                                <p>creare il mio business e far emegere la mia startup.</p>
+                                                <p>La piattaforma è semplice ed intuitiva.</p>
+                                                <p>Un luogo digitale perfetto per noi professionisti che ci permette di entrare in contatto con nuove idee e progetti ed offrire i nostri servizi di consulenza.</p>
                                             </div>
-                                            <p class="text-white">Lucia C.</p>
+                                            <p class="text-white">Alfredo Simone V.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -443,45 +480,25 @@
                                 <div class="pad15">
                                     <div class="info-container">
                                         <div class="image-container">
-                                            <img src="{{asset('storage/pages_images/default-startup.svg')}}" alt="">
+                                            <img src="{{asset('storage/images/review-alessia.jpg')}}" alt="">
                                         </div>
                                         <div class="text-container">
                                             <div class="main-text">
-                                                <p>Avevo un sogno:</p>
-                                                <p>creare il mio business e far emegere la mia startup.</p>
-                                                <p>Ma è difficile trovare le giuste persone e la guida necessaria..</p>
-                                                <p>Con Growpla ho trovato tutto in un’unica piattaforma!</p>
+                                                <p>Creare una startup é difficile, ma trovare le persone giuste per crescere lo é ancora di più.</p>
+                                                <p>Growpla mi ha permesso di mettermi in contatto con ottimi professionisti e creare un network realmente interessato al mio progetto. Ora il mio business ha raggiunto uno step in più!</p>
                                             </div>
-                                            <p class="text-white">Lucia C.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="pad15">
-                                    <div class="info-container">
-                                        <div class="image-container">
-                                            <img src="{{asset('storage/pages_images/default-startup.svg')}}" alt="">
-                                        </div>
-                                        <div class="text-container">
-                                            <div class="main-text">
-                                                <p>Avevo un sogno:</p>
-                                                <p>creare il mio business e far emegere la mia startup.</p>
-                                                <p>Ma è difficile trovare le giuste persone e la guida necessaria..</p>
-                                                <p>Con Growpla ho trovato tutto in un’unica piattaforma!</p>
-                                            </div>
-                                            <p class="text-white">Lucia C.</p>
+                                            <p class="text-white">Alessia C.</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button class="btn leftLst">
+                        <button class="btn leftLst" id="left-btn">
                         </button>
-                        <button class="btn rightLst">
+                        <button class="btn rightLst" id="right-btn">
                         </button>
                     </div>
-	            </div>
+                </div>
             </div>
         </div>
     </section>
@@ -490,7 +507,7 @@
             <h1 class="pb-5">Non perdere l’occasione di crescere con professionisti del settore e far decollare il tuo business.</h1>
         </div>
         <div class="pb-5 d-flex justify-content-center">
-            <a href="{{route('login')}}" class="button-color-white iscriviti-ora m-2">iscriviti ora</a>
+            <a href="login#register" class="button-color-white iscriviti-ora m-2">iscriviti ora</a>
         </div>
     </section>
     <div v-if="showConsenScreen" class="cookie-consent" v-cloak>
@@ -504,18 +521,18 @@
             </p>
             <div v-if="cookieSettings" class="cookie-list pb-3">
                 <div  class="switch-button-on-off pt-1 pb-2">
-                    <label class="pt-2 mr-4" for="">
+                    <label class="pt-2"for="">
                         {{__('Technical Cookies')}}
-                        <span class="d-block txt-green font-weight-bold">"Sempre abilitati"</span>
+                        <span class="d-block txt-green font-weight-bold ">"Sempre abilitati"</span>
                     </label>
                     <div class="button r switch-button d-inline-block">
-                        <input type="checkbox" class="checkbox" onclick="return false;" readonly>
+                        <input type="checkbox" class="checkbox" onclick="return false;" checked readonly>
                         <div class="knobs"></div>
                         <div class="layer"></div>
                     </div>
                 </div>
                 <div  class="switch-button-on-off pt-1 pb-2">
-                    <label class="pt-2 mr-4" for="">{{__('Analytical Cookies')}}</label>
+                    <label class="pt-2" for="">{{__('Analytical Cookies')}}</label>
                     <div class="button r switch-button d-inline-block">
                         <input type="checkbox" class="checkbox" v-model="analyticsCookie">
                         <div class="knobs"></div>

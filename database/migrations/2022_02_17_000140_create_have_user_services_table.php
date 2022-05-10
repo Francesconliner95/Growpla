@@ -19,9 +19,8 @@ class CreateHaveUserServicesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedbigInteger('service_id');
             $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
-
             $table->unique(['user_id', 'service_id']);
-
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

@@ -10,6 +10,7 @@ var create = new Vue({
     data: {
       language_id,
       sectors,
+      max_sector_number,
       display_message: '',
     },
     methods: {
@@ -24,7 +25,7 @@ var create = new Vue({
           if(document.getElementById(id).checked){
               document.getElementById(id).checked = false;
               document.getElementById(id+'-b').classList.remove("active");
-          }else if($('div.checkbox-group.required :checkbox:checked').length<3){
+          }else if($('div.checkbox-group.required :checkbox:checked').length<this.max_sector_number){
               document.getElementById(id).checked = true;
               document.getElementById(id+'-b').classList.add("active");
           }
@@ -38,7 +39,7 @@ var create = new Vue({
       },
     },
     created(){
-      this.sectors = JSON.parse(this.sectors.replace(/&quot;/g,'"'));
+      // this.sectors = JSON.parse(this.sectors.replace(/&quot;/g,'"'));
     },
     mounted() {
 

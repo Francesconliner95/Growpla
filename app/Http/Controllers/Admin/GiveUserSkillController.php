@@ -72,13 +72,7 @@ class GiveUserSkillController extends Controller
                 $user->give_user_skills()->sync([]);
             }
 
-            if(Auth::user()->tutorial){
-                $user->tutorial = null;
-                $user->update();
-                return redirect()->route('admin.users.show',$user->id);
-            }else{
-                return redirect()->route('admin.users.show',$user->id);
-            }
+            return redirect()->route('admin.users.show',$user->id);
 
       }abort(404);
   }

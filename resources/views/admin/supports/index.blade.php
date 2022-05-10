@@ -2,7 +2,7 @@
 
 @section('content')
 <script type="text/javascript">
-    supportTypes = {!! json_encode($supportTypes->toArray()) !!};
+    supportTypes = @json($supportTypes);
 </script>
 <div id="support-index" class="container">
     <div class="item-cont">

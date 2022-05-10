@@ -6,7 +6,7 @@
     window.csrf_token = "{{ csrf_token() }}"; //token per axios api post/put/delete
 </script>
 <div id="search">
-    @if(Auth::user()->tutorial)
+    {{-- @if(Auth::user()->tutorial)
     <div class="bg-dark" style="margin-top: -80px; padding-top: 80px;">
         <div class="container pb-5">
             <h3 class="section-title">
@@ -23,24 +23,26 @@
             </div>
         </div>
     </div>
-    @endif
+    @endif --}}
     <div class="background"
     style="background-image: url({{asset("storage/images/bg-search.png") }})">
         <div class="container">
             <div class="search">
                 <div id="search-fixed" :class="usertypes_id.length>0||pagetypes_id.length>0||services_selected||name?'search-fixed-top':'search-fixed-center'">
-                    <h5 class="text-center text-white font-weight-bold">{{ __('What are you looking for?') }}</h5>
+                    {{-- <h5 class="text-center text-white font-weight-bold">{{ __('What are you looking for?') }}</h5> --}}
                     <div class="search-type">
                         <div  class="switch-big-button-container pt-1 pb-2">
-                            <div :class="search_type?
-                            'button r switch-button text t-l d-inline-block':
-                            'button r switch-button text t-r d-inline-block'">
-                                <input type="checkbox" class="checkbox" v-model="search_type" @change="search_type_f()">
+                            <div class="button r switch-button d-inline-block">
+                                <input type="checkbox" class="checkbox" v-model="search_type" id="search-type-checkbox" @change="search_type_f()">
                                 <div class="knobs"></div>
-                                <div class="layer"></div>
+                                <div class="layer">
+                                    <i class="fas fa-filter"></i>
+                                    <i class="fas fa-font"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <h6 class="text-white text-center" v-if="category_selected" v-cloak>Imposta uno o più dei seguenti filtri di ricerca</h6>
                     <div class="search-main" id="search-main" v-cloak>
                         <div class="filter-cont mt-3 mb-1">
                             <div class="row d-flex justify-content-center">
@@ -68,19 +70,20 @@
                                 </div>
                                 <div v-else class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-0 position-relative bg-white" v-cloak>
                                     <div style="padding:10px;">
-                                      <input type="text" name="name" value="" placeholder="Cerca per nome" v-model="name" @keyup.enter="" v-on:input="" maxlength="40"  class="search-bar" autocomplete="off">
+                                      <input type="text" name="name" value="" placeholder="Cerca per nome" v-model="name" @keyup.enter="submitForm()" maxlength="40"  class="search-bar" autocomplete="off">
                                       @error ('name')
                                           <div class="alert alert-danger">
                                               {{__($message)}}
                                           </div>
                                       @enderror
                                     </div>
-                                    <button v-if="search_type && name || category_selected" class="button-style button-color submit-button" type="submit" name="button" @click="submitForm()">
+                                    <button v-if="search_type && name" class="button-style button-color submit-button" type="submit" name="button" @click="submitForm()">
                                       <i class="fas fa-search"></i>
                                     </button>
                                 </div>
                                 {{-- startup --}}
                                 <div v-if="pagetypes_id.includes(1)" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-0 position-relative">
+                                {{-- <div v-if="!is_mobile || is_mobile && !button || is_mobile && button==1" class=""> --}}
                                     <button type="button" name="button" @click="buttonsToggle(1)" :class="button==1?'s-filter-button bg-white':'s-filter-button'">Fase</button>
                                     <div v-if="button==1" class="s-filter">
                                         <span class="mini-txt font-weight-bold d-block">In quale fase del ciclo di vita?</span>
@@ -91,9 +94,10 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                {{-- </div> --}}
                                 </div>
                                 <div v-if="pagetypes_id.includes(1)" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 position-relative p-0">
-                                    <button type="button" name="button" @click="buttonsToggle(2)" :class="button==2?'s-filter-button bg-white':'s-filter-button'">Necessità startup</button>
+                                    <button type="button" name="button" @click="buttonsToggle(2)" :class="button==2?'s-filter-button bg-white':'s-filter-button'">Necessità</button>
                                     <div v-if="button==2" class="s-filter">
                                         <span class="mini-txt font-weight-bold d-block">Cerca solo le startup che hanno bisogno di</span>
                                         <select class="text-capitalize" name="needs" v-model="need_selected">
@@ -232,12 +236,29 @@
                                     </div>
                                     </div>
                                 </div>
+                                <div v-if="usertypes_id.includes(1)" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-0 position-relative">
+                                    <button type="button" name="button" @click="buttonsToggle(8)" :class="button==8?'s-filter-button bg-white':'s-filter-button'">Formazione</button>
+                                    <div v-if="button==8" class="s-filter">
+                                        <div class="mt-1">
+                                            <span class="mini-txt font-weight-bold d-block" >Cerco profili con formazione in</span>
+                                            <div class="m-0">
+                                                <select name="background_id" v-model="background_selected" class="text-capitalize">
+                                                    <option value="">Tutti</option>
+                                                    @foreach ($backgrounds as $background)
+                                                      <option class="text-capitalize" :value="{{$background->id}}">{{$background->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 {{-- settori --}}
-                                <div v-if="category_selected && category_selected!=6" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-0 position-relative">
+                                <div v-if="category_selected && category_selected!=6 && usertypes_id.length==0" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-0 position-relative">
                                     <button type="button" name="button" @click="buttonsToggle(5)" :class="button==5?'s-filter-button bg-white':'s-filter-button'">Settori</button>
                                     <div v-if="button==5" class="s-filter">
                                     <div class="">
-                                        <span class="mini-txt font-weight-bold d-block">Cerco profili che includono</span>
+                                        <span v-if="pagetypes_id.includes(1) || pagetypes_id.includes(2)" class="mini-txt font-weight-bold d-block">Cerco profili che operano in</span>
+                                        <span v-else class="mini-txt font-weight-bold d-block">Cerco profili interessati a</span>
                                         <div class="d-flex align-items-center">
                                             <label class="input-container m-0">uno dei i seguenti settori
                                                 <input type="radio" name="sectorToggle" value="false" v-model="sectorToggle" id="one-sector" class="mr-1" :checked="!sectorToggle">
@@ -291,11 +312,12 @@
                                             </option>
                                         </select>
                                     </div>
-                                    <button v-if="search_type && name || category_selected" class="button-style button-color submit-button" type="submit" name="button" @click="submitForm()">
+                                    <button v-if="!search_type && category_selected" class="button-style button-color submit-button" type="submit" name="button" @click="submitForm()">
                                       <i class="fas fa-search"></i>
                                     </button>
                                 </div>
                             </div>
+                            {{-- prima --}}
                         </div>
                         {{-- <div v-if="pagetypes_id.includes(3)" class="text-center" v-cloak>
                             <a class="button-style button-color-blue" href="{{route('incubators')}}">Incubatori d'italia</a>
@@ -314,6 +336,7 @@
                             <input v-for="service in services" type="hidden" name="services[]" :value="service.pivot.service_id">
                             <input type="hidden" name="service_toggle" :value="serviceToggle">
                             <input type="hidden" name="service_or_and_toggle" :value="serviceOrAndToggle">
+                            <input type="hidden" name="background_id" :value="background_selected">
                             <input v-for="sector in sectors" type="hidden" name="sectors[]" :value="sector.id">
                             <input type="hidden" name="sector_toggle" :value="sectorToggle">
                             <input type="hidden" name="sector_id" :value="sector_selected">
@@ -357,12 +380,12 @@
                         <button class="button-style button-color-green  w-100 h-100" type="submit" name="button">Aspiranti Co-founder</button>
                     </form>
                 </div>
-                <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2 p-1">
+                {{-- <div class="rapid-search-item col-sm-12 col-md-4 col-lg-3 col-xl-2 p-1">
                     <form class="" method="POST" action="{{ route('admin.found') }}">
                         @csrf
                         <button class="button-style button-color-green w-100 h-100" type="submit" name="button">Servizi</button>
                     </form>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -404,7 +427,7 @@
         <h4 class="font-weight-bold">Offerte</h4>
         <div class="main-multi-slider">
             <div class="multi-slider-cont" id="multi-slider-cont-1">
-                <div v-for="offer in offers" class="multi-slider-item col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                <div v-for="offer in offers" class="multi-slider-item col-8 col-sm-8 col-md-5 col-lg-3 col-xl-3">
                     <div class=" d-flex justify-content-center align-items-center h-100">
                         <div class="card-style card-color-green">
                             <div class="top pb-4">
@@ -426,10 +449,10 @@
                     </div>
                 </div>
             </div>
-            <button type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left" id="button-left-1" v-cloak>
+            <button type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left mobile-hide" id="button-left-1" v-cloak>
                 <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
             </button>
-            <button type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')" class="slider-right" id="button-right-1" v-cloak>
+            <button type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')" class="slider-right mobile-hide" id="button-right-1" v-cloak>
                 <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
             </button>
             <span>@{{this.delay(1)}}</span>
@@ -444,7 +467,7 @@
         <h4 class="font-weight-bold">Necessità</h4>
         <div class="main-multi-slider">
             <div class="multi-slider-cont" id="multi-slider-cont-2">
-                <div v-for="need in needs" class="multi-slider-item col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                <div v-for="need in needs" class="multi-slider-item col-8 col-sm-8 col-md-5 col-lg-3 col-xl-3">
                     <div class=" d-flex justify-content-center align-items-center h-100">
                         <div class="card-style card-color-blue">
                             <div class="top pb-4">
@@ -466,10 +489,10 @@
                     </div>
                 </div>
             </div>
-            <button type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(2,'left')" class="slider-left" id="button-left-2" v-cloak>
+            <button type="button" name="button" @mousedown="start(2,'left')" @mouseleave="stop(2,'left')" @mouseup="stop(2,'left')" class="slider-left mobile-hide" id="button-left-2" v-cloak>
                 <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
             </button>
-            <button type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right" id="button-right-2" v-cloak>
+            <button type="button" name="button" @mousedown="start(2,'right')" @mouseleave="stop(2,'right')" @mouseup="stop(2,'right')"class="slider-right mobile-hide" id="button-right-2" v-cloak>
                 <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
             </button>
             <span>@{{this.delay(2)}}</span>
@@ -484,7 +507,7 @@
         <h4 class="font-weight-bold">Collaborazioni</h4>
         <div class="main-multi-slider">
             <div class="multi-slider-cont" id="multi-slider-cont-3">
-                <div v-for="collaboration in collaborations" class="multi-slider-item col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                <div v-for="collaboration in collaborations" class="multi-slider-item col-10 col-sm-8 col-md-5 col-lg-4 col-xl-4">
                     <div class="d-flex justify-content-center align-items-center h-100">
                         <div class="card-collaboration border-green d-flex justify-content-between">
                             <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 text-center coll-item">
@@ -524,10 +547,10 @@
                     </div>
                 </div>
             </div>
-            <button type="button" name="button" @mousedown="start(3,'left')" @mouseleave="stop(3,'left')" @mouseup="stop(3,'left')" class="slider-left" id="button-left-3" v-cloak>
+            <button type="button" name="button" @mousedown="start(3,'left')" @mouseleave="stop(3,'left')" @mouseup="stop(3,'left')" class="slider-left mobile-hide" id="button-left-3" v-cloak>
                 <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
             </button>
-            <button type="button" name="button" @mousedown="start(3,'right')" @mouseleave="stop(3,'right')" @mouseup="stop(3,'right')"class="slider-right" id="button-right-3" v-cloak>
+            <button type="button" name="button" @mousedown="start(3,'right')" @mouseleave="stop(3,'right')" @mouseup="stop(3,'right')"class="slider-right mobile-hide" id="button-right-3" v-cloak>
                 <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
             </button>
             <span>@{{this.delay(3)}}</span>
@@ -538,9 +561,30 @@
             </a>
         </div>
     </div>
-    <div v-if="mostViewedAccounts.length>0" class="container pt-3 pb-5" v-cloak>
+    <div v-if="mostViewedAccounts.length>0" class="container pt-4 pb-3" v-cloak>
         <h4 class="font-weight-bold">I più popolari</h4>
-        <div class="row pt-4">
+        <div class="main-multi-slider mt-3">
+            <div class="multi-slider-cont" id="multi-slider-cont-4" style="height:160px;">
+                <div v-for="account in mostViewedAccounts" class="multi-slider-item col-8 col-sm-8 col-md-5 col-lg-4 col-xl-3 text-center">
+                    <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="d-inline-block pt-3 pb-2">
+                        <div class="img-cont medium-img scale">
+                            <img v-if="account.image" :src="'/storage/' + account.image" alt="">
+                        </div>
+                    </a>
+                    <div class="text-center">
+                        <p class="text-capitalize font-weight-bold  text-dark text-truncate">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</p>
+                    </div>
+                </div>
+            </div>
+            <button type="button" name="button" @mousedown="start(4,'left')" @mouseleave="stop(4,'left')" @mouseup="stop(4,'left')" class="slider-left mobile-hide" id="button-left-4" v-cloak>
+                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
+            </button>
+            <button type="button" name="button" @mousedown="start(4,'right')" @mouseleave="stop(4,'right')" @mouseup="stop(4,'right')"class="slider-right mobile-hide" id="button-right-4" v-cloak>
+                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
+            </button>
+            <span>@{{this.delay(4)}}</span>
+        </div>
+        {{-- <div class="row pt-4">
             <a v-for="account in mostViewedAccounts" :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
                 <div class="">
                     <div class="img-cont medium-img scale">
@@ -550,13 +594,33 @@
                 <div class="">
                     <p class="text-capitalize font-weight-bold  text-dark text-truncate">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</p>
                 </div>
-                {{-- <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="button-style button-color">Visita profilo</a> --}}
             </a>
-        </div>
+        </div> --}}
     </div>
-    <div v-show="myLatestViews.length>0" class="container pt-3 pb-5" v-cloak>
+    <div v-show="myLatestViews.length>0" class="container pt-4 pb-3" v-cloak>
         <h4 class="font-weight-bold">Visti di recente</h4>
-        <div class="row  pt-4">
+        <div class="main-multi-slider mt-3">
+            <div class="multi-slider-cont" id="multi-slider-cont-5" style="height:160px;">
+                <div v-for="account in myLatestViews" class="multi-slider-item col-8 col-sm-8 col-md-5 col-lg-4 col-xl-3 text-center">
+                    <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="d-inline-block pt-3 pb-2">
+                        <div class="img-cont medium-img scale">
+                            <img v-if="account.image" :src="'/storage/' + account.image" alt="">
+                        </div>
+                    </a>
+                    <div class="text-center">
+                        <p class="text-capitalize font-weight-bold  text-dark text-truncate">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</p>
+                    </div>
+                </div>
+            </div>
+            <button type="button" name="button" @mousedown="start(5,'left')" @mouseleave="stop(5,'left')" @mouseup="stop(5,'left')" class="slider-left mobile-hide" id="button-left-5" v-cloak>
+                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
+            </button>
+            <button type="button" name="button" @mousedown="start(5,'right')" @mouseleave="stop(5,'right')" @mouseup="stop(5,'right')"class="slider-right mobile-hide" id="button-right-5" v-cloak>
+                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
+            </button>
+            <span>@{{this.delay(5)}}</span>
+        </div>
+        {{-- <div class="row  pt-4">
             <a v-for="account in myLatestViews" :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
                 <div class="">
                     <div class="img-cont medium-img scale">
@@ -567,7 +631,7 @@
                     <p class="text-capitalize font-weight-bold text-dark text-truncate">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</p>
                 </div>
             </a>
-        </div>
+        </div> --}}
     </div>
 </div>
 {{-- PUSHER --}}

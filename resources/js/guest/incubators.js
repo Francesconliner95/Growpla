@@ -27,6 +27,7 @@ var create = new Vue({
                       this.incubators_show.push(incubator);
                     }
                 });
+                this.incubators_show = this.firstPageId(this.incubators_show);
             }else{
               this.incubators_show = this.incubators;
             }
@@ -40,18 +41,32 @@ var create = new Vue({
                 this.incubators.forEach((incubator, i) => {
                     if(incubator.region_id==this.region_id_selected){
                         this.incubators_show.push(incubator);
+
                     }
                 });
+                this.incubators_show = this.firstPageId(this.incubators_show);
             }
         },
+
         getAllIncubators(){
             this.in_load = true;
             axios.get('/api/getAllIncubators',{
             }).then((response) => {
                 this.incubators = response.data.results.incubators;
-                this.incubators_show = this.incubators;
+                this.incubators = this.firstPageId(this.incubators);
+                this.incubators_show = this.incubators
                 this.in_load = false;
             });
+        },
+
+        firstPageId(incubators){
+            incubators.forEach((incubator, i) => {
+                if(incubator.page_id){
+                    incubators.splice(incubators.indexOf(incubator), 1);
+                    incubators.unshift(incubator);
+                }
+            });
+            return incubators;
         },
     },
     created(){

@@ -63,7 +63,8 @@ class HavePageServiceController extends Controller
         }else{
             $recommended_services = $page->pagetype->have_services;
         }
-        if ($user->pages->contains($page)) {
+        if ($user->pages->contains($page)
+        && in_array ($page->pagetype_id, array(1,2))) {
             $data = [
                 'page' => $page,
                 'services' => $page->have_page_services,
@@ -95,7 +96,8 @@ class HavePageServiceController extends Controller
         $user = Auth::user();
         $page = Page::find($page_id);
 
-        if($user->pages->contains($page)){
+        if($user->pages->contains($page)
+        && in_array ($page->pagetype_id, array(1,2))){
             $services = $request->services;
             $services_id = [];
             if($services){

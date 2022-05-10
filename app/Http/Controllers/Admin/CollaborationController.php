@@ -455,11 +455,75 @@ class CollaborationController extends Controller
         }
     }
     public function latestCollaborations(){
+
+        function already_exist($colls,$collaboration){
+
+            $sender_user_id = $collaboration->sender_user_id;
+            $sender_page_id = $collaboration->sender_page_id;
+            $recipient_user_id = $collaboration->recipient_user_id;
+            $recipient_page_id = $collaboration->recipient_page_id;
+            $exist = false;
+            foreach ($colls as $coll) {
+                if($sender_user_id){
+                    if($sender_user_id==$coll->sender_user_id){
+                        if($coll->recipient_user_id==$recipient_user_id){
+                            $exist = true;
+                        }
+                        if($coll->recipient_page_id==$recipient_page_id){
+                            $exist = true;
+                        }
+                    }
+                    if($sender_user_id==$coll->recipient_user_id){
+                        if($coll->sender_user_id==$recipient_user_id){
+                            $exist = true;
+                        }
+                        if($coll->sender_page_id==$recipient_user_id){
+                            $exist = true;
+                        }
+                    }
+                }
+                if($sender_page_id){
+                    if($sender_page_id==$coll->sender_page_id){
+                        if($coll->recipient_user_id==$recipient_user_id){
+                            $exist = true;
+                        }
+                        if($coll->recipient_page_id==$recipient_page_id){
+                            $exist = true;
+                        }
+                    }
+                    if($sender_page_id==$coll->recipient_page_id){
+                        if($coll->sender_user_id==$recipient_user_id){
+                            $exist = true;
+                        }
+                        if($coll->sender_page_id==$recipient_user_id){
+                            $exist = true;
+                        }
+                    }
+
+                }
+            }
+
+            if($exist){
+                return true;
+            }else{
+                return false;
+            }
+
+        }
+
         $collaborations = Collaboration::latest()
-        ->take(4)
+        ->take(8)
         ->get();
+
+        $colls = [];
+        foreach($collaborations as $collaboration) {
+            if(!already_exist($colls,$collaboration)){
+                array_push($colls,$collaboration);
+            }
+        }
+
         $collaborations_info = [];
-        foreach ($collaborations as $collaboration) {
+        foreach ($colls as $collaboration) {
             $collaboration_info['id'] = $collaboration['id'];
             if($collaboration['sender_user_id']){
                 $collaboration_info['account_1'] = User::where('id',$collaboration['sender_user_id'])

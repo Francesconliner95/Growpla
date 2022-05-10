@@ -58,25 +58,27 @@ class HomeController extends Controller
         if(Auth::check()){
             app()->setLocale(Language::find(Auth::user()->language_id)->lang);
         }else{
-            $lang =
-            preg_split('/,|;/',request()->server('HTTP_ACCEPT_LANGUAGE'))[1];
-
-            $languages = Language::all();
-
-            $set_lang = false;
-
-            foreach ($languages as $language) {
-                if($language->lang == $lang){
-                    app()->setLocale($lang);
-                    $set_lang = true;
-                    $language_id = $language->id;
-                }
-            }
-
-            if(!$set_lang){
-                app()->setLocale('it');
-                $language_id = 2;
-            }
+            // $lang =
+            // preg_split('/,|;/',request()->server('HTTP_ACCEPT_LANGUAGE'))[1];
+            //
+            // $languages = Language::all();
+            //
+            // $set_lang = false;
+            //
+            // foreach ($languages as $language) {
+            //     if($language->lang == $lang){
+            //         app()->setLocale($lang);
+            //         $set_lang = true;
+            //         $language_id = $language->id;
+            //     }
+            // }
+            //
+            // if(!$set_lang){
+            //     app()->setLocale('it');
+            //     $language_id = 2;
+            // }
+            app()->setLocale('it');
+            $language_id = 2;
         }
 
         return view('guest.privacy-policy');
@@ -88,25 +90,27 @@ class HomeController extends Controller
         if(Auth::check()){
             app()->setLocale(Language::find(Auth::user()->language_id)->lang);
         }else{
-            $lang =
-            preg_split('/,|;/',request()->server('HTTP_ACCEPT_LANGUAGE'))[1];
-
-            $languages = Language::all();
-
-            $set_lang = false;
-
-            foreach ($languages as $language) {
-                if($language->lang == $lang){
-                    app()->setLocale($lang);
-                    $set_lang = true;
-                    $language_id = $language->id;
-                }
-            }
-
-            if(!$set_lang){
-                app()->setLocale('it');
-                $language_id = 2;
-            }
+            // $lang =
+            // preg_split('/,|;/',request()->server('HTTP_ACCEPT_LANGUAGE'))[1];
+            //
+            // $languages = Language::all();
+            //
+            // $set_lang = false;
+            //
+            // foreach ($languages as $language) {
+            //     if($language->lang == $lang){
+            //         app()->setLocale($lang);
+            //         $set_lang = true;
+            //         $language_id = $language->id;
+            //     }
+            // }
+            //
+            // if(!$set_lang){
+            //     app()->setLocale('it');
+            //     $language_id = 2;
+            // }
+            app()->setLocale('it');
+            $language_id = 2;
         }
 
         return view('guest.terms-and-conditions');
@@ -118,25 +122,27 @@ class HomeController extends Controller
         if(Auth::check()){
             app()->setLocale(Language::find(Auth::user()->language_id)->lang);
         }else{
-            $lang =
-            preg_split('/,|;/',request()->server('HTTP_ACCEPT_LANGUAGE'))[1];
-
-            $languages = Language::all();
-
-            $set_lang = false;
-
-            foreach ($languages as $language) {
-                if($language->lang == $lang){
-                    app()->setLocale($lang);
-                    $set_lang = true;
-                    $language_id = $language->id;
-                }
-            }
-
-            if(!$set_lang){
-                app()->setLocale('it');
-                $language_id = 2;
-            }
+            // $lang =
+            // preg_split('/,|;/',request()->server('HTTP_ACCEPT_LANGUAGE'))[1];
+            //
+            // $languages = Language::all();
+            //
+            // $set_lang = false;
+            //
+            // foreach ($languages as $language) {
+            //     if($language->lang == $lang){
+            //         app()->setLocale($lang);
+            //         $set_lang = true;
+            //         $language_id = $language->id;
+            //     }
+            // }
+            //
+            // if(!$set_lang){
+            //     app()->setLocale('it');
+            //     $language_id = 2;
+            // }
+            app()->setLocale('it');
+            $language_id = 2;
         }
 
         return view('guest.cookie-policy');

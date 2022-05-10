@@ -17,6 +17,9 @@ body{
     margin: 0px;
     padding: 0px;
     overflow-x: hidden;
+    .container{
+        transition: .4s;
+    }
     .d-alert{
         position: fixed;
         //overflow-y: hidden;
@@ -99,7 +102,7 @@ ul>p{
     }
 }
 
-
+textarea { resize: none; }
 .description{
     overflow-wrap: break-word;//Gestisce le parole lunghe spezzandole
     white-space: pre-line; //Mi fa visualizzare le interruzioni di linea(a capo)
@@ -171,6 +174,12 @@ ul>p{
     background-color: $gray_1;
     z-index: 5;
     color: black;
+    label{
+        width: 160px;
+    }
+    p,a,span{
+        font-size: 15px !important;
+    }
 }
 .bg-blue{
     background-color: $blue_1;
@@ -334,9 +343,12 @@ ul>p{
     }
 }
 
-
-
 //CUSTOM INPUT
+.custom-input{
+    border-radius: 15px;
+    font-size: 14px;
+}
+
 .custom-input-blue{
     border: 2px solid $blue_3;
     border-radius: 15px;
@@ -349,6 +361,20 @@ ul>p{
     border-radius: 15px;
     font-size: 14px;
     background-color: $green_1;
+}
+
+.placeholder-icon{
+    position: relative;
+    i{
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        transform: translateY(-50%);
+        transition: .2s;
+        &:hover{
+            cursor: pointer;
+        }
+    }
 }
 
 .custom-select-blue{
@@ -435,6 +461,52 @@ select option[value=""]{
 	height: 5px;
 	border-radius: 50%;
 	background: white;
+}
+
+//checkbox
+/* Create a custom checkbox */
+.checkmark-checkbox{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.input-container:hover input ~ .checkmark-checkbox {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a green background */
+.input-container input:checked ~ .checkmark-checkbox {
+  background-color: $green_3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark-checkbox:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.input-container input:checked ~ .checkmark-checkbox:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.input-container .checkmark-checkbox:after {
+  left: 5px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 .search{
@@ -549,18 +621,16 @@ select option[value=""]{
     // border: 2px solid $green_2;
     position: relative;
     img,embed{
-        position: absolute;
-        top: 0px;
-        left: 0px;
+        // position: absolute;
+        // top: 0px;
+        // left: 0px;
         width: 100%;
         height: 100%;
         object-fit: contain;
         border-radius: 50%;
     }
 }
-.no-br{
-  border-radius: 0px !important;
-}
+
 .img-cont-blue{
     background-color: $blue_2 !important;
     border: 2px solid $blue_2 !important;
@@ -766,7 +836,7 @@ select option[value=""]{
 }
 
 .button-color-gray{
-    color: gray;
+    color: $dark_2;
     background-color: none !important;
     display: inline-block;
     // padding: 5px 10px 4px 10px;
@@ -777,7 +847,7 @@ select option[value=""]{
     border-radius: 0.1875rem;
     transition: 0.2s;
     &:hover{
-        background-color: gray;
+        background-color: $dark_2;
         border-radius: 50%;
         text-decoration: none;
         cursor: pointer;
@@ -790,7 +860,7 @@ select option[value=""]{
         top: 50%;
         left: 50%;
         transform: translate(-50%,-50%);
-        color: gray;
+        color: $dark_2;
     }
 }
 
@@ -888,6 +958,15 @@ select option[value=""]{
     &:hover{
         text-decoration: none;
         cursor: pointer;
+    }
+}
+
+.button-deactivate{
+    opacity: .2 !important;
+    background-color: $dark_1 !important;
+    &:hover{
+        cursor: default !important;
+        background-color: $dark_1 !important;
     }
 }
 
@@ -1090,11 +1169,13 @@ select option[value=""]{
     //saddaad
     .switch-button .knobs:before
     {
-        //content: 'ON';
+
+        //content: 'OFF';
         content: '';
+        left: 2px;
+        background-color: #ffcccb;
         position: absolute;
         top: 2px;
-        left: 45px;
         width: 27px;
         height: 27px;
         color: #fff;
@@ -1103,17 +1184,17 @@ select option[value=""]{
         text-align: center;
         line-height: 1;
         padding: 9px 4px;
-        background-color: lightgreen;
+
         border-radius: 50%;
         transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
     }
 
     .switch-button .checkbox:checked + .knobs:before
     {
-        //content: 'OFF';
+        //content: 'ON';
         content: '';
-        left: 2px;
-        background-color: #ffcccb;
+        left: 45px;
+        background-color: lightgreen;
     }
 
     .switch-button .checkbox:checked ~ .layer
@@ -1188,6 +1269,13 @@ select option[value=""]{
         // border: 4px solid $green_2;
         transition: 0.3s ease all;
         z-index: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0px 17px;
+        i{
+            font-size: 16px;
+        }
     }
 
     //saddaad
@@ -1200,7 +1288,7 @@ select option[value=""]{
         left: -1px;
         width: 50%;
         height: 30px;
-        font-size: 15px;
+        font-size: 17px;
         font-weight: bold;
         text-align: center;
         line-height: 1;
@@ -1218,6 +1306,7 @@ select option[value=""]{
         font-family: "Font Awesome 5 Free";
         content: '\f031';
         left: calc(50% + 2px);
+
     }
 
     .switch-button .knobs, .switch-button .knobs:before, .switch-button .layer
@@ -1225,37 +1314,37 @@ select option[value=""]{
         transition: 0.3s ease all;
     }
 
-    .text{
-        &:before{
-            position: absolute;
-            width: 50%;
-            height: 30px;
-            color: $light_black;
-            font-size: 15px;
-            font-weight: bold;
-            text-align: center;
-            z-index: 5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            pointer-events: none;
-        }
-    }
+    // .text{
+    //     &:before{
+    //         position: absolute;
+    //         width: 50%;
+    //         height: 30px;
+    //         color: $light_black;
+    //         font-size: 15px;
+    //         font-weight: bold;
+    //         text-align: center;
+    //         z-index: 5;
+    //         display: flex;
+    //         justify-content: center;
+    //         align-items: center;
+    //         pointer-events: none;
+    //     }
+    // }
 
-    .t-r{
-        &:before{
-            font-family: "Font Awesome 5 Free";
-            content: '\f031';
-            left: 50%;
-        }
-    }
-    .t-l{
-        &:before{
-            font-family: "Font Awesome 5 Free";
-            content: "\f0b0";
-            right: 50%;
-        }
-    }
+    // .t-r{
+    //     &:before{
+    //         font-family: "Font Awesome 5 Free";
+    //         content: '\f031';
+    //         left: 50%;
+    //     }
+    // }
+    // .t-l{
+    //     &:before{
+    //         font-family: "Font Awesome 5 Free";
+    //         content: "\f0b0";
+    //         right: 50%;
+    //     }
+    //}
 }
 
 .up-down-position{
@@ -1309,8 +1398,8 @@ select option[value=""]{
 }
 .edit-top-left{
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 10px;
+    left: 10px;
 }
 .edit-top-left-small{
     position: absolute;
@@ -1322,6 +1411,8 @@ select option[value=""]{
     bottom: 20px;
     right: 20px;
 }
+
+
 
 .link-color{
     color: $default_green;
@@ -1463,14 +1554,6 @@ select option[value=""]{
         font-weight: bold;
         color: #555;
         padding: 0 5px;
-    }
-}
-
-.partner{
-    //padding: 10px 0;
-    img{
-        margin: 20px 0;
-        height: 120px;
     }
 }
 
@@ -1857,7 +1940,7 @@ select option[value=""]{
 }
 
 .multi-slider-cont.mini{
-    height: 120px !important;
+    height: 130px !important;
 }
 
 .main-multi-slider{
@@ -1961,6 +2044,7 @@ select option[value=""]{
     &:hover .coll-item .coll-info{
         // opacity: 1;
         display: block;
+        width: 140px;
     }
     .coll-item{
         .coll-info{
@@ -2006,6 +2090,10 @@ select option[value=""]{
     color: black;
 }
 
+.r-0{
+    transition: .2s;
+    transform: rotate(0deg);
+}
 .r-90l{
     transition: .2s;
     transform: rotate(-90deg);

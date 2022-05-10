@@ -19,9 +19,8 @@ class CreateHavePageServicesTable extends Migration
             $table->foreign('page_id')->references('id')->on('pages')->onDelete('cascade');
             $table->unsignedbigInteger('service_id');
             $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
-
             $table->unique(['page_id', 'service_id']);
-
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

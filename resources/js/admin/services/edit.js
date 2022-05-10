@@ -75,7 +75,7 @@ var create = new Vue({
                     });
                     if(!exist){
                         this.cofounder_services.push(sub_service);
-                        console.log(this.cofounder_services);
+                        //console.log(this.cofounder_services);
                     }
                 }
             });
@@ -476,11 +476,11 @@ var create = new Vue({
         },
     },
     created() {
-        if(this.services){
-            this.services = JSON.parse(this.services.replace(/&quot;/g,'"'));
-        }
+        // if(this.services){
+        //     this.services = JSON.parse(this.services.replace(/&quot;/g,'"'));
+        // }
         if(this.r_services){
-            this.r_services = JSON.parse(this.r_services.replace(/&quot;/g,'"'));
+            // this.r_services = JSON.parse(this.r_services.replace(/&quot;/g,'"'));
             this.r_services.forEach((r_service, i) => {
                 if(this.serviceExist(r_service) && !r_service.hidden){
                     this.r_services_show.push(r_service);
@@ -488,9 +488,9 @@ var create = new Vue({
             });
         }
         //ONLY STARTUP
-        if(this.cofounder_services){
-            this.cofounder_services = JSON.parse(this.cofounder_services.replace(/&quot;/g,'"'));
-        }
+        // if(this.cofounder_services){
+        //     this.cofounder_services = JSON.parse(this.cofounder_services.replace(/&quot;/g,'"'));
+        // }
         //END ONLY STARTUP
 
     },

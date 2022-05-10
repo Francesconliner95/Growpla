@@ -29,7 +29,7 @@
             width: auto;
             display: flex;
             align-items: center;
-            flex-direction: column;
+            // flex-direction: column;
             position: relative;
             .circle{
                 width: 100px;
@@ -100,7 +100,7 @@
         }
     }
     .team-member-cont{
-        padding: 30px 70px;
+        padding: 30px 30px;
         display: inline-block;
         .team-member{
             // background-color: white;
@@ -110,8 +110,19 @@
             border-radius: 15px;
             padding: 25px;
             position: relative;
-            .name,.role,.show-profile{
-                height: 40px;
+            .name{
+                height: 50px;
+                display: flex;
+                align-items: center;
+            }
+            .role{
+                height: 44px;
+                display: flex;
+                align-items: center;
+            }
+            .show-profile{
+                height: 35px;
+                text-align: center;
             }
             .linkedin{
                 color: #3490dc;
@@ -244,6 +255,9 @@
                     padding-top: 20px;
                 }
             }
+        }
+        .team-member-cont{
+            padding: 30px 65px;
         }
     }
 }

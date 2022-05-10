@@ -6,7 +6,7 @@
     lifecycles = {!! json_encode($lifecycles->toArray()) !!};
     lifecycle_id = "{{$page->lifecycle_id}}";
 </script>
-<div id="lifecycle-edit" style="background-image: url({{asset("storage/images/bg-rocket.svg") }}); background-position: right -85px bottom -85px; background-repeat: no-repeat; ">
+<div id="lifecycle-edit" style="background-image: url({{asset("storage/images/bg-rocket.svg") }}); background-position: right -105px bottom -105px; background-repeat: no-repeat; ">
     <div class="container pb-3">
         <div class="item-cont">
             <div class="item-style">
@@ -28,7 +28,7 @@
                                     <button type="button" name="button" :class="isChecked('l-{{$lifecycle->id}}')?
                                     'active multichoise-b button-style multichoise-blue w-100 lifecycle-item tool-tip-b':
                                     'multichoise-b button-style multichoise-blue w-100 lifecycle-item tool-tip-b'" @click="radioToggle({{$lifecycle->id}})" id="l-{{$lifecycle->id}}-b" v-cloak>
-                                        <input id="l-{{$lifecycle->id}}" type="radio" name="lifecycle" class="d-none" value="{{$lifecycle->id}}">
+                                        <input id="l-{{$lifecycle->id}}" type="radio" name="lifecycle" class="d-none" value="{{$lifecycle->id}}" required>
                                         <span>{{$lifecycle->name}}
                                         </span>
                                     </button>
@@ -43,9 +43,14 @@
                             @endforeach
                         </div>
                     </div>
-                    <div class="text-left pt-3 pb-3">
-                        <button type="submit" class="button-style button-color">
-                            Salva
+                    <div class="d-flex justify-content-between mt-5">
+                        <div class="">
+                            <p class="font-weight-bold mini-txt">
+                                Potrai modificare la fase in qualsiasi momento
+                            </p>
+                        </div>
+                        <button v-if="lifecycle_selected" type="submit" class="button-style button-color">
+                            {{$page->tutorial?'Avanti':'Salva'}}
                         </button>
                     </div>
                 </form>

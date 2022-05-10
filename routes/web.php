@@ -30,12 +30,17 @@ Route::get('/', 'HomeController@index')->name('index');
 
 Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->group(function(){
 
+    Route::get('/', 'MainController@search');
     Route::get('/search', 'MainController@search')->name('search');
     Route::post('/found', 'MainController@found')->name('found');
     Route::get('/loadInfo', 'MainController@loadInfo')->name('loadInfo');
 
+    //USER
     Route::resource('/users', 'UserController');
-    Route::get('/tutorial', 'UserController@tutorial')->name('users.tutorial');
+    Route::get('users/{user_id}/accounts', 'UserController@accounts')->name('users.accounts');
+    Route::put('users/{user_id}/storeAccounts', 'UserController@storeAccounts')->name('users.storeAccounts');
+    Route::get('users/{user_id}/background', 'UserController@background')->name('users.background');
+    Route::put('users/{user_id}/storeBackground', 'UserController@storeBackground')->name('users.storeBackground');
     Route::get('/getUser', 'UserController@getUser')->name('getUser');
     Route::post('/addAdmin', 'UserController@addAdmin')->name('users.addAdmin');
     Route::get('/getAdmin', 'UserController@getAdmin')->name('users.getAdmin');
@@ -50,8 +55,7 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::put('/mailSettingToggle', 'UserController@mailSettingToggle')
     ->name('mailSettingToggle');
 
-    //admin.users.settings
-
+    //PAGE
     Route::resource('/pages', 'PageController');
     Route::get('/newPage/{pagetype_id}', 'PageController@newPage')->name('pages.newPage');
     Route::get('pages/{page_id}/settings', 'PageController@settings')->name('pages.settings');
@@ -69,11 +73,11 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::put('/updatePageImage', 'ImageController@updatePageImage')
     ->name('images.updatePageImage');
     Route::delete('/removePageImage/{page_id}', 'ImageController@removePageImage')->name('images.removePageImage');
+
     //GiveUserSkills
     Route::resource('/give_user_skills', 'GiveUserSkillController');
 
-    //All needs
-
+    //OFFERTE NECESSITA'
     Route::get('/needs', 'GiveHaveController@getAllHave')
     ->name('needs.getAllHave');
     Route::get('/offers', 'GiveHaveController@getAllGive')
@@ -95,24 +99,6 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::post('/store-have-page-services', 'HavePageServiceController@store_service')
     ->name('have-page-services.store_service');
     Route::resource('/have-page-services', 'HavePageServiceController');
-    //HavePagePagetype
-    Route::resource('/have-page-pagetypes', 'HavePagePagetypeController');
-    //HavePageUsertype
-    Route::resource('/have-page-usertypes', 'HavePageUsertypeController');
-
-
-    //Route::get('/advancedSearch', 'SearchController@advancedSearch')->name('advancedSearch');
-
-    Route::get('/', 'HomeController@index')->name('index');
-    // Route::resource('/accounts', 'AccountController');
-    // Route::get('/getMyAccounts', 'AccountController@getMyAccounts')->name('getMyAccounts');
-    // Route::put('/setAccount', 'AccountController@setAccount')->name('setAccount');
-    // Route::put('/removeFile', 'AccountController@removeFile')->name('removeFile');
-    // Route::get('/showImageEditor/{account_id}', 'AccountController@showImageEditor')->name('accounts.showImageEditor');
-    // Route::put('/updateImage/{account_id}', 'AccountController@updateImage')->name('accounts.updateImage');
-    // Route::get('/showCoverImageEditor/{account_id}', 'AccountController@showCoverImageEditor')->name('accounts.showCoverImageEditor');
-    // Route::put('/updateCoverImage/{account_id}', 'AccountController@updateCoverImage')->name('accounts.updateCoverImage');
-
 
     // TEAM
     Route::resource('/teams', 'TeamController');
@@ -121,24 +107,10 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::delete('/deleteTeam', 'TeamController@deleteTeam')->name('deleteTeam');
     Route::put('/changeTeamPosition', 'TeamController@changeTeamPosition')->name('teams.changeTeamPosition');
 
-    // COMPANY
+    //COMPANY
     Route::resource('/companies', 'CompanyController');
 
-    // OTHER
-    // Route::post('/addMultipleSection','OtherController@addMultipleSection')
-    // ->name('addMultipleSection');
-    // Route::put('/updateMultipleOther','OtherController@updateMultipleOther')
-    // ->name('updateMultipleOther');
-    // Route::delete('/deleteMultipleOther','OtherController@deleteMultipleOther')
-    // ->name('deleteMultipleOther');
-    // Route::put('/changeMultipleOtherPosition', 'OtherController@changeMultipleOtherPosition')->name('others.changeMultipleOtherPosition');
-    // Route::resource('/others', 'OtherController');
-    // Route::get('/addOther/{section_id}', 'OtherController@addOther')->name('others.addOther');
-    // Route::post('/storeOther/{section_id}', 'OtherController@storeOther')->name('others.storeOther');
-    // Route::delete('/deleteOther', 'OtherController@deleteOther')->name('deleteOther');
-    // Route::put('/changeOtherPosition', 'OtherController@changeOtherPosition')->name('others.changeOtherPosition');
-
-    //Lifecycle
+    //LIFECYCLE
     Route::resource('/lifecycles', 'LifecycleController');
 
     //FOLLOW

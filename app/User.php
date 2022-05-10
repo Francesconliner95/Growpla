@@ -102,6 +102,11 @@ class User extends Authenticatable implements MustVerifyEmail
         ->withPivot('id');
     }
 
+    public function backgrounds(){
+        return $this->belongsToMany('App\Background','user_backgrounds','user_id','background_id')
+        ->withPivot('id');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

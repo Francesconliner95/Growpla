@@ -1,4 +1,10 @@
-#chat-show,.chat-show{
+#chat-show{
+    .chat-section{
+        height: calc(100vh - 200px);
+    }
+}
+
+.chat-show{
     height: 100%;
     .messages-cont{
         background-color: $green_1;
@@ -18,7 +24,7 @@
                 border-radius: 10px;
                 border-radius: 10px 10px 10px 0px;
                 padding: 2px 7px;
-                word-break: break-all;
+                // word-break: break-all;
                 small{
                     font-size: 7px;
                     display: block;
@@ -29,6 +35,7 @@
         .my-message-item{
             text-align: right;
             span{
+                text-align: left;
                 background-color: $green_3;
                 border-radius: 10px 10px 0px 10px;
                 small{
@@ -43,10 +50,26 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        input{
+        textarea{
             width: 100%;
             margin-right: 15px;
             height: 35px;
+        }
+        button{
+            height: 100%;
+        }
+    }
+
+
+}
+.chat-show-longtext{
+    .messages-cont{
+        height: calc(100% - 90px) !important;
+    }
+    .messages-footer{
+        height: 90px;
+        textarea{
+            height: 75px !important;
         }
     }
 }

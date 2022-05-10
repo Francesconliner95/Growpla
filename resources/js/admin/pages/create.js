@@ -14,6 +14,8 @@ var create = new Vue({
         region_id_selected: '',
         name: '',
         summary: '',
+        city: '',
+        presentation: '',
     },
     methods: {
 
@@ -47,6 +49,11 @@ var create = new Vue({
                 if(this.step==2 && this.summary.length<50){
                     return 'invisible';
                 }
+                if(this.step==6){
+                    if(!this.region_id_selected || !this.city){
+                        return 'invisible';
+                    }
+                }
                 return 'button-style button-color-blue';
             }else if (this.step==this.max_step) {
                 return 'button-style button-color-green';
@@ -74,7 +81,7 @@ var create = new Vue({
     },
     mounted() {
         this.getRegionsByCountry();
-        
+
         //DRAG & DROP
         document.querySelectorAll(".drop-zone__input").forEach(inputElement =>{
 

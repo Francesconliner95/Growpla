@@ -53,8 +53,8 @@ var create = new Vue({
                 // maxSize: [300, 300, 'px'],
                 startSize: [100, 100, '%'],
                 onCropEnd: (value)=> {
-                    console.log(value.x, value.y, value.width, value.height);
-                    console.log(croppr.getValue());
+                    //console.log(value.x, value.y, value.width, value.height);
+                    //console.log(croppr.getValue());
                     this.x = value.x;
                     this.y =  value.y;
                     this.width =  value.width;

@@ -3,6 +3,28 @@
 background-color: $green_3;
 background: linear-gradient(0deg, $green_3 0%, $blue_3 50%, $green_3 100%);
 
+.rocket-animation{
+    position: absolute;
+    height: 800px;
+    width: 800px;
+    animation: mymove 10s infinite;
+}
+
+@keyframes mymove {
+    0%  {
+            top: 205px;
+            right: -250px;
+        }
+    50%  {
+            top: 160px;
+            right: -250px;
+        }
+    100%  {
+            top: 205px;
+            right: -250px;
+        }
+}
+
 h1{
     font-weight: bold;
     color: white;
@@ -22,10 +44,10 @@ p{
 
 .iscriviti-ora{
     text-transform: uppercase;
-    width: 250px;
-    height: 80px;
-    border-radius: 40px;
-    font-size: 27px;
+    width: 200px;
+    height: 70px;
+    border-radius: 35px;
+    font-size: 23px;
     font-weight: bold;
     border: 4px solid white;
     display: inline-block;
@@ -113,6 +135,7 @@ p{
     }
     .roadmap-text{
         padding-left: 20px;
+        overflow-x: hidden;
         .title-cont{
             h5{
                 font-weight: bold;
@@ -151,6 +174,7 @@ p{
     .image-container{
         min-height: 250px;
         position: relative;
+        overflow: hidden;
         img{
             height: 100%;
             width: 100%;
@@ -160,10 +184,16 @@ p{
 
 .partner{
     .partner-cont{
-        background-color: white;
+        background-color: rgba(255,255,255,.5);
+        .card-style-mini{
+            display: flex;
+            justify-content: center;
+        }
         img{
-            width: 300px;
+            width: 100%;
+            height: 100px;
             object-fit: contain;
+            object-position: center;
             // filter: brightness(0) invert(1);
         }
     }
@@ -174,7 +204,7 @@ p{
         .MultiCarousel {
             float: left;
             overflow: hidden;
-            padding: 80px;
+            padding: 30px;
             width: 100%;
             position:relative;
         }
@@ -184,14 +214,14 @@ p{
         }
         .MultiCarousel .MultiCarousel-inner .item {
             float: left;
-            padding: 25px;
+            padding: 5px;
         }
         .MultiCarousel .MultiCarousel-inner .item .pad15{
-            height: 460px;
-            padding: 40px;
+            height: 500px;
+            padding: 50px 20px;
             background: rgba(255,255,255,0.5);
             border-radius: 40px;
-            margin:10px;
+            margin:0px;
             .info-container{
                 .image-container{
                     margin: 0 auto;
@@ -203,6 +233,8 @@ p{
                     img{
                         width: 100%;
                         height: 100%;
+                        border-radius: 50%;
+                        object-fit: contain;
                     }
                 }
                 .text-container{
@@ -219,7 +251,7 @@ p{
             }
         }
         .MultiCarousel .leftLst, .MultiCarousel .rightLst {
-            width: 45px;
+            width: 80px;
             height: 460px;
             position:absolute;
             top: 50%;
@@ -283,6 +315,21 @@ p{
     .screenshot{
         .text-container{
             padding: 100px;
+        }
+    }
+
+    .reviews{
+        .card-slider-review{
+            .MultiCarousel {
+                padding: 50px 120px;
+            }
+            .MultiCarousel .MultiCarousel-inner .item {
+                padding: 30px;
+            }
+            .MultiCarousel .MultiCarousel-inner .item .pad15{
+                padding: 70px 50px;
+                margin:10px;
+            }
         }
     }
 }

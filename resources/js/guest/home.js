@@ -13,6 +13,8 @@ var create = new Vue({
         showConsenScreen : false,
         analyticsCookie: getCookie('analyticsCookie')=='accept'?true:false,
         cookieSettings: false,
+        interval:false,
+        is_mobile: false,
     },
     methods: {
 
@@ -73,10 +75,101 @@ var create = new Vue({
             return d.toUTCString();
         },
 
+        //mio scroll orizzontale
+        scrollLeft(slider_id){
+            var content =
+            document.getElementById('multi-slider-cont-' + slider_id);
+            const content_scroll_width = content.scrollWidth;
+            let content_scoll_left = content.scrollLeft;
+            content_scoll_left -= 10;
+            if (content_scoll_left <= 0) {
+                content_scoll_left = 0;
+            }
+            content.scrollLeft = content_scoll_left;
+            this.arrowVisibility(slider_id);
+        },
+
+        scrollRight(slider_id){
+            var content =
+            document.getElementById('multi-slider-cont-' + slider_id);
+            const content_scroll_width = content.scrollWidth;
+            let content_scoll_left = content.scrollLeft;
+            content_scoll_left += 10;
+            if (content_scoll_left >= content_scroll_width) {
+                content_scoll_left = content_scroll_width;
+            }
+            content.scrollLeft = content_scoll_left;
+            this.arrowVisibility(slider_id);
+        },
+
+        start(slider_id,direction){
+            if(!this.interval){
+                this.interval = setInterval(()=>{
+                    if(direction=='right'){
+                        this.scrollRight(slider_id);
+                    }else{
+                        this.scrollLeft(slider_id);
+                    }
+                }, 10);
+            }
+        },
+
+        arrowVisibility(slider_id){
+            var content =
+            document.getElementById('multi-slider-cont-' + slider_id);
+            let content_scroll_width = content.scrollWidth;
+            let content_scoll_left = content.scrollLeft;
+            let content_offset_width = content.offsetWidth;
+            // console.log(content_scroll_width,content_scoll_left,content_offset_width);
+            if(content_offset_width + content_scoll_left >= content_scroll_width){
+                // console.log('nascondi freccia a destra');
+                document.getElementById('button-right-' + slider_id).classList.remove("visible");
+                document.getElementById('button-right-' + slider_id).classList.add("invisible");
+            }else{
+                // console.log('mostra freccia a destra');
+                document.getElementById('button-right-' + slider_id).classList.remove("invisible");
+                document.getElementById('button-right-' + slider_id).classList.add("visible");
+            }
+            if(content_scoll_left<=0){
+                // console.log('nascondi freccia a sinistra');
+                document.getElementById('button-left-' + slider_id).classList.remove("visible");
+                document.getElementById('button-left-' + slider_id).classList.add("invisible");
+            }else{
+                // console.log('mostra freccia a sinistra');
+                document.getElementById('button-left-' + slider_id).classList.remove("invisible");
+                document.getElementById('button-left-' + slider_id).classList.add("visible");
+            }
+        },
+
+        stop(slider_id,direction){
+            clearInterval(this.interval);
+            this.interval = false;
+        },
+
+        checkMobile(){
+            if(window.innerWidth>=768){
+                if(this.is_mobile){
+                    this.is_mobile = false;
+                }
+            }else{
+                if(!this.is_mobile){
+                    this.is_mobile = true;
+                }
+            }
+        }
+
+
     },
     mounted() {
 
         this.showConsentScreen();
+        this.arrowVisibility(1);
+
+        //check if is mobile
+        this.checkMobile();
+        window.addEventListener('resize', (event)=> {
+            this.checkMobile();
+        }, true);
 
         //FADE ANIMATION
         let elementsArray = document.querySelectorAll(".fade-anim");
@@ -107,7 +200,35 @@ var create = new Vue({
     },
 
 });
+//SWIPE DESTRA E SINISTRA
+var start = null;
+document.getElementById("review-cont").addEventListener("touchstart",(event)=>{
+    if(event.touches.length === 1){
+        //just one finger touched
+        start = event.touches.item(0).clientX;
+    }else{
+        //a second finger hit the screen, abort the touch
+        start = null;
+    }
+});
 
+document.getElementById("review-cont").addEventListener("touchend",(event)=>{
+    var offset = 100;//at least 100px are a swipe
+    if(start){
+        //the only finger that hit the screen left it
+        var end = event.changedTouches.item(0).clientX;
+
+        if(end > start + offset){
+            document.getElementById("left-btn").click();
+        }
+        if(end < start - offset ){
+            document.getElementById("right-btn").click();
+        }
+    }
+});
+//FINE SWIPE DESTRA E SINISTRA
+
+//CAROSELLO RECENSIONI
 $(document).ready(function () {
     var itemsMainDiv = ('.MultiCarousel');
     var itemsDiv = ('.MultiCarousel-inner');
@@ -122,9 +243,6 @@ $(document).ready(function () {
     });
 
     ResCarouselSize();
-
-
-
 
     $(window).resize(function () {
         ResCarouselSize();
@@ -147,8 +265,11 @@ $(document).ready(function () {
             itemsSplit = btnParentSb.split(',');
             $(this).parent().attr("id", "MultiCarousel" + id);
 
-
-            if (bodyWidth >= 1200) {
+            if (bodyWidth >= 1500) {
+                incno = itemsSplit[4];
+                itemWidth = sampwidth / incno;
+            }
+            else if (bodyWidth >= 1200) {
                 incno = itemsSplit[3];
                 itemWidth = sampwidth / incno;
             }
@@ -174,7 +295,6 @@ $(document).ready(function () {
 
         });
     }
-
 
     //this function used to move the items
     function ResCarousel(e, el, s) {
@@ -211,6 +331,11 @@ $(document).ready(function () {
         var Parent = "#" + $(ee).parent().attr("id");
         var slide = $(Parent).attr("data-slide");
         ResCarousel(ell, Parent, slide);
+        // console.log(ee);
+        // console.log(ell, slide);
+        //ell = 0  sinistra
+        //ell = 1  destra
     }
 
 });
+//CAROSELLO RECENSIONI

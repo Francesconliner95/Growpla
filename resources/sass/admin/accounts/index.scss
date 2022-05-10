@@ -71,23 +71,24 @@
             .filter-cont{
                 // background-color: rgba(255, 255, 255, .7);
                 // border-radius: 20px;
+                position: relative;
                 .row>div{
                     padding: 10px;
                     background-color: rgba(255, 255, 255, .7);
                     &:first-child{
-                        border-top-left-radius: 20px;
-                        border-top-right-radius: 20px;
+                        border-top-left-radius: 22px;
+                        border-top-right-radius: 22px;
                         border-bottom-left-radius: 0px;
                         border-bottom-right-radius: 0px;
                     }
                     &:last-child{
                         border-top-left-radius: 0px;
                         border-top-right-radius: 0px;
-                        border-bottom-left-radius: 20px;
-                        border-bottom-right-radius: 20px;
+                        border-bottom-left-radius: 22px;
+                        border-bottom-right-radius: 22px;
                     }
                     &:only-child{
-                        border-radius: 20px;
+                        border-radius: 22px;
                     }
                 }
                 .s-filter-button{
@@ -98,12 +99,15 @@
                     font-size: 15px;
                     font-weight: bold;
                     color: black;
+                    height: 45px;
+                    line-height: 1;
                 }
                 .s-filter{
-                    width: 100%;
+                    width: calc(100% + 20px);
                     position: absolute;
-                    left: 0px;
+                    left: 50%;
                     top: calc(100% + 5px);
+                    transform: translateX(-50%);
                     padding: 20px;
                     background-color: white;
                     border-radius: 20px;
@@ -114,18 +118,20 @@
                     border-radius: 0px;
                     border: none;
                     //border-bottom: solid 1px gray;
-                    height: 30px;
+                    height: 25px;
                     &:focus{
                         outline: none;
                     }
                 }
                 .submit-button{
-                    height: calc(100% - 8px);
+                    width: 100%;
+                    height: 45px;
                     position: absolute;
-                    right: 4px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    border-radius: 20px;
+                    left: 50%;
+                    top: calc(100% + 10px);
+                    right: auto;
+                    transform: translate(-50%,0%);
+                    border-radius: 22px;
                 }
                 .sub-filter-cont{
                     // background-color: rgba(200, 200, 200, .7);
@@ -499,20 +505,30 @@
                     }
                     .row>div{
                         &:first-child{
-                            border-top-left-radius: 20px;
+                            border-top-left-radius: 22px;
                             border-top-right-radius: 0px;
-                            border-bottom-left-radius: 20px;
+                            border-bottom-left-radius: 22px;
                             border-bottom-right-radius: 0px;
                         }
                         &:last-child{
                             border-top-left-radius: 0px;
-                            border-top-right-radius: 20px;
+                            border-top-right-radius: 22px;
                             border-bottom-left-radius: 0px;
-                            border-bottom-right-radius: 20px;
+                            border-bottom-right-radius: 22px;
                         }
                         &:only-child{
-                            border-radius: 20px;
+                            border-radius: 22px;
                         }
+                    }
+                    .submit-button{
+                        width: 40px;
+                        height: 40px;
+                        position: absolute;
+                        right: 2px;
+                        top: 50%;
+                        left: auto;
+                        transform: translate(0%,-50%);
+                        border-radius: 50%;
                     }
                 }
                 .search-style{

@@ -4,7 +4,7 @@
 <script type="text/javascript">
     window.csrf_token = "{{ csrf_token() }}";
     company = "{{$company->page_id?$company->page:$company}}";
-    default_images = "{{json_encode($default_images)}}";
+    default_images = @json($default_images);
 </script>
 <div id="company-edit" style="background-image: url({{asset("storage/images/bg-azienda.svg") }}); background-position: left 235px bottom 0px; background-repeat: no-repeat; background-size: 500px;">
     <div class="container">

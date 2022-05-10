@@ -24,8 +24,8 @@ class GivePageServiceController extends Controller
     {
         $page = Page::find($page_id);
         $user = Auth::user();
-        if (!in_array($page->pagetype_id, array(1))
-        && $user->pages->contains($page)) {
+        if ($user->pages->contains($page)
+        && in_array($page->pagetype_id, array(2))) {
             $data = [
                 'page' => $page,
                 'services' => $page->give_page_services,
@@ -51,7 +51,8 @@ class GivePageServiceController extends Controller
       $user = Auth::user();
       $page = Page::find($page_id);
 
-      if($user->pages->contains($page)){
+      if($user->pages->contains($page)
+      && in_array($page->pagetype_id, array(2))){
 
 
         $services = $request->services;
@@ -95,7 +96,13 @@ class GivePageServiceController extends Controller
               }
           }
             if($page->tutorial>=1){
-                return redirect()->route('admin.have-page-services.edit',$page->id);
+                if(in_array($page->pagetype_id, array(2))){
+                    return redirect()->route('admin.have-page-services.edit',$page->id);
+                }else{
+                    $page->tutorial=null;
+                    $page->update();
+                    return redirect()->route('admin.pages.show',$page->id);
+                }
             }else{
                 return redirect()->route('admin.pages.show',$page->id);
             }

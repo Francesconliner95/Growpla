@@ -74,7 +74,7 @@ var create = new Vue({
 
     methods: {
         changeLang(){
-            console.log(this.selected_lang);
+            //console.log(this.selected_lang);
             axios({
                 method: 'put',
                 url: '/admin/changeLang',

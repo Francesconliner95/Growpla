@@ -31,6 +31,12 @@ class SupportTypesTableSeeder extends Seeder
                 'description'=>'',
             ],
             [
+                'name_it'=>'Suggerisci altre aree di formazione',
+                'description_it'=>'',
+                'name'=>'Suggest background',
+                'description'=>'',
+            ],
+            [
                 'name_it'=>'Collaborazioni',
                 'description_it'=>'',
                 'name'=>'Collaborations',

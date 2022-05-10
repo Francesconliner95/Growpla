@@ -3,7 +3,7 @@
 @section('content')
 <script type="text/javascript">
     language_id = "{{Auth::user()->language_id}}";
-    page = "{{$page}}";
+    page = @json($page);
 </script>
 <div id="page-edit" style="background-image: url({{asset("storage/images/bg-form.svg") }}); background-position: left 100px bottom -155px; background-repeat: no-repeat; background-size: 500px 500px;">
     <div class="container">
@@ -209,7 +209,7 @@
                                         </div>
                                         <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2">
                                           <div class="d-flex align-items-center">
-                                            <label class="input-container m-0">Ibridi
+                                            <label class="input-container m-0">Fisici e online
                                               <input type="radio" id="i-ibrid" name="type_int_1" value="2"
                                               {{$page->type_int_1==2?'checked':''}} required>
                                               <span class="checkmark"></span>
@@ -279,9 +279,9 @@
                                       </select>
                                   </div> --}}
                                   <input type="hidden" name="country_id" value="1">
-                                  <div v-if="regions.length>1" class="col-sm-12 col-md-6 col-lg-6 col-xl-6" v-cloak>
-                                      <label>Regione</label>
-                                      <select class="form-control" name="region_id" v-model="region_id_selected">
+                                  <div v-if="regions.length>1" class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mt-1 mb-1" v-cloak>
+                                      <label class="m-0">Regione</label>
+                                      <select class="form-control" name="region_id" v-model="region_id_selected" required>
                                           <option value="">Non specificata</option>
                                           <option v-for="region in regions" :value="region.id">
                                                 @{{region.name}}
@@ -291,18 +291,18 @@
                                   <div v-else class="">
                                     <input type="hidden" name="region_id" value="">
                                   </div>
-                                  <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9">
-                                    <label>Via</label>
+                                  <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mt-1 mb-1">
+                                      <label class="m-0">Città</label>
+                                      <input type="text" name="municipality" class="form-control" value="{{ old('municipality',$page->municipality)}}" required>
+                                  </div>
+                                  <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9  mt-1 mb-1">
+                                    <label class="m-0">Via</label>
                                     <input type="text" name="street_name" class="form-control"
                                     value="{{ old('street_name',$page->street_name)}}">
                                   </div>
-                                  <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
-                                      <label>Numero</label>
+                                  <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 mt-1 mb-1">
+                                      <label class="m-0">Numero</label>
                                       <input type="text" name="street_number" class="form-control" value="{{ old('street_number',$page->street_number)}}">
-                                  </div>
-                                  <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                                      <label>Città</label>
-                                      <input type="text" name="municipality" class="form-control" value="{{ old('municipality',$page->municipality)}}" required>
                                   </div>
                               </div>
                             </div>

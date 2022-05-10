@@ -75,6 +75,7 @@ class PageController extends Controller
       $data = $request->all();
 
       //SLUG
+
       $slug = Str::slug($request->name);
 
       $slug_base = $slug;
@@ -99,6 +100,20 @@ class PageController extends Controller
             $new_page->slug = $slug;
             $new_page->image = Pagetype::find($request->pagetype_id)->image;
             $new_page->tutorial = 1;
+            if(array_key_exists('pitch',$data) && $data['pitch']){
+                $old_pitch_name = $new_page->pitch;
+                if($old_pitch_name){
+                    Storage::delete($old_pitch_name);
+                }
+                $pitch_path = Storage::put('pitch', $data['pitch']);
+                $data['pitch'] = $pitch_path;
+            }
+            if(array_key_exists('municipality',$data)){
+              $new_page->municipality = Str::lower($data['municipality']);
+            }
+            if(array_key_exists('street_name',$data)){
+              $new_page->street_name = Str::lower($data['street_name']);
+            }
             $new_page->fill($data);
             $new_page->save();
 
@@ -153,9 +168,11 @@ class PageController extends Controller
         ]);
 
         if(Auth::user()->pagetypes->contains($page->pagetype_id)){
-
             $data = $request->all();
-            if(array_key_exists('pitch',$data) && $data['remove_pitch'] && $page->pitch){
+
+            if(!array_key_exists('pitch',$data)
+            && array_key_exists('remove_pitch',$data)  && $data['remove_pitch']=='true' && $page->pitch){
+
                 $old_pitch_name = $page->pitch;
                 if($old_pitch_name){
                     Storage::delete($old_pitch_name);
@@ -176,6 +193,12 @@ class PageController extends Controller
 
             if($request->name){
               $page->name = Str::lower($request->name);
+            }
+            if($request->municipality){
+              $page->municipality = Str::lower($request->municipality);
+            }
+            if($request->street_name){
+              $page->street_name = Str::lower($request->street_name);
             }
 
             $page->update();
@@ -298,10 +321,14 @@ class PageController extends Controller
         }
 
         if($page->tutorial>=1){
-            if($page->pagetype_id!=1){
+            if($page->pagetype_id==1){
+                return redirect()->route('admin.lifecycles.edit',$page->id);
+            }elseif(in_array($page->pagetype_id, array(2))){
                 return redirect()->route('admin.give-page-services.edit',$page->id);
             }else{
-                return redirect()->route('admin.lifecycles.edit',$page->id);
+                $page->tutorial=null;
+                $page->update();
+                return redirect()->route('admin.pages.show',$page->id);
             }
         }else{
             return redirect()->route('admin.pages.show',$page->id);

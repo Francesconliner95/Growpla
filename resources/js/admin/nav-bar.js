@@ -8,7 +8,6 @@ axios.defaults.headers.common = {
 var create = new Vue({
     el: '#nav-bar',
     data: {
-        page_selected,
         notifications: [],
         message_not_read_qty: 0,
         user: '',
@@ -50,7 +49,7 @@ var create = new Vue({
 
         setPageSelected(page_id){
             this.alert = false;
-            console.log(page_id);
+            //console.log(page_id);
             axios({
                 method: 'put',
                 url: '/admin/setPageSelected',
@@ -59,7 +58,7 @@ var create = new Vue({
                 }
             }).then(response => {
                 this.page_selected = response.data.results.page_selected;
-                console.log(this.page_selected);
+                //console.log(this.page_selected);
             });
         },
 
@@ -74,9 +73,9 @@ var create = new Vue({
         if(this.getCookie("analyticsCookie")=='accept'){
             this.enableAnalytics = true;
         }
-        if (this.page_selected) {
-            this.page_selected = JSON.parse(this.page_selected.replace(/&quot;/g,'"'));
-        }
+        // if (this.page_selected) {
+        //     this.page_selected = JSON.parse(this.page_selected.replace(/&quot;/g,'"'));
+        // }
 
     },
     mounted() {
@@ -90,31 +89,20 @@ var create = new Vue({
 
 var im_in_index = document.getElementById("search");
 if(im_in_index){
-    document.getElementById("container-nb").style.backgroundColor = "transparent";
-    document.getElementById("container-nb").style.boxShadow = "none";
     document.getElementById("logo-fullsize").src="/storage/images/logo-fullsize-white.svg";
     document.getElementById("logo").src="/storage/images/logo-white.svg";
-    document.getElementById("not-img").style.filter = "brightness(0) invert(1)";
-    document.getElementById("chat-img").style.filter = "brightness(0) invert(1)";
+    document.getElementById("container-nb").classList.add("trasparent-navbar");
     window.onscroll = function() {scrollFunction()};
 }
 
 function scrollFunction() {
     if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-    document.getElementById("container-nb").style.backgroundColor = "white";
-    document.getElementById("container-nb").style.boxShadow = "0 0.125rem 0.25rem rgb(0 0 0 / 8%)";
-    document.getElementById("container-nb").style.transition = ".2s";
-    document.getElementById("logo-fullsize").src="/storage/images/logo-fullsize.svg";
-    document.getElementById("logo").src="/storage/images/logo.svg";
-    document.getElementById("not-img").style.filter = "brightness(0) invert(0)";
-    document.getElementById("chat-img").style.filter = "brightness(0) invert(0)";
+        document.getElementById("logo-fullsize").src="/storage/images/logo-fullsize.svg";
+        document.getElementById("logo").src="/storage/images/logo.svg";
+        document.getElementById("container-nb").classList.remove("trasparent-navbar");
     } else {
-    document.getElementById("container-nb").style.backgroundColor = "transparent";
-    document.getElementById("container-nb").style.boxShadow = "none";
-    document.getElementById("logo-fullsize").src="/storage/images/logo-fullsize-white.svg";
-    document.getElementById("logo").src="/storage/images/logo-white.svg";
-    document.getElementById("not-img").style.filter = "brightness(0) invert(1)";
-    document.getElementById("chat-img").style.filter = "brightness(0) invert(1)";
-
+        document.getElementById("logo-fullsize").src="/storage/images/logo-fullsize-white.svg";
+        document.getElementById("logo").src="/storage/images/logo-white.svg";
+        document.getElementById("container-nb").classList.add("trasparent-navbar");
     }
 }

@@ -22,7 +22,7 @@
                               <div class="pt-3">
                                   <p class="mini-txt font-weight-bold">Appena terminato salva i progressi</p>
                                   <button type="submit" class="button-style button-color">
-                                      {{__('Save')}}
+                                      Salva
                                   </button>
                               </div>
                           </div>

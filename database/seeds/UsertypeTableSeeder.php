@@ -50,7 +50,7 @@ class UsertypeTableSeeder extends Seeder
               'name'=>'student',
               'name_it'=>'studente',
               'description'=>'',
-              'description_it'=>'Metti a disposizione delle startup che necessitano la tua conoscenza',
+              'description_it'=>'Mettiti a disposizione delle startup che necessitano la tua conoscenza',
               'image'=>'users_images/default-studente.svg',
           ],
           [

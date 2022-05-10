@@ -223,6 +223,18 @@ class SectorsTableSeeder extends Seeder
               'name_it'=>'VR/AR',
           ],
           [
+              'name'=>'Digital',
+              'name_it'=>'Digitale',
+          ],
+          [
+              'name'=>'Cultural',
+              'name_it'=>'Culturale',
+          ],
+          [
+              'name'=>'Creative',
+              'name_it'=>'Creativo',
+          ],
+          [
               'name'=>'Other',
               'name_it'=>'Altro',
           ],

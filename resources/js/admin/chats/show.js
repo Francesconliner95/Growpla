@@ -18,6 +18,7 @@ var create = new Vue({
         messages: [],
         messages_qty: 0,
         first_scroll: false,
+        longtext: false,
     },
 
     methods: {
@@ -84,6 +85,17 @@ var create = new Vue({
             const output =   hours +':'+ minutes + ' ' +day + '/' + month + '/' + year;
             return output;
         },
+
+        text_wrap(){
+            console.log(document.getElementById("mytextarea").scrollHeight>31);
+            if(document.getElementById("mytextarea").scrollHeight>31){
+                this.longtext = true;
+            }else{
+                this.longtext = false;
+            }
+
+        },
+
     },
     mounted() {
         this.getMessages();
@@ -91,6 +103,14 @@ var create = new Vue({
         setInterval(()=>{
             this.getMessages();
         }, 10000);
+
+
     }
 
 });
+
+$(document).ready(function(){
+ var lht = parseInt($('textarea').css('lineHeight'),10);
+ var lines = $('textarea').attr('scrollHeight') / lht;
+ console.log(lines);
+})

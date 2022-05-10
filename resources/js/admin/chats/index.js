@@ -31,22 +31,22 @@ var create = new Vue({
             if(user_or_page){
                 if(document.getElementById('chat-item-0').classList.contains('d-none')){
                     document.getElementById('chat-item-0').classList.remove("d-none");
-                    document.getElementById('arrow-0').classList.remove("r-90r");
-                    document.getElementById('arrow-0').classList.add("r-90l");
+                    document.getElementById('arrow-0').classList.remove("r-0");
+                    document.getElementById('arrow-0').classList.add("r-180");
                 }else{
                     document.getElementById('chat-item-0').classList.add("d-none");
-                    document.getElementById('arrow-0').classList.remove("r-90l");
-                    document.getElementById('arrow-0').classList.add("r-90r");
+                    document.getElementById('arrow-0').classList.remove("r-180");
+                    document.getElementById('arrow-0').classList.add("r-0");
                 }
             }else{
                 if(document.getElementById('chat-item-'+(i+1)).classList.contains('d-none')){
                     document.getElementById('chat-item-'+(i+1)).classList.remove("d-none");
-                    document.getElementById('arrow-'+(i+1)).classList.remove("r-90r");
-                    document.getElementById('arrow-'+(i+1)).classList.add("r-90l");
+                    document.getElementById('arrow-'+(i+1)).classList.remove("r-0");
+                    document.getElementById('arrow-'+(i+1)).classList.add("r-180");
                 }else{
                     document.getElementById('chat-item-'+(i+1)).classList.add("d-none");
-                    document.getElementById('arrow-'+(i+1)).classList.remove("r-90l");
-                    document.getElementById('arrow-'+(i+1)).classList.add("r-90r");
+                    document.getElementById('arrow-'+(i+1)).classList.remove("r-180");
+                    document.getElementById('arrow-'+(i+1)).classList.add("r-0");
                 }
             }
         },
@@ -94,6 +94,7 @@ var create = new Vue({
             if(window.innerWidth>=768){
                 // console.log('stai');
                 this.chat_selected_id = chat.id;
+                this.getMessages(true);
             }else{
                 // console.log('esci');
                 if (this.my_page_id) {
@@ -102,7 +103,6 @@ var create = new Vue({
                     window.location = '/admin/chats/show/' + chat.id + '/' + 'user';
                 }
             }
-            this.getMessages();
         },
 
         sendMessage(){
@@ -125,7 +125,7 @@ var create = new Vue({
             }
         },
 
-        getMessages(){
+        getMessages(scroll){
             axios.get('/admin/getMessages',{
                 params: {
                     chat_id: this.chat_id,
@@ -137,7 +137,7 @@ var create = new Vue({
                 this.messages = response.data.results.messages;
                 //console.log(this.messages);
 
-                if (!this.first_scroll) {
+                if (!this.first_scroll || scroll) {
                     this.first_scroll = true;
                     this.scroll();
                 }
@@ -188,21 +188,22 @@ var create = new Vue({
         }, true);
 
         if(this.my_user_chats){
-            this.my_user_chats = JSON.parse(this.my_user_chats.replace(/&quot;/g,'"'));
             this.my_user_chats['show'] = false;
             this.my_user_chats.user_chats = this.orderByUpdatedAt(this.my_user_chats.user_chats);
+
+            //SOMMA DEI MESSAGGI NON LETTI DELL'UTENTE
             this.my_user_chats['all_mnr'] = 0;
-            //console.log(this.my_user_chats);
             this.my_user_chats.user_chats.forEach((chat, i) => {
                 this.my_user_chats['all_mnr'] = this.my_user_chats['all_mnr'] + chat['message_not_read'];
             });
         }
-        console.log(this.my_user_chats);
+        //console.log(this.my_user_chats);
         if(this.my_pages_chats){
-            this.my_pages_chats = JSON.parse(this.my_pages_chats.replace(/&quot;/g,'"'));
             this.my_pages_chats.forEach((page, i) => {
                 page.page_chats = this.orderByUpdatedAt(page.page_chats);
                 page['show'] = false;
+
+                //SOMMA DEI MESSAGGI NON LETTI DELLA PAGINA
                 page['all_mnr'] = 0;
                 page.page_chats.forEach((chat, i) => {
                     page['all_mnr'] = page['all_mnr'] + chat['message_not_read'];

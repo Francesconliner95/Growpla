@@ -25,8 +25,8 @@ var create = new Vue({
         },
     },
     created(){
-        this.user = JSON.parse(this.user.replace(/&quot;/g,'"'));
-        console.log(this.user);
+        // this.user = JSON.parse(this.user.replace(/&quot;/g,'"'));
+        // console.log(this.user);
     },
     mounted() {
 

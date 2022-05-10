@@ -25,6 +25,7 @@ use App\Collaboration;
 use App\Notification;
 use App\MailSetting;
 use App\UserMailSetting;
+use App\Background;
 
 class UserController extends Controller
 {
@@ -33,112 +34,58 @@ class UserController extends Controller
       $this->middleware(['auth','verified']);
     }
 
-    public function tutorial(){
-        //null = tutorial completato
-        //1 = tutorial mai fatto
-        //2 = in su in tutorial
-        $my_user = Auth::user();
-        if($my_user->tutorial==1){
-            $my_user->tutorial = 2;
-            $my_user->update();
-        }
-        //dd($my_user->tutorial);
-        switch($my_user->tutorial){
-            case 2:
-                $my_user->tutorial = 4;//4 al posto di 3 per saltare i settori
-                $my_user->update();
-                return redirect()->route('admin.users.create');
-            break;
-            case 3:
-                $my_user->tutorial = 4;
-                $my_user->update();
-                return redirect()->route('admin.users.sectors',$my_user->id);
-            break;
-            case 4:
-                $my_user->tutorial = 5;
-                $my_user->update();
-                return redirect()->route('admin.users.edit',$my_user->id);
-            break;
-            case 5:
-                $my_user->tutorial = 6;
-                $my_user->update();
-                return redirect()->route('admin.give-user-services.edit',$my_user->id);
-            break;
-            case 6:
-                $my_user->tutorial = 7;
-                $my_user->update();
-                return redirect()->route('admin.have-user-services.edit',$my_user->id);
-            break;
-            case 7:
-                $my_user->tutorial = null;
-                $my_user->update();
-                return redirect()->route('admin.users.show',$my_user->id);
-            break;
-            default:
-                return redirect()->route('admin.users.show',$my_user->id);
-            break;
-        }
+    public function accounts($id){
 
-    }
-
-    public function businessAngel(){
         $user = Auth::user();
-        if($user->usertypes->contains(2)){
-            $data = [
-                'user' => $user,
-                'moneyranges' => Moneyrange::all(),
-            ];
-            app()->setLocale(Language::find($user->language_id)->lang);
-            return view('admin.users.business-angel', $data);
-        }abort(404);
-    }
+        $userTypes = Usertype::where('hidden',null)->get();
+        $pageTypes = Pagetype::where('hidden',null)->get();
 
-    public function create(){
-
-      $user = Auth::user();
-      $userTypes = Usertype::where('hidden',null)->get();
-      $pageTypes = Pagetype::where('hidden',null)->get();
-
-      $data = [
-        'user' => $user,
-        'userTypes' => $userTypes,
-        'pageTypes' => $pageTypes,
-      ];
-      app()->setLocale(Language::find(Auth::user()->language_id)->lang);
-      return view('admin.users.create', $data);
+        $data = [
+            'user' => $user,
+            'userTypes' => $userTypes,
+            'pageTypes' => $pageTypes,
+        ];
+        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+        return view('admin.users.accounts', $data);
 
     }
 
-    public function store(Request $request){
-      // dd('qui');
-      $request->validate([
-          'usertypes'=> 'exists:usertypes,id',
-          'pagetypes'=> 'exists:pagetypes,id',
-      ]);
+    public function storeAccounts($id,Request $request){
 
-      $data = $request->all();
+        $request->validate([
+            'usertypes'=> 'exists:usertypes,id',
+            'pagetypes'=> 'exists:pagetypes,id',
+        ]);
 
-      $user = Auth::user();
+        $data = $request->all();
 
-      if(array_key_exists('usertypes', $data)){
-          $user->usertypes()->sync($data['usertypes']);
-      }else{
-          $user->usertypes()->sync([]);
-      }
+        $user = Auth::user();
 
-      if(array_key_exists('pagetypes', $data)){
-          $user->pagetypes()->sync($data['pagetypes']);
-      }else{
-          $user->pagetypes()->sync([]);
-      }
+        if(array_key_exists('usertypes', $data)){
+            $user->usertypes()->sync($data['usertypes']);
+        }else{
+            $user->usertypes()->sync([]);
+        }
 
-      $default_images = Usertype::pluck('image')->toArray();
-      // dd($user->image);
-      if(in_array($user->image,$default_images)){
-          $user_usertypes = $user->usertypes->pluck('id')->toArray();
-          if(in_array(1,$user_usertypes)){
-              $user->image = $default_images[0];
-          }
+        if(array_key_exists('pagetypes', $data)){
+            $user->pagetypes()->sync($data['pagetypes']);
+        }else{
+            $user->pagetypes()->sync([]);
+        }
+
+        //elimino i background precaricati nel caso ho deselezionato aspiarnte cofounder o studente
+        if(!$user->usertypes->contains(1)
+        && !$user->usertypes->contains(5)){
+            $user->backgrounds()->sync([]);
+        }
+
+        $default_images = Usertype::pluck('image')->toArray();
+        // dd($user->image);
+        if(in_array($user->image,$default_images)){
+            $user_usertypes = $user->usertypes->pluck('id')->toArray();
+            if(in_array(1,$user_usertypes)){
+                $user->image = $default_images[0];
+            }
           //UTENTE
           if(in_array(7,$user_usertypes)){
               $user->image = $default_images[6];
@@ -172,7 +119,78 @@ class UserController extends Controller
       }
 
         if(Auth::user()->tutorial){
-            return redirect()->route('admin.users.edit',$user->id);
+            return redirect()->route('admin.users.create');
+        }else{
+            return redirect()->route('admin.users.show',$user->id);
+        }
+
+    }
+
+    public function create(){
+
+        $user = Auth::user();
+
+        $data = [
+            'user' => $user,
+        ];
+        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+        return view('admin.users.create', $data);
+
+    }
+
+    public function store(Request $request){
+
+        $request->validate([
+            'summary' => 'nullable|min:50|max:250',
+            'description' => 'nullable|max:1000',
+            'website' => 'nullable|max:255',
+            'linkedin'=> 'nullable|max:255',
+            'cv' => 'nullable|mimes:pdf|max:6144',
+            'municipality' => 'nullable',
+            'region_id' => 'nullable|integer|min:1|max:20',
+        ]);
+
+        $data = $request->all();
+
+        $user = Auth::user();
+
+        if(array_key_exists('remove_cv',$data)
+        && $data['remove_cv']=='true' && $user->cv){
+            $old_cv_name = $user->cv;
+            if($old_cv_name){
+                Storage::delete($old_cv_name);
+            }
+            $data['cv'] = '';
+        }
+
+        if(array_key_exists('cv',$data) && $data['cv']){
+            $old_cv_name = $user->cv;
+            if($old_cv_name){
+                Storage::delete($old_cv_name);
+            }
+            $cv_path = Storage::put('cv', $data['cv']);
+            $data['cv'] = $cv_path;
+        }
+
+        if(array_key_exists('municipality',$data)){
+            $user->municipality = Str::lower($data['municipality']);
+        }
+
+        $user->fill($data);
+
+        $user->update();
+
+        if(Auth::user()->tutorial){
+            if($user->usertypes->contains(1)
+            || $user->usertypes->contains(5)){
+                return redirect()->route('admin.users.background',$user->id);
+            }elseif($user->usertypes->contains(2)){
+                return redirect()->route('admin.users.businessAngel',$user->id);
+            }else{
+                $user->tutorial = null;
+                $user->update();
+                return redirect()->route('admin.users.show',$user->id);
+            }
         }else{
             return redirect()->route('admin.users.show',$user->id);
         }
@@ -199,58 +217,75 @@ class UserController extends Controller
 
     public function update(Request $request, $id){
 
-      $request->validate([
-          'name' => 'required|string|min:3|max:70',
-          'surname' => 'required|string|min:3|max:70',
-          'summary' => 'nullable|min:50|max:250',
-          'description' => 'nullable|min:50|max:1000',
-          'website' => 'nullable|max:255',
-          'linkedin'=> 'nullable|max:255',
-          'cv' => 'nullable|mimes:pdf|max:6144',
-          'moneyrange_id' => 'nullable|integer|min:1|max:5',
-          'startup_n' => 'nullable|integer',
-          'municipality' => 'nullable',
-          'region_id' => 'nullable|integer|min:1|max:20',
-      ]);
+        $request->validate([
+            'name' => 'required|string|min:3|max:70',
+            'surname' => 'required|string|min:3|max:70',
+            'summary' => 'nullable|min:50|max:250',
+            'description' => 'nullable|max:1000',
+            'website' => 'nullable|max:255',
+            'linkedin'=> 'nullable|max:255',
+            'cv' => 'nullable|mimes:pdf|max:6144',
+            'moneyrange_id' => 'nullable|integer|min:1|max:5',
+            'startup_n' => 'nullable|integer',
+            'municipality' => 'nullable',
+            'region_id' => 'nullable|integer|min:1|max:20',
+        ]);
 
-      $data = $request->all();
+        $data = $request->all();
 
-      $user = Auth::user();
+        $user = Auth::user();
 
-      if($user->id == $id){
-          if(array_key_exists('remove_cv',$data)
-          && $data['remove_cv']=='true' && $user->cv){
-              $old_cv_name = $user->cv;
-              if($old_cv_name){
-                  Storage::delete($old_cv_name);
-              }
-              $data['cv'] = '';
-          }
-          //dd($data);
-          if(array_key_exists('cv',$data) && $data['cv']){
-              $old_cv_name = $user->cv;
-              if($old_cv_name){
-                  Storage::delete($old_cv_name);
-              }
-              $cv_path = Storage::put('cv', $data['cv']);
-              $data['cv'] = $cv_path;
-          }
+        if($user->id == $id){
+            if(!array_key_exists('cv',$data) && array_key_exists('remove_cv',$data)
+            && $data['remove_cv']=='true' && $user->cv){
+                $old_cv_name = $user->cv;
+                if($old_cv_name){
+                    Storage::delete($old_cv_name);
+                }
+                $data['cv'] = '';
+            }
 
-          $user->fill($data);
+            if(array_key_exists('cv',$data) && $data['cv']){
+                $old_cv_name = $user->cv;
+                if($old_cv_name){
+                    Storage::delete($old_cv_name);
+                }
+                $cv_path = Storage::put('cv', $data['cv']);
+                $data['cv'] = $cv_path;
+            }
 
-          if($request->name){
-            $user->name = Str::lower($request->name);
-          }
+            $user->fill($data);
 
-          $user->update();
+            if($request->name){
+                $user->name = Str::lower($request->name);
+            }
+            if($request->municipality){
+                $user->municipality = Str::lower($request->municipality);
+            }
+
+            $user->update();
 
             if(Auth::user()->tutorial){
-                return redirect()->route('admin.give-user-services.edit',$user->id);
+                $user->tutorial = null;
+                $user->update();
+                return redirect()->route('admin.users.show',$user->id);
             }else{
                 return redirect()->route('admin.users.show',$user->id);
             }
 
       }abort(404);
+    }
+
+    public function businessAngel(){
+        $user = Auth::user();
+        if($user->usertypes->contains(2)){
+            $data = [
+                'user' => $user,
+                'moneyranges' => Moneyrange::all(),
+            ];
+            app()->setLocale(Language::find($user->language_id)->lang);
+            return view('admin.users.business-angel', $data);
+        }abort(404);
     }
 
     public function show(User $user){
@@ -552,6 +587,60 @@ class UserController extends Controller
                 'page_selected' => $page_selected,
             ]
         ]);
+
+    }
+
+    public function background($id){
+
+        $user = Auth::user();
+
+        if($user->userTypes->contains(1) || $user->userTypes->contains(5)){
+
+            $data = [
+                'user' => $user,
+                'user_backgrounds' => $user->backgrounds,
+                'backgrounds' => Background::where('hidden',null)
+                                            ->orderBy('name')
+                                            ->get(),
+            ];
+            app()->setLocale(Language::find($user->language_id)->lang);
+            return view('admin.users.background', $data);
+
+        }abort(404);
+
+    }
+
+    public function storeBackground($id,Request $request){
+
+        $request->validate([
+            'backgrounds'=> 'exists:backgrounds,id',
+        ]);
+
+        $data = $request->all();
+
+        $user = Auth::user();
+
+        if($user->userTypes->contains(1) || $user->userTypes->contains(5)){
+
+            if(array_key_exists('backgrounds', $data)){
+                $user->backgrounds()->sync($data['backgrounds']);
+            }else{
+                $user->backgrounds()->sync([]);
+            }
+
+            if(Auth::user()->tutorial){
+                if($user->usertypes->contains(2)){
+                    return redirect()->route('admin.users.businessAngel',$user->id);
+                }else{
+                    $user->tutorial = null;
+                    $user->update();
+                    return redirect()->route('admin.users.show',$user->id);
+                }
+            }else{
+                return redirect()->route('admin.users.show',$user->id);
+            }
+
+        }
 
     }
 
