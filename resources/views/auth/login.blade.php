@@ -26,20 +26,23 @@
         app()->setLocale('it');
         $language_id = 2;
     @endphp
+<script type="text/javascript">
+    login = true;
+</script>
 <div class="bg-blue" id="login" style="background-image: url({{asset("storage/images/bg-contact.svg") }}); background-position: left 0px bottom -17px; background-repeat: no-repeat; background-size: 700px 500px;">
   <div class="container">
     <div class="item-cont">
         <div class="item-style">
             <div class="row d-flex justify-content-center">
-                <div class="bg-dark custom-card col-sm-12 col-md-12 col-lg-6 col-xl-6 p-5">
+                <div class="bg-dark custom-card col-sm-12 col-md-12 col-lg-8 col-xl-6 p-5">
                     <div  class="switch-button-container pt-1 pb-5">
                         <label class="pt-2 mr-4 font-weight-bold" for="">Login</label>
                         <button class="button r switch-button d-inline-block">
-                            <input type="checkbox" class="checkbox" @click="login=!login" id="switch-checkbox">
+                            <input type="checkbox" class="checkbox" @click="login=!login" id="switch-checkbox" :checked="!login">
                             <div class="knobs"></div>
                             <div class="layer"></div>
                         </button>
-                        <label class="pt-2 ml-4 font-weight-bold" for="">Registati</label>
+                        <label class="pt-2 ml-4 font-weight-bold" for="">Registrati</label>
                     </div>
                     <form v-if="login" method="POST" action="{{ route('login') }}" v-cloak>
                         @csrf
@@ -135,7 +138,7 @@
                         <div class="form-group row">
                             <label for="date_of_birth" class="col-md-4 col-form-label text-md-right">Data di nascita
                                 <div class="info">
-                                    <button aria-label="La data di nascita è utile a verificare che tu sia maggiorenne, non sarà visibile agli altri utenti." data-microtip-position="top" data-microtip-size="medium" role="tooltip">
+                                    <button aria-label="La data di nascita è utile a verificare che tu sia maggiorenne, non sarà visibile agli altri utenti." data-microtip-position="top" data-microtip-size="medium" type="button" role="tooltip">
                                     <i class="fas fa-info-circle"></i>
                                 </div>
                             </label>

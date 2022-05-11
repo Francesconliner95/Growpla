@@ -8,14 +8,14 @@ axios.defaults.headers.common = {
 var create = new Vue({
     el: '#page-create',
     data: {
-        step: 1,
+        step,
+        name,
+        summary,
+        presentation,
+        city,
+        region_id_selected,
         max_step: document.getElementsByClassName('step').length,
         regions: '',
-        region_id_selected: '',
-        name: '',
-        summary: '',
-        city: '',
-        presentation: '',
     },
     methods: {
 

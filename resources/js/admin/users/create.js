@@ -8,13 +8,13 @@ axios.defaults.headers.common = {
 var create = new Vue({
     el: '#user-create',
     data: {
-        step: 1,
+        step,
+        summary,
+        presentation,
+        city,
+        region_id_selected,        
         max_step: document.getElementsByClassName('step').length,
         regions: '',
-        region_id_selected: '',
-        summary: '',
-        city: '',
-        presentation: '',
     },
     methods: {
 
@@ -25,8 +25,10 @@ var create = new Vue({
         },
 
         next(){
+            console.log(this.step);
             if(this.step<this.max_step){
                 this.step++;
+                console.log(this.step);
             }else if (this.step==this.max_step) {
                 document.getElementById('formUserCreate').submit();
             }

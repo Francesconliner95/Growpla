@@ -79,7 +79,7 @@
                         </div>
                     </div>
                     <div v-if="!is_mobile" class="col-sm-12 col-md-9 col-lg-9 col-xl-9 h-100" v-cloak>
-                        <div v-if="displayed_name" :class="message_text.length>45?'chat-show chat-show-longtext':'chat-show' ">
+                        <div v-if="displayed_name" class="chat-show">
                             <div class="messages-cont custom-scrollbar" id="scroll-messages">
                                 <div
                                 v-for="message in messages.slice().reverse()"

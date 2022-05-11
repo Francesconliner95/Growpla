@@ -25,6 +25,8 @@
                     value="{{ old('name',$user->name) }}">
                     <input type="hidden" name="surname"
                     value="{{ old('surname',$user->surname) }}">
+                    <input type="hidden" name="summary"
+                    value="{{ old('summary',$user->summary) }}">
                     <div class="row">
                         @if ($user->userTypes->contains(2))
                             {{-- Money range --}}

@@ -41,7 +41,7 @@
             <div class="item-style">
                 <div class="profile">
                     <a v-if="is_my_user" class="edit-top-left button-style-circle button-color-gray pl-1" href="{{route('admin.users.accounts',$user->id)}}" v-cloak>
-                        <i class="fas fa-cog"></i>
+                        <i class="fas fa-stream"></i>
                     </a>
                     <a v-if="is_my_user" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.users.edit', $user->id)}}" v-cloak>
                         <i class="fas fa-pencil-alt"></i>
@@ -361,8 +361,31 @@
                 @endif
             </div>
         </div>
-        @if(count($user->pages)>0)
+        @if(count($user->pages)>0 || $is_my_user)
         <div class="sub-section">
+            <div class="d-flex justify-content-between align-items-center pb-3">
+                <h6>Le mie pagine</h6>
+                @if(count($user->pagetypes)!=0 && $is_my_user)
+                <a v-if="is_my_user" class="button-style-circle button-color-gray pl-1" href="{{route('admin.users.accounts',$user->id)}}" v-cloak>
+                    <i class="fas fa-stream"></i>
+                </a>
+                @endif
+            </div>
+            @if(count($user->pagetypes)==0 && $is_my_user)
+                <div class="text-center">
+                    <h6 class="font-weight-bold txt-black pt-3">Growpla ti permette di associare al tuo profilo personale delle pagine connesse alle attività che possiedi o per le quali operi.
+                    </h6>
+                    <h6 class="font-weight-bold txt-black pb-3">
+                        Seleziona una o più tipologie di pagine da associare al tuo account e successivamente torna qui per crearla
+                    </h6>
+                    <div class="text-center">
+                        <a v-if="is_my_user" class="button-style button-color-blue" href="{{route('admin.users.accounts',$user->id)}}" v-cloak>
+                            <i class="fas fa-stream"></i>
+                            Vai alla selezione
+                        </a>
+                    </div>
+                </div>
+            @endif
             @foreach ($pageTypes  as $key => $pageType)
                 @if($user->pageTypes->contains($pageType->id))
                     @if (count($user->pages->where('pagetype_id',$pageType->id))>0 || $is_my_user)
@@ -422,7 +445,7 @@
         @endif
         <div v-if="is_my_user || collaborations.length>0" id="collaborations" class="item-cont" v-cloak>
             <div class="item-style">
-                <h3 class="text-capitalize">Collaborazioni
+                <h6 class="text-capitalize">Collaborazioni
                     <div v-if="is_my_user" class="info">
                         <button aria-label="{{__('Use this section to enter collaborations with other accounts on the platform')}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
                         <i class="fas fa-info-circle"></i>
@@ -430,7 +453,7 @@
                     <a  v-if="is_my_user" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.collaborations.my', [$user->id,'user'])}}">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
-                </h3>
+                </h6>
                 <div class="main-multi-slider">
                     <div class="multi-slider-cont" id="multi-slider-cont-20" style="height: 160px;">
                         <div v-for="collaboration in collaborations" class="multi-slider-item col-8 col-sm-5 col-md-5 col-lg-3 col-xl-3">

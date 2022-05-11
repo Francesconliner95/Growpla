@@ -87,13 +87,13 @@ var create = new Vue({
         },
 
         text_wrap(){
-            console.log(document.getElementById("mytextarea").scrollHeight>31);
-            if(document.getElementById("mytextarea").scrollHeight>31){
-                this.longtext = true;
-            }else{
-                this.longtext = false;
-            }
-
+            // console.log(document.getElementById("mytextarea").scrollHeight>31);
+            // if(document.getElementById("mytextarea").scrollHeight>31){
+            //     this.longtext = true;
+            // }else{
+            //     this.longtext = false;
+            // }
+            // console.log(document.getElementById("mytextarea").content);
         },
 
     },
@@ -108,9 +108,3 @@ var create = new Vue({
     }
 
 });
-
-$(document).ready(function(){
- var lht = parseInt($('textarea').css('lineHeight'),10);
- var lines = $('textarea').attr('scrollHeight') / lht;
- console.log(lines);
-})

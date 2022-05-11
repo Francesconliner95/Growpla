@@ -3,6 +3,11 @@
 @section('content')
 <script type="text/javascript">
     language_id = "{{Auth::user()->language_id}}";
+    summary = "{{ old('summary',$user->summary) }}";
+    presentation = "{{ old('description',$user->description) }}";
+    city = "{{ old('municipality',$user->municipality) }}";
+    region_id_selected = "{{ old('region_id',$user->region_id) }}";
+    step = 1;
 </script>
 
 <div id="user-create" style="background-image: url({{asset("storage/images/bg-shadow.svg") }}); background-position: left 0px top 0px; background-repeat: no-repeat; background-attachment: fixed; background-size:cover;">
@@ -34,11 +39,14 @@
                         <p class="mini-txt font-weight-bold  txt-green">Campo obbligatorio</p>
                       </div>
                       <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
-                        <textarea name="summary" rows="3" cols="80" class="form-control custom-input" placeholder="Descrivi brevente ciò che fai"  minlength="50" maxlength="150" v-model="summary"></textarea>
+                        <textarea name="summary" rows="3" cols="80" class="form-control custom-input" placeholder="Descrivi brevente ciò che fai"  minlength="50" maxlength="150" v-model="summary">{{old('summary',$user->summary)}}</textarea>
                         @error ('summary')
                             <div class="alert alert-danger">
                                 {{__($message)}}
                             </div>
+                            <script type="application/javascript">
+                                step = 1;
+                            </script>
                         @enderror
                         <p class="pt-1 mini-txt" v-cloak>
                             @{{summary.length+'/150'}}
@@ -51,11 +59,14 @@
                           <h6>{{__('Presentation')}}</h6>
                       </div>
                       <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
-                        <textarea name="description" rows="6" cols="80" class="form-control custom-input" placeholder="{{__('Write something about what you do')}}" maxlength="1000" v-model="presentation"></textarea>
+                        <textarea name="description" rows="6" cols="80" class="form-control custom-input" placeholder="{{__('Write something about what you do')}}" maxlength="1000" v-model="presentation" value="">{{ old('description',$user->description) }}</textarea>
                         @error ('description')
                             <div class="alert alert-danger">
                                 {{__($message)}}
                             </div>
+                            <script  type="application/javascript">
+                                step = 2;
+                            </script>
                         @enderror
                         <p class="pt-1 mini-txt" v-cloak>
                             @{{presentation.length+'/1000'}}
@@ -73,11 +84,14 @@
                       </h6>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
-                      <input type="url" name="website" class="form-control border-green custom-input" maxlength="255" value="" placeholder="es. https://www.growpla.it">
+                      <input type="url" name="website" class="form-control border-green custom-input" maxlength="255" value="{{ old('website',$user->website) }}" placeholder="es. https://www.growpla.it">
                       @error ('website')
                           <div class="alert alert-danger">
                               {{__($message)}}
                           </div>
+                          <script type="application/javascript">
+                              step = 3;
+                          </script>
                       @enderror
                     </div>
                   </div>
@@ -92,11 +106,14 @@
                       </h6>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
-                      <input type="url" name="linkedin" class="form-control border-green custom-input" maxlength="255" value="" placeholder="es. https://www.linkedin.com/in/...">
+                      <input type="url" name="linkedin" class="form-control border-green custom-input" maxlength="255" value="{{ old('linkedin',$user->linkedin) }}" placeholder="es. https://www.linkedin.com/in/...">
                       @error ('linkedin')
                           <div class="alert alert-danger">
                               {{__($message)}}
                           </div>
+                          <script type="application/javascript">
+                              step = 4;
+                          </script>
                       @enderror
                     </div>
                   </div>
@@ -110,7 +127,7 @@
                           <input type="hidden" name="country_id" value="1">
                           <div v-if="regions.length>1" class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mt-2 mb-2" v-cloak>
                               <label>Regione</label>
-                              <select class="form-control custom-input" name="region_id" v-model="region_id_selected">
+                              <select class="form-control custom-input" name="region_id" v-model="region_id_selected" value="{{ old('region_id',$user->region_id) }}">
                                   <option value="">Non specificata</option>
                                   <option v-for="region in regions" :value="region.id">
                                         @{{region.name}}
@@ -119,7 +136,7 @@
                           </div>
                           <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mt-2 mb-2">
                               <label>Città</label>
-                              <input type="text" name="municipality" class="form-control custom-input" value="" accept="" v-model="city" required>
+                              <input type="text" name="municipality" class="form-control custom-input" value="{{ old('municipality',$user->municipality) }}" accept="" v-model="city" required>
                           </div>
                       </div>
                     </div>
@@ -140,6 +157,9 @@
                                   <div class="alert alert-danger">
                                       {{__($message)}}
                                   </div>
+                                  <script type="application/javascript">
+                                      step = 6;
+                                  </script>
                               @enderror
                             </div>
                           </div>

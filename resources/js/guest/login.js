@@ -11,14 +11,14 @@ axios.defaults.headers.common = {
 var create = new Vue({
     el: '#login',
     data: {
-        login: true,
+        login,
         show_password: false,
         login_btn: true,
         register_btn: true,
     },
     methods: {
         maxbirthdate(){
-          return moment().subtract(10, 'years').format('YYYY-MM-DD');
+          return moment().subtract(18, 'years').format('YYYY-MM-DD');
         },
         submitLogin(){
             if(this.login_btn){
@@ -43,7 +43,7 @@ var create = new Vue({
 
     },
     mounted() {
-        
+
         if(window.location.hash.substr(1)=='register'){
             this.login = false;
             document.getElementById('switch-checkbox').checked = true;

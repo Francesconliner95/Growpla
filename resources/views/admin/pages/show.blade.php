@@ -495,7 +495,7 @@
         </div>
         <div v-if="is_my_page || collaborations.length>0" id="collaborations" class="item-cont" v-cloak>
             <div class="item-style">
-                <h3 class="text-capitalize">Collaborazioni
+                <h6 class="text-capitalize">Collaborazioni
                     <div v-if="is_my_page" class="info">
                         <button aria-label="{{__('Use this section to enter collaborations with other accounts on the platform')}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
                         <i class="fas fa-info-circle"></i>
@@ -503,7 +503,7 @@
                     <a  v-if="is_my_page" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.collaborations.my', [$page->id,'page'])}}">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
-                </h3>
+                </h6>
                 <div class="main-multi-slider">
                     <div class="multi-slider-cont" id="multi-slider-cont-20" style="height: 160px;">
                         <div v-for="collaboration in collaborations" class="multi-slider-item col-8 col-sm-5 col-md-5 col-lg-3 col-xl-3">

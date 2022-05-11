@@ -657,9 +657,11 @@ class MainController extends Controller
         if(!$usertypes_id && !$pagetypes_id && $name){
             //dd($name);
             $users = User::where(DB::raw("concat(name, ' ', surname)"), 'LIKE', "%".$name."%")
+            ->whereNotNull('summary')
             ->get();
 
             $pages = Page::where('name','LIKE', "%".$name."%")
+            ->whereNotNull('summary')
             ->get();
         }
 

@@ -11,9 +11,9 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js?14') }}" defer></script>
+    <script src="{{ asset('js/app.js?16') }}" defer></script>
     <!-- Styles -->
-    <link href="{{ asset('css/app.css?14') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css?16') }}" rel="stylesheet">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JQ65YBYMPD"></script>
@@ -141,7 +141,7 @@
                                         </div>
                                     </a> --}}
                                 </div>
-                                <a id="navbarDropdown" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a id="navbarDropdown" class="dropdown-toggle scale ml-1" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {{-- <div class="drop-menu mobile-hide"> --}}
                                         {{-- @{{user.name}} @{{user.surname}} --}}
                                     {{-- </div> --}}
@@ -186,69 +186,74 @@
         <main id="main">
             @yield('content')
         </main>
-        @if(!Auth::user()->tutorial)
-        <footer id="footer">
-            <div class="container ">
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                        <div class="row d-flex justify-content-center">
-                            <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                <div class="legal mini-txt">
-                                    <div class="">
-                                        <a href="{{ route('termsAndConditions') }}">
-                                            {{__('Terms & Conditions')}}
-                                        </a>
-                                    </div>
-                                    <div class="">
-                                        <a href="{{ route('privacyPolicy') }}">
-                                            {{__('Privacy Disclaimer')}}
-                                        </a>
-                                    </div>
-                                    <div class="">
-                                        <a href="{{ route('cookiePolicy') }}">
-                                            Cookie Policy
-                                        </a>
+        @guest
+        {{-- SE NON LOGGATO NON COMPARE LA NAVBAR --}}
+
+        @else
+            @if(!Auth::user()->tutorial)
+            <footer id="footer">
+                <div class="container ">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                    <div class="legal mini-txt">
+                                        <div class="">
+                                            <a href="{{ route('termsAndConditions') }}">
+                                                {{__('Terms & Conditions')}}
+                                            </a>
+                                        </div>
+                                        <div class="">
+                                            <a href="{{ route('privacyPolicy') }}">
+                                                {{__('Privacy Disclaimer')}}
+                                            </a>
+                                        </div>
+                                        <div class="">
+                                            <a href="{{ route('cookiePolicy') }}">
+                                                Cookie Policy
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                                <div class="contacts mini-txt">
-                                    <div class="">
-                                        <a href="{{ route('admin.supports.switch') }}">
-                                            {{__("Contact us")}}
-                                        </a>
-                                    </div>
-                                    <div class="">
-                                        <a href="mailto:info@growpla.com" >info@growpla.com</a>
+                                <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                    <div class="contacts mini-txt">
+                                        <div class="">
+                                            <a href="{{ route('admin.supports.switch') }}">
+                                                {{__("Contact us")}}
+                                            </a>
+                                        </div>
+                                        <div class="">
+                                            <a href="mailto:info@growpla.com" >info@growpla.com</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex justify-content-center">
-                        <div class="social">
-                            <div class="">
-                                {{-- <a href="" target="_blank">
-                                    <i class="fab fa-facebook"></i>
-                                </a> --}}
-                                <a href="https://www.instagram.com/growpla/" target="_blank">
-                                    <i class="fab fa-instagram"></i>
-                                </a>
-                                <a href="https://www.linkedin.com/company/78734323" target="_blank">
-                                    <i class="fab fa-linkedin"></i>
-                                </a>
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 d-flex justify-content-center">
+                            <div class="social">
+                                <div class="">
+                                    {{-- <a href="" target="_blank">
+                                        <i class="fab fa-facebook"></i>
+                                    </a> --}}
+                                    <a href="https://www.instagram.com/growpla/" target="_blank">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                    <a href="https://www.linkedin.com/company/78734323" target="_blank">
+                                        <i class="fab fa-linkedin"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="container">
-                <div class="bottom-footer">
-                    <span class="mini-txt">All copyrighted reserved to  Growpla © {{date("Y")}}</span>
+                <div class="container">
+                    <div class="bottom-footer">
+                        <span class="mini-txt">All copyrighted reserved to  Growpla © {{date("Y")}}</span>
+                    </div>
                 </div>
-            </div>
-        </footer>
-        @endif
+            </footer>
+            @endif
+        @endguest
     </div>
 </body>
 </html>

@@ -11,7 +11,6 @@ Vue.config.productionTip = false;
 //ACCOUNT
 if (document.getElementById('guest-home')) {
     require('./guest/home.js');
-    remove_footer = true;
 }
 
 if (document.getElementById('cookie-policy')) {
@@ -20,7 +19,6 @@ if (document.getElementById('cookie-policy')) {
 
 if (document.getElementById('login')) {
     require('./guest/login.js');
-    remove_footer = true;
 }
 
 if (document.getElementById('incubators')) {

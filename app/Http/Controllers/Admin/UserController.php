@@ -141,7 +141,7 @@ class UserController extends Controller
     public function store(Request $request){
 
         $request->validate([
-            'summary' => 'nullable|min:50|max:250',
+            'summary' => 'required|min:50|max:250',
             'description' => 'nullable|max:1000',
             'website' => 'nullable|max:255',
             'linkedin'=> 'nullable|max:255',
@@ -220,7 +220,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|min:3|max:70',
             'surname' => 'required|string|min:3|max:70',
-            'summary' => 'nullable|min:50|max:250',
+            'summary' => 'required|min:50|max:250',
             'description' => 'nullable|max:1000',
             'website' => 'nullable|max:255',
             'linkedin'=> 'nullable|max:255',

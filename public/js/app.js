@@ -73204,14 +73204,13 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       var output = hours + ':' + minutes + ' ' + day + '/' + month + '/' + year;
       return output;
     },
-    text_wrap: function text_wrap() {
-      console.log(document.getElementById("mytextarea").scrollHeight > 31);
-
-      if (document.getElementById("mytextarea").scrollHeight > 31) {
-        this.longtext = true;
-      } else {
-        this.longtext = false;
-      }
+    text_wrap: function text_wrap() {// console.log(document.getElementById("mytextarea").scrollHeight>31);
+      // if(document.getElementById("mytextarea").scrollHeight>31){
+      //     this.longtext = true;
+      // }else{
+      //     this.longtext = false;
+      // }
+      // console.log(document.getElementById("mytextarea").content);
     }
   },
   mounted: function mounted() {
@@ -73222,11 +73221,6 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       _this3.getMessages();
     }, 10000);
   }
-});
-$(document).ready(function () {
-  var lht = parseInt($('textarea').css('lineHeight'), 10);
-  var lines = $('textarea').attr('scrollHeight') / lht;
-  console.log(lines);
 });
 
 /***/ }),
@@ -75299,14 +75293,14 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#page-create',
   data: {
-    step: 1,
+    step: step,
+    name: name,
+    summary: summary,
+    presentation: presentation,
+    city: city,
+    region_id_selected: region_id_selected,
     max_step: document.getElementsByClassName('step').length,
-    regions: '',
-    region_id_selected: '',
-    name: '',
-    summary: '',
-    city: '',
-    presentation: ''
+    regions: ''
   },
   methods: {
     prev: function prev() {
@@ -78683,13 +78677,13 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#user-create',
   data: {
-    step: 1,
+    step: step,
+    summary: summary,
+    presentation: presentation,
+    city: city,
+    region_id_selected: region_id_selected,
     max_step: document.getElementsByClassName('step').length,
-    regions: '',
-    region_id_selected: '',
-    summary: '',
-    city: '',
-    presentation: ''
+    regions: ''
   },
   methods: {
     prev: function prev() {
@@ -78698,8 +78692,11 @@ var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
       }
     },
     next: function next() {
+      console.log(this.step);
+
       if (this.step < this.max_step) {
         this.step++;
+        console.log(this.step);
       } else if (this.step == this.max_step) {
         document.getElementById('formUserCreate').submit();
       }
@@ -79581,8 +79578,6 @@ Vue.config.productionTip = false; ///////GUEST//////
 
 if (document.getElementById('guest-home')) {
   __webpack_require__(/*! ./guest/home.js */ "./resources/js/guest/home.js");
-
-  remove_footer = true;
 }
 
 if (document.getElementById('cookie-policy')) {
@@ -79591,8 +79586,6 @@ if (document.getElementById('cookie-policy')) {
 
 if (document.getElementById('login')) {
   __webpack_require__(/*! ./guest/login.js */ "./resources/js/guest/login.js");
-
-  remove_footer = true;
 }
 
 if (document.getElementById('incubators')) {
@@ -80369,14 +80362,14 @@ axios__WEBPACK_IMPORTED_MODULE_1___default.a.defaults.headers.common = {
 var create = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#login',
   data: {
-    login: true,
+    login: login,
     show_password: false,
     login_btn: true,
     register_btn: true
   },
   methods: {
     maxbirthdate: function maxbirthdate() {
-      return moment__WEBPACK_IMPORTED_MODULE_2___default()().subtract(10, 'years').format('YYYY-MM-DD');
+      return moment__WEBPACK_IMPORTED_MODULE_2___default()().subtract(18, 'years').format('YYYY-MM-DD');
     },
     submitLogin: function submitLogin() {
       var _this = this;

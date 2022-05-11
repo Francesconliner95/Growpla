@@ -394,6 +394,8 @@
     "If you did not receive the email":"Se non hai ricevuto l'e-mail",
     "click here to request another":"clicca qui per inviarne un'altra",
     "A fresh verification link has been sent to your email address.":"Un nuovo link di verifica è stato inviato al tuo indirizzo email.",
+    "The summary field is required.":"Il sommario è obbligatorio",
+    "The summary must be at least 50 characters.":"Il sommario deve avere minimo 50 caratteri",
 
     "HOME":"HOME",
     "These credentials do not match our records.":"Queste credenziali non corrispondono a nessun utente",

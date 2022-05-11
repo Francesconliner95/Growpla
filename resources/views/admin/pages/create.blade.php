@@ -3,9 +3,15 @@
 @section('content')
 <script type="text/javascript">
     language_id = "{{Auth::user()->language_id}}";
+    name = "{{ old('name') }}";
+    summary = "{{ old('summary') }}";
+    presentation = "{{ old('description') }}";
+    city = "{{ old('municipality') }}";
+    region_id_selected = "{{ old('region_id') }}";
+    step = 1;
 </script>
 
-<div id="page-create" style="background-image: url({{asset("storage/images/bg-shadow.svg") }}); background-position: left 0px top 0px; background-repeat: no-repeat; background-attachment: fixed;">
+<div id="page-create" style="background-image: url({{asset("storage/images/bg-shadow.svg") }}); background-position: left 0px top 0px; background-repeat: no-repeat; background-attachment: fixed; background-size:cover;">
     <div class="container">
         <div class="item-cont">
             <div class="item-style">
@@ -42,6 +48,9 @@
                                 <span class="alert alert-danger">
                                     {{__($message)}}
                                 </span>
+                                <script type="application/javascript">
+                                    step = 1;
+                                </script>
                             @enderror
                           </div>
                           <p class="text-center mini-txt font-weight-bold txt-green w-100 pt-5">Inserisci nome</p>
@@ -58,6 +67,9 @@
                             <div class="alert alert-danger">
                                 {{__($message)}}
                             </div>
+                            <script type="application/javascript">
+                                step = 2;
+                            </script>
                         @enderror
                         <p class="pt-1 mini-txt" v-cloak>
                             @{{summary.length+'/150'}}
@@ -75,6 +87,9 @@
                             <div class="alert alert-danger">
                                 {{__($message)}}
                             </div>
+                            <script type="application/javascript">
+                                step = 3;
+                            </script>
                         @enderror
                         <p class="pt-1 mini-txt" v-cloak>
                             @{{presentation.length+'/1000'}}
@@ -92,11 +107,14 @@
                       </h6>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
-                      <input type="url" name="website" class="form-control border-green custom-input" maxlength="255" value="" placeholder="es. https://www.growpla.it">
+                      <input type="url" name="website" class="form-control border-green custom-input" maxlength="255" value="{{old('website')}}" placeholder="es. https://www.growpla.it">
                       @error ('website')
                           <div class="alert alert-danger">
                               {{__($message)}}
                           </div>
+                          <script type="application/javascript">
+                              step = 4;
+                          </script>
                       @enderror
                     </div>
                   </div>
@@ -111,11 +129,14 @@
                       </h6>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
-                      <input type="url" name="linkedin" class="form-control border-green custom-input" maxlength="255" value="" placeholder="es. https://www.linkedin.com/in/...">
+                      <input type="url" name="linkedin" class="form-control border-green custom-input" maxlength="255" value="{{old('linkedin')}}" placeholder="es. https://www.linkedin.com/in/...">
                       @error ('linkedin')
                           <div class="alert alert-danger">
                               {{__($message)}}
                           </div>
+                          <script type="application/javascript">
+                              step = 5;
+                          </script>
                       @enderror
                     </div>
                   </div>
@@ -147,11 +168,11 @@
                           <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 mt-2 mb-2">
                             <label>Via</label>
                             <input type="text" name="street_name" class="form-control custom-input"
-                            value="">
+                            value="{{old('street_name')}}">
                           </div>
                           <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 mt-2 mb-2">
                               <label>Numero</label>
-                              <input type="text" name="street_number" class="form-control custom-input" value="">
+                              <input type="text" name="street_number" class="form-control custom-input" value="{{old('street_number')}}">
                           </div>
                       </div>
                     </div>
@@ -174,6 +195,9 @@
                                   <div class="alert alert-danger">
                                       {{__($message)}}
                                   </div>
+                                  <script type="application/javascript">
+                                      step = 7;
+                                  </script>
                               @enderror
                             </div>
                           </div>
