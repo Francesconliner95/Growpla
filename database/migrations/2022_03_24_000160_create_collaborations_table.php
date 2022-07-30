@@ -15,16 +15,18 @@ class CreateCollaborationsTable extends Migration
     {
         Schema::create('collaborations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedbigInteger('sender_user_id')->nullable();
-            $table->foreign('sender_user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedbigInteger('sender_page_id')->nullable();
-            $table->foreign('sender_page_id')->references('id')->on('pages')->onDelete('cascade');
-            $table->unsignedbigInteger('recipient_user_id')->nullable();
-            $table->foreign('recipient_user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedbigInteger('recipient_page_id')->nullable();
-            $table->foreign('recipient_page_id')->references('id')->on('pages')->onDelete('cascade');
-            // $table->tinyInteger('recipient_add')->nullable();
-            $table->tinyInteger('confirmed')->nullable();
+            $table->unsignedbigInteger('col1_user_id')->nullable();
+            $table->foreign('col1_user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedbigInteger('col1_page_id')->nullable();
+            $table->foreign('col1_page_id')->references('id')->on('pages')->onDelete('cascade');
+            $table->unsignedbigInteger('col2_user_id')->nullable();
+            $table->foreign('col2_user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedbigInteger('col2_page_id')->nullable();
+            $table->foreign('col2_page_id')->references('id')->on('pages')->onDelete('cascade');
+            $table->tinyInteger('col1_confirmed')->nullable();
+            $table->tinyInteger('col2_confirmed')->nullable();
+            $table->tinyInteger('col1_show')->nullable()->default(1);
+            $table->tinyInteger('col2_show')->nullable()->default(1);
             $table->timestamps();
         });
     }

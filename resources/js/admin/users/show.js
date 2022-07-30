@@ -9,20 +9,29 @@ var create = new Vue({
     data: {
         id,
         lang,
+        user,
         is_my_user,
-        //user,
         following,
+        give_have_user_service,
+        skills_count,
+        default_images,
+        page_creation,
         collaborations: [],
+        r_collaborations: [],
         list_user: '',
         list_pages: '',
         alert: false,
+        alert_type: 1,
+        alert_var_1: '',
         interval:false,
         is_mobile: false,
+        profile_check: '',
     },
     methods: {
 
         switchAccounts(){
             this.alert = true;
+            this.alert_type = 1;
             axios.get('/admin/getMyAccounts',{
             }).then((response) => {
                 this.list_user = response.data.results.user;
@@ -43,6 +52,12 @@ var create = new Vue({
                 var route = response.data.results.route;
                 window.location.href = route;
             });
+        },
+
+        alert_2(collaboration){
+            this.alert = true;
+            this.alert_type = 2;
+            this.alert_var_1 = collaboration;
         },
 
         open(filename){
@@ -73,6 +88,48 @@ var create = new Vue({
             }).then((response) => {
                 this.collaborations = response.data.results.collaborations;
                 // console.log(this.collaborations);
+            });
+        },
+
+        getRecommendedCollaborations(){
+
+            axios.get('/admin/getRecommendedCollaborations',{
+                params: {
+                    account_id: this.id,
+                    user_or_page: 'user',
+                }
+            }).then((response) => {
+                this.r_collaborations = response.data.results.collaborations;
+                //console.log(this.r_collaborations);
+            });
+        },
+
+        confirmCollaboration(collaboration){
+            axios({
+                method: 'put',
+                url: '/admin/confirmCollaboration',
+                data: {
+                    collaboration_id: collaboration.id,
+                    account_id: this.id,
+                    user_or_page: 'user',
+                }
+            }).then(response => {
+                this.getCollaborations();
+                this.getRecommendedCollaborations();
+            });
+        },
+
+        deleteCollaboration(collaboration){
+            axios({
+                method: 'delete',
+                url: '/admin/deleteCollaboration',
+                data: {
+                    collaboration_id: collaboration.id,
+                    account_id: this.id,
+                    user_or_page: 'user',
+                }
+            }).then(response => {
+                this.getRecommendedCollaborations();
             });
         },
 
@@ -162,18 +219,70 @@ var create = new Vue({
                     this.is_mobile = true;
                 }
             }
+        },
+
+        profile_check_f(){
+            if(this.is_my_user){
+                this.profile_check = [
+                    {
+                        name: 'Inserire un\'immagine di profilo aumenta la fiducia degli altri utenti nei tuoi confronti e moltiplica le possibilità di instaurare collaborazioni',
+                        check: this.default_images.includes(this.user.image)?false:true,
+                    },
+                    {
+                        name: 'Presentati agli altri utenti: racconta di te, delle tue capacità ed attività e molto altro',
+                        check: this.user.description?true:false,
+                    },
+                    {
+                        name: 'Inserisci almeno uno tra CV, collegamento a LinkedIn o sito web in modo da certificare tue competenze',
+                        check: this.user.linkedin
+                                || this.user.website
+                                || this.user.cv?true:false,
+                    },
+                    {
+                        name: 'Fai sapere agli altri utenti quali servizi offri/cerchi',
+                        check: this.give_have_user_service?true:false,
+                    },
+                    {
+                        name: 'Inserisci competenze correlate a ciò che sai fare (SW utilizzati, linguaggi di programmazione, soft skill, aree di conoscenza e competenza e molto altro)',
+                        check: this.skills_count?true:false,
+                    },
+                ];
+                if(this.page_creation){
+                    var array = [
+                            {
+                                name: 'Crea la pagina dell\'attività di cui sei founder, co-founder o socio <div class="py-2"><a href="/admin/pagetype" class="button-style button-color-blue">Crea pagina</a></div>',
+                                check: this.page_creation==1?true:false,
+                            },
+                        ];
+                    this.profile_check.push(...array);
+                }
+                this.profile_check.sort(function(a, b) {
+                    return b.check - a.check
+                })
+                var profile_complete = true;
+                this.profile_check.forEach((check, i) => {
+                    if(check.check==false){
+                        profile_complete = false;
+                    }
+                });
+                if(profile_complete){
+                    this.profile_check = false;
+                }
+
+            }
+
         }
 
     },
     created(){
-      // console.log(this.user);
-      // this.user = JSON.parse(this.user.replace(/&quot;/g,'"'));
-      // console.log(this.user);
+
     },
     mounted() {
+        this.profile_check_f();
         this.getCollaborations();
-
+        this.getRecommendedCollaborations();
         this.checkMobile();
+
         window.addEventListener('resize', (event)=> {
             this.checkMobile();
         }, true);
@@ -213,6 +322,8 @@ var create = new Vue({
         // }
 
     },
+
+
 
 });
 

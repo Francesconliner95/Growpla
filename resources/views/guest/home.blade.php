@@ -1,34 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
-<script type="text/javascript">
-</script>
 <div id="guest-home" class="pt-0">
-    <section class="pt-5 mb-5"
-    {{-- :style="is_mobile?
-    'background: url({{asset("storage/images/bg-cerchio.svg") }}) right -270px top -150px; background-repeat: no-repeat; background-size: 1000px 1000px;'
-    :'background: url({{asset("storage/images/bg-razzo.svg") }}) right -250px top 200px,url({{asset("storage/images/bg-cerchio.svg") }}) right -270px top -150px; background-repeat: no-repeat; background-size: 800px 800px,1000px 1000px;'" --}}
-    style="background: url({{asset("storage/images/bg-cerchio.svg") }}) right -270px top -150px; background-repeat: no-repeat; background-size: 1000px 1000px;"
-
-     v-cloak>
-        <img src="{{asset("storage/images/bg-razzo.svg") }}" alt="" class="rocket-animation mobile-hide">
-        <div class="header mb-5 pb-5">
-            <div class="container">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="mobile-hide">
-                        <img src="{{ asset("storage/images/logo-fullsize-white.svg") }}" alt="" class="logo" style="width:300px; height:80px; object-fit:contain;">
-                    </div>
-                    <div class="mobile-show">
-                        <img src="{{ asset("storage/images/logo-white.svg") }}" alt="" class="logo" style="width:80px; height:80px; object-fit:contain;">
-                    </div>
-                    <div class="text-right">
-                        <span class="font-weight-bold text-white d-inline-block m-2">Sei già iscritto?</span>
-                        <a href="{{route('login')}}" class="button-style-radius button-color-transparent">LOGIN</a>
-                    </div>
-                </div>
-            </div>
+    {{-- <div class="">
+        <h1 data-aos="fade-down-left"
+        class="text-dark dark-text">A chi ci rivolgiamo?</h1>
+    </div>
+    <section class="splide" aria-label="Splide Basic HTML Example">
+        <div class="splide__track">
+		    <ul class="splide__list">
+			    <li class="splide__slide">Slide 01</li>
+			    <li class="splide__slide">Slide 02</li>
+			    <li class="splide__slide">Slide 03</li>
+		    </ul>
         </div>
-        <div class="container">
+    </section> --}}
+    <section class="pt-5 mb-5"
+    style="background: url({{asset("storage/images/bg-cerchio.svg") }}) right -270px top -150px; background-repeat: no-repeat; background-size: 1000px 1000px;" v-cloak>
+        <img src="{{asset("storage/images/bg-razzo.svg") }}" alt="" class="rocket-animation mobile-hide">
+        <div class="pb-5">
+
+        </div>
+        {{-- <a href="{{route('home2')}}">Home2</a> --}}
+        <div class="container mt-5 pt-5">
             <div class="row">
                 <h1 class="col-sm-12 col-md-8 col-lg-5 col-xl-5 pb-3">Fai decollare il tuo business.</h1>
                 <h4 class="col-sm-12 col-md-12 col-lg-10 col-xl-10 pt-3 pb-3">Crea la tua Startup, sviluppa la tua <strong> idea di business</strong>, forma il tuo team, incontra persone e stringi relazioni.</h4>
@@ -47,7 +41,7 @@
             </div>
             <div class="row">
                 <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
-                    <div class="text-center scale-nocursor">
+                    <div class="text-center">
                         <div class="img-cont medium-img mb-3">
                             <img src="{{asset('storage/pages_images/default-startup.svg')}}" alt="">
                         </div>
@@ -55,7 +49,7 @@
                     </div>
                 </div>
                 <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
-                    <div class="text-center scale-nocursor">
+                    <div class="text-center">
                         <div class="img-cont medium-img mb-3">
                             <img src="{{asset('storage/users_images/default-cofounder.svg')}}" alt="">
                         </div>
@@ -65,7 +59,7 @@
                     </div>
                 </div>
                 <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
-                    <div class="text-center  scale-nocursor">
+                    <div class="text-center ">
                         <div class="img-cont medium-img mb-3">
                             <img src="{{asset('storage/pages_images/default-incubatore.svg')}}" alt="">
                         </div>
@@ -73,7 +67,7 @@
                     </div>
                 </div>
                 <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
-                    <div class="text-center scale-nocursor">
+                    <div class="text-center">
                         <div class="img-cont medium-img mb-3">
                             <img src="{{asset('storage/users_images/default-business-angel.svg')}}" alt="">
                         </div>
@@ -81,15 +75,15 @@
                     </div>
                 </div>
                 <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
-                    <div class="text-center scale-nocursor">
+                    <div class="text-center">
                         <div class="img-cont medium-img mb-3">
-                            <img src="{{asset('storage/pages_images/default-associazione.svg')}}" alt="">
+                            <img src="{{asset('storage/pages_images/default-ente.svg')}}" alt="">
                         </div>
                         <h5 class="text-white m-0">ENTI ED ASSOCIAZIONI</h5>
                     </div>
                 </div>
                 <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
-                    <div class="text-center scale-nocursor">
+                    <div class="text-center">
                         <div class="img-cont medium-img mb-3">
                             <img src="{{asset('storage/users_images/default-studente.svg')}}" alt="">
                         </div>
@@ -97,7 +91,7 @@
                     </div>
                 </div>
                 <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
-                    <div class="text-center scale-nocursor">
+                    <div class="text-center">
                         <div class="img-cont medium-img mb-3">
                             <img src="{{asset('storage/pages_images/default-azienda.svg')}}" alt="">
                         </div>
@@ -105,7 +99,7 @@
                     </div>
                 </div>
                 <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-3 pt-3 pb-5">
-                    <div class="text-center scale-nocursor">
+                    <div class="text-center">
                         <div class="img-cont medium-img mb-3">
                             <img src="{{asset('storage/users_images/default-freelancer.svg')}}" alt="">
                         </div>
@@ -116,101 +110,31 @@
             <h4 class="pt-3 pb-3">Prendi parte al cambiamento, scorri e scopri di più su  <strong>Growpla</strong>!</h4>
         </div>
     </section>
-    <section class="mb-5 pt-5"  style="background: url({{asset("storage/images/bg-cerchio.svg") }}) right -270px top 0px; background-repeat: no-repeat; background-size: 1000px 1000px;">
-        <div class="container">
-            <div class="row pt-5 pb-5">
-                <h1 class="col-sm-12 col-md-10 col-lg-7 col-xl-7 pb-5">Pochi semplici step!</h1>
-            </div>
-            <div class="row pb-5">
-                <div class="col-sm-12 col-md-10 col-lg-7 col-xl-7 pb-3">
-                    <div class="step-cont">
-                        <div class="step">
-                            <div class="step-circle">
-
-                            </div>
-                            <div class="step-line">
-
-                            </div>
-                        </div>
-                        <div class="step-text">
-                            <h5>Step 1</h5>
-                            <p>Crea il tuo profilo con tutte le informazioni utili</p>
-                        </div>
-                    </div>
-                    <div class="step-cont">
-                        <div class="step">
-                            <div class="step-circle">
-
-                            </div>
-                            <div class="step-line">
-
-                            </div>
-                        </div>
-                        <div class="step-text">
-                            <h5>Step 2</h5>
-                            <p>Cerca i ruoli, i servizi o le competenze di cui hai bisogno</p>
-                        </div>
-                    </div>
-                    <div class="step-cont">
-                        <div class="step">
-                            <div class="step-circle">
-
-                            </div>
-                            <div class="step-line">
-
-                            </div>
-                        </div>
-                        <div class="step-text">
-                            <h5>Step 3</h5>
-                            <p>Trova il profilo perfetto per le tue necessità</p>
-                        </div>
-                    </div>
-                    <div class="step-cont">
-                        <div class="step">
-                            <div class="step-circle">
-
-                            </div>
-                            <div class="step-line">
-
-                            </div>
-                        </div>
-                        <div class="step-text">
-                            <h5>Step 4</h5>
-                            <p>Contatta persone e crea un network di interazioni</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="pt-5 pb-5 d-flex justify-content-center">
-                <a href="login#register" class="button-color-white iscriviti-ora m-2">iscriviti ora</a>
-            </div>
-        </div>
-    </section>
     <section class="screenshot pt-5 pb-5">
-        <div class="container-fluid">
+        <div class="container-fluid pt-5">
             <div class="row pb-5">
                 <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 order-1 order-sm-1 order-md-0">
                     <div class="text-container">
                         <h1 class="pb-5">Fai crescere la tua startup</h1>
-                        <p>Growpla ti guida nel <strong>processo di crescita</strong> indicandotile figure che fanno al caso tuo in base alla fase del <strong>ciclo di vita</strong> che attraversi con l’<strong>obiettivo</strong> di passare alla successiva!</p>
+                        <p>Growpla ti guida nel <strong>processo di crescita</strong> indicandoti le figure che fanno al caso tuo in base alla fase del <strong>ciclo di vita</strong> che attraversi con l’<strong>obiettivo</strong> di passare alla successiva!</p>
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 order-0 order-sm-0 order-md-1 pr-0">
                     <div class="image-container">
-                        <img src="{{asset("storage/images/monitor-1.png") }}" alt="">
+                        <img src="{{asset("storage/images/monitor-1.svg") }}" alt="">
                     </div>
                 </div>
             </div>
             <div class="row pb-5">
                 <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 pl-0">
                     <div class="image-container">
-                        <img src="{{asset("storage/images/monitor-2.png") }}" alt="">
+                        <img src="{{asset("storage/images/monitor-2.svg") }}" alt="">
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7">
                     <div class="text-container">
                         <h1 class="pb-5">Scopri i futuri talenti</h1>
-                        <p>Imposta i parametri che preferisci e fai <strong>scouting delle Startup</strong>facenti parte nel nostro network</p>
+                        <p>Imposta i parametri che preferisci e fai <strong>scouting delle Startup</strong> facenti parte del nostro network</p>
                     </div>
                 </div>
             </div>
@@ -223,14 +147,14 @@
                 </div>
                 <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 order-0 order-sm-0 order-md-1 pr-0">
                     <div class="image-container">
-                        <img src="{{asset("storage/images/monitor-3.png") }}" alt="">
+                        <img src="{{asset("storage/images/monitor-3.svg") }}" alt="">
                     </div>
                 </div>
             </div>
             <div class="row pb-5">
                 <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 pl-0">
                     <div class="image-container">
-                        <img src="{{asset("storage/images/monitor-4.png") }}" alt="">
+                        <img src="{{asset("storage/images/monitor-4.svg") }}" alt="">
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7">
@@ -287,6 +211,24 @@
                     <div class="multi-slider-item col-8 col-sm-8 col-md-6 col-lg-4 col-xl-3">
                         <div class="d-flex justify-content-center align-items-center h-100">
                             <div class="card-style-mini">
+                                <a href="https://abagenziadicomunicazione.com/" target="_blank" class="d-inline-block">
+                                    <img src="/storage/images/partner-ab-logo.png" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="multi-slider-item col-8 col-sm-8 col-md-6 col-lg-4 col-xl-3">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="card-style-mini">
+                                <a href="https://doz.consulting/" target="_blank" class="d-inline-block">
+                                    <img src="/storage/images/partner-doz-logo.jpg" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="multi-slider-item col-8 col-sm-8 col-md-6 col-lg-4 col-xl-3">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="card-style-mini">
                                 <a href="https://www.viscontilegal.it/" target="_blank" class="d-inline-block">
                                     <img src="/storage/images/partner-visconti-logo.png" alt="">
                                 </a>
@@ -298,6 +240,15 @@
                             <div class="card-style-mini">
                                 <a href="https://www.knowledge-hub.it/" target="_blank" class="d-inline-block">
                                     <img src="/storage/images/partner-khub-logo.png" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="multi-slider-item col-8 col-sm-8 col-md-6 col-lg-4 col-xl-3">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="card-style-mini">
+                                <a href="https://startupmvp.dev/" target="_blank" class="d-inline-block">
+                                    <img src="/storage/images/partner-startupmvp-logo.svg" alt="">
                                 </a>
                             </div>
                         </div>
@@ -359,7 +310,7 @@
                         </div>
                         <div class="roadmap-text">
                             <div class="title-cont">
-                                <h5 style="color: #7620BB">GIUGNO 2022</h5>
+                                <h5 style="color: #7620BB">LUGLIO 2022</h5>
                                 <span style="background-color: #7620BB"></span>
                             </div>
                             <div class="">
@@ -435,6 +386,76 @@
             </div>
         </div>
     </section>
+    <section class="mb-5 pt-5"  style="background: url({{asset("storage/images/bg-cerchio.svg") }}) right -270px top 0px; background-repeat: no-repeat; background-size: 1000px 1000px;">
+        <div class="container">
+            <div class="row pt-5 pb-5">
+                <h1 class="col-sm-12 col-md-10 col-lg-7 col-xl-7 pb-5">Pochi semplici step!</h1>
+            </div>
+            <div class="row pb-5">
+                <div class="col-sm-12 col-md-10 col-lg-7 col-xl-7 pb-3">
+                    <div class="step-cont">
+                        <div class="step">
+                            <div class="step-circle">
+
+                            </div>
+                            <div class="step-line">
+
+                            </div>
+                        </div>
+                        <div class="step-text">
+                            <h5>Step 1</h5>
+                            <p>Crea il tuo profilo con tutte le informazioni utili</p>
+                        </div>
+                    </div>
+                    <div class="step-cont">
+                        <div class="step">
+                            <div class="step-circle">
+
+                            </div>
+                            <div class="step-line">
+
+                            </div>
+                        </div>
+                        <div class="step-text">
+                            <h5>Step 2</h5>
+                            <p>Cerca i ruoli, i servizi o le competenze di cui hai bisogno</p>
+                        </div>
+                    </div>
+                    <div class="step-cont">
+                        <div class="step">
+                            <div class="step-circle">
+
+                            </div>
+                            <div class="step-line">
+
+                            </div>
+                        </div>
+                        <div class="step-text">
+                            <h5>Step 3</h5>
+                            <p>Trova il profilo perfetto per le tue necessità</p>
+                        </div>
+                    </div>
+                    <div class="step-cont">
+                        <div class="step">
+                            <div class="step-circle">
+
+                            </div>
+                            <div class="step-line">
+
+                            </div>
+                        </div>
+                        <div class="step-text">
+                            <h5>Step 4</h5>
+                            <p>Contatta persone e crea un network di interazioni</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-5 pb-5 d-flex justify-content-center">
+                <a href="login#register" class="button-color-white iscriviti-ora m-2">iscriviti ora</a>
+            </div>
+        </div>
+    </section>
     <section class="reviews mt-5 pt-5 pb-5">
         <div class="container">
             <h1 class="col-sm-12 col-md-10 col-lg-10 col-xl-7">Cosa dicono di noi i nostri utenti</h1>
@@ -480,6 +501,21 @@
                                 <div class="pad15">
                                     <div class="info-container">
                                         <div class="image-container">
+                                            <img src="{{asset('storage/images/review-patrizio.jpg')}}" alt="">
+                                        </div>
+                                        <div class="text-container">
+                                            <div class="main-text">
+                                                <p>Nel mondo delle startup l’idea conta eccome, ma non quanto l’execution. É l’execution che trasforma idee brillanti in realtà. In questo senso Growpla è ciò che serviva all’ecosistema dell’innovazione: una piattaforma che supporta i founder a trovare le persone con competenze necessarie per completare o supportare il team e trasformare le idee in azioni.</p>
+                                            </div>
+                                            <p class="text-white">Patrizio Guido A.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="pad15">
+                                    <div class="info-container">
+                                        <div class="image-container">
                                             <img src="{{asset('storage/images/review-alessia.jpg')}}" alt="">
                                         </div>
                                         <div class="text-container">
@@ -494,8 +530,10 @@
                             </div>
                         </div>
                         <button class="btn leftLst" id="left-btn">
+                            <i class="mobile-hide fas fa-angle-left"></i>
                         </button>
                         <button class="btn rightLst" id="right-btn">
+                            <i class="mobile-hide fas fa-angle-right"></i>
                         </button>
                     </div>
                 </div>
@@ -506,15 +544,15 @@
         <div class="container">
             <h1 class="pb-5">Non perdere l’occasione di crescere con professionisti del settore e far decollare il tuo business.</h1>
         </div>
-        <div class="pb-5 d-flex justify-content-center">
+        <div class="pt-5 pb-5 d-flex justify-content-center">
             <a href="login#register" class="button-color-white iscriviti-ora m-2">iscriviti ora</a>
         </div>
     </section>
     <div v-if="showConsenScreen" class="cookie-consent" v-cloak>
         <p class="position-relative">
-            <a href="#" @click="closeConsentScreen()" class="txt-blue edit-top-right scale">
+            <button @click="closeConsentScreen()" class="txt-blue edit-top-right scale">
                 <i class="fas fa-times"></i>
-            </a>
+            </button>
         </p>
         <div class="container">
             <p class="font-weight-bold">{{__('Growpla and third-party use technical cookies and similar technologies (“tracking tools”) to operate and improve the platform. For full details on how we use cookies please see the full')}} <a href="{{ route('cookiePolicy') }}" class="txt-green">cookie policy</a>.
@@ -539,14 +577,14 @@
                         <div class="layer"></div>
                     </div>
                 </div>
-                <a href="#" class="txt-blue" @click="acceptSelected()">{{__('Accept selected')}}</a>
+                <button class="txt-blue" @click="acceptSelected()">{{__('Accept selected')}}</button>
             </div>
             <p>
-                <a href="#" class="txt-blue" @click="cookieSettings=!cookieSettings">
+                <button class="txt-blue" @click="cookieSettings=!cookieSettings">
                     <span v-if="cookieSettings">{{__('Close customize')}}</span>
                     <span v-else>{{__('Customize')}}</span>
-                </a>
-                <a href="#" class="ml-5 txt-green" @click="acceptAll()">{{__('Accept all')}}</a>
+                </button>
+                <button class="ml-5 txt-green" @click="acceptAll()">{{__('Accept all')}}</button>
             </p>
         </div>
     </div>

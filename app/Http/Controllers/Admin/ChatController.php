@@ -187,11 +187,21 @@ class ChatController extends Controller
                       ->merge($from_my_user_to_page)
                       ->merge($from_user_to_my_user)
                       ->merge($from_page_to_my_user);
-        foreach ($user_chats as $user_chat) {
-            $user_chat['message_not_read'] = message_not_read($user_chat,$user->id,'user');
-        }
 
-        $my_user_chats['user_chats'] = $user_chats;
+        foreach ($user_chats as $key => $user_chat) {
+
+            //controllo se le chat hanno almeno 1 messaggio
+            $messages_user_count = Message::where('chat_id',$user_chat->id)->count();
+            //in caso contrario la elimino
+            if($messages_user_count==0){
+                $user_chat->delete();
+                unset($user_chats[$key]);
+            }else{
+                //contollo se ci sono messaggi non letti
+                $user_chat['message_not_read'] = message_not_read($user_chat,$user->id,'user');
+            }
+        }
+        $my_user_chats['user_chats'] = array(...$user_chats);
 
         $my_pages_chats = $user->pages()->select('pages.id','pages.name')->get();
         foreach ($my_pages_chats as $my_page) {
@@ -221,11 +231,20 @@ class ChatController extends Controller
                           ->merge($from_user_to_my_page)
                           ->merge($from_page_to_my_page);
 
-            foreach ($page_chats as $page_chat) {
-                $page_chat['message_not_read'] = message_not_read($page_chat,$my_page->id,'page');
+            foreach ($page_chats as $key => $page_chat) {
+                //controllo se le chat hanno almeno 1 messaggio
+                $messages_page_count = Message::where('chat_id',$page_chat->id)->count();
+                //in caso contrario la elimino
+                if($messages_page_count==0){
+                    $page_chat->delete();
+                    unset($page_chats[$key]);
+                }else{
+                    //contollo se ci sono messaggi non letti
+                    $page_chat['message_not_read'] = message_not_read($page_chat,$my_page->id,'page');
+                }
             }
 
-            $my_page['page_chats'] = $page_chats;
+            $my_page['page_chats'] = array(...$page_chats);
         }
 
         $data = [
@@ -293,33 +312,34 @@ class ChatController extends Controller
             }//abort(404);
         }
 
-        //dd($my_user_id,$your_user_id,$my_page_id,$your_page_id);
-        if($your_user_id){
-            $you = User::find($your_user_id);
-            $name = $you->name;
-            $surname = $you->surname;
-            $displayed_name = $name.' '.$surname;
-        }
-        if ($your_page_id) {
-            $you = Page::find($your_page_id);
-            $displayed_name = $you->name;
-        }
+        if($your_user_id || $your_page_id){
 
-        $data = [
-            'chat_id' => $chat->id,
-            'my_user_id' => $my_user_id,
-            'your_user_id' => $your_user_id,
-            'my_page_id' => $my_page_id,
-            'your_page_id' => $your_page_id,
-            'displayed_name' => $displayed_name,
-        ];
+            if($your_user_id){
+                $you = User::find($your_user_id);
+                $name = $you->name;
+                $surname = $you->surname;
+                $displayed_name = $name.' '.$surname;
+            }
 
+            if ($your_page_id) {
+                $you = Page::find($your_page_id);
+                $displayed_name = $you->name;
+            }
 
-        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+            $data = [
+                'chat_id' => $chat->id,
+                'my_user_id' => $my_user_id,
+                'your_user_id' => $your_user_id,
+                'my_page_id' => $my_page_id,
+                'your_page_id' => $your_page_id,
+                'displayed_name' => $displayed_name,
+            ];
 
-        return view('admin.chats.show', $data);
+            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
-        //}abort(404);
+            return view('admin.chats.show', $data);
+
+        }abort(404);
 
     }
 

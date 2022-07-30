@@ -2,14 +2,13 @@
 
 @section('content')
 <script type="text/javascript">
-    language_id = "{{Auth::user()->language_id}}";
-    summary = "{{ old('summary',$user->summary) }}";
-    presentation = "{{ old('description',$user->description) }}";
-    city = "{{ old('municipality',$user->municipality) }}";
-    region_id_selected = "{{ old('region_id',$user->region_id) }}";
-    step = 1;
+    var language_id = "{{$user->language_id}}";
+    var summary = "{{ old('summary',$user->summary) }}";
+    var presentation = "{{ old('description',$user->description) }}";
+    var city = "{{ old('municipality',$user->municipality) }}";
+    var region_id_selected = "{{ old('region_id',$user->region_id) }}";
+    var step = "1";
 </script>
-
 <div id="user-create" style="background-image: url({{asset("storage/images/bg-shadow.svg") }}); background-position: left 0px top 0px; background-repeat: no-repeat; background-attachment: fixed; background-size:cover;">
     <div class="container">
         <div class="item-cont">
@@ -25,6 +24,7 @@
                       </span>
                   @enderror
                 </div> --}}
+                <h6>Completa gli step di registrazione inserendo informazioni relative a te ed in linea con la categoria in cui ti sei identificato/a</h6>
                 <div class="step-container d-flex justify-content-between pb-5 pt-3">
                     <div v-for="(step_item,i) in max_step" class="w-100" v-cloak>
                         <div :class="step==i+1?'p-1 bg-green-3':'p-1 bg-gray'">
@@ -39,20 +39,25 @@
                         <p class="mini-txt font-weight-bold  txt-green">Campo obbligatorio</p>
                       </div>
                       <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
-                        <textarea name="summary" rows="3" cols="80" class="form-control custom-input" placeholder="Descrivi brevente ciò che fai"  minlength="50" maxlength="150" v-model="summary">{{old('summary',$user->summary)}}</textarea>
+                        <textarea name="summary" rows="3" cols="80" class="form-control custom-input" placeholder="Descrivi in almeno 50 caratteri chi sei e/o cosa fai (background, professione, ecc)"  minlength="50" maxlength="150" v-model="summary">{{old('summary',$user->summary)}}</textarea>
                         @error ('summary')
                             <div class="alert alert-danger">
                                 {{__($message)}}
                             </div>
                             <script type="application/javascript">
-                                step = 1;
+                                step = "1";
                             </script>
                         @enderror
-                        <p class="pt-1 mini-txt" v-cloak>
-                            @{{summary.length+'/150'}}
-                        </p>
+                        <div class="pt-1 d-flex justify-content-between" v-cloak>
+                            <span class="mini-txt">@{{summary.length+'/150'}}</span>
+                            <span class="mini-txt">Lunghezza minima 50 caratteri</span>
+                        </div>
+                        <div class="pt-3 text-center font-weight-bold txt-green">
+                            <p class="text-dark mini-txt">ESEMPI</p>
+                            <p class="mini-txt">"Background economico, appassionato di tecnologia ed innovazione. Startupper."</p>
+                            <p class="mini-txt">"Graphic Designer di lavoro e passione. Freelancer per startup, agenzie di comunicazione, aziende e privati. Amo il design minimal ma originale!"</p>
+                        </div>
                       </div>
-                      <p class="text-center mini-txt font-weight-bold txt-green w-100 pt-5">Lunghezza minima 50 caratteri</p>
                   </div>
                   <div v-show="step==2" class="step row" v-cloak>
                       <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
@@ -64,8 +69,8 @@
                             <div class="alert alert-danger">
                                 {{__($message)}}
                             </div>
-                            <script  type="application/javascript">
-                                step = 2;
+                            <script type="application/javascript">
+                                step = "2";
                             </script>
                         @enderror
                         <p class="pt-1 mini-txt" v-cloak>
@@ -74,50 +79,76 @@
                       </div>
                   </div>
                   {{-- SitoWeb --}}
-                  <div v-show="step==3" class="step  row" v-cloak>
-                    <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
-                      <h6>{{__('Website')}}
-                        <div class="info">
-                          <button aria-label="Inserisci l'url del tuo sito web" data-microtip-position="top" data-microtip-size="medium" role="tooltip" type="button">
-                          <i class="fas fa-info-circle"></i>
+                  <div v-show="step==3" class="step" v-cloak>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
+                            <h6>LinkedIn
+                                <div class="info">
+                                    <button aria-label="Inserisci l'url del tuo profilo linkedin" data-microtip-position="top" data-microtip-size="medium" role="tooltip" type="button">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                            </h6>
                         </div>
-                      </h6>
+                        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <input type="url" name="linkedin" class="form-control border-green custom-input" maxlength="255" value="{{ old('linkedin',$user->linkedin) }}" placeholder="es. https://www.linkedin.com/in/...">
+                            @error ('linkedin')
+                                <div class="alert alert-danger">
+                                    {{__($message)}}
+                                </div>
+                                <script type="application/javascript">
+                                    step = "3";
+                                </script>
+                            @enderror
+                        </div>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
-                      <input type="url" name="website" class="form-control border-green custom-input" maxlength="255" value="{{ old('website',$user->website) }}" placeholder="es. https://www.growpla.it">
-                      @error ('website')
-                          <div class="alert alert-danger">
-                              {{__($message)}}
-                          </div>
-                          <script type="application/javascript">
-                              step = 3;
-                          </script>
-                      @enderror
-                    </div>
-                  </div>
-                  {{-- Linkedin --}}
-                  <div v-show="step==4" class="step  row" v-cloak>
-                    <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
-                      <h6>LinkedIn
-                          <div class="info">
-                              <button aria-label="Inserisci l'url del tuo profilo linkedin" data-microtip-position="top" data-microtip-size="medium" role="tooltip" type="button">
+                    <div class="row pt-3">
+                        <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
+                          <h6>{{__('Website')}}
+                            <div class="info">
+                              <button aria-label="Inserisci l'url del tuo sito web" data-microtip-position="top" data-microtip-size="medium" role="tooltip" type="button">
                               <i class="fas fa-info-circle"></i>
-                          </div>
-                      </h6>
+                            </div>
+                          </h6>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                          <input type="url" name="website" class="form-control border-green custom-input" maxlength="255" value="{{ old('website',$user->website) }}" placeholder="es. https://www.growpla.it">
+                          @error ('website')
+                                <div class="alert alert-danger">
+                                    {{__($message)}}
+                                </div>
+                                <script type="application/javascript">
+                                    step = "3";
+                                </script>
+                          @enderror
+                        </div>
                     </div>
-                    <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
-                      <input type="url" name="linkedin" class="form-control border-green custom-input" maxlength="255" value="{{ old('linkedin',$user->linkedin) }}" placeholder="es. https://www.linkedin.com/in/...">
-                      @error ('linkedin')
-                          <div class="alert alert-danger">
-                              {{__($message)}}
-                          </div>
-                          <script type="application/javascript">
-                              step = 4;
-                          </script>
-                      @enderror
+                    <div class="row pt-3" v-cloak>
+                      <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
+                          <h6>Curriculum vitae</h6>
+                      </div>
+                      <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
+                        <div class="edit-image-drag-drop row m-0">
+                            <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 pl-1 pr-1 mb-1" style="height:150px">
+                              <div class="drop-zone">
+                                <span class="drop-zone__prompt">{{__('Drop file here or click to upload')}}
+                                    <span class="mini-txt d-block">{{__('Supported formats')}} .pdf max:6Mb</span>
+                                </span>
+                                <input type="file" class="form-control-file drop-zone__input" name="cv" accept="application/pdf">
+                                @error ('cv')
+                                    <div class="alert alert-danger">
+                                        {{__($message)}}
+                                    </div>
+                                    <script type="application/javascript">
+                                        step = "3";
+                                    </script>
+                                @enderror
+                              </div>
+                            </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div v-show="step==5" class="step row" v-cloak>
+                  <div v-show="step==4" class="step row" v-cloak>
                     <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
                       <h6>Indirizzo*</h6>
                       <p class="mini-txt font-weight-bold txt-green">Campo obbligatorio</p>
@@ -136,40 +167,15 @@
                           </div>
                           <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mt-2 mb-2">
                               <label>Città</label>
-                              <input type="text" name="municipality" class="form-control custom-input" value="{{ old('municipality',$user->municipality) }}" accept="" v-model="city" required>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div v-show="step==6" class="step row" v-cloak>
-                    <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
-                        <h6>Curriculum vitae</h6>
-                    </div>
-                    <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
-                      <div class="edit-image-drag-drop row m-0">
-                          <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 pl-1 pr-1 mb-1" style="height:150px">
-                            <div class="drop-zone">
-                              <span class="drop-zone__prompt">{{__('Drop file here or click to upload')}}
-                                  <span class="mini-txt d-block">{{__('Supported formats')}} .pdf max:6Mb</span>
-                              </span>
-                              <input type="file" class="form-control-file drop-zone__input" name="cv" accept="application/pdf">
-                              @error ('cv')
-                                  <div class="alert alert-danger">
-                                      {{__($message)}}
-                                  </div>
-                                  <script type="application/javascript">
-                                      step = 6;
-                                  </script>
-                              @enderror
-                            </div>
+                              <input type="text" name="municipality" class="form-control custom-input text-capitalize" value="{{ old('municipality',$user->municipality) }}" accept="" v-model="city" required>
                           </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="d-flex justify-content-between pt-5">
-                    <button type="button" name="button" :class="prev_arrow()" @click="prev()">Indietro</button>
-                    <button type="button" name="button" :class="next_arrow()" @click="next()">
+                <div class="d-flex justify-content-between mt-3 pt-5">
+                    <button type="button" name="button" :class="prev_arrow()" @click="prev()" v-cloak>Indietro</button>
+                    <button type="button" name="button" :class="next_arrow()" @click="next()" v-cloak>
                       @{{step==max_step?'Salva':'Avanti'}}
                     </button>
                 </div>

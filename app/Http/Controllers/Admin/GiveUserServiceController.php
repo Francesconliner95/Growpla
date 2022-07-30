@@ -24,11 +24,12 @@ class GiveUserServiceController extends Controller
         $user = User::find($user_id);
         if($user->id == Auth::user()->id){
 
-          $data = [
-              'user' => $user,
-              'services' => $user->give_user_services,
-              'recommended_services' => Service::where('hidden',null)->get(),
-          ];
+            $data = [
+                'user' => $user,
+                'services' => $user->give_user_services,
+                'recommended_services' => Service::where('hidden',null)->get(),
+            ];
+          // dd($user->give_user_services[0]->pivot->des);
 
           app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
@@ -46,7 +47,6 @@ class GiveUserServiceController extends Controller
         ]);
 
         $data = $request->all();
-
         $user = Auth::user();
 
         $user = User::find($user_id);
@@ -73,7 +73,7 @@ class GiveUserServiceController extends Controller
                 $syncResult = $user->give_user_services()->sync([]);
             }
 
-            if(collect($syncResult)->flatten()->isNotEmpty()){
+            if(collect($syncResult)->flatten()->isNotEmpty() && count($services_id)>0){
                 $followers = $user->user_follower;
                 foreach ($followers as $follower) {
                     $new_notf = new Notification();
@@ -85,8 +85,26 @@ class GiveUserServiceController extends Controller
                     $new_notf->save();
                 }
             }
-                
-            return redirect()->route('admin.users.show',$user->id);
+
+            if($request->cofounder){
+                if(!$user->usertypes->contains(1)){
+                    $user->usertypes()->attach(1);
+                }
+            }else{
+                if($user->usertypes->contains(1)){
+                    $user->usertypes()->detach(1);
+                }
+            }
+
+            // return redirect()->route('admin.users.show',$user->id);
+
+            if(Auth::user()->tutorial){
+                $user->tutorial = null;
+                $user->update();
+                return redirect()->route('admin.users.show',$user->id);
+            }else{
+                return redirect()->route('admin.users.show',$user->id);
+            }
 
       }abort(404);
   }

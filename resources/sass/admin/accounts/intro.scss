@@ -1,0 +1,97 @@
+#user-intro{
+    background-color: $green_4;
+    margin-top: -100px;
+    .big-title{
+        color: $green_3;
+        font-weight: bold;
+        font-size: 50px;
+        text-align: center;
+        padding-bottom: 15px;
+    }
+    .main-cover{
+        position: relative;
+        .arrow{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            width: 5px;
+            height: 100px;
+            background-color: $green_3;
+            background: linear-gradient(180deg, $green_3 0%, $blue_4 100%);
+        }
+        .medium-title{
+            display: flex;
+            align-items: flex-end;
+            h2{
+                font-size: 90px;
+                line-height: 0.8;
+                margin: 0;
+                font-weight: bold;
+            }
+            h3{
+                font-size: 20px;
+                line-height: 1.1;
+                margin: 0;
+                font-weight: bold;
+                margin-left: 5px;
+                width: 40%;
+            }
+        }
+        .cover{
+            padding: 20px;
+            span{
+                font-size: 10px;
+            }
+            .top-text{
+                height: 30px;
+                color: white;
+                font-weight: bold;
+            }
+            .bottom-text{
+                height: 100px;
+                color: white;
+            }
+        }
+    }
+    .button-start{
+        width: 100%;
+        background-color: transparent;
+        color: $green_3;
+        border: 2px solid $green_3;
+        transition: 0.4s;
+        display: block;
+        padding: 7px;
+        text-decoration: none;
+        &:hover{
+            background-color: $green_3;
+            color: $green_4;
+        }
+    }
+}
+
+@media (min-width: 992px){
+    #user-intro{
+        .big-title{
+            font-size: 68px;
+        }
+        .main-cover{
+            .medium-title{
+                h3{
+                    width: 100%;
+                }
+            }
+            .arrow{
+                width: 70px;
+                height: 5px;
+                background: linear-gradient(90deg, $green_3 0%, $blue_4 100%);
+            }
+            .cover{
+                padding: 20px 30px;
+                .bottom-text{
+                    height: 35px;
+                }
+            }
+        }
+    }
+}

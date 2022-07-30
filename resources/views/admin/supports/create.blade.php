@@ -73,6 +73,13 @@
                       </button>
                   </div>
               </form>
+              <div class="text-right font-weight-bold">
+                  @if(in_array(Auth::user()->id,$admins))
+                      <a href="{{route('admin.supports.index')}}">
+                          Opzioni Admin
+                      </a>
+                  @endif
+              </div>
           </div>
       </div>
     </div>

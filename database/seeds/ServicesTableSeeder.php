@@ -217,7 +217,7 @@ class ServicesTableSeeder extends Seeder
                 'hidden'=>null,
             ],
             [
-                'name'=>'Web/App Development',
+                'name'=>'Web Development',
                 'description'=> null,
                 'main_service_id'=> 3,
                 'hidden'=>null,
@@ -247,7 +247,7 @@ class ServicesTableSeeder extends Seeder
                 'hidden'=>null,
             ],
             [
-                'name'=>'Analisi di Mercato e Business Plan',
+                'name'=>'Business Plan',
                 'description'=> null,
                 'main_service_id'=> 5,
                 'hidden'=>null,
@@ -259,7 +259,7 @@ class ServicesTableSeeder extends Seeder
                 'hidden'=>null,
             ],
             [
-                'name'=>'Compilazione Bandi e Finanza Agevolata',
+                'name'=>'Finanza Agevolata',
                 'description'=> null,
                 'main_service_id'=> 5,
                 'hidden'=>null,
@@ -297,7 +297,7 @@ class ServicesTableSeeder extends Seeder
             [
                 'name'=>'Business Development',
                 'description'=> null,
-                'main_service_id'=> 7,
+                'main_service_id'=> 8,
                 'hidden'=>null,
             ],
             [
@@ -309,13 +309,13 @@ class ServicesTableSeeder extends Seeder
             [
                 'name'=>'Data Analysis',
                 'description'=> null,
-                'main_service_id'=> 7,
+                'main_service_id'=> 9,
                 'hidden'=>null,
             ],
             [
                 'name'=>'Data Science',
                 'description'=> null,
-                'main_service_id'=> 7,
+                'main_service_id'=> 3,
                 'hidden'=>null,
             ],
             [
@@ -331,7 +331,7 @@ class ServicesTableSeeder extends Seeder
                 'hidden'=>null,
             ],
             [
-                'name'=>'Valutazione pre-money',
+                'name'=>'Valutazione Pre-money',
                 'description'=> null,
                 'main_service_id'=> 7,
                 'hidden'=>null,
@@ -349,7 +349,7 @@ class ServicesTableSeeder extends Seeder
                 'hidden'=>null,
             ],
             [
-                'name'=>'Gestione contabilità e dichiarazioni fiscali',
+                'name'=>'Gestione Contabilità e Dichiarazioni Fiscali',
                 'description'=> null,
                 'main_service_id'=> 7,
                 'hidden'=>null,
@@ -361,15 +361,15 @@ class ServicesTableSeeder extends Seeder
                 'hidden'=>null,
             ],
             [
-                'name'=>'Internazionalizzazione del business',
+                'name'=>'Internazionalizzazione del Business',
                 'description'=> null,
-                'main_service_id'=> 7,
+                'main_service_id'=> 8,
                 'hidden'=>null,
             ],
             [
-                'name'=>'Networking',
+                'name'=>'Business Networking',
                 'description'=> null,
-                'main_service_id'=> 7,
+                'main_service_id'=> 8,
                 'hidden'=>null,
             ],
             [
@@ -381,10 +381,87 @@ class ServicesTableSeeder extends Seeder
             [
                 'name'=>'Corporate Sustainability Strategies',
                 'description'=> null,
-                'main_service_id'=> 7,
+                'main_service_id'=> 8,
                 'hidden'=>null,
             ],
-
+            [
+                'name'=>'App Development',
+                'description'=> null,
+                'main_service_id'=> 3,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Game Development',
+                'description'=> null,
+                'main_service_id'=> 3,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Front-End Development',
+                'description'=> null,
+                'main_service_id'=> 3,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Back-End Development',
+                'description'=> null,
+                'main_service_id'=> 3,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Motion Graphic Design',
+                'description'=> null,
+                'main_service_id'=> 4,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Animazione 3D',
+                'description'=> null,
+                'main_service_id'=> 4,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Foto Editing',
+                'description'=> null,
+                'main_service_id'=> 2,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Digital Trasformation',
+                'description'=> null,
+                'main_service_id'=> 9,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Analisi di Mercato',
+                'description'=> null,
+                'main_service_id'=> 5,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Compilazione Bandi',
+                'description'=> null,
+                'main_service_id'=> 5,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Web Design',
+                'description'=> null,
+                'main_service_id'=> 4,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Traduzione e localizzazione di contenuti e siti web',
+                'description'=> null,
+                'main_service_id'=> 2,
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Hosting',
+                'description'=> null,
+                'main_service_id'=> 3,
+                'hidden'=>null,
+            ],
         ];
 
       foreach ($services as $service){

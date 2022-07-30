@@ -30,4 +30,12 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    //AGGIUNTO
+    'google' => [
+        'client_id' => '799338789854-sc2fimn9rmqet4tm06rrtkbh4i7is1sq.apps.googleusercontent.com',
+        'client_secret' => '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',
+        'redirect' => 'https://www.growpla.com/auth/google/callback',
+        //'redirect' => 'http://localhost:8000/auth/google/callback',
+    ],
+
 ];

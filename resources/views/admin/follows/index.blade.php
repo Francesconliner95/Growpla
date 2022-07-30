@@ -5,7 +5,7 @@
     window.csrf_token = "{{ csrf_token() }}";
     followed = @json($followed);
 </script>
-<div  id="follows-index" style="background-image: url({{asset("storage/images/bg-follow.svg") }}); background-position: left -150px top 0px; background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
+<div  id="follows-index" style="background-image: url({{asset("storage/images/bg-follow.svg") }}); background-position: left -250px top 0px; background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
     <div class="container">
         <div class="item-cont">
             <div class="item-style">

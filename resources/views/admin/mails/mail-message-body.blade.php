@@ -8,7 +8,8 @@
         <h3 style="color: #3d4852; text-align: center;">Hai ricevuto un nuovo messaggio da <span style="text-transform: capitalize;">{{$data['sender_name']}}</span></h3>
         <p style="color:gray; text-align:center;">{{$data['message']}}</p>
         <div style="text-align:center; padding:10px; margin:10px;">
-            <a href="{{ route('admin.chats.show',[$data['chat_id'],$data['page_id']]) }}" style="background-color:#3490dc; border-radius:10px; border:none; color:white; padding: 10px 20px; text-decoration: none; font-weight:bold; margin:10px;">Rispondi</a>
+            {{-- <a href="{{ route('admin.chats.show',[$data['chat_id'],$data['page_id']]) }}" style="background-color:#3490dc; border-radius:10px; border:none; color:white; padding: 10px 20px; text-decoration: none; font-weight:bold; margin:10px;">Rispondi</a> --}}
+            <a href="{{ route('admin.chats.index') }}" style="background-color:#3490dc; border-radius:10px; border:none; color:white; padding: 10px 20px; text-decoration: none; font-weight:bold; margin:10px;">Rispondi</a>
         </div>
         <div style="text-align:center; padding:5px;">
             <span style="color:#3d4852; font-size:13px;">Per rispondere al seguente messaggio entra in piattaforma nella sezione conversazioni</span>

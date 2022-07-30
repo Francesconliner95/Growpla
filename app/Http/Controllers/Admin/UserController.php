@@ -19,6 +19,8 @@ use App\Pagetype;
 use App\Moneyrange;
 use App\Sector;
 use App\GiveUserService;
+use App\HaveUserService;
+use App\Skill;
 use App\Region;
 use App\Country;
 use App\Collaboration;
@@ -32,6 +34,26 @@ class UserController extends Controller
     public function __construct()
     {
       $this->middleware(['auth','verified']);
+    }
+
+    public function intro($id){
+
+        if(Auth::user()->tutorial){
+
+            $userTypes = Usertype::where('hidden',null)->get();
+            $pageTypes = Pagetype::where('hidden',null)->get();
+
+            $data = [
+                'userTypes' => $userTypes,
+                'pageTypes' => $pageTypes,
+            ];
+            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+            return view('admin.users.intro', $data);
+
+        }else{
+            return redirect()->route('admin.users.show',$id);
+        }
+
     }
 
     public function accounts($id){
@@ -54,7 +76,6 @@ class UserController extends Controller
 
         $request->validate([
             'usertypes'=> 'exists:usertypes,id',
-            'pagetypes'=> 'exists:pagetypes,id',
         ]);
 
         $data = $request->all();
@@ -65,12 +86,6 @@ class UserController extends Controller
             $user->usertypes()->sync($data['usertypes']);
         }else{
             $user->usertypes()->sync([]);
-        }
-
-        if(array_key_exists('pagetypes', $data)){
-            $user->pagetypes()->sync($data['pagetypes']);
-        }else{
-            $user->pagetypes()->sync([]);
         }
 
         //elimino i background precaricati nel caso ho deselezionato aspiarnte cofounder o studente
@@ -153,15 +168,7 @@ class UserController extends Controller
         $data = $request->all();
 
         $user = Auth::user();
-
-        if(array_key_exists('remove_cv',$data)
-        && $data['remove_cv']=='true' && $user->cv){
-            $old_cv_name = $user->cv;
-            if($old_cv_name){
-                Storage::delete($old_cv_name);
-            }
-            $data['cv'] = '';
-        }
+        $user->fill($data);
 
         if(array_key_exists('cv',$data) && $data['cv']){
             $old_cv_name = $user->cv;
@@ -169,28 +176,26 @@ class UserController extends Controller
                 Storage::delete($old_cv_name);
             }
             $cv_path = Storage::put('cv', $data['cv']);
-            $data['cv'] = $cv_path;
+            $user->cv = $cv_path;
         }
 
         if(array_key_exists('municipality',$data)){
             $user->municipality = Str::lower($data['municipality']);
         }
-
-        $user->fill($data);
-
+        if(array_key_exists('website',$data) && $data['website']){
+            if(substr($data['website'], 0, 4)!='http'){
+                $user->website = 'https://'.$data['website'];
+            }
+        }
+        if(array_key_exists('linkedin',$data)  && $data['linkedin']){
+            if(substr($data['linkedin'], 0, 4)!='http'){
+                $user->linkedin = 'https://'.$data['linkedin'];
+            }
+        }
         $user->update();
 
         if(Auth::user()->tutorial){
-            if($user->usertypes->contains(1)
-            || $user->usertypes->contains(5)){
-                return redirect()->route('admin.users.background',$user->id);
-            }elseif($user->usertypes->contains(2)){
-                return redirect()->route('admin.users.businessAngel',$user->id);
-            }else{
-                $user->tutorial = null;
-                $user->update();
-                return redirect()->route('admin.users.show',$user->id);
-            }
+            return redirect()->route('admin.images.editUserImage');
         }else{
             return redirect()->route('admin.users.show',$user->id);
         }
@@ -266,9 +271,7 @@ class UserController extends Controller
             $user->update();
 
             if(Auth::user()->tutorial){
-                $user->tutorial = null;
-                $user->update();
-                return redirect()->route('admin.users.show',$user->id);
+                return redirect()->route('admin.users.sectors',$user->id);
             }else{
                 return redirect()->route('admin.users.show',$user->id);
             }
@@ -290,58 +293,69 @@ class UserController extends Controller
 
     public function show(User $user){
 
-        //event(new MyEvent(2,'prova evento bello'));
-        if(Auth::user()->tutorial>=2){
-            return redirect()->route('admin.users.tutorial');
+        $my_user_id = Auth::user()->id;
+        $already_viewed = View::where('user_id',$my_user_id)->where('viewed_user_id',$user->id)->first();
+        if($already_viewed){
+            $already_viewed->touch();
+        }else{
+            $new_view = new View();
+            $new_view->user_id = $my_user_id;
+            $new_view->viewed_user_id = $user->id;
+            $new_view->save();
+        }
+        if($my_user_id==$user->id){
+            $give_have_user_service = GiveUserService::where('user_id',$user->id)->count()
+            + HaveUserService::where('user_id',$user->id)->count();
+            $skills_count = $user->give_user_skills->count();
+            if($user->usertypes->contains(6)){
+                if($user->pages->count()==0){
+                    $page_creation = 2;//PAGINA DA CREARE
+                }else{
+                    $page_creation = 1;//PAGINA CREATA
+                }
+            }else{
+                $page_creation = 0;//PAGINA NON DA CREARE
+            }
+        }else{
+            $give_have_user_service = 0;
+            $skills_count = 0;
+            $page_creation = 0;
         }
 
-        if($user){
-            //dd($user->currency);
-            $give_services = GiveUserService::where('user_id',$user->id)
-            ->join('services','services.id','service_id')
-            ->select('give_user_services.id','services.name')
-            ->get();
 
-            $my_user_id = Auth::user()->id;
-            $already_viewed = View::where('user_id',$my_user_id)->where('viewed_user_id',$user->id)->first();
-            if($already_viewed){
-                $already_viewed->touch();
-            }else{
-                $new_view = new View();
-                $new_view->user_id = $my_user_id;
-                $new_view->viewed_user_id = $user->id;
-                $new_view->save();
-            }
+        $data = [
+          'user' => $user,
+          'userTypes' => Usertype::where('hidden',null)->get(),
+          'is_my_user' => Auth::user()->id==$user->id?true:false,
+          'pageTypes' => Pagetype::where('hidden',null)->get(),
+          'currencies' => $user->currencies,
+          'give_have_user_service' => $give_have_user_service,
+          'skills_count' => $skills_count,
+          'default_images' => Usertype::pluck('image'),
+          'page_creation' => $page_creation,
+        ];
 
-            $data = [
-              'user' => $user,
-              'userTypes' => Usertype::where('hidden',null)->get(),
-              'is_my_user' => Auth::user()->id==$user->id?true:false,
-              'pageTypes' => $user->pagetypes->where('hidden',null),
-              'currencies' => $user->currencies,
-              'give_services' => $give_services,
-            ];
+        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+        return view('admin.users.show', $data);
 
-            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
-            return view('admin.users.show', $data);
 
-        }abort(404);
 
     }
 
     public function sectors($id){
 
-      $user = Auth::user();
+        $user = Auth::user();
 
-      if($user->id==$id){
-        $data = [
-          'user' => $user,
-          'sectors' => Sector::all(),
-        ];
-        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
-        return view('admin.users.sectors', $data);
+        if($user->id==$id && $user->usertypes->contains(2)){
 
-      }abort(404);
+            $data = [
+                'user' => $user,
+                'sectors' => Sector::all(),
+            ];
+            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+            return view('admin.users.sectors', $data);
+
+        }abort(404);
 
     }
 
@@ -361,40 +375,45 @@ class UserController extends Controller
             $user->sectors()->sync([]);
         }
 
-        return redirect()->route('admin.users.show',$user->id);
+        if(Auth::user()->tutorial){
+            $user->tutorial = null;
+            $user->update();
+            return redirect()->route('admin.give-user-services.edit',$user->id);
+        }else{
+            return redirect()->route('admin.users.show',$user->id);
+        }
 
     }
 
     public function getUser(Request $request){
 
-      if(Auth::check()){
-          $result = Auth::user()->id;
-      }else{
-          $result = false;
-      }
+        if(Auth::check()){
+            $result = Auth::user()->id;
+        }else{
+            $result = false;
+        }
 
-      return response()->json([
-          'success' => true,
+        return response()->json([
+            'success' => true,
 
-          'results' => [
-              'user_id' => $result,
-          ]
-      ]);
+            'results' => [
+                'user_id' => $result,
+            ]
+        ]);
 
     }
 
     public function settings($id){
 
-      $user = User::find($id);
-      $languages = Language::all();
-      $data = [
-        'user' => $user,
-        'languages' => $languages,
-        'mail_settings' => MailSetting::all(),
-      ];
-      app()->setLocale(Language::find(Auth::user()->language_id)->lang);
-      return view('admin.users.settings', $data);
-
+        $user = User::find($id);
+        $languages = Language::all();
+        $data = [
+            'user' => $user,
+            'languages' => $languages,
+            'mail_settings' => MailSetting::all(),
+        ];
+        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+        return view('admin.users.settings', $data);
     }
 
     public function mailSettingToggle(Request $request){
@@ -458,9 +477,6 @@ class UserController extends Controller
             //aggiungo un nuovo amministratore
             $user = User::find($user_id);
             $page->users()->attach($user);
-            if(!$user->pagetypes->contains($page->pagetype)){
-                $user->pagetypes()->attach($page->pagetype);
-            }
             //NOTIFICATIONS
             $new_notf = new Notification();
             $new_notf->user_id = $user->id;
@@ -634,7 +650,7 @@ class UserController extends Controller
                 }else{
                     $user->tutorial = null;
                     $user->update();
-                    return redirect()->route('admin.users.show',$user->id);
+                    return redirect()->route('admin.give-user-services.edit',$user->id);
                 }
             }else{
                 return redirect()->route('admin.users.show',$user->id);

@@ -13,13 +13,22 @@
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/brands";
 
+//AOS animation
+@import '~aos/dist/aos.css';
+
+//splidejs
+@import '~@splidejs/splide/dist/css/splide.min.css';
+
 // Tooltip
 @import 'microtip/microtip';
+
+
 
 @import 'main';
 @import 'header-main-footer';
 @import 'guest/home';
 
+@import 'admin/accounts/intro';
 @import 'admin/accounts/index';
 @import 'admin/accounts/edit';
 @import 'admin/accounts/show';

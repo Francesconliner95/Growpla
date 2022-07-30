@@ -17,7 +17,10 @@ var create = new Vue({
         lifecycle_id,
         cofounder_services,
         //skills,
-        //END ONLY STARTUP
+        alert: false,
+        sub_alert: false,
+        go_to_collaborations: false,
+        //ONLY STARTUP
         r_services_show: [],
         service_name: '',
         services_found: '',
@@ -31,7 +34,7 @@ var create = new Vue({
         sub_cofounder_services_show: [],
         main_cofounder_service_selected: '',
         sub_cofounder_service_selected: '',
-        //ONLY STARTUP
+        //END ONLY STARTUP
         show_services: false,
         lifecycle_selected: '1',
         usertype_selected: '',
@@ -45,12 +48,14 @@ var create = new Vue({
         // skills_found: '',
         //END ONLY STARTUP
         is_mobile: false,
-
     },
     methods: {
 
         submitForm(){
-          //document.getElementById('serviceForm').submit();
+            this.go_to_collaborations = true;
+            setTimeout(()=>{
+                document.getElementById('serviceForm').submit();
+            }, 200);
         },
 
         changeMainCofounderService(){
@@ -170,6 +175,9 @@ var create = new Vue({
             this.services.splice(i, 1);
             this.arrowVisibility(1);
             this.addRservice(service);
+            if(document.getElementById('need')){
+                this.alert=true;
+            }
         },
 
         removeRservice(service){

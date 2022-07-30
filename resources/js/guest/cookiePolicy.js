@@ -15,7 +15,6 @@ var create = new Vue({
         cookieSettings: false,
     },
     methods: {
-
         getCookie(name) {
           const value = `; ${document.cookie}`;
           const parts = value.split(`; ${name}=`);
@@ -24,7 +23,7 @@ var create = new Vue({
 
         showConsentScreen(){
             if(!this.getCookie('tecCookie')
-            ||  !this.getCookie('analyticsCookie')){
+            || !this.getCookie('analyticsCookie')){
                 this.showConsenScreen = true;
             }else{
                 this.showConsenScreen = false;
@@ -50,6 +49,7 @@ var create = new Vue({
             document.cookie =
             "analyticsCookie"+ "=" +"accept"+ ";" + "expires="+ this.dateUTC() +";path=/";
             this.analyticsCookie = true;
+            window.clarity('consent');
         },
 
         acceptSelected(){
@@ -60,6 +60,7 @@ var create = new Vue({
                 document.cookie =
                 "analyticsCookie"+ "=" +"accept"+ ";" + "expires="+ this.dateUTC() +";path=/";
                 this.analyticsCookie = true;
+                window.clarity('consent');
             }else{
                 document.cookie =
                 "analyticsCookie"+ "=" +"reject"+ ";" + "expires="+ this.dateUTC() +";path=/";
@@ -76,9 +77,7 @@ var create = new Vue({
 
     },
     mounted() {
-
         this.showConsentScreen();
-        console.log(this.analyticsCookie);
     }
 
 });

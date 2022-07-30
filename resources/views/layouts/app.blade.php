@@ -11,15 +11,14 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js?16') }}" defer></script>
+    <script src="{{ asset('js/app.js?62') }}" defer></script>
     <!-- Styles -->
-    <link href="{{ asset('css/app.css?16') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css?62') }}" rel="stylesheet">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JQ65YBYMPD"></script>
     <!-- Fonts -->
-    {{-- <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> --}}
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -27,6 +26,7 @@
 </head>
 <body>
     <script type="text/javascript">
+        auth = "{{Auth::check()}}";
         window.csrf_token = "{{ csrf_token() }}";
     </script>
     <!-- Google Analytics -->
@@ -36,49 +36,46 @@
             const parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
         };
-        //console.log(this.getCookie("analyticsCookie"));
         //Controllo se accettato google analytics
         if(this.getCookie("analyticsCookie")=='accept'){
-            //console.log('abilitato');
             // abilito GOOLGE Analytics
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-JQ65YBYMPD');
         }else{
-            //console.log('disabilitato');
             // disabilito GOOLGE Analytics
             window['ga-disable-G-EX66GGGB3E'] = true;
         }
     </script>
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "cdlts5y3aq");
+    </script>
     <div id="app">
-        @guest
-        {{-- SE NON LOGGATO NON COMPARE LA NAVBAR --}}
-
-        @else
-            @if(!Auth::user()->tutorial)
-            <nav id="nav-bar">
-                <div id="container-nb" class="container-nb">
+            @if(!Auth::check() || !Auth::user()->tutorial)
+            <nav id="nav-bar" :class="trasparent_navbar?'trasparent-navbar':''" v-cloak>
+                <div class="container-nb">
                     <div class="row">
                         <div class="nav-left d-inline-block col-sm-12 col-md-12 col-lg-6 col-xl-6 d-flex align-items-center mobile-hide">
-
                             <a href="{{ route('home') }}" class="position-relative">
-
-                            <a href="{{ route('admin.search') }}" class="position-relative">
-                                <img src="{{ asset("storage/images/logo-fullsize.svg") }}" alt="" id="logo-fullsize" class="logo" style="width:300px;">
-                                {{-- <span class="beta">BETA</span> --}}
+                                <img :src="trasparent_navbar?'/storage/images/logo-fullsize-white.svg':'/storage/images/logo-fullsize.svg'" alt="" id="logo-fullsize" class="logo" style="width:300px;">
                             </a>
                         </div>
                         <div class="nav-right d-inline-block col-sm-12 col-md-12 col-lg-6 col-xl-6 d-flex align-items-center">
-                            <a href="{{ route('admin.search') }}" class="mobile-show position-relative">
-                                <img src="{{ asset("storage/images/logo.svg") }}" alt="" class="mini-logo" id="logo">
-                                {{-- <span class="beta">BETA</span> --}}
+                            <a href="{{ route('home') }}" class="mobile-show position-relative">
+                                <img :src="trasparent_navbar?'/storage/images/logo-white.svg':'/storage/images/logo.svg'" alt="" class="mini-logo" id="logo">
                             </a>
-                            {{-- <div class="d-inline-block">
-                                <a class="icon scale" href="{{route('admin.search')}}">
-                                    <i class="fas fa-search"></i>
-                                </a>
-                            </div> --}}
+                            @guest
+                            <div class="text-right pr-2">
+                                <a href="{{route('blogs.index')}}" class="menu-item pl-3 pr-3 scale mr-1">News</a>
+                                <a href="login#register" class="button-navbar-1 button-style-radius pl-3 pr-3 mr-1">Iscriviti ora</a>
+                                <a href="{{route('login')}}" class="button-navbar-2 button-style-radius pl-3 pr-3">Login</a>
+                            </div>
+                            @else
                             <div class="dropdown show notification not-navbar">
                                 <a href="#" role="button" id="notDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="icon tiny-img scale" @click="readNotifications()">
                                     <div class="img-cont micro-img no-br">
@@ -110,7 +107,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="chat d-inline-block" v-cloak>
+                            <div class="chat d-inline-block">
                                 <a class="not-navbar icon tiny-img scale" href="{{route('admin.chats.index')}}">
                                     <div class="img-cont micro-img no-br">
                                         <img src="{{ asset("storage/images/icon-chat.svg") }}" alt="" id="chat-img" class="rounded-0">
@@ -125,7 +122,7 @@
                                       <i class="fas fa-exchange-alt"></i>
                                 </a>
                             </div> --}}
-                            <div class="account-menu d-inline-block d-flex align-items-center" v-cloak>
+                            <div class="account-menu d-inline-block d-flex align-items-center">
                                 <div class="user-image-cont">
                                     <a href="{{route('admin.users.show',Auth::user()->id)}}" class="scale ">
                                         <div class="img-cont tiny-img">
@@ -151,6 +148,10 @@
                                         <i class="fas fa-user"></i>
                                         Il mio profilo
                                     </a>
+                                    <a  class="dropdown-item" href="{{route('admin.pages.pagetype')}}">
+                                        <i class="fas fa-plus"></i>
+                                        Crea pagina
+                                    </a>
                                     {{-- <a @click="switchAccounts()" type="button" name="button" class="dropdown-item">
                                         <i class="fas fa-exchange-alt"></i>
                                         Cambia account
@@ -172,7 +173,7 @@
                                     </form>
                                 </div>
                             </div>
-
+                            @endguest
                         </div>
                     </div>
                 </div>
@@ -181,17 +182,40 @@
 
             </div>
             @endif
-        @endguest
+
         {{-- class="py-4" --}}
         <main id="main">
             @yield('content')
         </main>
-        @guest
-        {{-- SE NON LOGGATO NON COMPARE LA NAVBAR --}}
+        {{-- @guest
 
-        @else
-            @if(!Auth::user()->tutorial)
+        @else --}}
+            @if(!Auth::check() || !Auth::user()->tutorial)
             <footer id="footer">
+                {{-- <div class="donation text-center pb-4">
+                    <div class="d-flex justify-content-center">
+                        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <h5 class="font-weight-bold pb-2">Supporta il progetto con una donazione</h5>
+                            <p class="mini-txt mb-1">Growpla è una piattaforma totalmente gratuita, nata con l'obiettivo di favorire la nascita di nuove imprese, l'occupazione e l'innovazione mettendo in contatto tra loro tutti gli attori dell’ecosistema imprenditoriale.</p>
+                            <p class="mini-txt">Investiremo il ricavato per migiorare la qualità del servizio offerto</p>
+                        </div>
+                    </div>
+                    <div id="donate-button-container">
+                        <div id="donate-button"></div>
+                        <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
+                        <script>
+                        PayPal.Donation.Button({
+                        env:'production',
+                        hosted_button_id:'KLED7WNRNPU7Q',
+                        image: {
+                        src:'https://pics.paypal.com/00/s/YjgyMjU4MzEtMWRiMS00NDBmLTlmOWUtN2VkYTg3MGZhMGQx/file.PNG',
+                        alt:'Fai una donazione con il pulsante PayPal',
+                        title:'PayPal - The safer, easier way to pay online!',
+                        }
+                        }).render('#donate-button');
+                        </script>
+                    </div>
+                </div> --}}
                 <div class="container ">
                     <div class="row">
                         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -217,11 +241,13 @@
                                 </div>
                                 <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                                     <div class="contacts mini-txt">
+                                        @if(Auth::check())
                                         <div class="">
-                                            <a href="{{ route('admin.supports.switch') }}">
+                                            <a href="{{ route('admin.supports.create') }}">
                                                 {{__("Contact us")}}
                                             </a>
                                         </div>
+                                        @endif
                                         <div class="">
                                             <a href="mailto:info@growpla.com" >info@growpla.com</a>
                                         </div>
@@ -241,6 +267,9 @@
                                     <a href="https://www.linkedin.com/company/78734323" target="_blank">
                                         <i class="fab fa-linkedin"></i>
                                     </a>
+                                    <a href="https://www.facebook.com/Growpla-111864291555554" target="_blank">
+                                        <i class="fab fa-facebook"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -253,7 +282,7 @@
                 </div>
             </footer>
             @endif
-        @endguest
+        {{-- @endguest --}}
     </div>
 </body>
 </html>

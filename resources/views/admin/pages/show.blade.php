@@ -10,6 +10,9 @@
     team_members = @json($team_members);
     team_num = "{{$team_num}}";
     following = "{{Auth::user()->page_following->contains($page)}}";
+    give_have_page_service = {{$give_have_page_service}};
+    sectors_count = {{$sectors_count}};
+    default_images = @json($default_images);
 </script>
 <div class="container">
     <div id="page-show">
@@ -19,7 +22,7 @@
                     <button type="button" name="button" class="edit-top-right button-color-gray" @click="alert=false">
                         <i class="fas fa-times"></i>
                     </button>
-                    <div class="">
+                    <div v-if="alert_type==1" class="" v-cloak>
                         <h6>Seleziona l'account con cui vuoi contattare</h6>
                         <a v-if="list_user.id" href="#" @click="startChat()" class="" v-cloak>
                             <div class="img-cont mini-img">
@@ -35,13 +38,29 @@
                             @{{page.name}}
                         </a>
                     </div>
+                    <div v-if="alert_type==2" class="" v-cloak>
+                        <div class="text-center">
+                            <p class="p-2">
+                                Hai offerto i tuoi servizi ad altri utenti o li hai ricevuti? Sei entrato a far parte di un team in qualità di Co-founder o ne hai trovato uno? Hai finanziato una startup o ricevuto finanziamenti a tua volta? Formalizza le collaborazioni che hai stretto con gli altri utenti!
+                            </p>
+                            <p class="p-2">Hai davvero collaborato con <strong class="text-capitalize">@{{alert_var_1.account.name}}</strong>?</p>
+                        </div>
+                        <div class="d-flex justify-content-around">
+                            <button type="button" name="button" class="button-style button-color-blue" @click="alert=false" style="width: 50px;">
+                                No
+                            </button>
+                            <button type="button" name="button" class="button-style button-color-green" @click="confirmCollaboration(alert_var_1);alert=false" style="width: 50px;">
+                                Si
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="item-cont">
             <div class="item-style">
                 <div class="profile">
-                    <a v-if="is_my_page" class="edit-top-left button-style-circle button-color-gray" href="{{route('admin.pages.settings', $page->id)}}">
+                    <a v-if="is_my_page" class="edit-top-left button-style-circle button-color-gray" href="{{route('admin.pages.settings', $page->id)}}" v-cloak>
                         <i class="fas fa-cog"></i>
                     </a>
                     <a v-if="is_my_page" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.pages.edit', $page->id)}}" v-cloak>
@@ -55,7 +74,8 @@
                                   <img src="{{ asset("storage/" . $page->image) }}" alt="" class="">
                                 @endif
                                 <a v-if="is_my_page" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.images.editPageImage',$page->id)}}" v-cloak>
-                                    <i class="fas fa-pencil-alt"></i>
+                                    <i class="fas fa-camera"></i>
+                                    {{-- <i class="fas fa-pencil-alt"></i> --}}
                                  </a>
                             </div>
                         </div>
@@ -65,10 +85,15 @@
                             </h2>
                             <div class="">
                                 <div class="d-inline-block pr-2">
-                                    <button aria-label="{{$page->pagetype->name_it}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
+                                    <button type="button" class="tooltip-custom cursor-default" data-toggle="tooltip" data-placement="top" title="{{$page->pagetype->name_it}}">
+                                        <div class="micro-img d-inline-block">
+                                            <img src="{{ asset("storage/" . $page->pagetype->image) }}" alt="">
+                                        </div>
+                                    </button>
+                                    {{-- <button aria-label="{{$page->pagetype->name_it}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip" class="cursor-default">
                                     <div class="micro-img d-inline-block">
                                         <img src="{{ asset("storage/" . $page->pagetype->image) }}" alt="">
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 {{-- {{$page->pagetype->image}} --}}
                                 @switch($page->pagetype_id)
@@ -108,6 +133,18 @@
                                                 <span>Fisici e online</span>
                                             @endif
                                         </div>
+                                    @break
+                                    @case(7)
+                                        @if($page->type_int_1)
+                                        <div class="d-inline-block pr-2  mini-txt">
+                                            <span class="font-weight-bold mini-txt">Servizi erogati:</span>
+                                            @if($page->type_int_1==1)
+                                                <span>Gratuitamente</span>
+                                            @elseif($page->type_int_1==2)
+                                                <span>A pagamento</span>
+                                            @endif
+                                        </div>
+                                        @endif
                                     @break
                                 @endswitch
                             </div>
@@ -160,35 +197,59 @@
                         </div>
                     </div>
                 </div>
+
+                <div v-if="profile_check" class="d-flex justify-content-center">
+                    <div  class="profile-check pt-5 pb-2 px-0 col-sm-12 col-md-12 col-lg-8 col-xl-8" v-cloak>
+                        <div class="profile-check-cont">
+                            <div v-for="check in profile_check" class="profile-check-item">
+                                <div :class="check.check?'profile-check-sqare green':'profile-check-sqare gray'">
+                                    {{-- <button :aria-label="check.name" data-microtip-position="top" data-microtip-size="medium" role="tooltip" class="cursor-default">
+                                        <span class="hover-box"></span> --}}
+                                    <button type="button" class="tooltip-custom w-100 h-100 cursor-default" data-toggle="tooltip" data-placement="top" :title="check.name">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center pt-2">
+                            <span class="mini-txt font-weight-bold">Completa il tuo profilo per sfruttare al massimo le potenzialità di Growpla: più il profilo è completo maggiore è la possibilità di raggiungere i tuoi obiettivi</span>
+                        </div>
+                    </div>
+                </div>
                 @if($page->pagetype_id==1)
                     @if($page->lifecycle_id || $is_my_page)
                         <div class="sub-section" id="lifecycle">
                             <h6>{{__('Life cycle')}}
                                 <div v-if="is_my_page" class="info">
-                                    <button aria-label="{{__('Specify the life cycle\'s stage of your startup')}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
-                                    <i class="fas fa-info-circle"></i>
+                                    <button type="button" class="tooltip-custom cursor-default" data-toggle="tooltip" data-placement="top" title="{{__('Specify the life cycle\'s stage of your startup')}}">
+                                        <i class="fas fa-info-circle"></i>
+                                    </button>
                                 </div>
                             </h6>
                             <a v-if="is_my_page" href="{{route('admin.lifecycles.edit',$page->id)}}" class="button-color-gray edit-top-right" v-cloak>
                                 <i class="fas fa-pencil-alt"></i>
                             </a>
-                            <div v-if="!is_mobile" class="cicle-container">
+                            <div v-if="!is_mobile" class="cicle-container" v-cloak>
                                 @foreach ($lifecycles as $lifecycle)
                                   <div class="pre-seed cicle-item">
-                                      <div :class="{{$lifecycle->id}}<={{$page->lifecycle_id?$page->lifecycle_id:0}}?
-                                      'circle c-active':'circle'">
-                                          <span>{{$lifecycle->name}}</span>
-                                      </div>
+                                        <button type="button" class="tooltip-custom cursor-default" data-toggle="tooltip" data-placement="top" title="{{$lifecycle->description_it}}">
+                                            <div :class="{{$lifecycle->id}}<={{$page->lifecycle_id?$page->lifecycle_id:0}}?
+                                            'circle c-active':'circle'">
+                                                <span>{{$lifecycle->name}}</span>
+                                            </div>
+                                        </button>
                                   </div>
                                 @endforeach
                             </div>
                             @if ($page->lifecycle_id)
-                                <div v-else class="cicle-container">
+                                <div v-else class="cicle-container" v-cloak>
                                     <div class="cicle-item">
-                                        <div class="circle c-active">
-                                            <span>{{$page->lifecycle->name}}
-                                            </span>
-                                        </div>
+                                        <button type="button" class="tooltip-custom cursor-default" data-toggle="tooltip" data-placement="top" title="{{$page->lifecycle
+                                            ->description_it}}">
+                                            <div class="circle c-active">
+                                                <span>{{$page->lifecycle->name}}
+                                                </span>
+                                            </div>
+                                        </button>
                                     </div>
                                 </div>
                             @endif
@@ -236,7 +297,7 @@
                     <div class="link-item">
                         <a class="txt-blue" href="#" @click="open(page.pitch)">
                             <i class="fas fa-bullhorn"></i>
-                            <span class="mini-txt font-weight-bold">Pitch</span>
+                            <span class="mini-txt font-weight-bold">{{$page->pagetype_id==1?'Pitch':'Brochure'}}</span>
                         </a>
                     </div>
                     @endif
@@ -244,7 +305,11 @@
                 @endif
                 {{-- posso accedere ai servizi solo se la pagina è: startup o azienda --}}
                 @if(in_array ($page->pagetype_id, array(1,2)))
-                    @if($is_my_page || count($page->give_page_services)>0 || count($page->have_page_services)>0)
+                    @if($is_my_page
+                    || count($page->give_page_services)>0
+                    || count($page->have_page_services)>0
+                    || count($page->have_page_usertypes)>0
+                    || count($page->have_page_pagetypes)>0)
                     <div id="services" class="sub-section">
                         <div class="row">
                             <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5  mb-3">
@@ -258,7 +323,7 @@
                                     </a>
                                 </h4>
                                 @if(count($page->give_page_services)>0)
-                                <div class="main-multi-slider">
+                                <div class="main-multi-slider" style="margin: 0px -15px;">
                                     <div class="multi-slider-cont mini" id="multi-slider-cont-1">
                                         @foreach ($page->give_page_services as $service)
                                             <div class="multi-slider-item col-8 col-sm-8 col-md-8 col-lg-6 col-xl-6">
@@ -287,7 +352,10 @@
                             <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
                             </div>
                             <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5  mb-3">
-                            @if(in_array ($page->pagetype_id, array(1,2)) && $is_my_page || count($page->have_page_services)>0 || count($page->have_page_usertypes)>0
+                            @if(in_array ($page->pagetype_id, array(1,2)))
+                            @if($is_my_page
+                            || count($page->have_page_services)>0
+                            || count($page->have_page_usertypes)>0
                             || count($page->have_page_pagetypes)>0)
                               <h4 class="txt-blue font-weight-bold pb-3  d-flex justify-content-start align-items-center">
                                   <span class="mr-1">
@@ -300,7 +368,7 @@
                                 @if(count($page->have_page_services)>0
                                 || count($page->have_page_usertypes)>0
                                 || count($page->have_page_pagetypes)>0)
-                                <div class="main-multi-slider">
+                                <div class="main-multi-slider" style="margin: 0px -15px;">
                                     <div class="multi-slider-cont mini" id="multi-slider-cont-2">
               @if($page->pagetype_id==1){{-- IN CASO SONO UNA STARTUP --}}
                   @foreach ($page->have_page_pagetypes as $pagetype)
@@ -322,9 +390,9 @@
                                       <div class="card-style-mini card-color-blue">
                                           <div class="text-capitalize text-cont">
                                           {{$usertype->name_it}}
-                                            <span class="mini-txt text-dark">
-                                              {{$service->name}}
-                                            </span>
+                                            <p class="mini-txt text-dark">
+                                                {{$service->name}}
+                                            </p>
                                           </div>
                                       </div>
                                   </div>
@@ -366,6 +434,7 @@
                                 </div>
                                 @endif
                             @endif
+                            @endif
                             </div>
                         </div>
                     </div>
@@ -383,61 +452,14 @@
             <div class="item-style">
                 <h3>Team
                     <div v-if="is_my_page" class="info">
-                        <button aria-label="{{__('Add team member')}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
-                        <i class="fas fa-info-circle"></i>
+                        <button type="button" class="tooltip-custom cursor-default" data-toggle="tooltip" data-placement="top" title="{{__('Add team member')}}">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                        {{-- <button aria-label="{{__('Add team member')}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
+                        <i class="fas fa-info-circle"></i> --}}
                     </div>
                 </h3>
-                {{-- <div class="row justify-content-center">
-                    <div v-for="member in team_members" class="team-member-cont col-sm-12 col-md-6 col-lg-4 col-xl-4 mt-2 mb-2" v-cloak>
-                        <div class="team-member">
-                            <div class="img-cont mini-img">
-                                <img v-if="member.image" :src="'/storage/'+ member.image" alt="">
-                            </div>
-                            <h5 class="name text-capitalize txt-blue font-weight-bold mt-2">@{{member.name}} @{{member.surname}}
-                                <a v-if="member.linkedin" class="linkedin" :href="member.linkedin" target="_blank" rel="noopener noreferrer">
-                                    <i class="fab fa-linkedin"></i>
-                                </a>
-                            </h5>
-                            <p v-if="member.role" class="role font-weight-bold">
-                                @{{member.role}}
-                            </p>
-                            <div class="show-profile text-center mt-4">
-                                <a v-if="member.user_id" :href="'/admin/users/'+member.user_id" class="button-style button-color-green">Visita profilo</a>
-                            </div>
-                            <div v-if="is_my_page" class="edit-center-center-small d-flex justify-content-between w-100">
-                                <div class="d-inline-block" style="margin-left: -30px;">
-                                    <a v-if="member.position!=0" type="button" name="button" class="button-color-gray" @click="changeTeamPosition(member.id,-1)">
-
-                                        <i class="fas fa-caret-left"></i>
-                                    </a>
-                                </div>
-                                <div class="d-inline-block" style="margin-right: -30px;">
-                                    <a v-if="member.position<team_members.length-1" type="button" name="button" class="button-color-gray" @click="changeTeamPosition(member.id,1)">
-
-                                        <i class="fas fa-caret-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div v-if="is_my_page" class="edit-top-right-vert">
-                                <a :href="'/admin/teams/' + member.id +'/edit'" class="button-color-gray">
-                                    <i class="fas fa-pencil-alt"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div v-if="team_num>3" class="text-center d-block w-100 pb-2">
-                        <a href="javascript:void(0)" @click="teamToggle()" class="mini-txt">
-                            <img v-if="team_members.length<=3" src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-90r" alt="">
-                            <img v-else src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-90l" alt="">
-                        </a>
-                    </div>
-                    <div v-if="is_my_page" class="d-flex justify-content-center w-100">
-                        <a href="{{route('admin.teams.addTeam', $page->id)}}" class="button-color-gray">
-                            <i class="fas fa-plus-circle"></i>
-                        </a>
-                    </div>
-                </div> --}}
-                <div class="main-multi-slider">
+                <div v-if="team_members.length>0" class="main-multi-slider" style="margin: 0px -15px;" v-cloak>
                     <div class="multi-slider-cont d-flex" id="multi-slider-cont-30">
                         <div v-for="member in team_members" class="multi-slider-item team-member-cont col-8 col-sm-8 col-md-8 col-lg-5 col-xl-4">
                             <div class="team-member">
@@ -497,39 +519,42 @@
             <div class="item-style">
                 <h6 class="text-capitalize">Collaborazioni
                     <div v-if="is_my_page" class="info">
-                        <button aria-label="{{__('Use this section to enter collaborations with other accounts on the platform')}}" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
-                        <i class="fas fa-info-circle"></i>
+                        <button type="button" class="tooltip-custom cursor-default" data-toggle="tooltip" data-placement="top" title="{{__('Use this section to enter collaborations with other accounts on the platform')}}">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
                     </div>
                     <a  v-if="is_my_page" class="edit-top-right button-style-circle button-color-gray" href="{{route('admin.collaborations.my', [$page->id,'page'])}}">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
                 </h6>
                 <div class="main-multi-slider">
-                    <div class="multi-slider-cont" id="multi-slider-cont-20" style="height: 160px;">
+                    <div class="multi-slider-cont" id="multi-slider-cont-20" style="height: 200px; margin: 0px -15px;">
                         <div v-for="collaboration in collaborations" class="multi-slider-item col-8 col-sm-5 col-md-5 col-lg-3 col-xl-3">
                             <div class="d-flex justify-content-center align-items-center h-100">
                                 <div class="card-style-mini">
-                                    <a :href="collaboration.recipient_user_id?
-                                    '/admin/users/'+collaboration.account.id
-                                    :'/admin/pages/'+collaboration.account.id" class="">
-                                        <div class="text-cont">
+                                    <div class="text-cont">
+                                        <a :href="collaboration.account.surname?
+                                        '/admin/users/'+collaboration.account.id
+                                        :'/admin/pages/'+collaboration.account.id" class="d-inline-block min-scale">
                                             <div class="img-cont medium-img mt-2">
-                                              <img
-                                              v-if="collaboration.account.image"
-                                              :src="'/storage/' +collaboration.account.image" alt="" class="scale">
+                                                <img
+                                                v-if="collaboration.account.image"
+                                                :src="'/storage/' +collaboration.account.image" alt="" class="">
                                             </div>
-                                            <span class="d-block text-dark">
-                                                @{{collaboration.account.name}}
-                                                @{{collaboration.account.surname?
-                                                collaboration.account.surname:''}}
-                                                <div  v-if="collaboration.confirmed"
-                                                 class="d-inline-block">
-                                                    <button aria-label="Collaborazione verificata" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
+                                        </a>
+                                        <span class="d-block text-dark text-capitalize text-truncate">
+                                            <div  v-if="collaboration.col1_confirmed
+                                            && collaboration.col2_confirmed"
+                                             class="d-inline-block">
+                                                <button type="button" class="tooltip-custom cursor-default" data-toggle="tooltip" data-placement="top" title="Collaborazione verificata">
                                                     <i class="fas fa-certificate txt-blue"></i>
-                                                </div>
-                                            </span>
-                                        </div>
-                                    </a>
+                                                </button>
+                                            </div>
+                                            @{{collaboration.account.name}}
+                                            @{{collaboration.account.surname?
+                                            collaboration.account.surname:''}}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -546,6 +571,62 @@
                 </div>
             </div>
         </div>
+        @if($is_my_page)
+        <div v-if="r_collaborations.length>0" id="r_collaborations" class="item-cont" v-cloak>
+            <div class="item-style">
+                <h6 class="">Hai collaborato con i seguenti utenti?
+                </h6>
+                <div class="main-multi-slider" style="margin: 0px -15px;">
+                    <div class="multi-slider-cont" id="multi-slider-cont-21" style="height: 200px;">
+                        <div v-for="collaboration in r_collaborations" class="multi-slider-item col-8 col-sm-5 col-md-5 col-lg-3 col-xl-3">
+                            <div class="d-flex justify-content-center align-items-center h-100">
+                                <div class="card-style-mini">
+                                    <div class="text-cont position-relative">
+                                        <a :href="collaboration.account.surname?
+                                        '/admin/users/'+collaboration.account.id
+                                        :'/admin/pages/'+collaboration.account.id" class="d-inline-block min-scale">
+                                            <div class="img-cont medium-img mt-2" style="opacity:0.5">
+                                                <img
+                                                v-if="collaboration.account.image"
+                                                :src="'/storage/' +collaboration.account.image" alt="" class="">
+                                            </div>
+                                        </a>
+                                        <span class="d-block text-dark text-capitalize text-truncate" style="opacity:0.5">
+                                            @{{collaboration.account.name}}
+                                            @{{collaboration.account.surname?
+                                            collaboration.account.surname:''}}
+                                            <div  v-if="collaboration.confirmed"
+                                             class="d-inline-block">
+                                                <button type="button" class="tooltip-custom cursor-default" data-toggle="tooltip" data-placement="top" title="Collaborazione verificata">
+                                                    <i class="fas fa-certificate txt-blue"></i>
+                                                </button>
+                                            </div>
+                                        </span>
+                                        <div class="d-flex justify-content-around mt-1">
+                                            <button type="button" name="button" class="button-style button-color-blue" @click="deleteCollaboration(collaboration)" style="width: 50px;">
+                                                No
+                                            </button>
+                                            <button type="button" name="button" class="button-style button-color-green" @click="alert_2(collaboration)" style="width: 50px;">Si</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" name="button" @mousedown="start(21,'left')" @mouseleave="stop(21,'left')" @mouseup="stop(21,'left')" class="slider-left mobile-hide" id="button-left-21" v-cloak>
+                        {{-- <span class="arrow-black r-180"></span> --}}
+                        {{-- <i class="fas fa-caret-left"></i> --}}
+                        <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
+                    </button>
+                    <button type="button" name="button" @mousedown="start(21,'right')" @mouseleave="stop(21,'right')" @mouseup="stop(21,'right')"class="slider-right mobile-hide" id="button-right-21" v-cloak>
+                        {{-- <i class="fas fa-caret-right"></i> --}}
+                        <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
+                    </button>
+                    <span>@{{this.delay(21)}}</span>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 @endsection

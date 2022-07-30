@@ -37,7 +37,7 @@
                         </div>
                         <div class="messages-footer">
                             {{-- <input v-model="message_text" @keyup.enter="sendMessage()" type="text" name="" value="" class="custom-input-blue" placeholder=" {{__('Write a message')}}..."> --}}
-                            <textarea name="name" rows="1" v-model="message_text" @keyup.enter="sendMessage()" type="text" name="" value="" class="custom-input-blue custom-scrollbar" placeholder=" {{__('Write a message')}}..." id="mytextarea" @input="text_wrap()"></textarea>
+                            <textarea name="name" rows="1" v-model="message_text" type="text" name="" value="" class="custom-input-blue custom-scrollbar" placeholder=" {{__('Write a message')}}..." id="mytextarea" @input="text_wrap()"></textarea>
                             <button type="button" name="button" @click="sendMessage()" class="button-style button-color">{{__('Send')}}</button>
                         </div>
                     </div>

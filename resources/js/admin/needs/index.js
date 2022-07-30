@@ -22,11 +22,11 @@ var create = new Vue({
             window.scrollTo({top: 0, behavior: 'smooth'});
         },
 
-        orderById(needs){
-            //ordinamento per id
+        orderByDate(needs){
+            //ordinamento per date
             for (var i=0; i < needs.length; i++) {
                 for (var j=0; j < needs.length-1; j++) {
-                    if (needs[j].id<needs[i].id) {
+                    if (needs[j].updated_at<needs[i].updated_at) {
                       var tmp=needs[j];
                       needs[j]=needs[i];
                       needs[i]=tmp;
@@ -45,6 +45,7 @@ var create = new Vue({
                 this.loadNeedInfo(new_needs_show);
                 this.page++;
             }
+
         },
 
         loadNeedInfo(new_needs){
@@ -78,12 +79,7 @@ var create = new Vue({
 
     },
     created(){
-
-        // if(this.needs){
-        //     this.needs = JSON.parse(this.needs.replace(/&quot;/g,'"'));
-        // }
-        this.orderById(this.needs);
-
+        this.orderByDate(this.needs);
     },
     mounted() {
         window.onscroll = ()=>{this.scrollFunction()};

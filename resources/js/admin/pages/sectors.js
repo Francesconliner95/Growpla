@@ -6,7 +6,7 @@ axios.defaults.headers.common = {
 };
 
 var create = new Vue({
-    el: '#page-sectors',
+    el: '#sectors',
     data: {
       language_id,
       sectors,
@@ -16,19 +16,21 @@ var create = new Vue({
     methods: {
       isChecked(id){
         if (document.getElementById(id).checked) {
-          return true;
+            return true;
         } else {
-          return false;
+            return false;
         }
       },
-      checkboxToggle(id){
-          if(document.getElementById(id).checked){
-              document.getElementById(id).checked = false;
-              document.getElementById(id+'-b').classList.remove("active");
-          }else if($('div.checkbox-group.required :checkbox:checked').length<this.max_sector_number){
-              document.getElementById(id).checked = true;
-              document.getElementById(id+'-b').classList.add("active");
-          }
+        checkboxToggle(id){
+            if(document.getElementById(id).checked){
+                document.getElementById(id).checked = false;
+                document.getElementById(id+'-b').classList.remove("active");
+            }else if($('div.checkbox-group.required :checkbox:checked').length<this.max_sector_number){
+                document.getElementById(id).checked = true;
+                document.getElementById(id+'-b').classList.add("active");
+            }else{
+                this.display_message = 'Puoi selezionare massimo ' + this.max_sector_number + ' settori';
+            }
       },
       submitForm(){
           if($('div.checkbox-group.required :checkbox:checked').length>0){

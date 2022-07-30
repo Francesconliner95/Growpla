@@ -31,7 +31,6 @@ class GivePageServiceController extends Controller
                 'services' => $page->give_page_services,
                 'recommended_services' => $page->pagetype->give_services,
             ];
-            //dd($page->pagetype->give_services);
 
             app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
@@ -83,7 +82,7 @@ class GivePageServiceController extends Controller
           }
 
           //verifico se sono state apportate modifiche invio la notifica
-          if(collect($syncResult)->flatten()->isNotEmpty()){
+          if(collect($syncResult)->flatten()->isNotEmpty()  && count($services_id)>0){
               $followers = $page->page_follower;
               foreach ($followers as $follower) {
                   $new_notf = new Notification();

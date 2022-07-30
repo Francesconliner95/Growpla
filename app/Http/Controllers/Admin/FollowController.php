@@ -9,6 +9,7 @@ use App\Follow;
 use App\User;
 use App\Page;
 use App\Notification;
+use App\Language;
 
 class FollowController extends Controller
 {
@@ -29,6 +30,7 @@ class FollowController extends Controller
             'followed' => $followed,
         ];
 
+        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
         return view('admin.follows.index', $data);
     }
 

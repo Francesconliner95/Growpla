@@ -12,7 +12,7 @@
         <div class="item-cont">
             <div class="item-style">
                 {{-- Immagine --}}
-                <h6>Cambia immagine</h6>
+                <h6>{{Auth::user()->tutorial?'Aggiungi immagine di profilo':'Cambia immagine'}}  </h6>
                 <form runat="server" class="file-cont" ref="editImage" method="POST" enctype="multipart/form-data" action="{{ route('admin.images.updateUserImage') }}">
                     @csrf
                     @method('PUT')

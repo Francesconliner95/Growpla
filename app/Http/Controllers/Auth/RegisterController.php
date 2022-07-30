@@ -54,17 +54,17 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:100'],
             'surname' => ['required', 'string', 'max:100'],
-            'date_of_birth' => ['required', 'date'],
+            //'date_of_birth' => ['required', 'date'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => [
                 'required',
                 'string',
                 'min:8',
                 'confirmed',
-                // 'regex:/[a-z]/',// must contain at least one lowercase letter
-                // 'regex:/[A-Z]/',// must contain at least one uppercase letter
-                // 'regex:/[0-9]/',// must contain at least one digit
-                // 'regex:/[@$!%*#?&_-]/',// must contain a special character
+                'regex:/[a-z]/',// must contain at least one lowercase letter
+                'regex:/[A-Z]/',// must contain at least one uppercase letter
+                'regex:/[0-9]/',// must contain at least one digit
+                'regex:/[@$!%*#?&_-]/',// must contain a special character
             ],
             'language_id' => ['required', 'integer'],
         ]);
@@ -81,7 +81,8 @@ class RegisterController extends Controller
         return User::create([
             'name' => Str::lower($data['name']),
             'surname' => Str::lower($data['surname']),
-            'date_of_birth' => $data['date_of_birth'],
+            'date_of_birth' => /*$data['date_of_birth']*/
+                                date('Y-m-d',strtotime('01-01-2000')),
             'email' => Str::lower($data['email']),
             'password' => Hash::make($data['password']),
             'language_id' => 2/*$data['language_id']*/,

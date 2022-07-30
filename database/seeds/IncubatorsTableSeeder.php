@@ -24,7 +24,7 @@ class IncubatorsTableSeeder extends Seeder
                 'website'=> 'https://www.ic406.com/',
                 'country_id'=> 1,
                 'region_id'=> 13,
-                'page_id'=> null,
+                'page_id'=> 22,
                 'hidden'=>null,
             ],
             [
@@ -33,7 +33,7 @@ class IncubatorsTableSeeder extends Seeder
                 'website'=> 'https://www.knowledge-hub.it/',
                 'country_id'=> 1,
                 'region_id'=> 13,
-                'page_id'=> null,
+                'page_id'=> 10,
                 'hidden'=>null,
             ],
             [
@@ -211,15 +211,6 @@ class IncubatorsTableSeeder extends Seeder
                 'name'=> 'Lugo Next Lab',
                 'image'=> 'incubators/lugonextlab.png',
                 'website'=> 'https://www.lugonextlab.eu/',
-                'country_id'=> 1,
-                'region_id'=> 5,
-                'page_id'=> null,
-                'hidden'=>null,
-            ],
-            [
-                'name'=> 'U-Start',
-                'image'=> 'incubators/ustartt.png',
-                'website'=> 'https://www.ustart.it/',
                 'country_id'=> 1,
                 'region_id'=> 5,
                 'page_id'=> null,

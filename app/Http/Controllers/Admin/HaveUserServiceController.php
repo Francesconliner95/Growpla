@@ -44,7 +44,7 @@ class HaveUserServiceController extends Controller
         $request->validate([
             //'services'=> 'exists:usertypes,id',
         ]);
-
+        // dd($request);
         $data = $request->all();
 
         $user = Auth::user();
@@ -73,7 +73,7 @@ class HaveUserServiceController extends Controller
                 $syncResult = $user->have_user_services()->sync([]);
             }
 
-            if(collect($syncResult)->flatten()->isNotEmpty()){
+            if(collect($syncResult)->flatten()->isNotEmpty()  && count($services_id)>0){
                 $followers = $user->user_follower;
                 foreach ($followers as $follower) {
                     $new_notf = new Notification();
@@ -86,7 +86,11 @@ class HaveUserServiceController extends Controller
                 }
             }
 
-            return redirect()->route('admin.users.show',$user->id);
+            if(array_key_exists('go_to_collaborations', $data)){
+                return redirect()->route('admin.collaborations.my', [$user->id,'user']);
+            }else{
+                return redirect()->route('admin.users.show',$user->id);
+            }
 
       }abort(404);
   }

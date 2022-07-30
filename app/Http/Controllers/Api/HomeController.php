@@ -12,16 +12,6 @@ use App\Region;
 
 class HomeController extends Controller
 {
-    // public function sendEmail(Request $request) {
-    //
-    //     $request->validate([
-    //         'email' => 'required|email',
-    //     ]);
-    //     $email = $request->email;
-    //
-    //     Mail::to($email)
-    //     ->queue(new MailRegistration());
-    // }
 
     public function getAllIncubators() {
 

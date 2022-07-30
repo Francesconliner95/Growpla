@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('surname');
             $table->unsignedbigInteger('page_selected_id')->nullable();//nessun collegamento
             $table->date('date_of_birth');
-            $table->string('image')->nullable();
+            $table->string('image')->nullable()->default('users_images/default-utente.svg');
             $table->string('summary')->nullable();
             $table->text('description')->nullable();
             $table->string('cv')->nullable();

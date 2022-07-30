@@ -21,6 +21,10 @@ use App\Moneyrange;
 use App\Lifecycle;
 use App\Region;
 use App\Country;
+use App\GivePageService;
+use App\HavePageService;
+use App\HavePageUsertype;
+use App\HavePagePagetype;
 
 class PageController extends Controller
 {
@@ -42,13 +46,23 @@ class PageController extends Controller
         }abort(404);
     }
 
+    public function pagetype(){
+
+        $data = [
+          'pagetypes' => Pagetype::where('hidden',null)->get(),
+        ];
+        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+        return view('admin.pages.pagetype', $data);
+
+    }
+
     public function newPage($pagetype_id){
 
-      $data = [
-        'pagetype' => Pagetype::find($pagetype_id),
-      ];
-      app()->setLocale(Language::find(Auth::user()->language_id)->lang);
-      return view('admin.pages.create', $data);
+        $data = [
+          'pagetype' => Pagetype::find($pagetype_id),
+        ];
+        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+        return view('admin.pages.create', $data);
 
     }
 
@@ -74,6 +88,7 @@ class PageController extends Controller
 
       $data = $request->all();
 
+
       //SLUG
 
       $slug = Str::slug($request->name);
@@ -84,11 +99,11 @@ class PageController extends Controller
 
       $counter=1;
 
-          while($slug_exist){
-              $slug = $slug_base . '-' . $counter;
-              $counter++;
-              $slug_exist = Page::where('slug', $slug)->first();
-          }
+            while($slug_exist){
+                $slug = $slug_base . '-' . $counter;
+                $counter++;
+                $slug_exist = Page::where('slug', $slug)->first();
+            }
         //END SLUG
         $page_exist = Page::where('name', Str::lower($request->name))
                         ->first();
@@ -100,13 +115,14 @@ class PageController extends Controller
             $new_page->slug = $slug;
             $new_page->image = Pagetype::find($request->pagetype_id)->image;
             $new_page->tutorial = 1;
+            $new_page->fill($data);
             if(array_key_exists('pitch',$data) && $data['pitch']){
                 $old_pitch_name = $new_page->pitch;
                 if($old_pitch_name){
                     Storage::delete($old_pitch_name);
                 }
                 $pitch_path = Storage::put('pitch', $data['pitch']);
-                $data['pitch'] = $pitch_path;
+                $new_page->pitch = $pitch_path;
             }
             if(array_key_exists('municipality',$data)){
               $new_page->municipality = Str::lower($data['municipality']);
@@ -114,14 +130,23 @@ class PageController extends Controller
             if(array_key_exists('street_name',$data)){
               $new_page->street_name = Str::lower($data['street_name']);
             }
-            $new_page->fill($data);
+            if(array_key_exists('website',$data)   && $data['website']){
+                if(substr($data['website'], 0, 4)!='http'){
+                    $new_page->website = 'https://'.$data['website'];
+                }
+            }
+            if(array_key_exists('linkedin',$data) && $data['linkedin']){
+                if(substr($data['linkedin'], 0, 4)!='http'){
+                    $new_page->linkedin = 'https://'.$data['linkedin'];
+                }
+            }
             $new_page->save();
 
             $user = Auth::user();
             $new_page->users()->attach($user);
 
             if($new_page->tutorial>=1){
-                return redirect()->route('admin.pages.sectors', $new_page->id);
+                return redirect()->route('admin.images.editPageImage', $new_page->id);
             }else{
                 return redirect()->route('admin.pages.show', ['page'=> $new_page->id]);
             }
@@ -133,9 +158,7 @@ class PageController extends Controller
 
     public function edit(Page $page){
 
-        //verifico se l'utente ha abilitato il tipo di pagina selezionata
-        if(Auth::user()->pagetypes->contains($page->pagetype_id)){
-
+        if(Auth::user()->pages->contains($page)){
             $data = [
               'page' => $page,
               'moneyranges' => Moneyrange::all(),
@@ -167,7 +190,7 @@ class PageController extends Controller
           'municipality' => 'nullable',
         ]);
 
-        if(Auth::user()->pagetypes->contains($page->pagetype_id)){
+        if(Auth::user()->pages->contains($page)){
             $data = $request->all();
 
             if(!array_key_exists('pitch',$data)
@@ -240,12 +263,27 @@ class PageController extends Controller
             $new_view->save();
         }
 
+        if($user->pages->contains($page)){
+            $give_have_page_service =
+            GivePageService::where('page_id',$page->id)->count()
+            + HavePageService::where('page_id',$page->id)->count()
+            + HavePageUsertype::where('page_id',$page->id)->count()
+            + HavePagePagetype::where('page_id',$page->id)->count();
+            $sectors_count = $page->sectors->count();
+        }else{
+            $give_have_page_service = 0;
+            $sectors_count = 0;
+        }
+
         $data = [
           'page' => $page,
           'is_my_page' => $user->pages->contains($page),
           'lifecycles' => Lifecycle::all(),
           'team_members' => $team_members,
           'team_num' => $team_num,
+          'give_have_page_service' => $give_have_page_service,
+          'sectors_count' => $sectors_count,
+          'default_images' => Pagetype::pluck('image'),
         ];
         app()->setLocale(Language::find(Auth::user()->language_id)->lang);
         return view('admin.pages.show', $data);

@@ -1,12 +1,13 @@
-//window.history.forward();
-
 import Vue from 'vue';
+import AOS from 'aos';
+import Splide from '@splidejs/splide';
 import axios from 'axios';
+//import { loadScript } from "@paypal/paypal-js";
+
 axios.defaults.headers.common = {
     'X-Requested-With': 'XMLHttpRequest',
     'X-CSRF-TOKEN': window.csrf_token
 };
-
 var create = new Vue({
     el: '#guest-home',
     data: {
@@ -52,6 +53,7 @@ var create = new Vue({
             document.cookie =
             "analyticsCookie"+ "=" +"accept"+ ";" + "expires="+ this.dateUTC() +";path=/";
             this.analyticsCookie = true;
+            window.clarity('consent');
         },
 
         acceptSelected(){
@@ -62,6 +64,7 @@ var create = new Vue({
                 document.cookie =
                 "analyticsCookie"+ "=" +"accept"+ ";" + "expires="+ this.dateUTC() +";path=/";
                 this.analyticsCookie = true;
+                window.clarity('consent');
             }else{
                 document.cookie =
                 "analyticsCookie"+ "=" +"reject"+ ";" + "expires="+ this.dateUTC() +";path=/";
@@ -161,6 +164,11 @@ var create = new Vue({
 
     },
     mounted() {
+        AOS.init();
+        // new Splide( '.splide', {
+        //     type   : 'loop',
+        //     padding: '5rem',
+        // }).mount();
 
         this.showConsentScreen();
         this.arrowVisibility(1);

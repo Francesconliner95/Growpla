@@ -37,12 +37,12 @@ class GiveHaveController extends Controller
         $api_or_route = $request->api_or_route;
 
         $needs = [];
-        array_push($needs,...HaveUserService::select('id','user_id','service_id')->get());
-        array_push($needs,...HavePagePagetype::select('id','page_id','pagetype_id')->get());
+        array_push($needs,...HaveUserService::select('id','user_id','service_id','updated_at')->get());
+        array_push($needs,...HavePagePagetype::select('id','page_id','pagetype_id','updated_at')->get());
         array_push($needs,...HavePageUsertype::where('usertype_id','!=',1)
-        ->select('id','page_id','usertype_id')->get());
-        array_push($needs,...HavePageService::select('id','page_id','service_id')->get());
-        array_push($needs,...HavePageCofounder::select('id','page_id','service_id as cofounder_service_id')->get());
+        ->select('id','page_id','usertype_id','updated_at')->get());
+        array_push($needs,...HavePageService::select('id','page_id','service_id','updated_at')->get());
+        array_push($needs,...HavePageCofounder::select('id','page_id','service_id as cofounder_service_id','updated_at')->get());
 
         if($api_or_route){
             return response()->json([
@@ -54,6 +54,7 @@ class GiveHaveController extends Controller
         }else{
             $data = [
                 'needs'=> $needs,
+                'webpage_typename' => 'Tutte le necessità',
             ];
             app()->setLocale(Language::find(Auth::user()->language_id)->lang);
             return view('admin.needs.index', $data);
@@ -71,9 +72,9 @@ class GiveHaveController extends Controller
 
         $offers = [];
         // array_push($offers,...GiveUserSkill::select('id','user_id','skill_id')->get());
-        array_push($offers,...GivePageService::select('id','page_id','service_id')
+        array_push($offers,...GivePageService::select('id','page_id','service_id','updated_at')
         ->get());
-        array_push($offers,...GiveUserService::select('id','user_id','service_id')
+        array_push($offers,...GiveUserService::select('id','user_id','service_id','updated_at')
         ->get());
 
         if($api_or_route){
@@ -86,9 +87,106 @@ class GiveHaveController extends Controller
         }else{
             $data = [
                 'offers'=> $offers,
+                'webpage_typename' => 'Tutte le offerte',
             ];
             app()->setLocale(Language::find(Auth::user()->language_id)->lang);
             return view('admin.offers.index', $data);
+        }
+
+    }
+
+    public function getRecommendedGive(Request $request)
+    {
+        $request->validate([
+            'api_or_route' => 'nullable',
+        ]);
+
+        $api_or_route = $request->api_or_route;
+        $user = Auth::user();
+
+        //servizi di cui necessita l'utente
+        $user_needs_id = $user->have_user_services()->get()->pluck('id')->toArray();
+
+        //servizi di cui necessitano le pagine dell'utente
+        $pages_needs_id = [];
+        foreach ($user->pages as $page) {
+            array_push($pages_needs_id,...$page->have_page_services()->get()->pluck('id')->toArray());
+        }
+
+        $needs_id = array_unique(array_merge($user_needs_id,$pages_needs_id));
+        $offers = [];
+
+        array_push($offers, ...GivePageService::whereIn('service_id',$needs_id)
+                            ->select('id','page_id','service_id','updated_at')
+                            ->get()
+                        );
+        array_push($offers, ...GiveUserService::whereIn('service_id',$needs_id)
+                            ->select('id','user_id','service_id','updated_at')
+                            ->get()
+                        );
+
+        if($api_or_route){
+            return response()->json([
+                'success' => true,
+                'results' => [
+                    'offers'=> $offers,
+                ]
+            ]);
+        }else{
+            $data = [
+                'offers'=> $offers,
+                'webpage_typename' => 'Offerte consigliate',
+            ];
+            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+            return view('admin.offers.index', $data);
+        }
+
+    }
+
+    public function getRecommendedHave(Request $request)
+    {
+        $request->validate([
+            'api_or_route' => 'nullable',
+        ]);
+
+        $api_or_route = $request->api_or_route;
+        $user = Auth::user();
+
+        //servizi di cui necessita l'utente
+        $user_offers_id = $user->give_user_services()->get()->pluck('id')->toArray();
+
+        //servizi di cui necessitano le pagine dell'utente
+        $pages_offers_id = [];
+        foreach ($user->pages as $page) {
+            array_push($pages_offers_id,...$page->give_page_services()->get()->pluck('id')->toArray());
+        }
+
+        $offers_id = array_unique(array_merge($user_offers_id,$pages_offers_id));
+        $needs = [];
+
+        array_push($needs, ...HavePageService::whereIn('service_id',$offers_id)
+                            ->select('id','page_id','service_id','updated_at')
+                            ->get()
+                        );
+        array_push($needs, ...HaveUserService::whereIn('service_id',$offers_id)
+                            ->select('id','user_id','service_id','updated_at')
+                            ->get()
+                        );
+
+        if($api_or_route){
+            return response()->json([
+                'success' => true,
+                'results' => [
+                    'needs'=> $needs,
+                ]
+            ]);
+        }else{
+            $data = [
+                'needs'=> $needs,
+                'webpage_typename' => 'Necessità consigliate',
+            ];
+            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+            return view('admin.needs.index', $data);
         }
 
     }
@@ -105,13 +203,13 @@ class GiveHaveController extends Controller
             $need = json_decode($_need,true);
             if(array_key_exists('user_id', $need)){
                 $need_info = User::where('id',$need['user_id'])
-                                  ->select('id','name','surname','image','summary')
+                                  ->select('id','name','surname','image')
                                   ->first();
                 $need_info['user_or_page'] = true;
             }
             if(array_key_exists('page_id', $need)){
                 $need_info = Page::where('id',$need['page_id'])
-                                  ->select('id','name','image','summary')
+                                  ->select('id','name','image')
                                   ->first();
                 $need_info['user_or_page'] = false;
             }

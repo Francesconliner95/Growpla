@@ -26,6 +26,15 @@ if (document.getElementById('incubators')) {
     remove_footer = true;
 }
 
+if (document.getElementById('blog-index')) {
+    require('./guest/blogs/index.js');
+    remove_footer = true;
+}
+
+if (document.getElementById('blog-show')) {
+    require('./guest/blogs/show.js');
+}
+
 ///////SEARCH///////
 
 if (document.getElementById('search')) {
@@ -47,6 +56,7 @@ if (document.getElementById('offers')) {
     remove_footer = true;
 }
 
+//BLOG
 
 //USERS
 if (document.getElementById('user-accounts')) {
@@ -69,9 +79,9 @@ if (document.getElementById('edit-user-image')) {
     require('./admin/users/edit-image.js');
 }
 
-if (document.getElementById('user-sectors')) {
-    require('./admin/users/sectors.js');
-}
+// if (document.getElementById('user-sectors')) {
+//     require('./admin/users/sectors.js');
+// }
 
 if (document.getElementById('user-settings')) {
     require('./admin/users/settings.js');
@@ -84,6 +94,11 @@ if (document.getElementById('user-background')) {
 //PAGES
 if (document.getElementById('page-create')) {
     require('./admin/pages/create.js');
+    remove_footer = true;
+}
+
+if (document.getElementById('page-pagetype')) {
+    require('./admin/pages/pagetype.js');
     remove_footer = true;
 }
 
@@ -103,7 +118,7 @@ if (document.getElementById('page-settings')) {
     require('./admin/pages/settings.js');
 }
 
-if (document.getElementById('page-sectors')) {
+if (document.getElementById('sectors')) {
     require('./admin/pages/sectors.js');
 }
 
@@ -198,3 +213,7 @@ if(remove_footer){
     document.getElementById('footer').classList.add("d-none");
     document.getElementById('main').classList.add("no-footer-main");
 }
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip();
+});

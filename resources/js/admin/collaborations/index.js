@@ -24,7 +24,7 @@ var create = new Vue({
         },
         showMore(){
             var collaborations_qty = this.colls.length;
-            var items_qty = 6;
+            var items_qty = 12;
             if(this.page<=Math.ceil(collaborations_qty/items_qty)){
                 var new_collaborations_show = this.colls.slice(items_qty*this.page-items_qty,items_qty*this.page);
                 this.loadNeedInfo(new_collaborations_show);
@@ -115,14 +115,14 @@ var create = new Vue({
 
     },
     created(){
-        console.log(this.collaborations);
+        // console.log(this.collaborations);
         if(this.collaborations){
             this.collaborations.forEach((collaboration, i) => {
                 if(!this.already_exist(collaboration)){
                     this.colls.push(collaboration);
                 }
             });
-            console.log(this.colls);
+            // console.log(this.colls);
         }
         this.showMore();
     },

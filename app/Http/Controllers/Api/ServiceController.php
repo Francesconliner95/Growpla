@@ -36,7 +36,7 @@ class ServiceController extends Controller
     public function getAllServices(){
 
         $main_services = MainService::all();
-        $sub_services = Service::where('hidden',null)->get();
+        $sub_services = Service::where('hidden',null)->orderBy('name')->get();
 
       return response()->json([
           'success' => true,

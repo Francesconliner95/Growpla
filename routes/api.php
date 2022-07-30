@@ -35,7 +35,8 @@ Route::get('/getAccountTypes', 'Api\AccountTypesController@getAccountTypes');
 
 Route::get('/getStartupStates', 'Api\StartupStateController@getStartupStates');
 
-
+Route::get('/loadBlogInfo', 'Api\BlogController@loadBlogInfo');
+Route::get('/getLatestBlogs', 'Api\BlogController@getLatestBlogs');
 
 Route::get('/getStartupserviceType', 'Api\StartupserviceTypeController@getStartupserviceType');
 

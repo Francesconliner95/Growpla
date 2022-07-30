@@ -16,12 +16,18 @@ use Illuminate\Support\Facades\Route;
 Auth::routes(['verify' => true]);
 
 Route::get('/home','HomeController@index')->name('home');
+Route::get('/home2', 'HomeController@home2')->name('home2');
 Route::get('/termsAndConditions', 'HomeController@termsAndConditions')->name('termsAndConditions');
 Route::get('/privacyPolicy', 'HomeController@privacyPolicy')->name('privacyPolicy');
 Route::get('/cookiePolicy', 'HomeController@cookiePolicy')->name('cookiePolicy');
 Route::get('/incubators', 'HomeController@incubators')->name('incubators');
+Route::resource('/blogs', 'BlogController');
 
-Auth::routes(['verify' => true]);
+//GOOGLE
+Route::get('auth/google', 'Auth\GoogleController@redirectToGoogle');
+Route::get('auth/google/callback', 'Auth\GoogleController@handleGoogleCallback');
+
+//Auth::routes(['verify' => true]);
 
 //Per eseguire il logout nel guest
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
@@ -37,6 +43,7 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
 
     //USER
     Route::resource('/users', 'UserController');
+    Route::get('users/{user_id}/intro', 'UserController@intro')->name('users.intro');
     Route::get('users/{user_id}/accounts', 'UserController@accounts')->name('users.accounts');
     Route::put('users/{user_id}/storeAccounts', 'UserController@storeAccounts')->name('users.storeAccounts');
     Route::get('users/{user_id}/background', 'UserController@background')->name('users.background');
@@ -57,6 +64,7 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
 
     //PAGE
     Route::resource('/pages', 'PageController');
+    Route::get('/pagetype', 'PageController@pagetype')->name('pages.pagetype');
     Route::get('/newPage/{pagetype_id}', 'PageController@newPage')->name('pages.newPage');
     Route::get('pages/{page_id}/settings', 'PageController@settings')->name('pages.settings');
     Route::get('pages/{page_id}/sectors', 'PageController@sectors')->name('pages.sectors');
@@ -80,8 +88,12 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     //OFFERTE NECESSITA'
     Route::get('/needs', 'GiveHaveController@getAllHave')
     ->name('needs.getAllHave');
+    Route::get('/recommendedNeeds', 'GiveHaveController@getRecommendedHave')
+    ->name('needs.getRecommendedHave');
     Route::get('/offers', 'GiveHaveController@getAllGive')
     ->name('offers.getAllGive');
+    Route::get('/recommendedOffers', 'GiveHaveController@getRecommendedGive')
+    ->name('offers.getRecommendedGive');
     Route::get('/loadNeedInfo', 'GiveHaveController@loadNeedInfo')->name('loadNeedInfo');
     //GiveUserService
     Route::resource('/give-user-services', 'GiveUserServiceController');
@@ -123,6 +135,7 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::get('collaborations/my/{id}/{user_or_page}', 'CollaborationController@my')->name('collaborations.my');
     Route::get('getCollaborations', 'CollaborationController@getCollaborations')->name('getCollaborations');
     Route::get('getProposalCollaborations', 'CollaborationController@getProposalCollaborations')->name('getProposalCollaborations');
+    Route::get('getRecommendedCollaborations', 'CollaborationController@getRecommendedCollaborations')->name('getRecommendedCollaborations');
     Route::delete('deleteCollaboration', 'CollaborationController@deleteCollaboration')
     ->name('deleteCollaboration');
     Route::put('confirmCollaboration', 'CollaborationController@confirmCollaboration')
@@ -173,8 +186,6 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     Route::put('/changeLang', 'SettingController@changeLang')
     ->name('settings.changeLang');
     Route::resource('/supports', 'SupportController');
-    Route::get('/switch', 'SupportController@switch')
-    ->name('supports.switch');
     Route::get('/success', 'SupportController@success')
     ->name('supports.success');
     Route::get('/getAllSupports', 'SupportController@getAllSupports')
@@ -199,5 +210,9 @@ Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->
     //VIEW
     Route::get('/myLatestViews', 'ViewController@myLatestViews')->name('myLatestViews');
     Route::get('/mostViewedAccounts', 'ViewController@mostViewedAccounts')->name('mostViewedAccounts');
+
+    //BLOG
+    Route::resource('/blogs', 'BlogController');
+    Route::get('blogs/deleteBlogImages/{blog_id}', 'BlogController@deleteBlogImages')->name('blogs.deleteBlogImages');
 
 });

@@ -123,8 +123,9 @@
                           <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
                             <h6>{{__('Website')}}
                               <div class="info">
-                                <button aria-label="Inserisci l'url del tuo sito web" data-microtip-position="top" data-microtip-size="medium" role="tooltip" type="button">
-                                <i class="fas fa-info-circle"></i>
+                                  <button type="button" class="tooltip-custom cursor-default" data-toggle="tooltip" data-placement="top" title="Inserisci l'url del tuo sito web">
+                                      <i class="fas fa-info-circle"></i>
+                                  </button>
                               </div>
                             </h6>
                           </div>
@@ -142,8 +143,9 @@
                           <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
                             <h6>LinkedIn
                                 <div class="info">
-                                    <button aria-label="Inserisci l'url del tuo profilo linkedin" data-microtip-position="top" data-microtip-size="medium" role="tooltip" type="button">
-                                    <i class="fas fa-info-circle"></i>
+                                    <button type="button" class="tooltip-custom cursor-default" data-toggle="tooltip" data-placement="top" title="Inserisci l'url del tuo profilo linkedin">
+                                        <i class="fas fa-info-circle"></i>
+                                    </button>
                                 </div>
                             </h6>
                           </div>
@@ -191,7 +193,7 @@
                                   </div>
                                   <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6  mt-1 mb-1">
                                       <label class="m-0">Città</label>
-                                      <input type="text" name="municipality" class="form-control" value="{{ old('municipality',$user->municipality)}}" required>
+                                      <input type="text" name="municipality" class="form-control text-capitalize" value="{{ old('municipality',$user->municipality)}}" required>
                                   </div>
                               </div>
                                 </div>

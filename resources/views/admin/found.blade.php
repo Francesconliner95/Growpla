@@ -38,11 +38,11 @@
     <div class="container">
         <div class="item-cont">
             <div class="item-style">
-                <div class="header">
-                    <h3 >Risultati per "<strong>{{$search_type}}</strong>"</h3>
+                <div class="header row">
+                    <h3 class="col-sm-12 col-md-9 col-lg-9 col-xl-9">Risultati per "<strong>{{$search_type}}</strong>"</h3>
                     @if($search_type=='Incubatori-Acceleratori')
-                        <div class="text-center" v-cloak>
-                            <a class="button-style button-color-blue" href="{{route('incubators')}}">Lista incubatori d'italia</a>
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 text-right">
+                            <a class="button-style button-color-blue text-center" href="{{route('incubators')}}">Lista incubatori d'italia</a>
                         </div>
                     @endif
                 </div>
@@ -95,9 +95,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3  pt-3 d-flex justify-content-center align-items-center">
-                                <div class="">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3  pt-3 d-flex justify-content-start align-items-center">
+                                <div class="pl-2">
                                     <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="button-style button-color-green m-1">Visita profilo</a>
+                                    <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="button-style button-color-green m-1" target="_blank">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
                                     <div v-if="account.user_or_page" class="d-inline-block">
                                         <div v-if="account.id!=my_user_id" class="d-inline-block">
                                             <button  class="button-style button-color-blue m-1" type="button" name="button" @click="switchAccounts(i)">
@@ -116,6 +119,31 @@
                             </div>
                         </div>
                     </div>
+                    @if($search_type=='Incubatori-Acceleratori')
+                        <div class="p-2" v-cloak>
+                            <div class="row gray-cont">
+                                <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 d-flex justify-content-center align-items-center">
+                                    <div class=" img-cont medium-img">
+                                        <img src="/storage/pages_images/default-incubatore.svg" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7">
+                                    <div style="height: 150px;">
+                                        <div  class="h-100 d-flex align-items-center justify-content-center">
+                                            <span class="font-weight-bold">
+                                                Lista incubatori d'italia
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                                    <div  class="h-100 d-flex align-items-center justify-content-center">
+                                        <a class="button-style button-color-blue text-center" href="{{route('incubators')}}">Vai alla lista</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                     <button v-if="showScrollTop" type="button" name="button" class="button-scroll" @click="scrollTop()">
                         <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-90l" alt="">
                     </button>

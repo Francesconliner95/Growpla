@@ -19,6 +19,7 @@ var create = new Vue({
         messages_qty: 0,
         first_scroll: false,
         longtext: false,
+        can_create_coll: false,
     },
 
     methods: {
@@ -27,6 +28,7 @@ var create = new Vue({
             if(this.message_text){
                 var message_text = this.message_text;
                 this.message_text = '';
+                this.longtext = false;
                 axios({
                     method: 'post',
                     url: '/admin/newMessage',
@@ -38,6 +40,7 @@ var create = new Vue({
                     }
                 }).then(response => {
                     this.first_scroll = false;
+                    this.can_create_coll = true;
                     this.getMessages();
                 });
             }
@@ -54,14 +57,80 @@ var create = new Vue({
                 }
             }).then((response) => {
                 this.messages = response.data.results.messages;
-                //console.log(this.messages);
-
                 if (!this.first_scroll) {
                     this.first_scroll = true;
                     this.scroll();
                 }
+
+                //creazione della collaborazione se sono stati scambiati più di 1 messaggio e c'è stata una risposta
+                if(this.can_create_coll && this.messages.length>1){
+                    var first_message_sender = {
+                        id: this.messages[0].sender_user_id?
+                                    this.messages[0].sender_user_id:
+                                    this.messages[0].sender_page_id,
+                        user_or_page: this.messages[0].sender_user_id?
+                                        'user':'page',
+                    };
+                    var answer_exist = false;
+
+                    for (var i = 0; i < this.messages.length; i++) {
+                        if (first_message_sender.id!=this.messages[i].sender_user_id){
+                            answer_exist = true;
+                            break;
+                        }else{
+                            if(first_message_sender.user_or_page=='user'){
+                                if(this.messages[i].user_or_page=='page'){
+                                    answer_exist = true;
+                                    break;
+                                }
+                            }else{
+                                if(this.messages[i].user_or_page=='user'){
+                                    answer_exist = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if(answer_exist){
+                        var message = this.messages[0];
+                        if(message.sender_user_id){
+                            var sender_id = message.sender_user_id;
+                            var sender_user_or_page = 'user';
+                        }
+                        if(message.sender_page_id){
+                            var sender_id = message.sender_page_id;
+                            var sender_user_or_page = 'page';
+                        }
+                        if(message.recipient_user_id){
+                            var recipient_id = message.recipient_user_id;
+                            var recipient_user_or_page = 'user';
+                        }
+                        if(message.recipient_page_id){
+                            var recipient_id = message.recipient_page_id;
+                            var recipient_user_or_page = 'page';
+                        }
+                        this.addCollaboration(sender_id,sender_user_or_page,recipient_id,recipient_user_or_page);
+                    }
+                }
+                this.can_create_coll = false;
             });
         },
+
+        addCollaboration(sender_id,sender_user_or_page,recipient_id,recipient_user_or_page){
+            axios({
+                method: 'post',
+                url: '/admin/collaborations',
+                data: {
+                    sender_id: sender_id,
+                    sender_user_or_page: sender_user_or_page,
+                    recipient_id: recipient_id,
+                    recipient_user_or_page: recipient_user_or_page,
+                    hidden: true,
+                }
+            }).then(response => {});
+        },
+
         scroll(){
             setTimeout(()=>{
                 var elem = document.getElementById('scroll-messages');
@@ -87,13 +156,12 @@ var create = new Vue({
         },
 
         text_wrap(){
-            // console.log(document.getElementById("mytextarea").scrollHeight>31);
-            // if(document.getElementById("mytextarea").scrollHeight>31){
-            //     this.longtext = true;
-            // }else{
-            //     this.longtext = false;
-            // }
-            // console.log(document.getElementById("mytextarea").content);
+            if(document.getElementById("mytextarea").scrollHeight>31 && this.message_text.length>0){
+                this.longtext = true;
+                this.scroll();
+            }else{
+                this.longtext = false;
+            }
         },
 
     },

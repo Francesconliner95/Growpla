@@ -10,7 +10,7 @@
     <div class="container">
         <div class="item-cont">
             <div class="item-style">
-                <h3 >Tutte le offerte</h3>
+                <h3>{{$webpage_typename}}</h3>
                 <button v-if="showScrollTop" type="button" name="button" class="button-scroll" @click="scrollTop()">
                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-90l" alt="">
                 </button>
@@ -37,7 +37,11 @@
                                   <span>@{{sector.name}}</span>
                                 </div>
                             </div> --}}
-                            <a :href="offer.user_or_page?'/admin/users/'+ offer.id : '/admin/pages/'+ offer.id" class="button-style button-color">Visita profilo</a>
+                            <a :href="offer.user_or_page?'/admin/users/'+ offer.id : '/admin/pages/'+ offer.id" class="button-style button-color mr-2">Visita profilo</a>
+                            <span aria-label="Apri in un'altra scheda" data-microtip-position="top" data-microtip-size="medium" role="tooltip" class="cursor-default">
+                            <a :href="offer.user_or_page?'/admin/users/'+ offer.id : '/admin/pages/'+ offer.id" class="button-style button-color" target="_blank">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
                         </div>
                     </div>
                     <div v-if="offers_show.length==0 && !in_load" class="" v-cloak>

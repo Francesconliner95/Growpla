@@ -142,7 +142,7 @@
                                   <h6>Ruolo</h6>
                               </div>
                               <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
-                                  <input type="text" name="role" class="form-control" maxlength="20" value="" required>
+                                  <input type="text" name="role" class="form-control" maxlength="25" value="" required>
                                   @error ('role')
                                       <div class="alert alert-danger">
                                           {{__($message)}}

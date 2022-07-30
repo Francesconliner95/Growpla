@@ -8,34 +8,78 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use File;
 use Response;
+use App\Language;
 use App\Support;
 use App\SupportType;
-use App\Account;
 use App\User;
-use App\Language;
+use App\Usertype;
+use App\Page;
+use App\Pagetype;
+use App\Collaboration;
+use App\Chat;
+use App\Message;
+use App\Follow;
+use App\HavePageService;
+use App\HavePageUsertype;
+use App\HavePagePagetype;
+use App\HaveUserService;
+use App\GivePageService;
+use App\GiveUserService;
+use App\Admin;
 
 class SupportController extends Controller
 {
 
-    public function switch()
-    {
-
-        if(Auth::user()->id==1){
-            return redirect()->route('admin.supports.index');
-        }else{
-            return redirect()->route('admin.supports.create');
-        }
-
-    }
-
     public function index()
     {
-        if(Auth::user()->id==1){
+        $admins = Admin::pluck('user_id')->toArray();
+        if(in_array(Auth::user()->id,$admins)){
 
-            $data = [
-                'supportTypes' => SupportType::all(),
+            $usertypes_count = [];
+            $usertypes = Usertype::where('hidden',null)->get();
+            foreach ($usertypes as $usertype) {
+                array_push($usertypes_count,$usertype->users->count());
+            }
+            $usertypes_obj = [
+                'name'=> Usertype::where('hidden',null)->pluck('name_it')->toArray(),
+                'count' => $usertypes_count,
             ];
 
+            $users_date = User::all()->pluck('created_at')->toArray();
+            $pages_date = Page::all()->pluck('created_at')->toArray();
+            $users_complete_date = User::where('tutorial',null)->pluck('created_at')->toArray();
+            $users_not_complete_date = User::where('tutorial',1)->pluck('created_at')->toArray();
+            //dd($users_date);
+
+            $data = [
+                'user' => User::count(),
+                'page' => Page::count(),
+                'user_complete' => User::where('tutorial',null)->count(),
+                'page_complete' => Page::where('tutorial',null)->count(),
+                'usertypes' => $usertypes_obj,
+                'pagetypes' => Pagetype::where('hidden',null)->get(),
+                'users_date' => $users_date,
+                'pages_date' => $pages_date,
+                'users_complete_date' => $users_complete_date,
+                'users_not_complete_date' => $users_not_complete_date,
+                'collaborations_ver' => Collaboration::where('col1_confirmed',1)
+                                                    ->where('col2_confirmed',1)
+                                                    ->count(),
+                'collaborations_rec' => Collaboration::where('col1_show',null)
+                                                    ->where('col1_show',null)
+                                                    ->count(),
+                'chats_cont' => Chat::count(),
+                'messages_cont' => Message::count(),
+                'follows_cont' => Follow::count(),
+                'offers_cont' => GivePageService::count() +
+                                 GiveUserService::count(),
+                'needs_cont' => HavePageService::count() +
+                                HavePageUsertype::count() +
+                                HavePagePagetype::count() +
+                                HaveUserService::count(),
+                'supportTypes' => SupportType::all(),
+            ];
+            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
             return view('admin.supports.index', $data);
 
         }abort(404);
@@ -44,11 +88,12 @@ class SupportController extends Controller
 
     public function getAllSupports()
     {
-        if(Auth::user()->id==1){
+        $admins = Admin::pluck('user_id')->toArray();
+        if(in_array(Auth::user()->id,$admins)){
 
             $supports = Support::query()
                         ->join('users','users.id','=','user_id')
-                        ->select('supports.id','supports.support_type_id', 'supports.title','supports.readed', 'users.id as user_id', 'users.email')->get();
+                        ->select('supports.id','supports.support_type_id', 'supports.title','supports.readed', 'users.id as user_id', 'users.email','users.name','users.surname')->get();
 
             return response()->json([
                 'success' => true,
@@ -69,15 +114,16 @@ class SupportController extends Controller
         $data = [
             'supportTypes' => SupportType::all(),
             'lang' => Auth::user()->language_id,
+            'admins' => Admin::pluck('user_id')->toArray(),
         ];
-
+        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
         return view('admin.supports.create',$data);
     }
 
     public function store(Request $request){
 
         $request->validate([
-            'file' => 'nullable|mimes:jpeg,png,jpg,gif,swg,pdf|max:4000',
+            'file' => 'nullable|mimes:jpeg,png,jpg,gif,svg,pdf|max:4000',
             'support_type_id' => 'required|integer',
             'title' => 'required|string|min:2|max:100',
             'description' => 'required|string|min:20',
@@ -95,7 +141,6 @@ class SupportController extends Controller
         }
 
         $new_support->save();
-
         return redirect()->route('admin.supports.success');
 
     }
@@ -109,37 +154,18 @@ class SupportController extends Controller
     {
 
 
-        if(Auth::user()->id==1){
+        $admins = Admin::pluck('user_id')->toArray();
+        if(in_array(Auth::user()->id,$admins)){
 
             $support->readed = 1;
             $support->update();
 
-            $support::join('users','users.id','=','user_id');
-
-            $exist_account = Account::where('user_id',$support->user_id)->first();
-
-            $support['user_email'] = User::find($support->user_id)->email;
-
-            if($exist_account){
-                $support['account_id'] = $exist_account->id;
-                $support['account_name'] = $exist_account->name;
-            }else{
-                $support['account_id'] = 'nope';
-                $support['account_name'] = 'nope';
-            }
-            // dd($support->file->extension());
-            //
-            // if($support->file->extension()=='pdf'){
-            //     $support['file_type'] = 'pdf';
-            // }else{
-            //     $support['file_type'] = 'image';
-            // }
-
             $data = [
                 'support' => $support,
                 'supportTypes' => SupportType::all(),
+                'user' => User::find($support->user_id),
             ];
-
+            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
             return view('admin.supports.show', $data);
 
         }abort(404);
@@ -158,14 +184,15 @@ class SupportController extends Controller
 
     public function destroy(Support $support)
     {
-        if(Auth::user()->id==1){
+        $admins = Admin::pluck('user_id')->toArray();
+        if(in_array(Auth::user()->id,$admins)){
 
             if ($support->file) {
                 Storage::delete($support->file);
             }
 
             $support->delete();
-
+            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
             return redirect()->route('admin.supports.index');
 
         }abort(404);

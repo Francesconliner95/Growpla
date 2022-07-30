@@ -85,6 +85,11 @@ var create = new Vue({
             }).then(response => {
                 var route = response.data.results.route;
                 window.location.href = route;
+                // window.open(
+                //   route,
+                //   '_blank'
+                // );
+                // this.alert = false;
             });
         },
 
@@ -335,14 +340,15 @@ var create = new Vue({
         },
 
         mergePagesUsers(){
+
             var accounts = this.pages_id.concat(this.users_id);
             //ordinamento per id
             for (var i=0; i < accounts.length; i++) {
                 for (var j=0; j < accounts.length-1; j++) {
-                    if (accounts[j].id>accounts[i].id) {
-                      var tmp=accounts[j];
-                      accounts[j]=accounts[i];
-                      accounts[i]=tmp;
+                    if (accounts[j].created_at>accounts[i].created_at) {
+                        var tmp=accounts[j];
+                        accounts[j]=accounts[i];
+                        accounts[i]=tmp;
                     }
                 }
             }

@@ -8,34 +8,32 @@ axios.defaults.headers.common = {
 var create = new Vue({
     el: '#user-create',
     data: {
-        step,
         summary,
         presentation,
         city,
-        region_id_selected,        
-        max_step: document.getElementsByClassName('step').length,
+        region_id_selected,
+        step,
+        max_step: '',
         regions: '',
     },
     methods: {
 
         prev(){
-            if(this.step>1){
+            if(parseInt(this.step)>1){
                 this.step--;
             }
         },
 
         next(){
-            console.log(this.step);
-            if(this.step<this.max_step){
+            if(parseInt(this.step)<this.max_step){
                 this.step++;
-                console.log(this.step);
-            }else if (this.step==this.max_step) {
+            }else if (parseInt(this.step)==this.max_step) {
                 document.getElementById('formUserCreate').submit();
             }
         },
 
         prev_arrow(){
-            if(this.step<=1){
+            if(parseInt(this.step)<=1){
                 return 'invisible';
             }else{
                 return 'button-style button-color-blue';
@@ -43,19 +41,15 @@ var create = new Vue({
         },
 
         next_arrow(){
-            if(this.step<this.max_step){
-                if(this.step==1 && this.summary.length<50){
+            if(parseInt(this.step)==1 && this.summary.length<50){
+                return 'invisible';
+            }
+            if(parseInt(this.step)==4){
+                if(!this.region_id_selected || !this.city){
                     return 'invisible';
                 }
-                if(this.step==5){
-                    if(!this.region_id_selected || !this.city){
-                        return 'invisible';
-                    }
-                }
-                return 'button-style button-color-blue';
-            }else if (this.step==this.max_step) {
-                return 'button-style button-color-green';
             }
+            return 'button-style button-color-blue';
         },
 
         getRegionsByCountry(){
@@ -78,6 +72,12 @@ var create = new Vue({
 
     },
     mounted() {
+        if(!this.step){
+            this.step = "1";
+        }
+
+        this.max_step = document.getElementsByClassName('step').length;
+
         this.getRegionsByCountry();
         //DRAG & DROP
         document.querySelectorAll(".drop-zone__input").forEach(inputElement =>{

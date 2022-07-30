@@ -29,6 +29,11 @@
         <div class="container">
             <div class="search">
                 <div id="search-fixed" :class="usertypes_id.length>0||pagetypes_id.length>0||services_selected||name?'search-fixed-top':'search-fixed-center'">
+                    <script v-if="
+                    usertypes_id.length>0||pagetypes_id.length>0||services_selected||name"
+                    type="application/javascript" v-cloak>
+                        window.scrollTo({top: 0, behavior: 'smooth'});
+                    </script>
                     {{-- <h5 class="text-center text-white font-weight-bold">{{ __('What are you looking for?') }}</h5> --}}
                     <div class="search-type">
                         <div  class="switch-big-button-container pt-1 pb-2">
@@ -77,7 +82,7 @@
                                           </div>
                                       @enderror
                                     </div>
-                                    <button v-if="search_type && name" class="button-style button-color submit-button" type="submit" name="button" @click="submitForm()">
+                                    <button v-if="search_type && name" class="button-style button-color-orange submit-button" type="submit" name="button" @click="submitForm()">
                                       <i class="fas fa-search"></i>
                                     </button>
                                 </div>
@@ -253,7 +258,7 @@
                                     </div>
                                 </div>
                                 {{-- settori --}}
-                                <div v-if="category_selected && category_selected!=6 && usertypes_id.length==0" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-0 position-relative">
+                                <div v-if="category_selected && category_selected!=2 && category_selected!=6" class="col-sm-12 col-md-12 col-lg-2 col-xl-2 p-0 position-relative">
                                     <button type="button" name="button" @click="buttonsToggle(5)" :class="button==5?'s-filter-button bg-white':'s-filter-button'">Settori</button>
                                     <div v-if="button==5" class="s-filter">
                                     <div class="">
@@ -312,7 +317,7 @@
                                             </option>
                                         </select>
                                     </div>
-                                    <button v-if="!search_type && category_selected" class="button-style button-color submit-button" type="submit" name="button" @click="submitForm()">
+                                    <button v-if="!search_type && category_selected" class="button-style button-color-orange submit-button button-animation paused" type="submit" id="filter-button" name="button" @click="submitForm()">
                                       <i class="fas fa-search"></i>
                                     </button>
                                 </div>
@@ -392,40 +397,129 @@
     <div class="end-background">
 
     </div>
-    {{-- SLIDER ESEMPIO --}}
-    {{-- <div class="container">
-        <div class="main-multi-slider">
-            <div class="multi-slider-cont" id="multi-slider-cont-1">
-                <div class="multi-slider-item col-sm-11 col-md-7 col-lg-5 col-xl-3">
-                    <span>Slide 1</span>
-                </div>
-                <div class="multi-slider-item col-sm-11 col-md-7 col-lg-5 col-xl-3">
-                    <span>Slide 2</span>
-                </div>
-                <div class="multi-slider-item col-sm-11 col-md-7 col-lg-5 col-xl-3">
-                    <span>Slide 3</span>
-                </div>
-                <div class="multi-slider-item col-sm-11 col-md-7 col-lg-5 col-xl-3">
-                    <span>Slide 4</span>
-                </div>
-                <div class="multi-slider-item col-sm-11 col-md-7 col-lg-5 col-xl-3">
-                    <span>Slide 5</span>
-                </div>
-                <div class="multi-slider-item col-sm-11 col-md-7 col-lg-5 col-xl-3">
-                    <span>Slide 6</span>
+    <div v-if="blogs.length>0" class="container pb-3" v-cloak>
+        <h4 class="font-weight-bold">News</h4>
+        <div class="main-multi-slider" style="margin:0px -15px;">
+            <div class="multi-slider-cont" id="multi-slider-cont-blog">
+                <div v-for="blog in blogs" class="multi-slider-item col-8 col-sm-8 col-md-5 col-lg-3 col-xl-3">
+                    <div class="d-flex justify-content-center align-items-center h-100">
+                        <div class="card-style card-color-gray">
+                            <img :src="blog.main_image?'/storage/'+
+                            blog.main_image : '/storage/images/news.svg'" alt="" class="cover-image">
+                            <div class="top pb-4">
+                                <div  class="w-100 mb-1" style="height:110px;">
+                                </div>
+                                <p class="text-dark title mb-1 font-weight-bold">
+                                    @{{blog.title}}
+                                </p>
+                                <p class="date">
+                                    @{{getDate(blog.created_at)}}
+                                </p>
+                            </div>
+                            <div class="button text-center font-weight-normal">
+                                <a :href="'/blogs/'+ blog.id" class="button-style button-color-green">Leggi</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <button type="button" name="button" @mousedown="start(1,'left')" @mouseleave="stop(1,'left')" @mouseup="stop(1,'left')" class="slider-left" v-cloak>
-                <i class="fas fa-caret-left"></i>
+            <button type="button" name="button" @mousedown="start('blog','left')" @mouseleave="stop('blog','left')" @mouseup="stop('blog','left')" class="slider-left mobile-hide" id="button-left-blog" v-cloak>
+                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
             </button>
-            <button type="button" name="button" @mousedown="start(1,'right')" @mouseleave="stop(1,'right')" @mouseup="stop(1,'right')"class="slider-right" v-cloak>
-                <i class="fas fa-caret-right"></i>
+            <button type="button" name="button" @mousedown="start('blog','right')" @mouseleave="stop('blog','right')" @mouseup="stop('blog','right')" class="slider-right mobile-hide" id="button-right-blog" v-cloak>
+                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
             </button>
+            <span>@{{this.delay('blog')}}</span>
         </div>
-    </div> --}}
-    <div v-if="offers.length>0" class="container pt-3 pb-3" v-cloak>
-        <h4 class="font-weight-bold">Offerte</h4>
-        <div class="main-multi-slider">
+        <div class="text-center">
+            <a href="{{route('blogs.index')}}" class="font-weight-bold text-dark">
+                Scopri tutte le news >
+            </a>
+        </div>
+    </div>
+    <div v-if="recommendedOffers.length>0" class="container pb-3" v-cloak>
+        <h4 class="font-weight-bold">Profili che offrono quello che cerchi</h4>
+        <div class="main-multi-slider" style="margin:0px -15px;">
+            <div class="multi-slider-cont" id="multi-slider-cont-roffers">
+                <div v-for="offer in recommendedOffers" class="multi-slider-item col-8 col-sm-8 col-md-5 col-lg-3 col-xl-3">
+                    <div class=" d-flex justify-content-center align-items-center h-100">
+                        <div class="card-style card-color-green">
+                            <div class="top pb-4">
+                                <div class=" img-cont mini-img">
+                                    <img v-if="offer.image" :src="'/storage/' + offer.image" alt="">
+                                </div>
+                                <p class="name text-capitalize text-dark">
+                                    @{{offer.user_or_page? offer.name +' ' +offer.surname : offer.name}}
+                                </p>
+                                {{-- <span>@{{offer.service_id?'cerca servizio di':'cerca'}}</span> --}}
+                                <p class="service text-capitalize">
+                                    @{{offer.need}}
+                                </p>
+                            </div>
+                            <div class="button text-center font-weight-normal">
+                                <a :href="offer.user_or_page?'/admin/users/'+ offer.id : '/admin/pages/'+ offer.id" class="button-style button-color-blue">Visita profilo</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" name="button" @mousedown="start('roffers','left')" @mouseleave="stop('roffers','left')" @mouseup="stop('roffers','left')" class="slider-left mobile-hide" id="button-left-roffers" v-cloak>
+                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
+            </button>
+            <button type="button" name="button" @mousedown="start('roffers','right')" @mouseleave="stop('roffers','right')" @mouseup="stop('roffers','right')" class="slider-right mobile-hide" id="button-right-roffers" v-cloak>
+                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
+            </button>
+            <span>@{{this.delay('roffers')}}</span>
+        </div>
+        <div class="text-center">
+            <a href="{{route('admin.offers.getRecommendedGive')}}" class="font-weight-bold text-dark">
+                Scopri tutte le offerte consigliate >
+            </a>
+        </div>
+    </div>
+    <div v-if="recommendedNeeds.length>0" class="container pb-3" v-cloak>
+        <h4 class="font-weight-bold">Profili che cercano quello che offri</h4>
+        <div class="main-multi-slider" style="margin:0px -15px;">
+            <div class="multi-slider-cont" id="multi-slider-cont-rneeds">
+                <div v-for="need in recommendedNeeds" class="multi-slider-item col-8 col-sm-8 col-md-5 col-lg-3 col-xl-3">
+                    <div class=" d-flex justify-content-center align-items-center h-100">
+                        <div class="card-style card-color-blue">
+                            <div class="top pb-4">
+                                <div class=" img-cont mini-img">
+                                    <img v-if="need.image" :src="'/storage/' + need.image" alt="">
+                                </div>
+                                <p class="name text-capitalize text-dark">
+                                    @{{need.user_or_page? need.name +' ' +need.surname : need.name}}
+                                </p>
+                                {{-- <span>@{{need.service_id?'cerca servizio di':'cerca'}}</span> --}}
+                                <p class="service text-capitalize">
+                                    @{{need.need}}
+                                </p>
+                            </div>
+                            <div class="button text-center font-weight-normal">
+                                <a :href="need.user_or_page?'/admin/users/'+ need.id : '/admin/pages/'+ need.id" class="button-style button-color-blue">Visita profilo</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" name="button" @mousedown="start('rneeds','left')" @mouseleave="stop('rneeds','left')" @mouseup="stop('rneeds','left')" class="slider-left mobile-hide" id="button-left-rneeds" v-cloak>
+                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
+            </button>
+            <button type="button" name="button" @mousedown="start('rneeds','right')" @mouseleave="stop('rneeds','right')" @mouseup="stop('rneeds','right')" class="slider-right mobile-hide" id="button-right-rneeds" v-cloak>
+                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
+            </button>
+            <span>@{{this.delay('rneeds')}}</span>
+        </div>
+        <div class="text-center">
+            <a href="{{route('admin.needs.getRecommendedHave')}}" class="font-weight-bold text-dark">
+                Scopri tutte le richieste consigliate >
+            </a>
+        </div>
+    </div>
+    <div v-if="offers.length>0" class="container pb-3" v-cloak>
+        <h4 class="font-weight-bold">Offerte recenti</h4>
+        <div class="main-multi-slider" style="margin:0px -15px;">
             <div class="multi-slider-cont" id="multi-slider-cont-1">
                 <div v-for="offer in offers" class="multi-slider-item col-8 col-sm-8 col-md-5 col-lg-3 col-xl-3">
                     <div class=" d-flex justify-content-center align-items-center h-100">
@@ -464,8 +558,8 @@
         </div>
     </div>
     <div v-if="needs.length>0" class="container pt-3 pb-3" v-cloak>
-        <h4 class="font-weight-bold">Necessità</h4>
-        <div class="main-multi-slider">
+        <h4 class="font-weight-bold">Necessità recenti</h4>
+        <div class="main-multi-slider" style="margin:0px -15px;">
             <div class="multi-slider-cont" id="multi-slider-cont-2">
                 <div v-for="need in needs" class="multi-slider-item col-8 col-sm-8 col-md-5 col-lg-3 col-xl-3">
                     <div class=" d-flex justify-content-center align-items-center h-100">
@@ -476,11 +570,15 @@
                                 </div>
                                 <p class="name text-capitalize text-dark">
                                     @{{need.user_or_page? need.name +' ' +need.surname : need.name}}
-                                    <span v-if="need.cofounder_service_id" class="mini-txt text-dark d-block text-lowercase">cerca aspirante co-founder</span>
                                 </p>
-                                {{-- <span>@{{need.service_id?'cerca servizio di':'cerca'}}</span> --}}
-                                <p class="service text-capitalize">           @{{need.need}}
+                                <p v-if="!need.cofounder_service_id" class="service text-capitalize">           @{{need.need}}
                                 </p>
+                                <div v-else class="">
+                                    <p class="service text-capitalize">Aspirante co-founder
+                                    </p>
+                                    <p v-if="need.cofounder_service_id" class="mini-txt text-dark text-lowercase">@{{need.need}}</p>
+                                </div>
+
                             </div>
                             <div class="bottom text-center font-weight-normal">
                                 <a :href="need.user_or_page?'/admin/users/'+ need.id : '/admin/pages/'+ need.id" class="button-style button-color-blue">Visita profilo</a>
@@ -505,11 +603,11 @@
     </div>
     <div v-if="collaborations.length>0" class="container pt-3 pb-3" v-cloak>
         <h4 class="font-weight-bold">Collaborazioni</h4>
-        <div class="main-multi-slider">
+        <div class="main-multi-slider" style="margin:0px -15px;">
             <div class="multi-slider-cont" id="multi-slider-cont-3">
                 <div v-for="collaboration in collaborations" class="multi-slider-item col-10 col-sm-8 col-md-5 col-lg-4 col-xl-4">
                     <div class="d-flex justify-content-center align-items-center h-100">
-                        <div class="card-collaboration border-green d-flex justify-content-between">
+                        <div class="card-collaboration d-flex justify-content-between">
                             <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 text-center coll-item">
                                 <div class="">
                                     <div class="img-cont medium-img">
@@ -562,8 +660,8 @@
         </div>
     </div>
     <div v-if="mostViewedAccounts.length>0" class="container pt-4 pb-3" v-cloak>
-        <h4 class="font-weight-bold">I più popolari</h4>
-        <div class="main-multi-slider mt-3">
+        <h4 class="font-weight-bold pb-4">I più popolari</h4>
+        <div class="main-multi-slider" style="margin:0px -15px;">
             <div class="multi-slider-cont" id="multi-slider-cont-4" style="height:160px;">
                 <div v-for="account in mostViewedAccounts" class="multi-slider-item col-8 col-sm-8 col-md-5 col-lg-4 col-xl-3 text-center">
                     <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="d-inline-block pt-3 pb-2">
@@ -576,30 +674,11 @@
                     </div>
                 </div>
             </div>
-            <button type="button" name="button" @mousedown="start(4,'left')" @mouseleave="stop(4,'left')" @mouseup="stop(4,'left')" class="slider-left mobile-hide" id="button-left-4" v-cloak>
-                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
-            </button>
-            <button type="button" name="button" @mousedown="start(4,'right')" @mouseleave="stop(4,'right')" @mouseup="stop(4,'right')"class="slider-right mobile-hide" id="button-right-4" v-cloak>
-                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
-            </button>
-            <span>@{{this.delay(4)}}</span>
         </div>
-        {{-- <div class="row pt-4">
-            <a v-for="account in mostViewedAccounts" :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">
-                <div class="">
-                    <div class="img-cont medium-img scale">
-                        <img v-if="account.image" :src="'/storage/' + account.image" alt="">
-                    </div>
-                </div>
-                <div class="">
-                    <p class="text-capitalize font-weight-bold  text-dark text-truncate">@{{account.user_or_page? account.name +' ' +account.surname : account.name}}</p>
-                </div>
-            </a>
-        </div> --}}
     </div>
     <div v-show="myLatestViews.length>0" class="container pt-4 pb-3" v-cloak>
-        <h4 class="font-weight-bold">Visti di recente</h4>
-        <div class="main-multi-slider mt-3">
+        <h4 class="font-weight-bold pb-4">Visti di recente</h4>
+        <div class="main-multi-slider" style="margin:0px -15px;">
             <div class="multi-slider-cont" id="multi-slider-cont-5" style="height:160px;">
                 <div v-for="account in myLatestViews" class="multi-slider-item col-8 col-sm-8 col-md-5 col-lg-4 col-xl-3 text-center">
                     <a :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="d-inline-block pt-3 pb-2">
@@ -612,13 +691,6 @@
                     </div>
                 </div>
             </div>
-            <button type="button" name="button" @mousedown="start(5,'left')" @mouseleave="stop(5,'left')" @mouseup="stop(5,'left')" class="slider-left mobile-hide" id="button-left-5" v-cloak>
-                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-180" alt="">
-            </button>
-            <button type="button" name="button" @mousedown="start(5,'right')" @mouseleave="stop(5,'right')" @mouseup="stop(5,'right')"class="slider-right mobile-hide" id="button-right-5" v-cloak>
-                <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow" alt="">
-            </button>
-            <span>@{{this.delay(5)}}</span>
         </div>
         {{-- <div class="row  pt-4">
             <a v-for="account in myLatestViews" :href="account.user_or_page?'/admin/users/'+ account.id : '/admin/pages/'+ account.id" class="col-sm-12 col-md-6 col-lg-3 col-xl-3 text-center">

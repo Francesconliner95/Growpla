@@ -40,7 +40,7 @@
                     </div>
                     <div class="d-flex justify-content-between mt-5">
                         <div class="">
-                            <a href="{{ route('admin.supports.switch') }}" class="font-weight-bold mini-txt txt-green">
+                            <a href="{{ route('admin.supports.create') }}" class="font-weight-bold mini-txt txt-green">
                                 Suggerisci altre aree di formazione
                             </a>
                         </div>

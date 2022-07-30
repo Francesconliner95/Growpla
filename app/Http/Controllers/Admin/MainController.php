@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 use File;
 use DB;
 use App\Language;
@@ -34,24 +35,24 @@ class MainController extends Controller
 
     public function search()
     {
-      // if(Auth::user()->tutorial){
-      //     return redirect()->route('admin.users.tutorial');
-      // }
 
-      $data = [
-          'usertypes' => Usertype::where('hidden',null)->get(),
-          'pagetypes' => Pagetype::where('hidden',null)->get(),
-          'sectors' => Sector::all(),
-          'lifecycles' => Lifecycle::all(),
-          'countries' => Country::all(),
-          'backgrounds' => Background::where('hidden',null)->get(),
-      ];
+        $data = [
+            'usertypes' => Usertype::where('hidden',null)->get(),
+            'pagetypes' => Pagetype::where('hidden',null)->get(),
+            'sectors' => Sector::all(),
+            'lifecycles' => Lifecycle::all(),
+            'countries' => Country::all(),
+            'backgrounds' => Background::where('hidden',null)->get(),
+        ];
 
-      app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+        $user = Auth::user();
+        $user->last_access = Carbon::now();
+        $user->update();
 
+        app()->setLocale(Language::find(Auth::user()->language_id)->lang);
 
         if(Auth::user()->tutorial){
-            return redirect()->route('admin.users.accounts',Auth::user()->id);
+            return redirect()->route('admin.users.intro',Auth::user()->id);
         }else{
             return view('admin.search', $data);
         }
@@ -404,7 +405,9 @@ class MainController extends Controller
                 $pages_query->where('lifecycle_id',$lifecycle_id);
             }
 
-            $pages = $pages_query/*->select('id')*/->get();
+            $pages = $pages_query->whereNotNull('summary')
+                                ->select('id','created_at')
+                                ->get();
 
             if($need_pagetype_id){
                 $pages_input = $pages;
@@ -432,17 +435,19 @@ class MainController extends Controller
 
         if($usertypes_id){
 
-          $users = [];
+            $users = [];
 
-          if($usertypes_id){
-              $usertypes = Usertype::find($usertypes_id);
-              foreach ($usertypes as $usertype) {
-                  $users_found = $usertype->users;
-                  if($users_found){
-                      array_push($users,...$users_found);
-                  }
-              }
-          }
+            if($usertypes_id){
+                $usertypes = Usertype::find($usertypes_id);
+                foreach ($usertypes as $usertype) {
+                   $users_found = $usertype->users()
+                                    ->whereNotNull('summary')
+                                    ->get();
+                    if($users_found){
+                        array_push($users,...$users_found);
+                    }
+                }
+            }
 
           //all
           if($country_id){
@@ -651,6 +656,23 @@ class MainController extends Controller
                 //controllo se ci sono pagine doppie
 
             }
+
+            if($region_id){
+                $temp = $users;
+                $users = [];
+                foreach ($temp as $user) {
+                    if($user->region_id==$region_id){
+                        array_push($users,$user);
+                    }
+                }
+                $temp = $pages;
+                $pages = [];
+                foreach ($temp as $page) {
+                    if($page->region_id==$region_id){
+                        array_push($pages,$page);
+                    }
+                }
+            }
         }
 
         //RICERCA PER NOME
@@ -658,10 +680,12 @@ class MainController extends Controller
             //dd($name);
             $users = User::where(DB::raw("concat(name, ' ', surname)"), 'LIKE', "%".$name."%")
             ->whereNotNull('summary')
+            ->select('id','created_at')
             ->get();
 
             $pages = Page::where('name','LIKE', "%".$name."%")
             ->whereNotNull('summary')
+            ->select('id','created_at')
             ->get();
         }
 
@@ -669,10 +693,9 @@ class MainController extends Controller
         if($pages){
             foreach ($pages as $page) {
                 $page_id = [
-                  "id" => $page->id,
-                  // "name" => $page->name,
-                  // "image" => $page->image,
-                  "user_or_page" => false,
+                    "id" => $page->id,
+                    "created_at" => $page->created_at,
+                    "user_or_page" => false,
                 ];
                 array_push($pages_id,$page_id);
             }
@@ -682,9 +705,7 @@ class MainController extends Controller
             foreach ($users as $user) {
                 $user_id = [
                   "id" => $user->id,
-                  // "name" => $user->name,
-                  // "surname" => $user->surname,
-                  // "image" => $user->image,
+                  "created_at" => $user->created_at,
                   "user_or_page" => true,
                 ];
                 array_push($users_id,$user_id);

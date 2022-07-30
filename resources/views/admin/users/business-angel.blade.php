@@ -34,8 +34,9 @@
                             <div class="">
                                 <h6>Taglio d'investimenti
                                     <div class="info">
-                                        <button aria-label="Entità dell'investimento che effettui sulla singola startup" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
-                                        <i class="fas fa-info-circle"></i>
+                                        <button type="button" class="tooltip-custom cursor-default" data-toggle="tooltip" data-placement="top" title="Entità dell'investimento che effettui sulla singola startup">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button>
                                     </div>
                                 </h6>
                                 <div class="form-contrtol">
@@ -68,8 +69,9 @@
                             <div class="pt-2">
                                 <h6>Numero di startup supportate
                                     <div class="info">
-                                        <button aria-label="Numero di startup nella quale hai investito" data-microtip-position="top" data-microtip-size="medium" role="tooltip">
-                                        <i class="fas fa-info-circle"></i>
+                                        <button type="button" class="tooltip-custom cursor-default" data-toggle="tooltip" data-placement="top" title="Numero di startup nella quale hai investito">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button>
                                     </div>
                                 </h6>
                                 <input type="number" name="startup_n" class="form-control custom-input-blue col-sm-12 col-md-6 col-lg-6 col-xl-6" value="{{ old('startup_n',$user->startup_n)}}" min="0" placeholder="">

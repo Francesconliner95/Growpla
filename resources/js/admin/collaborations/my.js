@@ -118,6 +118,8 @@ var create = new Vue({
                 url: '/admin/deleteCollaboration',
                 data: {
                     collaboration_id: collaboration.id,
+                    account_id: this.id,
+                    user_or_page: this.user_or_page,
                 }
             }).then(response => {
                 this.getCollaborations();
@@ -131,8 +133,11 @@ var create = new Vue({
                 url: '/admin/confirmCollaboration',
                 data: {
                     collaboration_id: collaboration.id,
+                    account_id: this.id,
+                    user_or_page: this.user_or_page,
                 }
             }).then(response => {
+                this.getCollaborations();
                 this.getProposalCollaborations();
             });
         },
@@ -155,7 +160,6 @@ var create = new Vue({
                 var sender_id = collaboration.recipient_page_id;
                 var sender_user_or_page = 'page';
             }
-            console.log(collaboration.id);
             axios({
                 method: 'post',
                 url: '/admin/collaborations',
@@ -164,7 +168,6 @@ var create = new Vue({
                     sender_user_or_page: sender_user_or_page,
                     recipient_id: recipient_id,
                     recipient_user_or_page: recipient_user_or_page,
-                    old_collaboration_id: collaboration.id,
                 }
             }).then(response => {
                 this.getCollaborations();

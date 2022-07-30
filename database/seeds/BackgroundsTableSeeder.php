@@ -101,7 +101,7 @@ class BackgroundsTableSeeder extends Seeder
                 'hidden'=>null,
             ],
             [
-                'name'=>'Scienze etno-sntropologiche',
+                'name'=>'Scienze etno-antropologiche',
                 'hidden'=>null,
             ],
             [
@@ -174,6 +174,10 @@ class BackgroundsTableSeeder extends Seeder
             ],
             [
                 'name'=>'Scienze umane',
+                'hidden'=>null,
+            ],
+            [
+                'name'=>'Scienze grafiche',
                 'hidden'=>null,
             ],
         ];

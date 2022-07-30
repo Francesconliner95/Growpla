@@ -105,13 +105,6 @@ class HavePageServiceController extends Controller
                     $exist = Service::where('name',$service_name)->first();
                     if($exist){
                         array_push($services_id, $exist->id);
-                    }else{
-                        // if($service_name){
-                        //     $new_service = new Service();
-                        //     $new_service->name = Str::lower($service_name);
-                        //     $new_service->save();
-                        //     array_push($services_id, $new_service->id);
-                        // }
                     }
                 }
             }
@@ -122,7 +115,7 @@ class HavePageServiceController extends Controller
                 $syncResult = $page->have_page_services()->sync([]);
             }
 
-            if(collect($syncResult)->flatten()->isNotEmpty()){
+            if(collect($syncResult)->flatten()->isNotEmpty()  && count($services_id)>0){
                 $followers = $page->page_follower;
                 foreach ($followers as $follower) {
                     $new_notf = new Notification();
@@ -139,17 +132,25 @@ class HavePageServiceController extends Controller
                 $data = $request->all();
                 $user = Auth::user();
 
+                //se non ho selezionato il ruolo dell'aspirante cofounder rimuovo la spunta che cerco aspirante cofounder
+                if(array_key_exists('usertypes', $data)){
+                    if(in_array(1, $data['usertypes'])){
+                        if(!$request->cofounder_services_id){
+                            foreach ($data['usertypes'] as $key => $usertype) {
+                                if($usertype==1){
+                                    unset($data['usertypes'][$key]);
+                                }
+                            }
+                            $data['usertypes'] = array_values($data['usertypes']);
+                        }
+                    }
+                }
+
                 //Necessità tipo di utente
                 if(array_key_exists('usertypes', $data)){
                     $page->have_page_usertypes()->sync($data['usertypes']);
                 }else{
                     $page->have_page_usertypes()->sync([]);
-                }
-
-                if(array_key_exists('pagetypes', $data)){
-                    $page->have_page_pagetypes()->sync($data['pagetypes']);
-                }else{
-                  $page->have_page_pagetypes()->sync([]);
                 }
 
                 $cofounder_services_id = $request->cofounder_services_id;
@@ -166,12 +167,21 @@ class HavePageServiceController extends Controller
                     $page->have_page_cofounders()->sync([]);
                 }
 
+                if(array_key_exists('pagetypes', $data)){
+                    $page->have_page_pagetypes()->sync($data['pagetypes']);
+                }else{
+                  $page->have_page_pagetypes()->sync([]);
+                }
+
             }
 
             if($page->tutorial>=1){
                 $page->tutorial = null;
                 $page->update();
-                return redirect()->route('admin.pages.show',$page->id);
+            }
+
+            if(array_key_exists('go_to_collaborations', $data)){
+                return redirect()->route('admin.collaborations.my', [$page->id,'page']);
             }else{
                 return redirect()->route('admin.pages.show',$page->id);
             }

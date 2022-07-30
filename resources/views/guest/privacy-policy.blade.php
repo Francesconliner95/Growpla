@@ -16,7 +16,7 @@
                       <h5 class=" text-white">{{__('Pursuant art. 13 of EU Regulation 679/2016')}}</h5>
                       <p>{{__('The Data Controller processes your personal data in order to identify you and to provide you with the service, to keep you updated on the service and in order to improve it. The provision of data is mandatory, in the absence we will not be able to perform the service. The data will be communicated to the professional and / or company where you intend to use the service and possibly to other parties responsible for treatment, to provide the requested service. The complete list is available from the owner. Contact us at')}} info@growpla.com</p>
                       <h6>1.	{{__('Data Controller')}}</h6>
-                      <p>Vincenzo Tarantino, C.F. TRNVCN96A25B180N          mail: info@growpla.com</p>
+                      <p>Vincenzo Tarantino, mail: info@growpla.com</p>
                       <h6>2.	{{__('Purposes of the processing and legal basis')}}</h6>
                       <ul>
                           <li>{{__('Per gli utenti: Nome, Cognome, indirizzo mail, età, regione e città, immagine del profilo, identificazione (aspirante co-founder, business angel, libero professionista, dipendente, studente, founder, altro), sommario, presentazione, sito web, profilo linkedin, curriculum vitae, eventuali servizi che cercano/offrono, eventuali pagine che si desiderano creare (startup, azienda, incubatore-acceleratore, venture capital, piattaforma di crowdfunding, ente-associazione, private equity).')}}</li>

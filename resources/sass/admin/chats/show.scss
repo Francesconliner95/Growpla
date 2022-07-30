@@ -13,6 +13,8 @@
         margin-top: 10px;
         padding: 15px;
         overflow-y: auto;
+        overflow-wrap: break-word;//Gestisce le parole lunghe spezzandole
+        white-space: pre-line; //Mi fa visualizzare le interruzioni di linea(a capo)
         .message-item{
             padding-bottom: 5px;
             text-align: left;
@@ -50,11 +52,18 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: relative;
         textarea{
             width: 100%;
             margin-right: 15px;
-            height: 35px;
+            height: 100%;
         }
+        // textarea{
+        //     position: absolute;
+        //     width: 100%;
+        //     margin-right: 15px;
+        //     height: auto;
+        // }
         button{
             height: 100%;
         }
@@ -64,10 +73,10 @@
 }
 .chat-show-longtext{
     .messages-cont{
-        height: calc(100% - 90px) !important;
+        height: calc(100% - 100px) !important;
     }
     .messages-footer{
-        height: 90px;
+        height: 100px;
         textarea{
             height: 75px !important;
         }

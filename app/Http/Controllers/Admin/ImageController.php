@@ -130,7 +130,21 @@ class ImageController extends Controller
 
         $user->update();
 
-        return redirect()->route('admin.users.show', ['user' => $user->id]);
+        // return redirect()->route('admin.users.show', ['user' => $user->id]);
+        if(Auth::user()->tutorial){
+            if($user->usertypes->contains(1)
+            || $user->usertypes->contains(5)){
+                return redirect()->route('admin.users.background',$user->id);
+            }elseif($user->usertypes->contains(2)){
+                return redirect()->route('admin.users.businessAngel',$user->id);
+            }else{
+                $user->tutorial = null;
+                $user->update();
+                return redirect()->route('admin.give-user-services.edit',$user->id);
+            }
+        }else{
+            return redirect()->route('admin.users.show',$user->id);
+        }
 
     }
 
@@ -244,7 +258,7 @@ class ImageController extends Controller
               $page->image = $image_path;
           }elseif($width && $height){
               //SE HO MODIFICATO L'IMMAGINE ESISTENTE
-              if(!in_array($old_image_name,$default_images)){
+              if(!in_array($page->image,$default_images)){
 
                 $image_path = $page->image;
 
@@ -263,7 +277,12 @@ class ImageController extends Controller
 
           $page->update();
 
-          return redirect()->route('admin.pages.show', ['page' => $page->id]);
+
+            if($page->tutorial>=1){
+                return redirect()->route('admin.pages.sectors', $page->id);
+            }else{
+                return redirect()->route('admin.pages.show', ['page'=> $page->id]);
+            }
 
         }abort(404);
 

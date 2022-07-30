@@ -8,11 +8,13 @@ axios.defaults.headers.common = {
 var create = new Vue({
     el: '#nav-bar',
     data: {
+        auth,
         notifications: [],
         message_not_read_qty: 0,
         user: '',
         pages: '',
         alert: false,
+        trasparent_navbar: false,
     },
     methods: {
 
@@ -68,41 +70,29 @@ var create = new Vue({
             if (parts.length === 2) return parts.pop().split(';').shift();
         },
 
+        scrollFunction() {
+            if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+                this.trasparent_navbar = false;
+            } else {
+                this.trasparent_navbar = true;
+            }
+        }
+
     },
     created(){
         if(this.getCookie("analyticsCookie")=='accept'){
             this.enableAnalytics = true;
         }
-        // if (this.page_selected) {
-        //     this.page_selected = JSON.parse(this.page_selected.replace(/&quot;/g,'"'));
-        // }
-
     },
     mounted() {
-        this.getNotReadNotifications();
-        this.getNotReadMessages();
-
+        if(document.getElementById("search")
+        || document.getElementById("guest-home")){
+            window.onscroll = ()=>{this.scrollFunction()};
+            this.trasparent_navbar = true;
+        }
+        if(auth){
+            this.getNotReadNotifications();
+            this.getNotReadMessages();
+        }
     }
-
 });
-
-
-var im_in_index = document.getElementById("search");
-if(im_in_index){
-    document.getElementById("logo-fullsize").src="/storage/images/logo-fullsize-white.svg";
-    document.getElementById("logo").src="/storage/images/logo-white.svg";
-    document.getElementById("container-nb").classList.add("trasparent-navbar");
-    window.onscroll = function() {scrollFunction()};
-}
-
-function scrollFunction() {
-    if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-        document.getElementById("logo-fullsize").src="/storage/images/logo-fullsize.svg";
-        document.getElementById("logo").src="/storage/images/logo.svg";
-        document.getElementById("container-nb").classList.remove("trasparent-navbar");
-    } else {
-        document.getElementById("logo-fullsize").src="/storage/images/logo-fullsize-white.svg";
-        document.getElementById("logo").src="/storage/images/logo-white.svg";
-        document.getElementById("container-nb").classList.add("trasparent-navbar");
-    }
-}

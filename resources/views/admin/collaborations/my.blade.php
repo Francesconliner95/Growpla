@@ -28,6 +28,9 @@
         <div class="item-cont">
             <div class="item-style">
                 <div class="pb-4">
+                    <h6 class="txt-green">
+                        Hai offerto i tuoi servizi ad altri utenti o li hai ricevuti? Sei entrato a far parte di un team in qualità di Co-founder o ne hai trovato uno? Hai finanziato una startup o ricevuto finanziamenti a tua volta? Formalizza le collaborazioni che hai stretto con gli altri utenti!
+                    </h6>
                     <h6>Aggiungi nuova collaborazione</h6>
                     <div class="search" v-cloak>
                         <input type="text" name="account" value="" placeholder="Nome pagina o utente" v-model="account_name" @keyup.enter="searchAccount()" v-on:input="searchAccount()" maxlength="70" class="form-control custom-input-blue col-sm-12 col-md-6 col-lg-4 col-xl-4" autocomplete="off" required>
@@ -70,7 +73,7 @@
                                               collaboration.account.surname:''}}
                                             </span>
                                             </div class="inf">
-                                                <a :href="collaboration.recipient_user_id?
+                                                <a :href="collaboration.account.surname?
                                                 '/admin/users/'+collaboration.account.id
                                                 :'/admin/pages/'+collaboration.account.id" class="button-style button-color-green mt-5">
                                                     Visita profilo
@@ -120,7 +123,7 @@
                                                 <button class="button-style button-color-blue font-weight-bold mt-2" type="submit" name="button" @click="alertMenu(2,collaboration)">
                                                     Conferma
                                                 </button>
-                                                <a :href="collaboration.sender_user_id?
+                                                <a :href="collaboration.account.surname?
                                                 '/admin/users/'+collaboration.account.id
                                                 :'/admin/pages/'+collaboration.account.id" class="button-style button-color-green mt-2">
                                                     Visita profilo

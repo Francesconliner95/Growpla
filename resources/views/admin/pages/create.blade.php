@@ -2,15 +2,13 @@
 
 @section('content')
 <script type="text/javascript">
-    language_id = "{{Auth::user()->language_id}}";
-    name = "{{ old('name') }}";
-    summary = "{{ old('summary') }}";
-    presentation = "{{ old('description') }}";
-    city = "{{ old('municipality') }}";
-    region_id_selected = "{{ old('region_id') }}";
-    step = 1;
+    var name = "{{ old('name','') }}";
+    var summary = "{{ old('summary','') }}";
+    var presentation = "{{ old('description','') }}";
+    var city = "{{ old('municipality','') }}";
+    var region_id_selected = "{{ old('region_id','') }}";
+    var step = "1";
 </script>
-
 <div id="page-create" style="background-image: url({{asset("storage/images/bg-shadow.svg") }}); background-position: left 0px top 0px; background-repeat: no-repeat; background-attachment: fixed; background-size:cover;">
     <div class="container">
         <div class="item-cont">
@@ -43,13 +41,13 @@
                             <p class="mini-txt font-weight-bold txt-green">Campo obbligatorio</p>
                           </div>
                           <div class="col-sm-12 col-md-12 col-lg-8 col-xl-6">
-                            <input type="text" class="custom-input text-capitalize form-control @error('name') is-invalid @enderror" name="name" value="" minlength="3" maxlength="25" autocomplete="do-not-autofill" v-model="name" required>
+                            <input type="text" class="custom-input text-capitalize form-control @error('name') is-invalid @enderror" name="name" value="" minlength="3" maxlength="35" autocomplete="do-not-autofill" v-model="name" required>
                             @error('name')
                                 <span class="alert alert-danger">
                                     {{__($message)}}
                                 </span>
                                 <script type="application/javascript">
-                                    step = 1;
+                                    step = "1";
                                 </script>
                             @enderror
                           </div>
@@ -68,7 +66,7 @@
                                 {{__($message)}}
                             </div>
                             <script type="application/javascript">
-                                step = 2;
+                                step = "2";
                             </script>
                         @enderror
                         <p class="pt-1 mini-txt" v-cloak>
@@ -88,7 +86,7 @@
                                 {{__($message)}}
                             </div>
                             <script type="application/javascript">
-                                step = 3;
+                                step = "3";
                             </script>
                         @enderror
                         <p class="pt-1 mini-txt" v-cloak>
@@ -96,8 +94,77 @@
                         </p>
                       </div>
                   </div>
+                  <div v-show="step==4" class="step" v-cloak>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
+                            <h6>LinkedIn
+                                <div class="info">
+                                    <button aria-label="Inserisci l'url del tuo profilo linkedin" data-microtip-position="top" data-microtip-size="medium" role="tooltip" type="button">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                            </h6>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                            <input type="url" name="linkedin" class="form-control border-green custom-input" maxlength="255" value="{{ old('linkedin') }}" placeholder="es. https://www.linkedin.com/in/...">
+                            @error ('linkedin')
+                                <div class="alert alert-danger">
+                                    {{__($message)}}
+                                </div>
+                                <script type="application/javascript">
+                                    step = "4";
+                                </script>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row pt-3">
+                        <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
+                          <h6>{{__('Website')}}
+                            <div class="info">
+                              <button aria-label="Inserisci l'url del tuo sito web" data-microtip-position="top" data-microtip-size="medium" role="tooltip" type="button">
+                              <i class="fas fa-info-circle"></i>
+                            </div>
+                          </h6>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                          <input type="url" name="website" class="form-control border-green custom-input" maxlength="255" value="{{ old('website') }}" placeholder="es. https://www.growpla.it">
+                          @error ('website')
+                                <div class="alert alert-danger">
+                                    {{__($message)}}
+                                </div>
+                                <script type="application/javascript">
+                                    step = "4";
+                                </script>
+                          @enderror
+                        </div>
+                    </div>
+                    <div class="row pt-3" v-cloak>
+                      <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
+                          <h6>{{$pagetype->id==1?'Pitch':'Brochure'}}</h6>
+                      </div>
+                      <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
+                        <div class="edit-image-drag-drop row m-0">
+                            <div class="col-sm-12 col-md-7 col-lg-7 col-xl-7 pl-1 pr-1 mb-1" style="height:150px">
+                              <div class="drop-zone">
+                                <span class="drop-zone__prompt">{{__('Drop file here or click to upload')}}
+                                    <span class="mini-txt d-block">{{__('Supported formats')}} .pdf max:6Mb</span>
+                                </span>
+                                <input type="file" class="form-control-file drop-zone__input" name="pitch" accept="application/pdf">
+                                @error ('pitch')
+                                    <div class="alert alert-danger">
+                                        {{__($message)}}
+                                    </div>
+                                    <script type="application/javascript">
+                                        step = "4";
+                                    </script>
+                                @enderror
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   {{-- SitoWeb --}}
-                  <div v-show="step==4" class="step  row" v-cloak>
+                  {{-- <div v-show="step==4" class="step  row" v-cloak>
                     <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
                       <h6>{{__('Website')}}
                         <div class="info">
@@ -119,7 +186,7 @@
                     </div>
                   </div>
                   {{-- Linkedin --}}
-                  <div v-show="step==5" class="step  row" v-cloak>
+                  {{-- <div v-show="step==5" class="step  row" v-cloak>
                     <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
                       <h6>LinkedIn
                           <div class="info">
@@ -139,8 +206,8 @@
                           </script>
                       @enderror
                     </div>
-                  </div>
-                  <div v-show="step==6" class="step row" v-cloak>
+                  </div> --}}
+                  <div v-show="step==5" class="step row" v-cloak>
                     <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
                       <h6>Indirizzo*</h6>
                       <p class="mini-txt font-weight-bold txt-green">Campo obbligatorio</p>
@@ -148,8 +215,8 @@
                     <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
                         <div class="row">
                           <input type="hidden" name="country_id" value="1">
-                          <div v-if="regions.length>1" class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mt-2 mb-2" v-cloak>
-                              <label>Regione*</label>
+                          <div v-if="regions.length>1" class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mb-0" v-cloak>
+                              <label class="mb-1">Regione*</label>
                               <select class="form-control custom-input" name="region_id" v-model="region_id_selected">
                                   <option value="">Non specificata</option>
                                   <option v-for="region in regions" :value="region.id">
@@ -160,28 +227,27 @@
                           <div v-else class="">
                             <input type="hidden" name="region_id" value="">
                           </div>
-                          <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mt-2 mb-2">
-                              <label>Città*</label>
-                              <input type="text" name="municipality" class="form-control custom-input" value=""
+                          <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 mb-1">
+                              <label class="mb-0">Città*</label>
+                              <input type="text" name="municipality" class="form-control custom-input text-capitalize" value=""
                               v-model="city" required>
                           </div>
-                          <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 mt-2 mb-2">
-                            <label>Via</label>
+                          <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 mb-1">
+                            <label class="mb-0">Via</label>
                             <input type="text" name="street_name" class="form-control custom-input"
                             value="{{old('street_name')}}">
                           </div>
-                          <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 mt-2 mb-2">
-                              <label>Numero</label>
+                          <div class="col-sm-12 col-md-3 col-lg-3 col-xl-3 mb-1">
+                              <label class="mb-0">Numero</label>
                               <input type="text" name="street_number" class="form-control custom-input" value="{{old('street_number')}}">
                           </div>
                       </div>
                     </div>
                   </div>
-                  {{-- Startup --}}
-                  @if ($pagetype->id==1)
-                  <div v-show="step==7" class="step row" v-cloak>
+
+                  {{-- <div v-show="step==7" class="step row" v-cloak>
                     <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
-                        <h6>Pitch</h6>
+                        <h6>{{$pagetype->id==1?'Pitch':'Brochure'}}</h6>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
                       <div class="edit-image-drag-drop row m-0">
@@ -203,8 +269,10 @@
                           </div>
                       </div>
                     </div>
-                  </div>
-                  <div v-show="step==8" class="step row" v-cloak>
+                  </div> --}}
+                  {{-- Startup --}}
+                  @if ($pagetype->id==1)
+                  <div v-show="step==6" class="step row" v-cloak>
                       <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
                               <h6>Costituita</h6>
                           </div>
@@ -229,7 +297,7 @@
                         </div>
                       </div>
                   </div>
-                  <div v-show="step==9" class="step row" v-cloak>
+                  <div v-show="step==7" class="step row" v-cloak>
                       <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
                               <h6>MVP</h6>
                           </div>
@@ -256,7 +324,7 @@
                   </div>
                   @endif
                   @if ($pagetype->id==3)
-                      <div v-show="step==7" class="step row" v-cloak>
+                      <div v-show="step==6" class="step row" v-cloak>
                           <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
                               <h6>Tipologia</h6>
                           </div>
@@ -281,7 +349,7 @@
                               </div>
                           </div>
                       </div>
-                      <div v-show="step==8" class="step row" v-cloak>
+                      <div v-show="step==7" class="step row" v-cloak>
                           <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
                               <h6>Servizi erogati</h6>
                           </div>
@@ -315,11 +383,47 @@
                           </div>
                       </div>
                   @endif
+                  @if ($pagetype->id==7)
+                      <div v-show="step==6" class="step row" v-cloak>
+                          <div class="col-sm-12 col-md-12 col-lg-2 col-xl-2">
+                              <h6>Servizi erogati</h6>
+                          </div>
+                          <div class="col-sm-12 col-md-12 col-lg-10 col-xl-10">
+                              <div class="row">
+                                  <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                                    <div class="d-flex align-items-center mr-2">
+                                      <label class="input-container m-0">
+                                          Altro
+                                        <input type="radio" id="i-free" name="type_int_1" value="" checked required>
+                                        <span class="checkmark mt-1"></span>
+                                      </label>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                                    <div class="d-flex align-items-center  mr-2">
+                                      <label class="input-container m-0">Gratuitamente
+                                        <input type="radio" id="i-free" name="type_int_1" value="1" required>
+                                        <span class="checkmark mt-1"></span>
+                                      </label>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                                    <div class="d-flex align-items-center">
+                                      <label class="input-container m-0">A pagamento
+                                        <input type="radio" id="i-pay" name="type_int_1" value="2" required>
+                                        <span class="checkmark mt-1"></span>
+                                      </label>
+                                    </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  @endif
                 </div>
-                <div class="d-flex justify-content-between pt-5">
-                    <button type="button" name="button" :class="prev_arrow()" @click="prev()">Indietro</button>
-                    <button type="button" name="button" :class="next_arrow()" @click="next()">
-                      @{{step==max_step?'Salva':'Avanti'}}
+                <div class="d-flex justify-content-between mt-3 pt-5">
+                    <button type="button" name="button" :class="prev_arrow()" @click="prev()" v-cloak>Indietro</button>
+                    <button type="button" name="button" :class="next_arrow()" @click="next()" v-cloak>
+                        @{{step==max_step?'Salva':'Avanti'}}
                     </button>
                 </div>
               </form>

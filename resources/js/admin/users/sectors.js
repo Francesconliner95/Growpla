@@ -6,10 +6,10 @@ axios.defaults.headers.common = {
 };
 
 var create = new Vue({
-    el: '#user-sectors',
+    el: '#sectors',
     data: {
-      language_id,
-      sectors,
+        language_id,
+        sectors,
     },
     methods: {
       isChecked(id){

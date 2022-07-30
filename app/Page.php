@@ -45,27 +45,27 @@ class Page extends Model
 
     public function have_page_usertypes(){
         return $this->belongsToMany('App\Usertype','have_page_usertypes','page_id','usertype_id')
-        ->withPivot('id');
+        ->withPivot('id')->withTimestamps();
     }
 
     public function have_page_pagetypes(){
         return $this->belongsToMany('App\Pagetype','have_page_pagetypes','page_id','pagetype_id')
-        ->withPivot('id');
+        ->withPivot('id')->withTimestamps();
     }
 
     public function give_page_services(){
         return $this->belongsToMany('App\Service','give_page_services','page_id','service_id')
-        ->withPivot('id');
+        ->withPivot('id')->withTimestamps();
     }
 
     public function have_page_services(){
         return $this->belongsToMany('App\Service','have_page_services','page_id','service_id')
-        ->withPivot('id');
+        ->withPivot('id')->withTimestamps();
     }
 
     public function have_page_cofounders(){
         return $this->belongsToMany('App\Service','have_page_cofounders','page_id','service_id')
-        ->withPivot('id');
+        ->withPivot('id')->withTimestamps();
     }
 
     public function page_follower(){ //utenti seguaci della pagina

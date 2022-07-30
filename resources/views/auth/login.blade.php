@@ -31,20 +31,33 @@
 </script>
 <div class="bg-blue" id="login" style="background-image: url({{asset("storage/images/bg-contact.svg") }}); background-position: left 0px bottom -17px; background-repeat: no-repeat; background-size: 700px 500px;">
   <div class="container">
-    <div class="item-cont">
+    <div class="item-cont p-2 pb-5">
         <div class="item-style">
             <div class="row d-flex justify-content-center">
                 <div class="bg-dark custom-card col-sm-12 col-md-12 col-lg-8 col-xl-6 p-5">
                     <div  class="switch-button-container pt-1 pb-5">
-                        <label class="pt-2 mr-4 font-weight-bold" for="">Login</label>
+                        <label class="pt-2 mr-4 font-weight-bold text-right" for="" style="width: 70px;">Login</label>
                         <button class="button r switch-button d-inline-block">
                             <input type="checkbox" class="checkbox" @click="login=!login" id="switch-checkbox" :checked="!login">
                             <div class="knobs"></div>
                             <div class="layer"></div>
                         </button>
-                        <label class="pt-2 ml-4 font-weight-bold" for="">Registrati</label>
+                        <label class="pt-2 ml-4 font-weight-bold" for="" style="width: 70px;">Registrati</label>
                     </div>
-                    <form v-if="login" method="POST" action="{{ route('login') }}" v-cloak>
+                    <div class="d-flex justify-content-center">
+                        <div class="col-sm-12 col-md-12 col-lg-8 col-xl-7 p-0">
+                            <a href="{{ url('auth/google') }}" style="margin-top: 20px;" class="btn btn-lg button-color-white btn-block">
+                                <img src="{{asset("storage/images/icon-google.svg") }}" alt="">
+                                <strong class="text-dark ml-2">Entra con Google</strong>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="or-container">
+                        <div class="line-separator"></div>
+                        <div class="or-label">oppure</div>
+                        <div class="line-separator"></div>
+                    </div>
+                    <form v-show="login" method="POST" action="{{ route('login') }}" id="loginForm" v-cloak>
                         @csrf
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">
@@ -54,9 +67,14 @@
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                                 @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                    @if($message=='These credentials do not match our records.')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{__( $message) }}</strong>
+                                        </span>
+                                        <script type="application/javascript">
+                                            login = true;
+                                        </script>
+                                    @endif
                                 @enderror
                             </div>
                         </div>
@@ -68,12 +86,18 @@
                                 <div class="placeholder-icon">
                                     <input id="password" :type="show_password?'text':'password'" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                                     <i :class="show_password?'fas fa-eye':'fas fa-eye-slash'" @click="show_password=!show_password"></i>
+                                    @error('password')
+                                        @if($message!='The password confirmation does not match.'  && $message!="The password format is invalid.")
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{__( $message) }}</strong>
+                                            </span>
+                                            <script type="application/javascript">
+                                                login = true;
+                                            </script>
+                                            {{-- <span>Login</span> --}}
+                                        @endif
+                                    @enderror
                                 </div>
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
                             </div>
                         </div>
 
@@ -103,6 +127,9 @@
                                 @endif
                             </div>
                         </div>
+                        {{-- <a href="{{ url('auth/google') }}" style="margin-top: 20px;" class="btn btn-lg btn-success btn-block">
+                            <strong>Login With Google</strong>
+                        </a> --}}
                         {{-- <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <span>Non sei ancora registrato?
@@ -111,7 +138,7 @@
                             </div>
                         </div> --}}
                     </form>
-                    <form  v-else method="POST" action="{{ route('register') }}" v-cloak>
+                    <form v-show="!login" method="POST" action="{{ route('register') }}" id="registerForm" v-cloak>
                         @csrf
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">Nome</label>
@@ -135,7 +162,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="form-group row">
+                        {{-- <div class="form-group row">
                             <label for="date_of_birth" class="col-md-4 col-form-label text-md-right">Data di nascita
                                 <div class="info">
                                     <button aria-label="La data di nascita è utile a verificare che tu sia maggiorenne, non sarà visibile agli altri utenti." data-microtip-position="top" data-microtip-size="medium" type="button" role="tooltip">
@@ -147,20 +174,25 @@
 
                                 @error('date_of_birth')
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        <strong>{{__( $message) }}</strong>
                                     </span>
                                 @enderror
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">Email</label>
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
 
                                 @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                    @if($message!='These credentials do not match our records.')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{__( $message) }}</strong>
+                                        </span>
+                                        <script type="application/javascript">
+                                            login = false;
+                                        </script>
+                                    @endif
                                 @enderror
                             </div>
                         </div>
@@ -168,18 +200,33 @@
                         <input type="hidden" name="language_id" value="{{$language_id}}">
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
+                            <label for="password" class="col-md-4 col-form-label text-md-right">
+                                {{ __('Password') }}
+                                <div class="info">
+                                    <button aria-label="Almeno 8 caratteri,
+                                                        carattere minuscolo,
+                                                        carattere maiuscolo,
+                                                        numero,
+                                                        simbolo(@$!%*#?&_-)"
+                                    data-microtip-position="top" data-microtip-size="medium" type="button" role="tooltip">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                            </label>
                             <div class="col-md-6">
                                 <div class="placeholder-icon">
-                                    <input id="password" :type="show_password?'text':'password'" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                    <input :type="show_password?'text':'password'" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
                                     <i :class="show_password?'fas fa-eye':'fas fa-eye-slash'" @click="show_password=!show_password"></i>
+                                    @error('password')
+                                        @if($message=='The password confirmation does not match.' || $message=="The password format is invalid.")
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{__($message)}}</strong>
+                                            </span>
+                                            <script type="application/javascript">
+                                                login = false;
+                                            </script>
+                                        @endif
+                                    @enderror
                                 </div>
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
                             </div>
                         </div>
 

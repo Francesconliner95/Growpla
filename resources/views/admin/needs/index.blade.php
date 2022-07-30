@@ -13,7 +13,7 @@
                 <button v-if="showScrollTop" type="button" name="button" class="button-scroll" @click="scrollTop()">
                     <img src="{{ asset("storage/images/arrows-black-icon.svg") }}" class="arrow r-90l" alt="">
                 </button>
-                <h3 >Tutte le necessità</h3>
+                <h3 >{{$webpage_typename}}</h3>
                 <div class="">
                     <div v-for="need in needs_show" class="row gray-cont" v-cloak>
                         <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
@@ -39,7 +39,11 @@
                                   <span>@{{sector.name}}</span>
                                 </div>
                             </div> --}}
-                            <a :href="need.user_or_page?'/admin/users/'+ need.id : '/admin/pages/'+ need.id" class="button-style button-color">Visita profilo</a>
+                            <a :href="need.user_or_page?'/admin/users/'+ need.id : '/admin/pages/'+ need.id" class="button-style button-color mr-2">Visita profilo</a>
+                            <span aria-label="Apri in un'altra scheda" data-microtip-position="top" data-microtip-size="medium" role="tooltip" class="cursor-default">
+                            <a :href="need.user_or_page?'/admin/users/'+ need.id : '/admin/pages/'+ need.id" class="button-style button-color" target="_blank">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
                         </div>
                     </div>
                     <div v-if="needs_show.length==0 && !in_load" class="" v-cloak>

@@ -53,6 +53,19 @@ class HomeController extends Controller
         }
     }
 
+    public function home2(){
+
+        if(Auth::check()){
+            app()->setLocale(Language::find(Auth::user()->language_id)->lang);
+        }else{
+            app()->setLocale('it');
+            $language_id = 2;
+        }
+
+        return view('guest.home2');
+
+    }
+
     public function privacyPolicy(){
 
         if(Auth::check()){

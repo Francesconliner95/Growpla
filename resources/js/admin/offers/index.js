@@ -22,14 +22,14 @@ var create = new Vue({
             window.scrollTo({top: 0, behavior: 'smooth'});
         },
 
-        orderById(offers){
-            //ordinamento per id
+        orderByDate(offers){
+            //ordinamento per data
             for (var i=0; i < offers.length; i++) {
                 for (var j=0; j < offers.length-1; j++) {
-                    if (offers[j].id<offers[i].id) {
-                      var tmp=offers[j];
-                      offers[j]=offers[i];
-                      offers[i]=tmp;
+                    if (offers[j].updated_at<offers[i].updated_at) {
+                        var tmp=offers[j];
+                        offers[j]=offers[i];
+                        offers[i]=tmp;
                     }
                 }
             }
@@ -57,8 +57,8 @@ var create = new Vue({
                     }
                 }).then((response) => {
                     this.offers_show.push(...response.data.results.needs);
-                    // console.log(this.offers_show);
                     this.in_load = false;
+
                 });
             }
         },
@@ -75,12 +75,7 @@ var create = new Vue({
 
     },
     created(){
-
-        // if(this.offers){
-        //     this.offers = JSON.parse(this.offers.replace(/&quot;/g,'"'));
-        // }
-        this.orderById(this.offers);
-
+        this.orderByDate(this.offers);
     },
     mounted() {
         window.onscroll = ()=>{this.scrollFunction()};

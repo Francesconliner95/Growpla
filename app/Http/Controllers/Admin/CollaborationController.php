@@ -20,7 +20,9 @@ class CollaborationController extends Controller
 
     public function index()
     {
-        $collaborations = Collaboration::query()/*where('confirmed',1)*/
+        $collaborations = Collaboration::query()
+                            ->where('col1_confirmed',1)
+                            ->where('col2_confirmed',1)
                             ->latest()
                             ->get();
 
@@ -42,28 +44,28 @@ class CollaborationController extends Controller
         foreach ($_collaborations as $_collaboration) {
             $collaboration = json_decode($_collaboration,true);
             $collaboration_info['id'] = $collaboration['id'];
-            if($collaboration['sender_user_id']){
-                $collaboration_info['account_1'] = User::where('id',$collaboration['sender_user_id'])
+            if($collaboration['col1_user_id']){
+                $collaboration_info['account_1'] = User::where('id',$collaboration['col1_user_id'])
                 ->select('id','name','surname','image','summary')
                 ->first();
                 $collaboration_info['account_1']['user_or_page'] = true;
             }
-            if($collaboration['sender_page_id']){
-                $collaboration_info['account_1'] = Page::where('id',$collaboration['sender_page_id'])
+            if($collaboration['col1_page_id']){
+                $collaboration_info['account_1'] = Page::where('id',$collaboration['col1_page_id'])
                 ->select('id','name','image','summary')
                 ->first();
                 $collaboration_info['account_1']['user_or_page'] = false;
             }
-            if($collaboration['recipient_user_id']){
+            if($collaboration['col2_user_id']){
                 $collaboration_info['account_2'] =
-                User::where('id',$collaboration['recipient_user_id'])
+                User::where('id',$collaboration['col2_user_id'])
                 ->select('id','name','surname','image','summary')
                 ->first();
                 $collaboration_info['account_2']['user_or_page'] = true;
             }
-            if($collaboration['recipient_page_id']){
+            if($collaboration['col2_page_id']){
                 $collaboration_info['account_2'] =
-                Page::where('id',$collaboration['recipient_page_id'])
+                Page::where('id',$collaboration['col2_page_id'])
                 ->select('id','name','image','summary')
                 ->first();
                 $collaboration_info['account_2']['user_or_page'] = false;
@@ -81,7 +83,6 @@ class CollaborationController extends Controller
 
     public function my($id,$user_or_page)
     {
-
         $data = [
             'my_id' => $id,
             'user_or_page' => $user_or_page,
@@ -102,29 +103,102 @@ class CollaborationController extends Controller
 
         if($user_or_page=='user'){
             $collaborations =
-            Collaboration::where('sender_user_id',$account_id)
-            ->get();
+            Collaboration::where('col1_user_id',$account_id)
+                            ->orWhere('col2_user_id',$account_id)
+                            ->get();
+            foreach ($collaborations as $key => $collaboration) {
+                if($collaboration->col1_user_id==$account_id){
+                    if($collaboration->col1_show){
+                        if($collaboration->col1_confirmed){
+                            if($collaboration->col2_user_id){
+                                $collaboration['account'] = User::where('id',$collaboration->col2_user_id)
+                                ->select('users.id','users.image','users.name', 'users.surname')
+                                ->first();
+                            }
+                            if($collaboration->col2_page_id){
+                                $collaboration['account'] = Page::where('id',$collaboration->col2_page_id)
+                                ->select('pages.id','pages.image','pages.name')->first();
+                            }
+                        }else{
+                            unset($collaborations[$key]);
+                        }
+                    }else{
+                        unset($collaborations[$key]);
+                    }
+                }
+                if($collaboration->col2_user_id==$account_id){
+                    if($collaboration->col2_show){
+                        if($collaboration->col2_confirmed){
+                            if($collaboration->col1_user_id){
+                                $collaboration['account'] =
+                                User::where('id',$collaboration->col1_user_id)
+                                ->select('users.id','users.image','users.name', 'users.surname')
+                                ->first();
+                            }
+                            if($collaboration->col1_page_id){
+                                $collaboration['account'] = Page::where('id',$collaboration->col1_page_id)
+                                ->select('pages.id','pages.image','pages.name')->first();
+                            }
+                        }else{
+                            unset($collaborations[$key]);
+                        }
+                    }else{
+                        unset($collaborations[$key]);
+                    }
+                }
+            }
         }elseif($user_or_page=='page'){
             $collaborations =
-            Collaboration::where('sender_page_id',$account_id)
-            ->get();
-        }
-
-        foreach ($collaborations as $collaboration) {
-            if($collaboration->recipient_user_id){
-                $collaboration['account'] = User::where('id',$collaboration->recipient_user_id)
-                ->select('users.id','users.image','users.name', 'users.surname')
-                ->first();
-            }if($collaboration->recipient_page_id){
-                $collaboration['account'] = Page::where('id',$collaboration->recipient_page_id)
-                ->select('pages.id','pages.image','pages.name')->first();
+            Collaboration::where('col1_page_id',$account_id)
+                            ->orWhere('col2_page_id',$account_id)
+                            ->get();
+            foreach ($collaborations as $key => $collaboration) {
+                if($collaboration->col1_page_id==$account_id){
+                    if($collaboration->col1_show){
+                        if($collaboration->col1_confirmed){
+                            if($collaboration->col2_user_id){
+                                $collaboration['account'] = User::where('id',$collaboration->col2_user_id)
+                                ->select('users.id','users.image','users.name', 'users.surname')
+                                ->first();
+                            }
+                            if($collaboration->col2_page_id){
+                                $collaboration['account'] = Page::where('id',$collaboration->col2_page_id)
+                                ->select('pages.id','pages.image','pages.name')->first();
+                            }
+                        }else{
+                            unset($collaborations[$key]);
+                        }
+                    }else{
+                        unset($collaborations[$key]);
+                    }
+                }
+                if($collaboration->col2_page_id==$account_id){
+                    if($collaboration->col2_show){
+                        if($collaboration->col2_confirmed){
+                            if($collaboration->col1_user_id){
+                                $collaboration['account'] =
+                                User::where('id',$collaboration->col1_user_id)
+                                ->select('users.id','users.image','users.name', 'users.surname')
+                                ->first();
+                            }
+                            if($collaboration->col1_page_id){
+                                $collaboration['account'] = Page::where('id',$collaboration->col1_page_id)
+                                ->select('pages.id','pages.image','pages.name')->first();
+                            }
+                        }else{
+                            unset($collaborations[$key]);
+                        }
+                    }else{
+                        unset($collaborations[$key]);
+                    }
+                }
             }
         }
 
         return response()->json([
             'success' => true,
             'results' => [
-                'collaborations' => $collaborations,
+                'collaborations' => array(...$collaborations),
             ]
         ]);
     }
@@ -141,31 +215,198 @@ class CollaborationController extends Controller
 
         if($user_or_page=='user'){
             $collaborations =
-            Collaboration::where('recipient_user_id',$account_id)
-            ->where('confirmed',null)
-            ->get();
+            Collaboration::where('col1_user_id',$account_id)
+                            ->orWhere('col2_user_id',$account_id)
+                            ->get();
+            foreach ($collaborations as $key => $collaboration) {
+                if($collaboration->col1_user_id==$account_id){
+                    if($collaboration->col1_show){
+                        if(!$collaboration->col1_confirmed){
+                            if($collaboration->col2_user_id){
+                                $collaboration['account'] = User::where('id',$collaboration->col2_user_id)
+                                ->select('users.id','users.image','users.name', 'users.surname')
+                                ->first();
+                            }
+                            if($collaboration->col2_page_id){
+                                $collaboration['account'] = Page::where('id',$collaboration->col2_page_id)
+                                ->select('pages.id','pages.image','pages.name')->first();
+                            }
+                        }else{
+                            unset($collaborations[$key]);
+                        }
+                    }else{
+                        unset($collaborations[$key]);
+                    }
+                }
+                if($collaboration->col2_user_id==$account_id){
+                    if($collaboration->col2_show){
+                        if(!$collaboration->col2_confirmed){
+                            if($collaboration->col1_user_id){
+                                $collaboration['account'] =
+                                User::where('id',$collaboration->col1_user_id)
+                                ->select('users.id','users.image','users.name', 'users.surname')
+                                ->first();
+                            }
+                            if($collaboration->col1_page_id){
+                                $collaboration['account'] = Page::where('id',$collaboration->col1_page_id)
+                                ->select('pages.id','pages.image','pages.name')->first();
+                            }
+                        }else{
+                            unset($collaborations[$key]);
+                        }
+                    }else{
+                        unset($collaborations[$key]);
+                    }
+                }
+            }
         }elseif($user_or_page=='page'){
             $collaborations =
-            Collaboration::where('recipient_page_id',$account_id)
-            ->where('confirmed',null)
-            ->get();
-        }
-
-        foreach ($collaborations as $collaboration) {
-            if($collaboration->sender_user_id){
-                $collaboration['account'] = User::where('id',$collaboration->sender_user_id)
-                ->select('users.id','users.image','users.name', 'users.surname')
-                ->first();
-            }if($collaboration->sender_page_id){
-                $collaboration['account'] = Page::where('id',$collaboration->sender_page_id)
-                ->select('pages.id','pages.image','pages.name')->first();
+            Collaboration::where('col1_page_id',$account_id)
+                            ->orWhere('col2_page_id',$account_id)
+                            ->get();
+            foreach ($collaborations as $key => $collaboration) {
+                if($collaboration->col1_page_id==$account_id){
+                    if($collaboration->col1_show){
+                        if(!$collaboration->col1_confirmed){
+                            if($collaboration->col2_user_id){
+                                $collaboration['account'] = User::where('id',$collaboration->col2_user_id)
+                                ->select('users.id','users.image','users.name', 'users.surname')
+                                ->first();
+                            }
+                            if($collaboration->col2_page_id){
+                                $collaboration['account'] = Page::where('id',$collaboration->col2_page_id)
+                                ->select('pages.id','pages.image','pages.name')->first();
+                            }
+                        }else{
+                            unset($collaborations[$key]);
+                        }
+                    }else{
+                        unset($collaborations[$key]);
+                    }
+                }
+                if($collaboration->col2_page_id==$account_id){
+                    if($collaboration->col2_show){
+                        if(!$collaboration->col2_confirmed){
+                            if($collaboration->col1_user_id){
+                                $collaboration['account'] =
+                                User::where('id',$collaboration->col1_user_id)
+                                ->select('users.id','users.image','users.name', 'users.surname')
+                                ->first();
+                            }
+                            if($collaboration->col1_page_id){
+                                $collaboration['account'] = Page::where('id',$collaboration->col1_page_id)
+                                ->select('pages.id','pages.image','pages.name')->first();
+                            }
+                        }else{
+                            unset($collaborations[$key]);
+                        }
+                    }else{
+                        unset($collaborations[$key]);
+                    }
+                }
             }
         }
 
         return response()->json([
             'success' => true,
             'results' => [
-                'collaborations' => $collaborations,
+                'collaborations' => array(...$collaborations),
+            ]
+        ]);
+    }
+
+    public function getRecommendedCollaborations(Request $request) {
+
+        $request->validate([
+            'account_id' => 'required|integer',
+            'user_or_page' => 'required|string',
+        ]);
+
+        $account_id = $request->account_id;
+        $user_or_page = $request->user_or_page;
+
+        if($user_or_page=='user'){
+            $collaborations =
+            Collaboration::where([
+                                ['col1_user_id', '=', $account_id],
+                                ['col1_show', '=', null],
+                                ['col2_show', '=', null],
+                            ])
+                            ->orWhere([
+                                ['col2_user_id', '=', $account_id],
+                                ['col1_show', '=', null],
+                                ['col2_show', '=', null],
+                            ])
+                            ->get();
+            foreach ($collaborations as $key => $collaboration) {
+                if($collaboration->col1_user_id==$account_id){
+                    if($collaboration->col2_user_id){
+                        $collaboration['account'] = User::where('id',$collaboration->col2_user_id)
+                        ->select('users.id','users.image','users.name', 'users.surname')
+                        ->first();
+                    }
+                    if($collaboration->col2_page_id){
+                        $collaboration['account'] = Page::where('id',$collaboration->col2_page_id)
+                        ->select('pages.id','pages.image','pages.name')->first();
+                    }
+                }
+                if($collaboration->col2_user_id==$account_id){
+                    if($collaboration->col1_user_id){
+                        $collaboration['account'] =
+                        User::where('id',$collaboration->col1_user_id)
+                        ->select('users.id','users.image','users.name', 'users.surname')
+                        ->first();
+                    }
+                    if($collaboration->col1_page_id){
+                        $collaboration['account'] = Page::where('id',$collaboration->col1_page_id)
+                        ->select('pages.id','pages.image','pages.name')->first();
+                    }
+                }
+            }
+        }elseif($user_or_page=='page'){
+            $collaborations =
+            Collaboration::where([
+                                ['col1_page_id', '=', $account_id],
+                                ['col1_show', '=', null],
+                                ['col2_show', '=', null],
+                            ])
+                            ->orWhere([
+                                ['col2_page_id', '=', $account_id],
+                                ['col1_show', '=', null],
+                                ['col2_show', '=', null],
+                            ])
+                            ->get();
+            foreach ($collaborations as $key => $collaboration) {
+                if($collaboration->col1_page_id==$account_id){
+                    if($collaboration->col2_user_id){
+                        $collaboration['account'] = User::where('id',$collaboration->col2_user_id)
+                        ->select('users.id','users.image','users.name', 'users.surname')
+                        ->first();
+                    }
+                    if($collaboration->col2_page_id){
+                        $collaboration['account'] = Page::where('id',$collaboration->col2_page_id)
+                        ->select('pages.id','pages.image','pages.name')->first();
+                    }
+                }
+                if($collaboration->col2_page_id==$account_id){
+                    if($collaboration->col1_user_id){
+                        $collaboration['account'] =
+                        User::where('id',$collaboration->col1_user_id)
+                        ->select('users.id','users.image','users.name', 'users.surname')
+                        ->first();
+                    }
+                    if($collaboration->col1_page_id){
+                        $collaboration['account'] = Page::where('id',$collaboration->col1_page_id)
+                        ->select('pages.id','pages.image','pages.name')->first();
+                    }
+                }
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'results' => [
+                'collaborations' => array(...$collaborations),
             ]
         ]);
     }
@@ -177,169 +418,148 @@ class CollaborationController extends Controller
             'sender_user_or_page' => 'required|string',
             'recipient_id' => 'required|integer',
             'recipient_user_or_page' => 'required|string',
-            'old_collaboration_id' => 'nullable|integer',//PER CONFERMARE AUTOMATICAMENTE UNA COLLABORAZZIONE GIA INVIATA
+            'hidden'=> 'nullable',
         ]);
-
         $sender_id = $request->sender_id;
         $sender_user_or_page = $request->sender_user_or_page;
         $recipient_id = $request->recipient_id;
         $recipient_user_or_page = $request->recipient_user_or_page;
-        $old_collaboration_id = $request->old_collaboration_id;
+
         $user = Auth::user();
-        $query = Collaboration::query();
+        $can_create_coll = false;
+
+        $query_1 = Collaboration::query();
         if($sender_user_or_page=='user'){
-            $query->where('sender_user_id',$sender_id);
+            $query_1->where('col1_user_id',$sender_id);
+            if($user->id==$sender_id){
+                $can_create_coll = true;
+            }
         }
         if($sender_user_or_page=='page'){
-            $query->where('sender_page_id',$sender_id);
+            $query_1->where('col1_page_id',$sender_id);
+            if($user->pages->contains(Page::find($sender_id))){
+                $can_create_coll = true;
+            }
         }
         if($recipient_user_or_page=='user'){
-            $query->where('recipient_user_id',$recipient_id);
+            $query_1->where('col2_user_id',$recipient_id);
         }
         if($recipient_user_or_page=='page'){
-            $query->where('recipient_page_id',$recipient_id);
+            $query_1->where('col2_page_id',$recipient_id);
         }
-        $already_exist = $query->first();
+        $already_exist_1 = $query_1->first();
 
-        if($sender_user_or_page=='user' && $user->id==$sender_id){
-            if($recipient_user_or_page=='user'
-            && $user->id==$recipient_id){
-                $already_exist = true;
-            }
-            if(!$already_exist){
+        $query_2 = Collaboration::query();
+        if($recipient_user_or_page=='user'){
+            $query_2->where('col1_user_id',$recipient_id);
+        }
+        if($recipient_user_or_page=='page'){
+            $query_2->where('col1_page_id',$recipient_id);
+        }
+        if($sender_user_or_page=='user'){
+            $query_2->where('col2_user_id',$sender_id);
+        }
+        if($sender_user_or_page=='page'){
+            $query_2->where('col2_page_id',$sender_id);
+        }
+        $already_exist_2 = $query_2->first();
 
+        if($can_create_coll){
+            if(!$already_exist_1 && !$already_exist_2){
                 $new_coll = new Collaboration();
-                $new_coll->sender_user_id = $sender_id;
+
+                if($sender_user_or_page=='user'){
+                    $new_coll->col1_user_id = $sender_id;
+                }else{
+                    $new_coll->col1_page_id = $sender_id;
+                }
 
                 if($recipient_user_or_page=='user'){
-                    $new_coll->recipient_user_id = $recipient_id;
-                    $ref_to_user_id = $recipient_id;
-                    $ref_to_page_id = null;
+                    $new_coll->col2_user_id = $recipient_id;
                     //NOTIFICA al utente ricevente
-                    $new_notf = new Notification();
-                    $new_notf->user_id = $recipient_id;
-                    $new_notf->notification_type_id = 10;
-                    $new_notf->ref_user_id = $sender_id;
-                    $new_notf->ref_page_id = null;
-                    $new_notf->parameter = $recipient_id.'/user';
-                    $new_notf->save();
-                }else{
-                    $new_coll->recipient_page_id = $recipient_id;
-                    $ref_to_user_id = null;
-                    $ref_to_page_id = $recipient_id;
-                    //NOTIFICA agli utenti che gestiscono la pagina ricevente
-                    $page_recipent = Page::find($recipient_id);
-                    foreach ($page_recipent->users as $user) {
-                        $new_notf = new Notification();
-                        $new_notf->user_id = $user->id;
-                        $new_notf->notification_type_id = 11;
-                        $new_notf->ref_user_id = $sender_id;
-                        $new_notf->ref_page_id = null;
-                        $new_notf->ref_to_page_id = $recipient_id;
-                        $new_notf->parameter = $recipient_id.'/page';
-                        $new_notf->save();
-                    }
-                }
-                //Auto conferma collaborazione nel caso la sto accettando una collaborazione proposta
-                if($old_collaboration_id){
-                    $auto_confirm = false;
-                    $old_collaboration = Collaboration::find($old_collaboration_id);
-                    if($old_collaboration->recipient_user_id){
-                        if($old_collaboration->recipient_user_id==$user->id){
-                            $auto_confirm = true;
-                        }
-                    }
-                    if($old_collaboration->recipient_page_id){
-                        $old_coll_page = Page::find($old_collaboration->recipient_page_id);
-                        if($user->pages->contains($old_coll_page)){
-                            $auto_confirm = true;
-                        }
-                    }
-                    if($auto_confirm){
-                        $new_coll->confirmed = 1;
-                    }
-                }
-
-                $new_coll->save();
-
-                //NOTIFICA ai miei followers
-                $followers = $user->user_follower;
-                foreach ($followers as $follower) {
-                    $new_notf = new Notification();
-                    $new_notf->user_id = $follower->id;
-                    $new_notf->notification_type_id = 8;
-                    $new_notf->ref_user_id = $user->id;
-                    $new_notf->ref_page_id = null;
-                    $new_notf->ref_to_user_id = $ref_to_user_id;
-                    $new_notf->ref_to_page_id = $ref_to_page_id;
-                    $new_notf->parameter = $user->id.'/#collaborations';
-                    $new_notf->save();
-                }
-
-            }
-
-            return redirect()->route('admin.users.show', ['user' => $sender_id]);
-
-        }elseif($sender_user_or_page=='page') {
-            $page = Page::find($sender_id);
-            if($sender_user_or_page=='page'
-            && $recipient_user_or_page=='page'
-            && $sender_id==$recipient_id){
-                $already_exist = true;
-            }
-            if(!$already_exist){
-                if($user->pages->contains($page)){
-
-                    $new_coll = new Collaboration();
-                    $new_coll->sender_page_id = $sender_id;
-
-                    if($recipient_user_or_page=='user'){
-                        $new_coll->recipient_user_id = $recipient_id;
-                        $ref_to_user_id = $recipient_id;
-                        $ref_to_page_id = null;
-                        //NOTIFICA al utente ricevente
+                    if(!$request->hidden){
                         $new_notf = new Notification();
                         $new_notf->user_id = $recipient_id;
                         $new_notf->notification_type_id = 10;
-                        $new_notf->ref_user_id = null;
-                        $new_notf->ref_page_id = $sender_id;
+                        $new_notf->ref_user_id = $sender_id;
+                        $new_notf->ref_page_id = null;
                         $new_notf->parameter = $recipient_id.'/user';
                         $new_notf->save();
-                    }else{
-                        $new_coll->recipient_page_id = $recipient_id;
-                        $ref_to_user_id = null;
-                        $ref_to_page_id = $recipient_id;
-                        //NOTIFICA agli utenti che gestiscono la pagina ricevente
+                    }
+                }else{
+                    $new_coll->col2_page_id = $recipient_id;
+                    //NOTIFICA agli utenti che gestiscono la pagina ricevente
+                    if(!$request->hidden){
                         $page_recipent = Page::find($recipient_id);
                         foreach ($page_recipent->users as $user) {
                             $new_notf = new Notification();
                             $new_notf->user_id = $user->id;
                             $new_notf->notification_type_id = 11;
-                            $new_notf->ref_user_id = null;
-                            $new_notf->ref_page_id = $sender_id;
-                            $new_notf->ref_to_user_id = null;
+                            $new_notf->ref_user_id = $sender_id;
+                            $new_notf->ref_page_id = null;
                             $new_notf->ref_to_page_id = $recipient_id;
                             $new_notf->parameter = $recipient_id.'/page';
                             $new_notf->save();
                         }
                     }
-                    $new_coll->save();
-                    //NOTIFICA ai miei followers
-                    $followers = $page->page_follower;
-                    foreach ($followers as $follower) {
-                        $new_notf = new Notification();
-                        $new_notf->user_id = $follower->id;
-                        $new_notf->notification_type_id = 9;
-                        $new_notf->ref_user_id = null;
-                        $new_notf->ref_page_id = $page->id;
-                        $new_notf->ref_to_user_id = $ref_to_user_id;
-                        $new_notf->ref_to_page_id = $ref_to_page_id;
-                        $new_notf->parameter = $page->id.'/#collaborations';
-                        $new_notf->save();
-                    }
                 }
+                //in caso di collaborazione generata automaticamente da messaggi
+                if($request->hidden){
+                    $new_coll->col1_show = null;
+                    $new_coll->col2_show = null;
+                }else{
+                    $new_coll->col1_confirmed = 1;
+                }
+                $new_coll->save();
+            }else{
+                //se voglio creare una collaborazione gia esiste viene confermata e mostrata in automatico
+                if(!$request->hidden){
+                    if($already_exist_1){
+                        if($sender_user_or_page=='user'){
+                            if($already_exist_1->col1_user_id==$sender_id){
+                                $already_exist_1->col1_confirmed = 1;
+                                $already_exist_1->col1_show = 1;
+                            }
+                            if($already_exist_1->col2_user_id==$sender_id){
+                                $already_exist_1->col2_confirmed = 1;
+                                $already_exist_1->col2_show = 1;
+                            }
+                        }else{
+                            if($already_exist_1->col1_page_id==$sender_id){
+                                $already_exist_1->col1_confirmed = 1;
+                                $already_exist_1->col1_show = 1;
+                            }
+                            if($already_exist_1->col2_page_id==$sender_id){
+                                $already_exist_1->col2_confirmed = 1;
+                                $already_exist_1->col2_show = 1;
+                            }
+                        }
+                        $already_exist_1->update();
+                    }
+                    if($already_exist_2){
+                        if($recipient_user_or_page=='user'){
+                            if($already_exist_2->col1_user_id==$recipient_id){
+                                $already_exist_2->col2_confirmed = 1;
+                                $already_exist_2->col2_show = 1;
+                            }
+                            if($already_exist_2->col2_user_id==$recipient_id){
+                                $already_exist_2->col1_confirmed = 1;
+                                $already_exist_2->col1_show = 1;
+                            }
+                        }else{
+                            if($already_exist_2->col1_page_id==$recipient_id){
+                                $already_exist_2->col2_confirmed = 1;
+                                $already_exist_2->col2_show = 1;
+                            }
+                            if($already_exist_2->col2_page_id==$recipient_id){
+                                $already_exist_2->col1_confirmed = 1;
+                                $already_exist_2->col1_show = 1;
+                            }
+                        }
+                        $already_exist_2->update();
+                    }
+                }            
             }
-            return redirect()->route('admin.pages.show', ['page' => $sender_id]);
         }
     }
 
@@ -347,37 +567,42 @@ class CollaborationController extends Controller
     {
         $request->validate([
             'collaboration_id' => 'required|integer',
+            'account_id' => 'required|integer',
+            'user_or_page' => 'required|string',
         ]);
-        $collaboration_id = $request->collaboration_id;
-        $collaboration = Collaboration::find($collaboration_id);
-        $can_delete = false;
+        $account_id = $request->account_id;
+        $user_or_page = $request->user_or_page;
+        $collaboration = Collaboration::find($request->collaboration_id);
         $user = Auth::user();
-        //puo eliminare la collaborazione chi la invia
-        if($collaboration->sender_user_id){
-            if($user->id==$collaboration->sender_user_id){
-                $can_delete = true;
+        $can_update_coll = false;
+
+        if($user_or_page=='user'){
+            if($user->id==$account_id){
+                $can_update_coll = true;
+                if($collaboration->col1_user_id==$account_id){
+                    $collaboration->col1_show = null;
+                }
+                if($collaboration->col2_user_id==$account_id){
+                    $collaboration->col2_show = null;
+                }
+            }
+        }elseif($user_or_page=='page'){
+            if($user->pages->contains(Page::find($account_id))){
+                $can_update_coll = true;
+                if($collaboration->col1_page_id==$account_id){
+                    $collaboration->col1_show = null;
+                }
+                if($collaboration->col2_page_id==$account_id){
+                    $collaboration->col2_show = null;
+                }
             }
         }
-        if($collaboration->sender_page_id){
-            $page = Page::find($collaboration->sender_page_id);
-            if($user->pages->contains($page)){
-                $can_delete = true;
+        if($can_update_coll){
+            if(!$collaboration->col1_show && !$collaboration->col2_show){
+                $collaboration->delete();
+            }else{
+                $collaboration->update();
             }
-        }
-        //e chi la riceve
-        if($collaboration->recipient_user_id){
-            if($user->id==$collaboration->recipient_user_id){
-                $can_delete = true;
-            }
-        }
-        if($collaboration->recipient_page_id){
-            $page = Page::find($collaboration->recipient_page_id);
-            if($user->pages->contains($page)){
-                $can_delete = true;
-            }
-        }
-        if($can_delete){
-            $collaboration->delete();
         }
     }
 
@@ -385,179 +610,158 @@ class CollaborationController extends Controller
     {
         $request->validate([
             'collaboration_id' => 'required|integer',
+            'account_id' => 'required|integer',
+            'user_or_page' => 'required|string',
         ]);
-        $collaboration_id = $request->collaboration_id;
-        $collaboration = Collaboration::find($collaboration_id);
-        $can_update = false;
+
+        function id_from_my_to_you($collaboration,$account_id,$user_or_page){
+
+            if($collaboration->col1_user_id &&
+                $collaboration->col1_user_id!=$account_id){
+                    return  [
+                            'user_or_page'=>'user',
+                            'account_id'=>$collaboration->col1_user_id,
+                        ];
+            }
+            if($collaboration->col2_user_id &&
+                $collaboration->col2_user_id!=$account_id){
+                    return  [
+                            'user_or_page'=>'user',
+                            'account_id'=>$collaboration->col2_user_id,
+                        ];
+            }
+            if($collaboration->col1_page_id &&
+                $collaboration->col1_page_id!=$account_id){
+                    return  [
+                            'user_or_page'=>'page',
+                            'account_id'=>$collaboration->col1_page_id,
+                        ];
+            }
+            if($collaboration->col2_page_id &&
+                $collaboration->col2_page_id!=$account_id){
+                    return  [
+                            'user_or_page' => 'page',
+                            'account_id'=>$collaboration->col2_page_id,
+                        ];
+            }
+        }
+
+        function send_notification($my_user_or_page,$my_account_id,$your_user_or_page,$your_account_id){
+            if($your_user_or_page=='user'){
+                //NOTIFICA
+                $new_notf = new Notification();
+                $new_notf->user_id = $your_account_id;
+                $new_notf->notification_type_id = 12;
+                if($my_user_or_page=='user'){
+                    $new_notf->ref_user_id = $my_account_id;
+                }else{
+                    $new_notf->ref_page_id = $my_account_id;
+                }
+                $new_notf->parameter = $my_account_id.'/#collaborations';
+                $new_notf->save();
+            }else{
+                $page_recipent = Page::find($your_account_id);
+                foreach ($page_recipent->users as $user) {
+                    $new_notf = new Notification();
+                    $new_notf->user_id = $user->id;
+                    $new_notf->notification_type_id = 13;
+                    if($my_user_or_page=='user'){
+                        $new_notf->ref_user_id = $my_account_id;
+                    }else{
+                        $new_notf->ref_page_id = $my_account_id;
+                    }
+                    $new_notf->ref_to_page_id = $your_account_id;
+                    $new_notf->parameter = $my_account_id.'/#collaborations';
+                    $new_notf->save();
+                }
+            }
+
+        }
+
+        $account_id = $request->account_id;
+        $user_or_page = $request->user_or_page;
+        $collaboration = Collaboration::find($request->collaboration_id);
         $user = Auth::user();
-        if($collaboration->recipient_user_id){
-            if($user->id==$collaboration->recipient_user_id){
-                $can_update = true;
-                $user_or_page = 'user';
+        $can_update_coll = false;
+
+        if($user_or_page=='user'){
+            if($user->id==$account_id){
+                $can_update_coll = true;
+                if($collaboration->col1_user_id==$account_id){
+                    $collaboration->col1_confirmed = 1;
+                    $collaboration->col1_show = 1;
+                }
+                if($collaboration->col2_user_id==$account_id){
+                    $collaboration->col2_confirmed = 1;
+                    $collaboration->col2_show = 1;
+                }
+            }
+        }elseif($user_or_page=='page'){
+            if($user->pages->contains(Page::find($account_id))){
+                $can_update_coll = true;
+                if($collaboration->col1_page_id==$account_id){
+                    $collaboration->col1_confirmed = 1;
+                    $collaboration->col1_show = 1;
+                }
+                if($collaboration->col2_page_id==$account_id){
+                    $collaboration->col2_confirmed = 1;
+                    $collaboration->col2_show = 1;
+                }
             }
         }
-        if($collaboration->recipient_page_id){
-            $page = Page::find($collaboration->recipient_page_id);
-            if($user->pages->contains($page)){
-                $can_update = true;
-                $user_or_page = 'page';
-            }
-        }
-        if($can_update){
-            $collaboration->confirmed = 1;
+        if($can_update_coll){
             $collaboration->update();
-            //NOTIFICA
-            //se a confermare è un utente
-            if($user_or_page=='user'){
-                if($collaboration->sender_user_id){
-                    $new_notf = new Notification();
-                    $new_notf->user_id = $collaboration->sender_user_id;
-                    $new_notf->notification_type_id = 12;
-                    $new_notf->ref_user_id = $user->id;
-                    $new_notf->ref_page_id = null;
-                    $new_notf->parameter = $collaboration->sender_user_id.'/#collaborations';
-                    $new_notf->save();
-                }
-                if($collaboration->sender_page_id){
-                    $page_sender = Page::find($collaboration->sender_page_id);
-                    foreach ($page_sender->users as $user_page) {
-                        $new_notf = new Notification();
-                        $new_notf->user_id = $user_page->id;
-                        $new_notf->notification_type_id = 13;
-                        $new_notf->ref_user_id = $user->id;
-                        $new_notf->ref_to_page_id = $page_sender->id;
-                        $new_notf->parameter = $page_sender->id.'/#collaborations';
-                        $new_notf->save();
-                    }
-                }
-            }elseif($user_or_page=='page'){
-                if($collaboration->sender_user_id){
-                    $new_notf = new Notification();
-                    $new_notf->user_id = $collaboration->sender_user_id;
-                    $new_notf->notification_type_id = 12;
-                    $new_notf->ref_page_id = $collaboration->recipient_page_id;
-                    $new_notf->parameter = $collaboration->sender_user_id.'/#collaborations';
-                    $new_notf->save();
-                }
-                if($collaboration->sender_page_id){
-                    $page_sender = Page::find($collaboration->sender_page_id);
-                    foreach ($page_sender->users as $user_page) {
-                        $new_notf = new Notification();
-                        $new_notf->user_id = $user_page->id;
-                        $new_notf->notification_type_id = 13;
-                        $new_notf->ref_page_id = $collaboration->recipient_page_id;
-                        $new_notf->ref_to_page_id = $page_sender->id;
-                        $new_notf->parameter = $page_sender->id.'/#collaborations';
-                        $new_notf->save();
-                    }
-                }
-            }
         }
+
+        $you = id_from_my_to_you($collaboration,$account_id,$user_or_page);
+        send_notification($user_or_page,$account_id,$you['user_or_page'],$you['account_id']);
     }
+
     public function latestCollaborations(){
 
-        function already_exist($colls,$collaboration){
+        $collaborations = Collaboration::query()
+                            ->where('col1_confirmed',1)
+                            ->where('col2_confirmed',1)
+                            ->latest()
+                            ->take(8)
+                            ->get();
 
-            $sender_user_id = $collaboration->sender_user_id;
-            $sender_page_id = $collaboration->sender_page_id;
-            $recipient_user_id = $collaboration->recipient_user_id;
-            $recipient_page_id = $collaboration->recipient_page_id;
-            $exist = false;
-            foreach ($colls as $coll) {
-                if($sender_user_id){
-                    if($sender_user_id==$coll->sender_user_id){
-                        if($coll->recipient_user_id==$recipient_user_id){
-                            $exist = true;
-                        }
-                        if($coll->recipient_page_id==$recipient_page_id){
-                            $exist = true;
-                        }
-                    }
-                    if($sender_user_id==$coll->recipient_user_id){
-                        if($coll->sender_user_id==$recipient_user_id){
-                            $exist = true;
-                        }
-                        if($coll->sender_page_id==$recipient_user_id){
-                            $exist = true;
-                        }
-                    }
-                }
-                if($sender_page_id){
-                    if($sender_page_id==$coll->sender_page_id){
-                        if($coll->recipient_user_id==$recipient_user_id){
-                            $exist = true;
-                        }
-                        if($coll->recipient_page_id==$recipient_page_id){
-                            $exist = true;
-                        }
-                    }
-                    if($sender_page_id==$coll->recipient_page_id){
-                        if($coll->sender_user_id==$recipient_user_id){
-                            $exist = true;
-                        }
-                        if($coll->sender_page_id==$recipient_user_id){
-                            $exist = true;
-                        }
-                    }
-
-                }
-            }
-
-            if($exist){
-                return true;
-            }else{
-                return false;
-            }
-
-        }
-
-        $collaborations = Collaboration::latest()
-        ->take(8)
-        ->get();
-
-        $colls = [];
-        foreach($collaborations as $collaboration) {
-            if(!already_exist($colls,$collaboration)){
-                array_push($colls,$collaboration);
-            }
-        }
-
-        $collaborations_info = [];
-        foreach ($colls as $collaboration) {
-            $collaboration_info['id'] = $collaboration['id'];
-            if($collaboration['sender_user_id']){
-                $collaboration_info['account_1'] = User::where('id',$collaboration['sender_user_id'])
+        foreach ($collaborations as $collaboration) {
+            if($collaboration->col1_user_id){
+                $collaboration['account_1'] =
+                User::where('id',$collaboration->col1_user_id)
                 ->select('id','name','surname','image','summary')
                 ->first();
-                $collaboration_info['account_1']['user_or_page'] = true;
+                $collaboration['account_1']['user_or_page'] = true;
             }
-            if($collaboration['sender_page_id']){
-                $collaboration_info['account_1'] = Page::where('id',$collaboration['sender_page_id'])
+            if($collaboration->col1_page_id){
+                $collaboration['account_1'] =
+                Page::where('id',$collaboration->col1_page_id)
                 ->select('id','name','image','summary')
                 ->first();
-                $collaboration_info['account_1']['user_or_page'] = false;
+                $collaboration['account_1']['user_or_page'] = false;
             }
-            if($collaboration['recipient_user_id']){
-                $collaboration_info['account_2'] =
-                User::where('id',$collaboration['recipient_user_id'])
+            if($collaboration->col2_user_id){
+                $collaboration['account_2'] =
+                User::where('id',$collaboration->col2_user_id)
                 ->select('id','name','surname','image','summary')
                 ->first();
-                $collaboration_info['account_2']['user_or_page'] = true;
+                $collaboration['account_2']['user_or_page'] = true;
             }
-            if($collaboration['recipient_page_id']){
-                $collaboration_info['account_2'] =
-                Page::where('id',$collaboration['recipient_page_id'])
+            if($collaboration->col2_page_id){
+                $collaboration['account_2'] =
+                Page::where('id',$collaboration->col2_page_id)
                 ->select('id','name','image','summary')
                 ->first();
-                $collaboration_info['account_2']['user_or_page'] = false;
+                $collaboration['account_2']['user_or_page'] = false;
             }
-            array_push($collaborations_info,$collaboration_info);
         }
         return response()->json([
             'success' => true,
             'results' => [
-                'collaborations' => $collaborations_info,
+                'collaborations' => $collaborations,
             ]
         ]);
     }
+
 }

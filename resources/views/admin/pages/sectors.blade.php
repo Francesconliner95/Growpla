@@ -6,7 +6,7 @@
     sectors = @json($sectors);
     max_sector_number = {{in_array($page->pagetype_id, array(1,2))?3:100}};
 </script>
-<div id="page-sectors">
+<div id="sectors">
         <div class="item-cont">
             <div class="item-style">
                 <div class="container">
@@ -51,7 +51,7 @@
                     </div>
                     <div class="container d-flex justify-content-between">
                         <div class="">
-                            <a href="{{ route('admin.supports.switch') }}" class="font-weight-bold mini-txt txt-green">
+                            <a href="{{ route('admin.supports.create') }}" class="font-weight-bold mini-txt txt-green">
                                 Suggerisci altri settori
                             </a>
                         </div>

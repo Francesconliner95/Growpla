@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import axios from 'axios';
+import moment from 'moment';
 
 axios.defaults.headers.common = {
     'X-Requested-With': 'XMLHttpRequest',
@@ -46,6 +47,9 @@ var create = new Vue({
         mostViewedAccounts: [],
         needs: [],
         offers: [],
+        blogs: [],
+        recommendedOffers: [],
+        recommendedNeeds: [],
         collaborations: [],
         interval:false,
         is_mobile: false,
@@ -67,7 +71,6 @@ var create = new Vue({
             }else{
                 this.button = index;
             }
-            //console.log(this.button);
         },
 
         change_category(){
@@ -126,6 +129,13 @@ var create = new Vue({
               this.investors_selected = false;
               this.services_selected = false;
             }
+            setTimeout(()=>{
+                document.getElementById('filter-button').classList.remove("paused");
+                setTimeout(()=>{
+                    document.getElementById('filter-button').classList.add("paused");
+                }, 1000);
+            }, 100);
+
         },
 
         submitForm(){
@@ -197,34 +207,42 @@ var create = new Vue({
 
         investorType(){
             switch (this.investor_selected) {
-              case '1':
+                case '':
+                  //tutti
+                  this.usertypes_id = [2];
+                  this.pagetypes_id = [5,8];
+                  this.investors_selected = true;
+                  this.services_selected = false;
+                break;
+                case '1':
                 //business angel
                 this.usertypes_id = [2];
                 this.pagetypes_id = [];
                 this.investors_selected = true;
                 this.services_selected = false;
-              break;
-              case '2':
+                break;
+                case '2':
                 //venture capital
                 this.usertypes_id = [];
                 this.pagetypes_id = [5];
                 this.investors_selected = true;
                 this.services_selected = false;
-              break;
-              case '3':
+                break;
+                case '3':
                 //private equity
                 this.usertypes_id = [];
                 this.pagetypes_id = [8];
                 this.investors_selected = true;
                 this.services_selected = false;
-              break;
-              default:
-                this.usertypes_id = [];
-                this.pagetypes_id = [];
+                break;
+                default:
+                this.usertypes_id = [2];
+                this.pagetypes_id = [5,8];
                 this.investors_selected = true;
                 this.services_selected = false;
-
               }
+              console.log(this.category_selected);
+
         },
 
         getAllServices(){
@@ -349,10 +367,10 @@ var create = new Vue({
                 }
             }).then((response) => {
                 var needs = response.data.results.needs;
-                //ordinamento per id
+                //ordinamento per data
                 for (var i=0; i < needs.length; i++) {
                     for (var j=0; j < needs.length-1; j++) {
-                        if (needs[j].id<needs[i].id) {
+                        if (needs[j].updated_at<needs[i].updated_at) {
                           var tmp=needs[j];
                           needs[j]=needs[i];
                           needs[i]=tmp;
@@ -380,10 +398,10 @@ var create = new Vue({
                 }
             }).then((response) => {
                 var offers = response.data.results.offers;
-                //ordinamento per id
+                //ordinamento per data
                 for (var i=0; i < offers.length; i++) {
                     for (var j=0; j < offers.length-1; j++) {
-                        if (offers[j].id<offers[i].id) {
+                        if (offers[j].updated_at<offers[i].updated_at) {
                           var tmp=offers[j];
                           offers[j]=offers[i];
                           offers[i]=tmp;
@@ -398,6 +416,73 @@ var create = new Vue({
                         }
                     }).then((response) => {
                         this.offers.push(...response.data.results.needs);
+                    });
+                }
+            });
+        },
+
+        getBlogs(){
+            axios.get('/api/getLatestBlogs',{
+            }).then((response) => {
+                this.blogs = response.data.results.blogs;
+            });
+        },
+
+        getRecommendedOffer(){
+            axios.get('/admin/recommendedOffers',{
+                params: {
+                    api_or_route: true,
+                }
+            }).then((response) => {
+                var offers = response.data.results.offers;
+                //ordinamento per data
+                for (var i=0; i < offers.length; i++) {
+                    for (var j=0; j < offers.length-1; j++) {
+                        if (offers[j].updated_at<offers[i].updated_at) {
+                          var tmp=offers[j];
+                          offers[j]=offers[i];
+                          offers[i]=tmp;
+                        }
+                    }
+                }
+                offers = offers.slice(0,8);
+                if(offers){
+                    axios.get('/admin/loadNeedInfo',{
+                        params: {
+                            needs: offers,
+                        }
+                    }).then((response) => {
+                        this.recommendedOffers.push(...response.data.results.needs);
+                    });
+                }
+            });
+        },
+
+        getRecommendedNeed(){
+            axios.get('/admin/recommendedNeeds',{
+                params: {
+                    api_or_route: true,
+                }
+            }).then((response) => {
+                var needs = response.data.results.needs;
+                //ordinamento per data
+                for (var i=0; i < needs.length; i++) {
+                    for (var j=0; j < needs.length-1; j++) {
+                        if (needs[j].updated_at<needs[i].updated_at) {
+                          var tmp=needs[j];
+                          needs[j]=needs[i];
+                          needs[i]=tmp;
+                        }
+                    }
+                }
+                needs = needs.slice(0,8);
+                if(needs){
+                    axios.get('/admin/loadNeedInfo',{
+                        params: {
+                            needs: needs,
+                        }
+                    }).then((response) => {
+                        this.recommendedNeeds.push(...response.data.results.needs);
                     });
                 }
             });
@@ -522,18 +607,23 @@ var create = new Vue({
                     this.is_mobile = true;
                 }
             }
-        }
+        },
+
+        getDate(created_at){
+            return moment(created_at).format("DD/MM/YY");
+        },
 
     },
     mounted() {
-
 
         // setInterval(()=>{console.log(this.search_type);}, 1000);
         //console.log(document.getElementById('search-type-checkbox').checked);
         // if(performance.navigation.type==2){
         //    this.search_type = !this.search_type;
         // }
-
+        this.getBlogs();
+        this.getRecommendedOffer();
+        this.getRecommendedNeed();
         this.getLastHave();
         this.getLastOffer();
         this.getRegionsByCountry();
@@ -544,7 +634,7 @@ var create = new Vue({
 
         //se clicco fuori dal div 'search-main'
         window.addEventListener('click', (e)=>{
-            if (!document.getElementById('search-main').contains(e.target)){
+            if (!document.getElementById('search-main').contains(e.target)  && !e.target.closest('i')){
                 this.button = false;
             }
         })

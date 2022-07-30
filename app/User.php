@@ -76,12 +76,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function give_user_services(){
         return $this->belongsToMany('App\Service','give_user_services','user_id','service_id')
-        ->withPivot('id');
+        ->withPivot('id'/*,'des'*/)->withTimestamps();
     }
 
     public function have_user_services(){
         return $this->belongsToMany('App\Service','have_user_services','user_id','service_id')
-        ->withPivot('id');
+        ->withPivot('id')->withTimestamps();
     }
 
     public function user_following(){ //utenti seguiti
@@ -113,7 +113,9 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
+        'google_id',
         'email',
+        'email_verified_at',
         'password',
         'name',
         'surname',

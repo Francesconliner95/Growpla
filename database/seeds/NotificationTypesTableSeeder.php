@@ -108,6 +108,11 @@ class NotificationTypesTableSeeder extends Seeder
                 'message_it'=> 'ti ha aggiunto come membro del team di',
                 'url' => '/admin/pages/',
             ],
+            [
+                'message'=> '/',
+                'message_it'=> 'ha creato una nuova pagina',
+                'url' => '/admin/pages/',
+            ],
         ];
 
         foreach ($notification_types as $notification_type){

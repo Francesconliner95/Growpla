@@ -1,33 +1,83 @@
-#nav-bar{
-    padding: 0;
-    position: fixed;
-    z-index: 10;
-    width: 100%;
-    height: 75px;
-    .trasparent-navbar{
-        background-color: transparent !important;
-        box-shadow: none !important;
-        .icon{
-            i{
-                color: white !important;
-            }
-            img{
-                filter: brightness(0) invert(1) !important;
-            }
+.trasparent-navbar{
+    background-color: transparent !important;
+    box-shadow: none !important;
+    .icon{
+        i{
+            color: white !important;
         }
-        a{
-            &:after{
-                color: white;
-            }
+        img{
+            filter: brightness(0) invert(1) !important;
         }
     }
-    #container-nb{
-        transition: .4s;
-        background-color: white;
-        box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
-        border-radius: 30px;
+    a{
+        transition: .2s;
+        &:after{
+            color: white;
+        }
+    }
+    .menu-item{
+        color: white !important;
+        &:hover{
+            color: rgba(255,255,255,.5)!important;
+        }
+    }
+    .button-navbar-1{
+        background-color: white!important;
+        color: $green_3!important;
+        border: 2px solid white!important;
+        &:hover{
+            background-color: transparent!important;
+            color: white!important;
+        }
+    }
+    .button-navbar-2{
+        background-color: transparent!important;
+        color: white!important;
+        border: 2px solid white!important;
+        &:hover{
+            background-color: white!important;
+            color: $green_3!important;
+        }
+    }
+}
+#nav-bar{
+    width: 100%;
+    height: 75px;
+    position: fixed;
+    padding: 0;
+    background-color: white;
+    box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%);
+    z-index: 11;
+    transition: .4s;
+    .container-nb{
         margin: 0 auto;
-        height: 75px;
+    }
+    .menu-item{
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.2s;
+        color: $green_3;
+        &:hover{
+            color: $green_2;
+        }
+    }
+    .button-navbar-1{
+        background-color: $green_3;
+        color: white;
+        border: 2px solid $green_3;
+        &:hover{
+            background-color: white;
+            color: $green_3;
+        }
+    }
+    .button-navbar-2{
+        background-color: white;
+        color: $green_3;
+        border: 2px solid $green_3;
+        &:hover{
+            background-color: $green_3;
+            color: white;
+        }
     }
     .nav-left,.nav-right{
         justify-content: space-between;
@@ -180,7 +230,7 @@ footer{
     padding-top: 35px;
     background-color: $light_black;
     color: white;
-    border-top-left-radius: 90px;
+    //border-top-left-radius: 90px;
     .container{
         padding: 0 50px;
         >div>div{

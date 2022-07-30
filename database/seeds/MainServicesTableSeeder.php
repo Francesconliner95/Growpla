@@ -24,7 +24,7 @@ class MainServicesTableSeeder extends Seeder
                 'name'=>'Marketing, Comunicazione, Media ed Editoria',//2
             ],
             [
-                'name'=>'Servizi Informatici',//3
+                'name'=>'Informatica',//3
             ],
             [
                 'name'=>'Grafica',//4
@@ -36,7 +36,13 @@ class MainServicesTableSeeder extends Seeder
                 'name'=>'Prodotto',//6
             ],
             [
-                'name'=>'Altro',//7
+                'name'=>'Contabilità, Finanza, Controllo e Gestione',//7
+            ],
+            [
+                'name'=>'Business',//8
+            ],
+            [
+                'name'=>'Industria 4.0',//9
             ],
         ];
 

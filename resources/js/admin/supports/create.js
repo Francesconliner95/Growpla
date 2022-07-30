@@ -1,5 +1,3 @@
-window.history.forward();
-
 //DRAG & DROP
 document.querySelectorAll(".drop-zone__input").forEach(inputElement =>{
 
